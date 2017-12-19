@@ -68,7 +68,7 @@ public class LaPQLServiceTest {
     }
 
     @Test
-    public void shouldReturnCorChannelWithPredicateNameAndNetworkShortcutPredicate() throws Exception {
+    public void shouldReturnCorChannelWithPredicateNameAndorganizationShortcutPredicate() throws Exception {
         //when
         CorFilter corFilter = new CorFilter().value("Core Channel AND name='sample'");
         List list = pqlService.getObjectList(corFilter);

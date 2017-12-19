@@ -100,7 +100,7 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
 
     @Override
-    public ResponseEntity createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity createUserUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                               @ApiParam(value = "corUserDTO", required = true) @Valid @RequestPart("corUserDTO") CorUserDTO corUserDTO,
                                               @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to saveCorContact User : {}", corUserDTO);
@@ -137,10 +137,10 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
 
     @Override
-    public ResponseEntity<CorUserDTO> updateUserUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CorUserDTO> updateUserUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                          @ApiParam(value = "corUserDTO", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException, TikaException, IOException, SAXException {
         if (corUserDTO.getId() == null) {
-            return createUserUsingPOST(networkShortcut, corUserDTO, null);
+            return createUserUsingPOST(organizationShortcut, corUserDTO, null);
         }
         log.debug("REST request to update User : {}", corUserDTO);
         Optional<CorUser> existingUser = userRepository.findOneByEmail(corUserDTO.getEmail());
@@ -158,12 +158,12 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
     }
 
     @Override
-    public ResponseEntity<CorUserDTO> updateUserWithAvatarUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CorUserDTO> updateUserWithAvatarUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                     @ApiParam(value = "login", required = true) @PathVariable("login") String login,
                                                                     @ApiParam(value = "corUserDTO", required = true) @Valid @RequestPart("corUserDTO") CorUserDTO corUserDTO,
                                                                     @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException {
         if (corUserDTO.getId() == null) {
-            return createUserUsingPOST(networkShortcut, corUserDTO, null);
+            return createUserUsingPOST(organizationShortcut, corUserDTO, null);
         }
         log.debug("REST request to update User : {}", corUserDTO);
         Optional<CorUser> existingUser = userRepository.findOneByEmail(corUserDTO.getEmail());
@@ -182,8 +182,8 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
 
     @Override
-    public ResponseEntity<List<CorUserDTO>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        CorNetwork network = corNetworkService.findNetwork(networkShortcut);
+    public ResponseEntity<List<CorUserDTO>> getAllUsersUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "pagable", required = true) Pageable pagable) {
+        CorNetwork network = corNetworkService.findNetwork(organizationShortcut);
         Slice<CorUser> corUserList = userService.getAllManagedUsers(network, pagable);
         List<CorUserDTO> corUserDTOList = corUserMapper.DBs2DTOs(corUserList.getContent());
         return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(corUserList)).body(corUserDTOList);
@@ -196,10 +196,10 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
      * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
      */
     @Override
-    public ResponseEntity<CorUserDTO> getUserUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CorUserDTO> getUserUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                       @ApiParam(value = "login", required = true) @PathVariable("login") String login) {
         log.debug("REST request to get User : {}", login);
-        CorNetwork network = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork network = corNetworkService.findNetwork(organizationShortcut);
         return ResponseUtil.wrapOrNotFound(
                 userService.getUserWithAuthoritiesByLoginAndNetwork(login, network)
                         .map(CorUserDTO::new));
@@ -212,7 +212,7 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
      * @return the ResponseEntity with status 200 (OK)
      */
     @Override
-    public ResponseEntity<Void> deleteUserUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteUserUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                       @ApiParam(value = "login", required = true) @PathVariable("login") String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);

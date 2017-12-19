@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibFileItem;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -35,10 +34,6 @@ public class SchLog extends SchBaseEntity implements Serializable {
     @ManyToOne
     @PodamExclude
     private LibFileItem libFileItem;
-
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
 
     @ManyToOne
     @PodamExclude
@@ -82,18 +77,6 @@ public class SchLog extends SchBaseEntity implements Serializable {
         this.libFileItem = libFileItem;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
-    public SchLog network(CorNetwork network) {
-        this.network = network;
-        return this;
-    }
 
     public CorChannel getChannel() {
         return channel;
@@ -132,7 +115,6 @@ public class SchLog extends SchBaseEntity implements Serializable {
     public String toString() {
         return "SchLogColumn{" +
                 "id=" + id +
-                ", network=" + network +
                 ", channel=" + channel +
                 '}';
     }

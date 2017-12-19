@@ -3,7 +3,6 @@ package io.protone.library.domain;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorLibrary;
-import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -115,19 +114,6 @@ public class LibMediaLibrary extends CorLibrary implements Serializable {
 
     public LibMediaLibrary description(String description) {
         this.description = description;
-        return this;
-    }
-
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public LibMediaLibrary network(CorNetwork corNetwork) {
-        this.network = corNetwork;
         return this;
     }
 

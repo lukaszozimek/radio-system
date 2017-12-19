@@ -126,7 +126,7 @@ public class CorCurrencyResourceImplTest {
         // Create the CorCurrency
         CorCurrencyDTO corCurrencyDTO = corCurrencyMapper.DB2DTO(corCurrency);
 
-        restCorCurrencyMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency", corNetwork.getShortcut())
+        restCorCurrencyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/currency", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corCurrencyDTO)))
             .andExpect(status().isCreated());
@@ -153,7 +153,7 @@ public class CorCurrencyResourceImplTest {
         CorCurrencyDTO existingCorCurrencyDTO = corCurrencyMapper.DB2DTO(existingCorCurrency);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorCurrencyMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency", corNetwork.getShortcut())
+        restCorCurrencyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/currency", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCorCurrencyDTO)))
             .andExpect(status().isBadRequest());
@@ -173,7 +173,7 @@ public class CorCurrencyResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         CorCurrencyDTO cfgMarkerConfigurationDTO = corCurrencyMapper.DB2DTO(corCurrency);
 
-        restCorCurrencyMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency", corNetwork.getShortcut())
+        restCorCurrencyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/currency", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());
@@ -192,7 +192,7 @@ public class CorCurrencyResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         CorCurrencyDTO cfgMarkerConfigurationDTO = corCurrencyMapper.DB2DTO(corCurrency);
 
-        restCorCurrencyMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency", corNetwork.getShortcut())
+        restCorCurrencyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/currency", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());
@@ -209,7 +209,7 @@ public class CorCurrencyResourceImplTest {
         corCurrencyRepository.saveAndFlush(corCurrency.network(corNetwork));
 
         // Get all the corCurrencyList
-        restCorCurrencyMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency?sort=id,desc", corNetwork.getShortcut()))
+        restCorCurrencyMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/currency?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(corCurrency.getId().intValue())))
@@ -226,7 +226,7 @@ public class CorCurrencyResourceImplTest {
         corCurrencyRepository.saveAndFlush(corCurrency.network(corNetwork));
 
         // Get the corCurrency
-        restCorCurrencyMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency/{id}", corNetwork.getShortcut(), corCurrency.getId()))
+        restCorCurrencyMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/currency/{id}", corNetwork.getShortcut(), corCurrency.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(corCurrency.getId().intValue()))
@@ -240,7 +240,7 @@ public class CorCurrencyResourceImplTest {
     @Transactional
     public void getNonExistingCorCurrency() throws Exception {
         // Get the corCurrency
-        restCorCurrencyMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCorCurrencyMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/currency/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -259,7 +259,7 @@ public class CorCurrencyResourceImplTest {
             .delimiter(UPDATED_DELIMITER)
             .shortName(UPDATED_SHORT_NAME);
         CorCurrencyDTO corCurrencyDTO = corCurrencyMapper.DB2DTO(updatedCorCurrency);
-        restCorCurrencyMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency", corNetwork.getShortcut())
+        restCorCurrencyMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/currency", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corCurrencyDTO)))
             .andExpect(status().isOk());
@@ -283,7 +283,7 @@ public class CorCurrencyResourceImplTest {
         CorCurrencyDTO corCurrencyDTO = corCurrencyMapper.DB2DTO(corCurrency);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorCurrencyMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency", corNetwork.getShortcut())
+        restCorCurrencyMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/currency", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corCurrencyDTO)))
             .andExpect(status().isCreated());
@@ -301,7 +301,7 @@ public class CorCurrencyResourceImplTest {
         int databaseSizeBeforeDelete = corCurrencyRepository.findAll().size();
 
         // Get the corCurrency
-        restCorCurrencyMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency/{id}", corNetwork.getShortcut(), corCurrency.getId())
+        restCorCurrencyMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/currency/{id}", corNetwork.getShortcut(), corCurrency.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

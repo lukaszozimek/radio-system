@@ -52,28 +52,28 @@ public class SchClockTemplateService {
     }
 
     @Transactional(readOnly = true)
-    public Slice<SchClockTemplate> findSchClockConfigurationsForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pagable) {
-        return schClockTemplateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndType(networkShortcut, channelShortcut, SchDiscriminators.CLOCK_TEMPLATE, pagable);
+    public Slice<SchClockTemplate> findSchClockConfigurationsForNetworkAndChannel(String organizationShortcut, String channelShortcut, Pageable pagable) {
+        return schClockTemplateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndType(organizationShortcut, channelShortcut, SchDiscriminators.CLOCK_TEMPLATE, pagable);
     }
 
     @Transactional(readOnly = true)
-    public Slice<SchClockTemplate> findAllClocksByCategoryName(String networkShortcut, String channelShortcut, String categoryName, Pageable pageable) {
-        return schClockTemplateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndClockCategory_Name(networkShortcut, channelShortcut, categoryName, pageable);
+    public Slice<SchClockTemplate> findAllClocksByCategoryName(String organizationShortcut, String channelShortcut, String categoryName, Pageable pageable) {
+        return schClockTemplateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndClockCategory_Name(organizationShortcut, channelShortcut, categoryName, pageable);
     }
 
     @Transactional(readOnly = true)
-    public SchClockTemplate findSchClockConfigurationForNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-        return schClockTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
+    public SchClockTemplate findSchClockConfigurationForNetworkAndChannelAndShortName(String organizationShortcut, String channelShortcut, String shortName) {
+        return schClockTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(organizationShortcut, channelShortcut, shortName);
     }
 
     @Transactional(readOnly = true)
-    public SchClockTemplateDTO findDTOSchClockConfigurationForNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-        return schClockTemplateMapper.DB2DTO(schClockTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName));
+    public SchClockTemplateDTO findDTOSchClockConfigurationForNetworkAndChannelAndShortName(String organizationShortcut, String channelShortcut, String shortName) {
+        return schClockTemplateMapper.DB2DTO(schClockTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(organizationShortcut, channelShortcut, shortName));
     }
 
     @Transactional
-    public void deleteSchClockConfigurationByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-        SchClockTemplate schClockTemplate = findSchClockConfigurationForNetworkAndChannelAndShortName(networkShortcut, channelShortcut, shortName);
+    public void deleteSchClockConfigurationByNetworkAndChannelAndShortName(String organizationShortcut, String channelShortcut, String shortName) {
+        SchClockTemplate schClockTemplate = findSchClockConfigurationForNetworkAndChannelAndShortName(organizationShortcut, channelShortcut, shortName);
         if (schClockTemplate != null) {
             schClockTemplate.getSchEventTemplates().stream().forEach(schBlockSchBlock -> {
                 schEventService.removeEvent(schBlockSchBlock.getChild().getId());

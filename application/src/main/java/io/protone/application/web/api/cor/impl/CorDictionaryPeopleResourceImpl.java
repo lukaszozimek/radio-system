@@ -39,12 +39,12 @@ public class CorDictionaryPeopleResourceImpl implements CorDictionaryPeopleResou
     private CorPersonMapper corPersonMapper;
 
     @Override
-    public ResponseEntity<CorPersonDTO> updatePersonUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "personDTO", required = true) @Valid @RequestBody CorPersonDTO personDTO) throws URISyntaxException {
+    public ResponseEntity<CorPersonDTO> updatePersonUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "personDTO", required = true) @Valid @RequestBody CorPersonDTO personDTO) throws URISyntaxException {
         log.debug("REST request to update CorPerson : {}", personDTO);
         if (personDTO.getId() == null) {
-            return createPersonUsingPOST(networkShortcut, personDTO);
+            return createPersonUsingPOST(organizationShortcut, personDTO);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(organizationShortcut);
         CorPerson cORPerson = corPersonMapper.DTO2DB(personDTO, corNetwork);
         cORPerson = corPersonRepository.save(cORPerson);
         CorPersonDTO result = corPersonMapper.DB2DTO(cORPerson);
@@ -54,22 +54,22 @@ public class CorDictionaryPeopleResourceImpl implements CorDictionaryPeopleResou
     }
 
     @Override
-    public ResponseEntity<CorPersonDTO> createPersonUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CorPersonDTO> createPersonUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                               @ApiParam(value = "personDTO", required = true) @Valid @RequestBody CorPersonDTO personDTO) throws URISyntaxException {
         log.debug("REST request to saveCorContact CorPerson : {}", personDTO);
         if (personDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORPerson", "idexists", "A new cORPerson cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(organizationShortcut);
         CorPerson cORPerson = corPersonMapper.DTO2DB(personDTO, corNetwork);
         cORPerson = corPersonRepository.save(cORPerson);
         CorPersonDTO result = corPersonMapper.DB2DTO(cORPerson);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/network/dictionary/country/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/organization/dictionary/country/" + result.getId()))
             .body(result);
     }
 
     @Override
-    public ResponseEntity<Void> deletePersonUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true)
+    public ResponseEntity<Void> deletePersonUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "id", required = true)
     @PathVariable("id") Long id) {
         log.debug("REST request to delete CorPerson : {}", id);
         corPersonRepository.delete(id);
@@ -78,7 +78,7 @@ public class CorDictionaryPeopleResourceImpl implements CorDictionaryPeopleResou
     }
 
     @Override
-    public ResponseEntity<List<CorPersonDTO>> getAllPeopleUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<CorPersonDTO>> getAllPeopleUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CORPeople");
         List<CorPerson> cORPeople = corPersonRepository.findAll();
@@ -86,7 +86,7 @@ public class CorDictionaryPeopleResourceImpl implements CorDictionaryPeopleResou
     }
 
     @Override
-    public ResponseEntity<CorPersonDTO> getPersonUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    public ResponseEntity<CorPersonDTO> getPersonUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get CorPerson : {}", id);
         CorPerson cORPerson = corPersonRepository.findOne(id);
         CorPersonDTO cORPersonDTO = corPersonMapper.DB2DTO(cORPerson);

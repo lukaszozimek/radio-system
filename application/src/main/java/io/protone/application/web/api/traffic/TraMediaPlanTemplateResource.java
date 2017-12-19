@@ -22,10 +22,10 @@ public interface TraMediaPlanTemplateResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanTemplateDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic//mediaplan/template",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic//mediaplan/template",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraMediaPlanTemplateDTO>> getAllTraMediaPlanTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraMediaPlanTemplateDTO>> getAllTraMediaPlanTemplateUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -35,10 +35,10 @@ public interface TraMediaPlanTemplateResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanTemplateDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic//mediaplan/template/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic//mediaplan/template/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<TraMediaPlanTemplateDTO> getTraMediaPlanTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraMediaPlanTemplateDTO> getTraMediaPlanTemplateUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -49,11 +49,11 @@ public interface TraMediaPlanTemplateResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanTemplateDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/mediaplan/template",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/mediaplan/template",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<TraMediaPlanTemplateDTO> updateTraMediaPlanTemplateUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraMediaPlanTemplateDTO> updateTraMediaPlanTemplateUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                           @ApiParam(value = "traMediaPlanTemplateDTO", required = true) @RequestBody TraMediaPlanTemplateDTO traMediaPlanTemplateDTO) throws URISyntaxException;
 
 
@@ -64,11 +64,11 @@ public interface TraMediaPlanTemplateResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanTemplateDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic//mediaplan/template",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic//mediaplan/template",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<TraMediaPlanTemplateDTO> createTraMediaPlanTemplateUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraMediaPlanTemplateDTO> createTraMediaPlanTemplateUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                            @ApiParam(value = "traMediaPlanTemplateDTO", required = true) @RequestBody TraMediaPlanTemplateDTO traMediaPlanTemplateDTO) throws URISyntaxException;
 
 
@@ -78,10 +78,10 @@ public interface TraMediaPlanTemplateResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic//mediaplan/template/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic//mediaplan/template/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteTraMediaPlanTemplateUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteTraMediaPlanTemplateUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                    @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 

@@ -32,12 +32,11 @@ public abstract class CorItem extends AbstractAuditingEntity {
     protected String name;
     @Column(name = "description")
     protected String description;
-    @ManyToOne
-    @PodamExclude
-    protected CorNetwork network;
+
     @ManyToOne
     @PodamExclude
     protected CorChannel channel;
+
     @PodamExclude
     @OneToMany(mappedBy = "tags", fetch = EAGER)
     @JsonIgnore

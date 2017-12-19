@@ -20,14 +20,14 @@ public class SchScheduleServiceWrapper {
     private SchScheduleService schScheduleService;
 
     @Transactional
-    public SchSchedule buildSchedule(LocalDate localDate, String gridShortName, String networkShortcut, String channelShortcut) throws Exception {
-        SchSchedule schSchedule = schScheduleBuilderService.buildScheduleForDate(localDate, gridShortName, networkShortcut, channelShortcut);
+    public SchSchedule buildSchedule(LocalDate localDate, String gridShortName, String organizationShortcut, String channelShortcut) throws Exception {
+        SchSchedule schSchedule = schScheduleBuilderService.buildScheduleForDate(localDate, gridShortName, organizationShortcut, channelShortcut);
         return this.schScheduleService.saveSchedule(schSchedule);
     }
 
     @Transactional
-    public SchSchedule buildDefaultSchedule(LocalDate localDate, String networkShortcut, String channelShortcut) {
-        SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, networkShortcut, channelShortcut);
+    public SchSchedule buildDefaultSchedule(LocalDate localDate, String organizationShortcut, String channelShortcut) {
+        SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, organizationShortcut, channelShortcut);
         return this.schScheduleService.saveSchedule(schSchedule);
     }
 }

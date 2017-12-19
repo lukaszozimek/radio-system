@@ -25,11 +25,11 @@ public interface TraOrderResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraOrderDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/order",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<TraOrderDTO> updateAnOrderUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraOrderDTO> updateAnOrderUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                       @ApiParam(value = "traOrderDTO", required = true) @RequestBody TraOrderDTO traOrderDTO) throws URISyntaxException;
 
     @ApiOperation(value = "createAnOrder", notes = "", response = TraOrderDTO.class, tags = {"TRAFFIC",})
@@ -39,11 +39,11 @@ public interface TraOrderResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraOrderDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/order",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<TraOrderDTO> createAnOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraOrderDTO> createAnOrderUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                        @ApiParam(value = "traOrderDTO", required = true) @RequestBody TraOrderDTO traOrderDTO) throws URISyntaxException;
 
     @ApiOperation(value = "getAllAnOrders", notes = "", response = TraOrderDTO.class, responseContainer = "List", tags = {"TRAFFIC",})
@@ -52,10 +52,10 @@ public interface TraOrderResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraOrderDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/order",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraOrderThinDTO>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraOrderThinDTO>> getAllAnOrdersUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -65,10 +65,10 @@ public interface TraOrderResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraOrderDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/order/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<TraOrderDTO> getAnOrderUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraOrderDTO> getAnOrderUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                    @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -78,10 +78,10 @@ public interface TraOrderResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/order/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteAnOrderUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteAnOrderUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                   @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -92,10 +92,10 @@ public interface TraOrderResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraOrderDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order/{id}/notify",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/order/{id}/notify",
         produces = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<TraOrderDTO> notifyCustomerAboutUnpaidOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraOrderDTO> notifyCustomerAboutUnpaidOrderUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
     @ApiOperation(value = "getAllCustomerOrders", notes = "", response = TraOrderThinDTO.class, responseContainer = "List", tags = {"TRAFFIC",})
@@ -104,10 +104,10 @@ public interface TraOrderResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderThinDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderThinDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraOrderThinDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order/customer/{customerShortcut}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/order/customer/{customerShortcut}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraOrderThinDTO>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraOrderThinDTO>> getAllCustomerOrdersUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                    @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable);
 

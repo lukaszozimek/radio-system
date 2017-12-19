@@ -43,14 +43,14 @@ public class TraAdvertismentShuffleDefault implements TraAdvertismentShuffle {
     @Inject
     private TraOrderService traOrderService;
 
-    public List<TraPlaylist> shuffleCommercials(TraShuffleAdvertisementDTO tarShuffleAdvertisementPT, String networkShortcut, String channelShortcut) throws InterruptedException, TrafficShuffleReindexException {
+    public List<TraPlaylist> shuffleCommercials(TraShuffleAdvertisementDTO tarShuffleAdvertisementPT, String organizationShortcut, String channelShortcut) throws InterruptedException, TrafficShuffleReindexException {
         log.debug("Start shuffling commercial");
         log.debug("Commercial to shuffle {}", tarShuffleAdvertisementPT.getNumber());
-        LibMediaItem mediaItem = libMediaItemService.getMediaItem(networkShortcut, "com", tarShuffleAdvertisementPT.getLibMediaItemThinDTO().getIdx());
+        LibMediaItem mediaItem = libMediaItemService.getMediaItem(organizationShortcut, "com", tarShuffleAdvertisementPT.getLibMediaItemThinDTO().getIdx());
         log.debug("Found advertisment {}", mediaItem.getId());
-        TraOrder traOrder = traOrderService.getOrder(tarShuffleAdvertisementPT.getTraOrderThinDTO().getId(), networkShortcut);
+        TraOrder traOrder = traOrderService.getOrder(tarShuffleAdvertisementPT.getTraOrderThinDTO().getId(), organizationShortcut);
         log.debug("Found Order {}", traOrder.getId());
-        List<TraPlaylist> traPlaylistListInRange = traPlaylistService.getTraPlaylistListInRange(tarShuffleAdvertisementPT.getFrom(), tarShuffleAdvertisementPT.getTo(), networkShortcut, channelShortcut);
+        List<TraPlaylist> traPlaylistListInRange = traPlaylistService.getTraPlaylistListInRange(tarShuffleAdvertisementPT.getFrom(), tarShuffleAdvertisementPT.getTo(), organizationShortcut, channelShortcut);
         log.debug("Found number of Playlist in range : {}", traPlaylistListInRange.size());
         int numberOfCommercialsShuffled = 0;
         for (int i = 0; i < traPlaylistListInRange.size(); i++) {

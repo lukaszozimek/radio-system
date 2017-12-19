@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @RestController
 public class LaPALResourceImpl implements LaPALResource {
     @Override
-    public void executCommand(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public void executCommand(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                               @ApiParam(value = "corCommandDTO", required = true) @RequestBody @Valid CorCommandThinDTO corCommandDTO) {
 
     }

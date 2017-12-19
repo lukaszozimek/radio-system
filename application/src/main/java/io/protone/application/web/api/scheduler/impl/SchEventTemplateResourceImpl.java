@@ -50,12 +50,12 @@ public class SchEventTemplateResourceImpl implements SchEventTemplateResource {
     private CorChannelService corChannelService;
 
     @Override
-    public ResponseEntity<List<SchEventTemplateThinDTO>> getAllSchedulerTemplatesForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<SchEventTemplateThinDTO>> getAllSchedulerTemplatesForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                     @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all SchEventTemplate, for Channel {}, Network: {}", channelShortcut, networkShortcut);
+        log.debug("REST request to get all SchEventTemplate, for Channel {}, Network: {}", channelShortcut, organizationShortcut);
 
-        Slice<SchEventTemplate> entity = schEventTemplateService.findSchEventTemplatesForNetworkAndChannel(networkShortcut, channelShortcut, pagable);
+        Slice<SchEventTemplate> entity = schEventTemplateService.findSchEventTemplatesForNetworkAndChannel(organizationShortcut, channelShortcut, pagable);
         List<SchEventTemplateThinDTO> response = schEventTemplateMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -67,13 +67,13 @@ public class SchEventTemplateResourceImpl implements SchEventTemplateResource {
     }
 
     @Override
-    public ResponseEntity<List<SchEventTemplateThinDTO>> getAllSchedulerEventGroupedByCategoryForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<SchEventTemplateThinDTO>> getAllSchedulerEventGroupedByCategoryForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                                  @ApiParam(value = "name", required = true) @PathVariable("name") String name,
                                                                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all SchEventTemplate, for Channel {}, Network: {}", channelShortcut, networkShortcut);
+        log.debug("REST request to get all SchEventTemplate, for Channel {}, Network: {}", channelShortcut, organizationShortcut);
 
-        Slice<SchEventTemplate> entity = schEventTemplateService.findAllEventsByCategoryName(networkShortcut, channelShortcut, name, pagable);
+        Slice<SchEventTemplate> entity = schEventTemplateService.findAllEventsByCategoryName(organizationShortcut, channelShortcut, name, pagable);
         List<SchEventTemplateThinDTO> response = schEventTemplateMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -85,39 +85,39 @@ public class SchEventTemplateResourceImpl implements SchEventTemplateResource {
     }
 
     @Override
-    public ResponseEntity<SchEventTemplateDTO> creatSchedulerTemplatesForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchEventTemplateDTO> creatSchedulerTemplatesForChannelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                           @ApiParam(value = "schEventDTO", required = true) @Valid @RequestBody SchEventTemplateDTO schEventDTO) throws URISyntaxException {
-        log.debug("REST request to saveSchEventTemplateDTO SchEventTemplateDTO : {}, for Channel {} Network: {}", schEventDTO, channelShortcut, networkShortcut);
+        log.debug("REST request to saveSchEventTemplateDTO SchEventTemplateDTO : {}, for Channel {} Network: {}", schEventDTO, channelShortcut, organizationShortcut);
         if (schEventDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SchEventTemplate", "idexists", "A new SchEventTemplate cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         SchEventTemplate traOrder = schEventTemplateMapper.DTO2DB(schEventDTO, corNetwork, corChannel);
         SchEventTemplate entity = schEventTemplateService.saveEventConfiguration(traOrder);
         SchEventTemplateDTO response = schEventTemplateMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/event/" + response.getShortName()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/event/" + response.getShortName()))
                 .body(response);
     }
 
     @Override
-    public ResponseEntity<Void> deleteSchedulerEventForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteSchedulerEventForChannelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        log.debug("REST request to delete SchEventTemplate : {}, for Network: {}", shortName, networkShortcut);
-        schEventTemplateService.deleteSchEventTemplateByNetworkAndChannelAndShortName(networkShortcut, channelShortcut, shortName);
+        log.debug("REST request to delete SchEventTemplate : {}, for Network: {}", shortName, organizationShortcut);
+        schEventTemplateService.deleteSchEventTemplateByNetworkAndChannelAndShortName(organizationShortcut, channelShortcut, shortName);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<SchEventTemplateDTO> getSchedulerEventForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchEventTemplateDTO> getSchedulerEventForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        log.debug("REST request to get SchEventTemplate : {}, for Network: {}", shortName, networkShortcut);
+        log.debug("REST request to get SchEventTemplate : {}, for Network: {}", shortName, organizationShortcut);
 
-        SchEventTemplateDTO response = schEventTemplateService.findSchEventTemplatesForNetworkAndChannelAndShortNameDTO(networkShortcut, channelShortcut, shortName);
+        SchEventTemplateDTO response = schEventTemplateService.findSchEventTemplatesForNetworkAndChannelAndShortNameDTO(organizationShortcut, channelShortcut, shortName);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
@@ -126,16 +126,16 @@ public class SchEventTemplateResourceImpl implements SchEventTemplateResource {
     }
 
     @Override
-    public ResponseEntity<SchEventTemplateDTO> updateSchedulerEventForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchEventTemplateDTO> updateSchedulerEventForChannelUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                       @ApiParam(value = "schEventDTO", required = true) @Valid @RequestBody SchEventTemplateDTO schEventDTO) throws URISyntaxException {
-        log.debug("REST request to saveSchEventTemplateDTO SchEventTemplateDTO : {}, for Channel {} Network: {}", schEventDTO, channelShortcut, networkShortcut);
+        log.debug("REST request to saveSchEventTemplateDTO SchEventTemplateDTO : {}, for Channel {} Network: {}", schEventDTO, channelShortcut, organizationShortcut);
         if (schEventDTO.getId() == null) {
-            return creatSchedulerTemplatesForChannelUsingPOST(networkShortcut, channelShortcut, schEventDTO);
+            return creatSchedulerTemplatesForChannelUsingPOST(organizationShortcut, channelShortcut, schEventDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         SchEventTemplate schEventConfiguration = schEventTemplateMapper.DTO2DB(schEventDTO, corNetwork, corChannel);
         SchEventTemplate entity = schEventTemplateService.saveEventConfiguration(schEventConfiguration);
         SchEventTemplateDTO response = schEventTemplateMapper.DB2DTO(entity);

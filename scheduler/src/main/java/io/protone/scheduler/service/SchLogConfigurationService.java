@@ -46,28 +46,28 @@ public class SchLogConfigurationService {
     }
 
     @Transactional(readOnly = true)
-    public Slice<SchLogConfiguration> findSchLogConfigurationForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
-        return schLogConfigurationRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut, pageable);
+    public Slice<SchLogConfiguration> findSchLogConfigurationForNetworkAndChannel(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return schLogConfigurationRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
-    public SchLogConfiguration findOneSchlogConfigurationByNetworkAndChannelAndExtension(String networkShortcut, String channelShortcut, String extension) {
-        return this.schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndExtension(networkShortcut, channelShortcut, extension);
+    public SchLogConfiguration findOneSchlogConfigurationByNetworkAndChannelAndExtension(String organizationShortcut, String channelShortcut, String extension) {
+        return this.schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndExtension(organizationShortcut, channelShortcut, extension);
     }
 
     @Transactional(readOnly = true)
-    public SchLogConfiguration findSchLogConfigurationForNetworkAndChannelAndId(String networkShortcut, String channelShortcut, Long id) {
-        return schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndId(networkShortcut, channelShortcut, id);
+    public SchLogConfiguration findSchLogConfigurationForNetworkAndChannelAndId(String organizationShortcut, String channelShortcut, Long id) {
+        return schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndId(organizationShortcut, channelShortcut, id);
     }
 
     @Transactional
-    public void deleteSchLogConfigurationByNetworkAndChannelAndId(String networkShortcut, String channelShortcut, Long id) {
-        SchLogConfiguration schLogConfiguration = schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndId(networkShortcut, channelShortcut, id);
+    public void deleteSchLogConfigurationByNetworkAndChannelAndId(String organizationShortcut, String channelShortcut, Long id) {
+        SchLogConfiguration schLogConfiguration = schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndId(organizationShortcut, channelShortcut, id);
         delete(schLogConfiguration);
     }
 
     @Transactional
-    public void deleteSchLogConfigurationByNetworkAndChannelAndId(String networkShortcut, String channelShortcut, String extension) {
-        SchLogConfiguration schLogConfiguration = schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndExtension(networkShortcut, channelShortcut, extension);
+    public void deleteSchLogConfigurationByNetworkAndChannelAndId(String organizationShortcut, String channelShortcut, String extension) {
+        SchLogConfiguration schLogConfiguration = schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndExtension(organizationShortcut, channelShortcut, extension);
         delete(schLogConfiguration);
     }
 

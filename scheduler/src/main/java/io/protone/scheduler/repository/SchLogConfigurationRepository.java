@@ -12,13 +12,13 @@ import java.util.List;
  */
 public interface SchLogConfigurationRepository extends JpaRepository<SchLogConfiguration, Long> {
 
-    Slice<SchLogConfiguration> findAllByNetwork_ShortcutAndChannel_Shortcut(String networkShortcut, String channelShortcut, Pageable pageable);
+    Slice<SchLogConfiguration> findAllByNetwork_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut, Pageable pageable);
 
-    List<SchLogConfiguration> findAllByNetwork_ShortcutAndChannel_Shortcut(String networkShortcut, String channelShortcut);
+    List<SchLogConfiguration> findAllByNetwork_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut);
 
-    SchLogConfiguration findOneByNetwork_ShortcutAndChannel_ShortcutAndId(String networkShortcut, String channelShortcut, Long id);
+    SchLogConfiguration findOneByNetwork_ShortcutAndChannel_ShortcutAndId(String organizationShortcut, String channelShortcut, Long id);
 
-    SchLogConfiguration findOneByNetwork_ShortcutAndChannel_ShortcutAndExtension(String networkShortcut, String channelShortcut, String extension);
+    SchLogConfiguration findOneByNetwork_ShortcutAndChannel_ShortcutAndExtension(String organizationShortcut, String channelShortcut, String extension);
 
-    void deleteByNetwork_ShortcutAndChannel_ShortcutAndId(String networkShortcut, String channelShortcut, Long id);
+    void deleteByNetwork_ShortcutAndChannel_ShortcutAndId(String organizationShortcut, String channelShortcut, Long id);
 }

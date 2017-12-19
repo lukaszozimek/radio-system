@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.enumeration.LogColumnTypEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -35,10 +34,6 @@ public class SchLogColumn extends SchBaseEntity implements Serializable {
     @ManyToOne
     @PodamExclude
     private SchLogConfiguration schLogConfiguration;
-
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
 
     @ManyToOne
     @PodamExclude
@@ -85,19 +80,6 @@ public class SchLogColumn extends SchBaseEntity implements Serializable {
         this.schLogConfiguration = schLogConfiguration;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public SchLogColumn network(CorNetwork network) {
-        this.network = network;
-        return this;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
     public CorChannel getChannel() {
         return channel;
     }
@@ -138,7 +120,6 @@ public class SchLogColumn extends SchBaseEntity implements Serializable {
                 ", name='" + columnTypEnum + '\'' +
                 ", length=" + length +
                 ", columnSequence=" + columnSequence +
-                ", network=" + network +
                 ", channel=" + channel +
                 '}';
     }

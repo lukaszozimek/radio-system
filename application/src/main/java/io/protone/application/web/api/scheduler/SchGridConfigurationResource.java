@@ -27,10 +27,10 @@ public interface SchGridConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchGridDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchGridDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchGridDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SchGridDTO> getSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchGridDTO> getSchedulerGridForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                   @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
@@ -40,10 +40,10 @@ public interface SchGridConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchGridThinDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchGridThinDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchGridThinDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/default",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/default",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<SchGridThinDTO>> getAllSchedulerDefaultGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<SchGridThinDTO>> getAllSchedulerDefaultGridForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -54,10 +54,10 @@ public interface SchGridConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchGridThinDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchGridThinDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchGridThinDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/category/{name}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/category/{name}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<SchGridThinDTO>> getAllSchedulerGridForChannelGroupedByCategoryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<SchGridThinDTO>> getAllSchedulerGridForChannelGroupedByCategoryUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                 @ApiParam(value = "name", required = true) @PathVariable("name") String name,
                                                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable);
@@ -68,10 +68,10 @@ public interface SchGridConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchGridDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchGridDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchGridDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<SchGridThinDTO>> getAllSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<SchGridThinDTO>> getAllSchedulerGridForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -83,11 +83,11 @@ public interface SchGridConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchGridDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchGridDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchGridDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<SchGridDTO> creatSchedulerPlaylistForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchGridDTO> creatSchedulerPlaylistForChannelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                          @ApiParam(value = "schGridDTO", required = true) @Valid @RequestBody SchGridDTO schGridDTO) throws URISyntaxException;
 
@@ -99,10 +99,10 @@ public interface SchGridConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
             @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteSchedulerGridForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteSchedulerGridForChannelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                   @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
@@ -113,11 +113,11 @@ public interface SchGridConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchGridDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchGridDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchGridDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<SchGridDTO> updateSchedulerGridForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchGridDTO> updateSchedulerGridForChannelUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                      @ApiParam(value = "schGridDTO", required = true) @Valid @RequestBody SchGridDTO schGridDTO) throws URISyntaxException;
 

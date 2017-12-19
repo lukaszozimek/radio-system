@@ -29,10 +29,10 @@ public interface SchLogConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchLogConfigurationThinDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchLogConfigurationThinDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchLogConfigurationThinDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<SchLogConfigurationThinDTO>> getAllLogsConfigurationsForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<SchLogConfigurationThinDTO>> getAllLogsConfigurationsForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -44,11 +44,11 @@ public interface SchLogConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchLogConfigurationDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchLogConfigurationDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchLogConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<SchLogConfigurationDTO> creatLogsConfigurationsForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchLogConfigurationDTO> creatLogsConfigurationsForChannelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                               @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schScheduleDTO) throws URISyntaxException, CreateBucketException;
 
@@ -59,10 +59,10 @@ public interface SchLogConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
             @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteLogsConfigurationsForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteLogsConfigurationsForChannelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
@@ -73,10 +73,10 @@ public interface SchLogConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchLogConfigurationDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchLogConfigurationDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchLogConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SchLogConfigurationDTO> getLogsConfigurationsForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchLogConfigurationDTO> getLogsConfigurationsForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
@@ -87,11 +87,11 @@ public interface SchLogConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchLogConfigurationDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchLogConfigurationDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchLogConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<SchLogConfigurationDTO> updateLogsConfigurationsForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchLogConfigurationDTO> updateLogsConfigurationsForChannelUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                               @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schScheduleDTO) throws URISyntaxException, CreateBucketException;
 

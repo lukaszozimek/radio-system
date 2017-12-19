@@ -43,12 +43,12 @@ public class CrmOpportunityTaskCommentResourceImpl implements CrmOpportunityTask
 
 
     @Override
-    public ResponseEntity<List<CrmTaskCommentDTO>> getOpportunityTaskCommentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<CrmTaskCommentDTO>> getOpportunityTaskCommentsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                       @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                                       @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all CrmTaskComment, for CrmTask : {},  CrmOpportunity: {} and Network: {}", taskId, shortName, networkShortcut);
-        Slice<CrmTaskComment> crmTasks = crmOpportunityService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
+        log.debug("REST request to get all CrmTaskComment, for CrmTask : {},  CrmOpportunity: {} and Network: {}", taskId, shortName, organizationShortcut);
+        Slice<CrmTaskComment> crmTasks = crmOpportunityService.getTaskCommentsAssociatedWithTask(taskId, organizationShortcut, pagable);
         List<CrmTaskCommentDTO> crmTaskDTOS = crmTaskCommentMapper.DBs2DTOs(crmTasks.getContent());
         return Optional.ofNullable(crmTaskDTOS)
                 .map(result -> new ResponseEntity<>(
@@ -60,46 +60,46 @@ public class CrmOpportunityTaskCommentResourceImpl implements CrmOpportunityTask
     }
 
     @Override
-    public ResponseEntity<CrmTaskCommentDTO> createOpportunityActivtyCommentUsigPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CrmTaskCommentDTO> createOpportunityActivtyCommentUsigPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                      @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                                      @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                                      @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException {
-        log.debug("REST request to saveCorContact CrmTaskComment{}, for CrmTask : {}, CrmOpportunity: {} and Network: {}", taskCommentDTO, taskId, shortName, networkShortcut);
+        log.debug("REST request to saveCorContact CrmTaskComment{}, for CrmTask : {}, CrmOpportunity: {} and Network: {}", taskCommentDTO, taskId, shortName, organizationShortcut);
         if (taskCommentDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmTaskComment", "idexists", "A new CrmTask cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CrmTaskComment requestEnitity = crmTaskCommentMapper.DTO2DB(taskCommentDTO, corNetwork);
-        CrmTaskComment entity = crmOpportunityService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
+        CrmTaskComment entity = crmOpportunityService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, organizationShortcut);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/opportunity/" + shortName + "/task/" + taskId + "/" + "comment/" + response.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/crm/opportunity/" + shortName + "/task/" + taskId + "/" + "comment/" + response.getId()))
                 .body(response);
     }
 
     @Override
-    public ResponseEntity<CrmTaskCommentDTO> editOpportunityActivtyCommentUsigPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CrmTaskCommentDTO> editOpportunityActivtyCommentUsigPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                   @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                                   @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                                   @ApiParam(value = "taskCommentDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException {
-        log.debug("REST request to update CrmTaskComment{}, for CrmTask : {}, CrmOpportunity: {} and Network: {}", taskCommentDTO, taskId, shortName, networkShortcut);
+        log.debug("REST request to update CrmTaskComment{}, for CrmTask : {}, CrmOpportunity: {} and Network: {}", taskCommentDTO, taskId, shortName, organizationShortcut);
         if (taskCommentDTO.getId() == null) {
-            return createOpportunityActivtyCommentUsigPOST(networkShortcut, shortName, taskId, taskCommentDTO);
+            return createOpportunityActivtyCommentUsigPOST(organizationShortcut, shortName, taskId, taskCommentDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
         CrmTaskComment requestEnitity = crmTaskCommentMapper.DTO2DB(taskCommentDTO, corNetwork);
-        CrmTaskComment entity = crmOpportunityService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
+        CrmTaskComment entity = crmOpportunityService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, organizationShortcut);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
     }
 
     @Override
-    public ResponseEntity<CrmTaskCommentDTO> getOpportunityTaskCommentUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CrmTaskCommentDTO> getOpportunityTaskCommentUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                                @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                                @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get CrmTaskComment{}, for CrmTask : {}, CrmOpportunity: {} and Network: {}", id, taskId, shortName, networkShortcut);
-        CrmTaskComment entity = crmOpportunityService.getTaskCommentAssociatedWithTask(networkShortcut, taskId, id);
+        log.debug("REST request to get CrmTaskComment{}, for CrmTask : {}, CrmOpportunity: {} and Network: {}", id, taskId, shortName, organizationShortcut);
+        CrmTaskComment entity = crmOpportunityService.getTaskCommentAssociatedWithTask(organizationShortcut, taskId, id);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -109,12 +109,12 @@ public class CrmOpportunityTaskCommentResourceImpl implements CrmOpportunityTask
     }
 
     @Override
-    public ResponseEntity<Void> deleteOpportunityTaskCommentUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteOpportunityTaskCommentUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                         @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to delete CrmOpportunity CrmTask : {}, for CrmOpportunity: {} and Network: {}", id, shortName, networkShortcut);
-        crmOpportunityService.deleteOpportunityTaskComment(taskId, id, networkShortcut);
+        log.debug("REST request to delete CrmOpportunity CrmTask : {}, for CrmOpportunity: {} and Network: {}", id, shortName, organizationShortcut);
+        crmOpportunityService.deleteOpportunityTaskComment(taskId, id, organizationShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmTask", id.toString())).build();
 
     }

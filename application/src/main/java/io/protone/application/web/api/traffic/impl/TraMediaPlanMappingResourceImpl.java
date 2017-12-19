@@ -39,11 +39,11 @@ public class TraMediaPlanMappingResourceImpl implements TraMediaPlanMappingResou
     private TraMediaPlanEmissionMapper traMediaPlanEmissionMapper;
 
     @Override
-    public ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "traMediaPlanAdvertisementAssigneDTO") @RequestBody TraMediaPlanAdvertisementAssigneDTO traMediaPlanAdvertisementAssigneDTO) {
         //TODO:// MAPSTRUCT BUG!!
-        TraPlaylistDiff traPlaylistDiff = traPlaylistMediaPlanMappingService.mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(traMediaPlanAdvertisementAssigneDTO, networkShortcut, channelShortcut);
+        TraPlaylistDiff traPlaylistDiff = traPlaylistMediaPlanMappingService.mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(traMediaPlanAdvertisementAssigneDTO, organizationShortcut, channelShortcut);
         TraPlaylistDiffDTO response = new TraPlaylistDiffDTO();
         if (traPlaylistDiff != null) {
             response.setParsedFromExcel(traMediaPlanEmissionMapper.DBs2DTOs(traPlaylistDiff.getParsedFromExcel()));

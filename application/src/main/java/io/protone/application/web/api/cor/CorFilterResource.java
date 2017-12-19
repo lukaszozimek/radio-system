@@ -24,11 +24,11 @@ public interface CorFilterResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorFilterDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorFilterDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorFilterDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/core/filter/{type}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/core/filter/{type}",
             produces = {"application/json"},
 
             method = RequestMethod.GET)
-    ResponseEntity<List<CorFilterDTO>> getAllFilterForTypeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<CorFilterDTO>> getAllFilterForTypeUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                    @ApiParam(value = "type", required = true)  @PathVariable("type") CorEntityTypeEnum typeEnum,
                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -39,10 +39,10 @@ public interface CorFilterResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorFilterDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorFilterDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorFilterDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/core/filter/{type}/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/core/filter/{type}/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<CorFilterDTO> getFilterForTypeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorFilterDTO> getFilterForTypeUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                           @ApiParam(value = "type", required = true)  @PathVariable("type") CorEntityTypeEnum typeEnum,
                                                           @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
@@ -54,11 +54,11 @@ public interface CorFilterResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorFilterDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorFilterDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorFilterDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/core/filter",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/core/filter",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<CorFilterDTO> updateFilterUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorFilterDTO> updateFilterUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                       @ApiParam(value = "corFilterDTO", required = true) @Valid @RequestBody CorFilterDTO corFilterDTO) throws URISyntaxException;
 
     @ApiOperation(value = "createFilter", notes = "", response = CorFilterDTO.class, tags = {"CORE"})
@@ -68,11 +68,11 @@ public interface CorFilterResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorFilterDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorFilterDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorFilterDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/core/filter",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/core/filter",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<CorFilterDTO> createFilterUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorFilterDTO> createFilterUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                        @ApiParam(value = "CorFilterDTO", required = true) @Valid @RequestBody CorFilterDTO corFilterDTO) throws URISyntaxException;
 
 
@@ -82,10 +82,10 @@ public interface CorFilterResource {
             @ApiResponse(code = 204, message = "No Content", response = Void.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/core/filter/{type}/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/core/filter/{type}/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteFilterUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteFilterUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                  @ApiParam(value = "type", required = true)  @PathVariable("type") CorEntityTypeEnum typeEnum,
                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 

@@ -25,11 +25,11 @@ public interface CorDictionaryCountryResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorCountryDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorCountryDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorCountryDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/country",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<CorCountryDTO> updateCountryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorCountryDTO> updateCountryUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                         @ApiParam(value = "countryPt", required = true) @Valid @RequestBody CorCountryDTO countryPt) throws URISyntaxException;
 
 
@@ -40,11 +40,11 @@ public interface CorDictionaryCountryResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorCountryDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorCountryDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorCountryDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/country",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<CorCountryDTO> createCountryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorCountryDTO> createCountryUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                          @ApiParam(value = "countryPt", required = true) @Valid @RequestBody CorCountryDTO countryPt) throws URISyntaxException;
 
 
@@ -54,10 +54,10 @@ public interface CorDictionaryCountryResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/country/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteCountryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteCountryUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                   @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -67,10 +67,10 @@ public interface CorDictionaryCountryResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorCountryDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorCountryDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorCountryDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/country",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CorCountryDTO>> getAllCountriesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<CorCountryDTO>> getAllCountriesUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -80,10 +80,10 @@ public interface CorDictionaryCountryResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorCountryDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorCountryDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorCountryDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/country/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<CorCountryDTO> getCountryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorCountryDTO> getCountryUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                      @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 

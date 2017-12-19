@@ -2,7 +2,6 @@ package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -36,9 +35,6 @@ public class SchLogConfiguration extends SchBaseEntity implements Serializable {
     @Column(name = "spearator")
     private String spearator;
 
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
 
     @ManyToOne
     @PodamExclude
@@ -60,18 +56,6 @@ public class SchLogConfiguration extends SchBaseEntity implements Serializable {
         this.id = id;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
-    public SchLogConfiguration network(CorNetwork network) {
-        this.network = network;
-        return this;
-    }
 
     public String getName() {
         return name;
@@ -152,7 +136,6 @@ public class SchLogConfiguration extends SchBaseEntity implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", pattern='" + pattern + '\'' +
-                ", network=" + network +
                 ", channel=" + channel +
                 ", logColumns=" + logColumns +
                 '}';

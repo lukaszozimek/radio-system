@@ -133,7 +133,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
         // Create the CfgMarkerConfiguration
         LibMarkerConfigurationDTO cfgMarkerConfigurationDTO = cfgMarkerConfigurationMapper.DB2DTO(cfgMarkerConfiguration);
 
-        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/library/marker", corNetwork.getShortcut())
+        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/library/marker", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isCreated());
@@ -160,7 +160,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
         LibMarkerConfigurationDTO existingCfgMarkerConfigurationDTO = cfgMarkerConfigurationMapper.DB2DTO(existingCfgMarkerConfiguration);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/library/marker", corNetwork.getShortcut())
+        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/library/marker", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());
@@ -180,7 +180,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         LibMarkerConfigurationDTO cfgMarkerConfigurationDTO = cfgMarkerConfigurationMapper.DB2DTO(cfgMarkerConfiguration);
 
-        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/library/marker", corNetwork.getShortcut())
+        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/library/marker", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());
@@ -199,7 +199,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         LibMarkerConfigurationDTO cfgMarkerConfigurationDTO = cfgMarkerConfigurationMapper.DB2DTO(cfgMarkerConfiguration);
 
-        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/library/marker", corNetwork.getShortcut())
+        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/library/marker", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());
@@ -218,7 +218,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         LibMarkerConfigurationDTO cfgMarkerConfigurationDTO = cfgMarkerConfigurationMapper.DB2DTO(cfgMarkerConfiguration);
 
-        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/library/marker", corNetwork.getShortcut())
+        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/library/marker", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());
@@ -237,7 +237,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         LibMarkerConfigurationDTO cfgMarkerConfigurationDTO = cfgMarkerConfigurationMapper.DB2DTO(cfgMarkerConfiguration);
 
-        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/library/marker", corNetwork.getShortcut())
+        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/library/marker", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());
@@ -256,7 +256,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         LibMarkerConfigurationDTO cfgMarkerConfigurationDTO = cfgMarkerConfigurationMapper.DB2DTO(cfgMarkerConfiguration);
 
-        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/library/marker", corNetwork.getShortcut())
+        restCfgMarkerConfigurationMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/library/marker", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());
@@ -272,7 +272,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
         libMarkerConfigurationRepository.saveAndFlush(cfgMarkerConfiguration.network(corNetwork));
 
         // Get all the cfgMarkerConfigurationList
-        restCfgMarkerConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/library/marker?sort=id,desc", corNetwork.getShortcut()))
+        restCfgMarkerConfigurationMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/library/marker?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(cfgMarkerConfiguration.getId().intValue())))
@@ -290,7 +290,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
         libMarkerConfigurationRepository.saveAndFlush(cfgMarkerConfiguration.network(corNetwork));
 
         // Get the cfgMarkerConfiguration
-        restCfgMarkerConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/library/marker/{id}", corNetwork.getShortcut(), cfgMarkerConfiguration.getId()))
+        restCfgMarkerConfigurationMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/library/marker/{id}", corNetwork.getShortcut(), cfgMarkerConfiguration.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(cfgMarkerConfiguration.getId().intValue()))
@@ -305,7 +305,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
     @Transactional
     public void getNonExistingCfgMarkerConfiguration() throws Exception {
         // Get the cfgMarkerConfiguration
-        restCfgMarkerConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/library/marker/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCfgMarkerConfigurationMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/library/marker/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -326,7 +326,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
             .type(UPDATED_TYPE);
         LibMarkerConfigurationDTO cfgMarkerConfigurationDTO = cfgMarkerConfigurationMapper.DB2DTO(updatedCfgMarkerConfiguration);
 
-        restCfgMarkerConfigurationMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/library/marker", corNetwork.getShortcut())
+        restCfgMarkerConfigurationMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/library/marker", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isOk());
@@ -351,7 +351,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
         LibMarkerConfigurationDTO cfgMarkerConfigurationDTO = cfgMarkerConfigurationMapper.DB2DTO(cfgMarkerConfiguration);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCfgMarkerConfigurationMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/library/marker", corNetwork.getShortcut())
+        restCfgMarkerConfigurationMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/library/marker", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isCreated());
@@ -369,7 +369,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
         int databaseSizeBeforeDelete = libMarkerConfigurationRepository.findAll().size();
 
         // Get the cfgMarkerConfiguration
-        restCfgMarkerConfigurationMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/library/marker/{id}", corNetwork.getShortcut(), cfgMarkerConfiguration.getId())
+        restCfgMarkerConfigurationMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/library/marker/{id}", corNetwork.getShortcut(), cfgMarkerConfiguration.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

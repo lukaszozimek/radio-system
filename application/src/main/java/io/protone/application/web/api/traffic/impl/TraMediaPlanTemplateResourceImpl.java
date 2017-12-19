@@ -44,11 +44,11 @@ public class TraMediaPlanTemplateResourceImpl implements TraMediaPlanTemplateRes
 
 
     @Override
-    public ResponseEntity<List<TraMediaPlanTemplateDTO>> getAllTraMediaPlanTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<TraMediaPlanTemplateDTO>> getAllTraMediaPlanTemplateUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                             @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraMediaPlanTemplate");
 
-        Slice<TraMediaPlanTemplate> traMediaPlan = traMediaPlanTemplateService.findAllMediaPlanTemplates(networkShortcut, pagable);
+        Slice<TraMediaPlanTemplate> traMediaPlan = traMediaPlanTemplateService.findAllMediaPlanTemplates(organizationShortcut, pagable);
         List<TraMediaPlanTemplateDTO> traMediaPlanPT = traMediaPlanTemplateMapper.DBs2DTOs(traMediaPlan.getContent());
         return Optional.ofNullable(traMediaPlanPT)
                 .map(result -> new ResponseEntity<>(
@@ -60,11 +60,11 @@ public class TraMediaPlanTemplateResourceImpl implements TraMediaPlanTemplateRes
     }
 
     @Override
-    public ResponseEntity<TraMediaPlanTemplateDTO> getTraMediaPlanTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraMediaPlanTemplateDTO> getTraMediaPlanTemplateUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                    @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get TraMediaPlanTemplate : {}", networkShortcut);
+        log.debug("REST request to get TraMediaPlanTemplate : {}", organizationShortcut);
 
-        TraMediaPlanTemplate traMediaPlan = traMediaPlanTemplateService.findMediaPlanTemplate(id, networkShortcut);
+        TraMediaPlanTemplate traMediaPlan = traMediaPlanTemplateService.findMediaPlanTemplate(id, organizationShortcut);
         TraMediaPlanTemplateDTO traMediaPlanPt = traMediaPlanTemplateMapper.DB2DTO(traMediaPlan);
         return Optional.ofNullable(traMediaPlanPt)
                 .map(result -> new ResponseEntity<>(
@@ -74,13 +74,13 @@ public class TraMediaPlanTemplateResourceImpl implements TraMediaPlanTemplateRes
     }
 
     @Override
-    public ResponseEntity<TraMediaPlanTemplateDTO> updateTraMediaPlanTemplateUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraMediaPlanTemplateDTO> updateTraMediaPlanTemplateUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                       @ApiParam(value = "traMediaPlanTemplateDTO", required = true) @RequestBody TraMediaPlanTemplateDTO traMediaPlanTemplateDTO) throws URISyntaxException {
         log.debug("REST request to update TraMediaPlanTemplate : {}", traMediaPlanTemplateDTO);
         if (traMediaPlanTemplateDTO.getId() == null) {
-            return createTraMediaPlanTemplateUsingPOST(networkShortcut, traMediaPlanTemplateDTO);
+            return createTraMediaPlanTemplateUsingPOST(organizationShortcut, traMediaPlanTemplateDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         TraMediaPlanTemplate traMediaPlan = traMediaPlanTemplateMapper.DTO2DB(traMediaPlanTemplateDTO, corNetwork);
         traMediaPlan = traMediaPlanTemplateService.saveMediaPlanTemplate(traMediaPlan);
         TraMediaPlanTemplateDTO result = traMediaPlanTemplateMapper.DB2DTO(traMediaPlan);
@@ -90,25 +90,25 @@ public class TraMediaPlanTemplateResourceImpl implements TraMediaPlanTemplateRes
     }
 
     @Override
-    public ResponseEntity<TraMediaPlanTemplateDTO> createTraMediaPlanTemplateUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraMediaPlanTemplateDTO> createTraMediaPlanTemplateUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                        @ApiParam(value = "traMediaPlanTemplateDTO", required = true) @RequestBody TraMediaPlanTemplateDTO traMediaPlanTemplateDTO) throws URISyntaxException {
         log.debug("REST request to saveCorContact TraMediaPlanTemplate : {}", traMediaPlanTemplateDTO);
         if (traMediaPlanTemplateDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraMediaPlanTemplate", "idexists", "A new TraMediaPlanTemplate cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         TraMediaPlanTemplate traMediaPlan = traMediaPlanTemplateMapper.DTO2DB(traMediaPlanTemplateDTO, corNetwork);
         traMediaPlan = traMediaPlanTemplateService.saveMediaPlanTemplate(traMediaPlan);
         TraMediaPlanTemplateDTO result = traMediaPlanTemplateMapper.DB2DTO(traMediaPlan);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/traffic/dictionary/discount/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/traffic/dictionary/discount/" + result.getId()))
                 .body(result);
     }
 
     @Override
-    public ResponseEntity<Void> deleteTraMediaPlanTemplateUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteTraMediaPlanTemplateUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                       @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete TraMediaPlanTemplate : {}", id);
-        traMediaPlanTemplateService.deleteMediaPlanTemplate(id, networkShortcut);
+        traMediaPlanTemplateService.deleteMediaPlanTemplate(id, organizationShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("TraMediaPlanTemplate", id.toString())).build();
     }
 }

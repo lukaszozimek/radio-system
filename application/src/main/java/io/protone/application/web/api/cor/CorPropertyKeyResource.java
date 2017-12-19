@@ -23,10 +23,10 @@ public interface CorPropertyKeyResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorKeyDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorKeyDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorKeyDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<CorKeyDTO> getPropertyKeyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorKeyDTO> getPropertyKeyUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                      @ApiParam(value = "id", required = true) @PathVariable("id") String id);
 
 
@@ -36,10 +36,10 @@ public interface CorPropertyKeyResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deletePropertyKeyUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deletePropertyKeyUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                       @ApiParam(value = "id", required = true) @PathVariable("id") String id);
 
 
@@ -49,10 +49,10 @@ public interface CorPropertyKeyResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorKeyDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorKeyDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorKeyDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CorKeyDTO>> getAllPropertyKeysUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<CorKeyDTO>> getAllPropertyKeysUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -63,11 +63,11 @@ public interface CorPropertyKeyResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorKeyDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorKeyDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorKeyDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<CorKeyDTO> updatePropertyKeyUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorKeyDTO> updatePropertyKeyUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                         @ApiParam(value = "propertyKeyDTO", required = true) @Valid @RequestBody CorKeyDTO propertyKeyDTO) throws URISyntaxException;
 
 
@@ -78,11 +78,11 @@ public interface CorPropertyKeyResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorKeyDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorKeyDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorKeyDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<CorKeyDTO> createPropertyKeyUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorKeyDTO> createPropertyKeyUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                          @ApiParam(value = "propertyKeyDTO", required = true) @Valid @RequestBody CorKeyDTO propertyKeyDTO) throws URISyntaxException;
 
 

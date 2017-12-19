@@ -134,7 +134,7 @@ public class CorNetworkResourceIntTest {
         MockMultipartFile jsonFile = new MockMultipartFile("network", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(corNetworkDTO));
 
-        restCorNetworkMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network")
+        restCorNetworkMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization")
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -160,7 +160,7 @@ public class CorNetworkResourceIntTest {
         CorNetworkDTO existingCorNetworkDTO = corNetworkMapper.DB2DTO(existingCorNetwork);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorNetworkMockMvc.perform(post("/api/v1/network")
+        restCorNetworkMockMvc.perform(post("/api/v1/organization")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingCorNetworkDTO)))
                 .andExpect(status().isBadRequest());
@@ -180,7 +180,7 @@ public class CorNetworkResourceIntTest {
         // Create the CorNetwork
         CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
 
-        restCorNetworkMockMvc.perform(post("/api/v1/network")
+        restCorNetworkMockMvc.perform(post("/api/v1/organization")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corNetworkDTO)))
                 .andExpect(status().isBadRequest());
@@ -199,7 +199,7 @@ public class CorNetworkResourceIntTest {
         // Create the CorNetwork
         CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
 
-        restCorNetworkMockMvc.perform(post("/api/v1/network")
+        restCorNetworkMockMvc.perform(post("/api/v1/organization")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corNetworkDTO)))
                 .andExpect(status().isBadRequest());
@@ -216,7 +216,7 @@ public class CorNetworkResourceIntTest {
         corNetworkRepository.saveAndFlush(corNetwork);
 
         // Get all the corNetworkList
-        restCorNetworkMockMvc.perform(get("/api/v1/network?sort=id,desc"))
+        restCorNetworkMockMvc.perform(get("/api/v1/organization?sort=id,desc"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(corNetwork.getId().intValue())))
@@ -232,7 +232,7 @@ public class CorNetworkResourceIntTest {
         corNetworkRepository.saveAndFlush(corNetwork);
 
         // Get all the corNetworkList
-        restCorNetworkMockMvc.perform(get("/api/v1/network?sort=id,desc"))
+        restCorNetworkMockMvc.perform(get("/api/v1/organization?sort=id,desc"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(corNetwork.getId().intValue())))
@@ -249,7 +249,7 @@ public class CorNetworkResourceIntTest {
         corNetworkRepository.saveAndFlush(corNetwork);
 
         // Get the corNetwork
-        restCorNetworkMockMvc.perform(get("/api/v1/network/{networkShortcut}", corNetwork.getShortcut()))
+        restCorNetworkMockMvc.perform(get("/api/v1/organization/{organizationShortcut}", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(corNetwork.getId().intValue()))
@@ -265,7 +265,7 @@ public class CorNetworkResourceIntTest {
         corNetworkRepository.saveAndFlush(corNetwork);
 
         // Get the corNetwork
-        restCorNetworkMockMvc.perform(get("/api/v1/network/{networkShortcut}", corNetwork.getShortcut()))
+        restCorNetworkMockMvc.perform(get("/api/v1/organization/{organizationShortcut}", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(corNetwork.getId().intValue()))
@@ -279,7 +279,7 @@ public class CorNetworkResourceIntTest {
     @Transactional
     public void getNonExistingCorNetwork() throws Exception {
         // Get the corNetwork
-        restCorNetworkMockMvc.perform(get("/api/v1/network/{networkShortcut}", Long.MAX_VALUE))
+        restCorNetworkMockMvc.perform(get("/api/v1/organization/{organizationShortcut}", Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -299,7 +299,7 @@ public class CorNetworkResourceIntTest {
         // Create the CorNetwork
         CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
 
-        restCorNetworkMockMvc.perform(put("/api/v1/network")
+        restCorNetworkMockMvc.perform(put("/api/v1/organization")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corNetworkDTO)))
                 .andExpect(status().isOk());
@@ -322,7 +322,7 @@ public class CorNetworkResourceIntTest {
         CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorNetworkMockMvc.perform(put("/api/v1/network")
+        restCorNetworkMockMvc.perform(put("/api/v1/organization")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corNetworkDTO)))
                 .andExpect(status().isCreated());
@@ -340,7 +340,7 @@ public class CorNetworkResourceIntTest {
         int databaseSizeBeforeDelete = corNetworkRepository.findAll().size();
 
         // Get the corNetwork
-        restCorNetworkMockMvc.perform(delete("/api/v1/network/{networkShortcut}", corNetwork.getShortcut())
+        restCorNetworkMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}", corNetwork.getShortcut())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

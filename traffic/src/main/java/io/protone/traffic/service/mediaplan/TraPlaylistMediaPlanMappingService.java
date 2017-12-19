@@ -61,17 +61,17 @@ public class TraPlaylistMediaPlanMappingService {
     @Qualifier("traFixedLastPositionMediaPlanMapping")
     private TraMediaPlanMapping traFixedLastPositionMediaPlanMapping;
 
-    public TraPlaylistDiff mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(TraMediaPlanAdvertisementAssigneDTO assigneDTO, String networkShortcut, String channelShortcut) {
-        LibMediaItem traAdvertisement = libMediaItemService.getMediaItem(networkShortcut, COM_DEFAULT, assigneDTO.getLibMediaItemIdx());
+    public TraPlaylistDiff mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(TraMediaPlanAdvertisementAssigneDTO assigneDTO, String organizationShortcut, String channelShortcut) {
+        LibMediaItem traAdvertisement = libMediaItemService.getMediaItem(organizationShortcut, COM_DEFAULT, assigneDTO.getLibMediaItemIdx());
         if (traAdvertisement == null) {
             return null;
         }
-        TraMediaPlan traMediaPlan = traMediaPlanService.getMediaPlan(assigneDTO.getMediaPlanId(), networkShortcut, channelShortcut);
-        List<TraMediaPlanPlaylistDate> traMediaPlanPlaylistDates = traMediaPlanPlaylistDateService.findMediaPlanDatesByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, traMediaPlan.getId());
+        TraMediaPlan traMediaPlan = traMediaPlanService.getMediaPlan(assigneDTO.getMediaPlanId(), organizationShortcut, channelShortcut);
+        List<TraMediaPlanPlaylistDate> traMediaPlanPlaylistDates = traMediaPlanPlaylistDateService.findMediaPlanDatesByorganizationShortcutAndChannelShortcutAndMediaplanId(organizationShortcut, channelShortcut, traMediaPlan.getId());
         List<LocalDate> playListsDates = traMediaPlanPlaylistDates.stream().map(TraMediaPlanPlaylistDate::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
 
-        List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), networkShortcut, channelShortcut);
-        List<TraMediaPlanEmission> traMediaPlanEmissionList = traMediaPlanEmissionService.findEmissionsByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, traMediaPlan.getId());
+        List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), organizationShortcut, channelShortcut);
+        List<TraMediaPlanEmission> traMediaPlanEmissionList = traMediaPlanEmissionService.findEmissionsByorganizationShortcutAndChannelShortcutAndMediaplanId(organizationShortcut, channelShortcut, traMediaPlan.getId());
         if (assigneDTO.isFirstPostion()) {
             return traFixedFirstPositionMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, traMediaPlanEmissionList, traAdvertisement);
         }

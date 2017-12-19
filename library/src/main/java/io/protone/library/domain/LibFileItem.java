@@ -3,7 +3,6 @@ package io.protone.library.domain;
 
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorItem;
-import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.enumeration.LibFileTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -131,19 +130,6 @@ public class LibFileItem extends CorItem implements Serializable {
                 ", name='" + name + "'" +
                 ", type='" + type + "'" +
                 '}';
-    }
-
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
-    public LibFileItem network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
     }
 
     public CorChannel getChannel() {

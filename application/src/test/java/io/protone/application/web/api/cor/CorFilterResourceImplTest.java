@@ -39,9 +39,7 @@ import static io.protone.core.domain.enumeration.CorEntityTypeEnum.Contact;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by lukaszozimek on 20.07.2017.
@@ -139,7 +137,7 @@ public class CorFilterResourceImplTest {
         // Create the CorFilter
         CorFilterDTO CorFilterDTO = corFilterMapper.DB2DTO(corFilter);
 
-        restCorFilterMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/core/filter", corNetwork.getShortcut())
+        restCorFilterMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/core/filter", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(CorFilterDTO)))
                 .andExpect(status().isCreated());
@@ -165,7 +163,7 @@ public class CorFilterResourceImplTest {
         CorFilterDTO existingCorFilterDTO = corFilterMapper.DB2DTO(existingCorFilter);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorFilterMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/core/filter", corNetwork.getShortcut())
+        restCorFilterMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/core/filter", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingCorFilterDTO)))
                 .andExpect(status().isBadRequest());
@@ -185,7 +183,7 @@ public class CorFilterResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         CorFilterDTO cfgMarkerConfigurationDTO = corFilterMapper.DB2DTO(corFilter);
 
-        restCorFilterMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/core/filter", corNetwork.getShortcut())
+        restCorFilterMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/core/filter", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
                 .andExpect(status().isBadRequest());
@@ -202,7 +200,7 @@ public class CorFilterResourceImplTest {
         corFilterRepository.saveAndFlush(corFilter.network(corNetwork).user(corUser));
 
         // Get all the CorFilterList
-        restCorFilterMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/core/filter/{type}?sort=id,desc", corNetwork.getShortcut(), Channel.name()))
+        restCorFilterMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/core/filter/{type}?sort=id,desc", corNetwork.getShortcut(), Channel.name()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(corFilter.getId().intValue())))
@@ -218,7 +216,7 @@ public class CorFilterResourceImplTest {
         corFilterRepository.saveAndFlush(corFilter.network(corNetwork).user(corUser));
 
         // Get the corFilter
-        restCorFilterMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/core/filter/{type}/{id}", corNetwork.getShortcut(), Channel.name(), corFilter.getId()))
+        restCorFilterMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/core/filter/{type}/{id}", corNetwork.getShortcut(), Channel.name(), corFilter.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(corFilter.getId().intValue()))
@@ -231,7 +229,7 @@ public class CorFilterResourceImplTest {
     @Transactional
     public void getNonExistingCorFilter() throws Exception {
         // Get the corFilter
-        restCorFilterMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/core/filter/{type}/{id}", corNetwork.getShortcut(), Channel.name(), Long.MAX_VALUE))
+        restCorFilterMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/core/filter/{type}/{id}", corNetwork.getShortcut(), Channel.name(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -249,7 +247,7 @@ public class CorFilterResourceImplTest {
                 .value(UPDATED_VALUE)
                 .type(Contact);
         CorFilterDTO CorFilterDTO = corFilterMapper.DB2DTO(updatedCorFilter);
-        restCorFilterMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/core/filter", corNetwork.getShortcut())
+        restCorFilterMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/core/filter", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(CorFilterDTO)))
                 .andExpect(status().isOk());
@@ -272,7 +270,7 @@ public class CorFilterResourceImplTest {
         CorFilterDTO CorFilterDTO = corFilterMapper.DB2DTO(corFilter);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorFilterMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/core/filter", corNetwork.getShortcut())
+        restCorFilterMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/core/filter", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(CorFilterDTO)))
                 .andExpect(status().isCreated());
@@ -290,7 +288,7 @@ public class CorFilterResourceImplTest {
         int databaseSizeBeforeDelete = corFilterRepository.findAll().size();
 
         // Get the corFilter
-        restCorFilterMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/core/filter/{type}/{id}", corNetwork.getShortcut(), Channel.name(), corFilter.getId())
+        restCorFilterMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/core/filter/{type}/{id}", corNetwork.getShortcut(), Channel.name(), corFilter.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

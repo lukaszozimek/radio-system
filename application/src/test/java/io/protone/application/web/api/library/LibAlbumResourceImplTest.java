@@ -152,7 +152,7 @@ public class LibAlbumResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libAlbumDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
-        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/album", corNetwork.getShortcut())
+        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/album", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -179,7 +179,7 @@ public class LibAlbumResourceImplTest {
                 "application/json", TestUtil.convertObjectToJsonBytes(existingLibAlbumDTO));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/album", corNetwork.getShortcut())
+        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/album", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -203,7 +203,7 @@ public class LibAlbumResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libAlbumDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
-        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/album", corNetwork.getShortcut())
+        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/album", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -221,7 +221,7 @@ public class LibAlbumResourceImplTest {
         libAlbumRepository.saveAndFlush(libAlbum.network(corNetwork));
 
         // Get all the libLibraryList
-        restLibAlbumMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/album?sort=id,desc", corNetwork.getShortcut()))
+        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/album?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(libAlbum.getId().intValue())))
@@ -237,7 +237,7 @@ public class LibAlbumResourceImplTest {
         libAlbumRepository.saveAndFlush(libAlbum.network(corNetwork));
 
         // Get the libAlbum
-        restLibAlbumMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/album/{id}", corNetwork.getShortcut(), libAlbum.getId()))
+        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/album/{id}", corNetwork.getShortcut(), libAlbum.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(libAlbum.getId().intValue()))
@@ -253,7 +253,7 @@ public class LibAlbumResourceImplTest {
         libAlbumRepository.saveAndFlush(libAlbum.network(corNetwork).mainImage(corImageItem));
 
         // Get all the libLibraryList
-        restLibAlbumMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/album?sort=id,desc", corNetwork.getShortcut()))
+        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/album?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(libAlbum.getId().intValue())))
@@ -269,7 +269,7 @@ public class LibAlbumResourceImplTest {
         libAlbumRepository.saveAndFlush(libAlbum.network(corNetwork).mainImage(corImageItem));
 
         // Get the libAlbum
-        restLibAlbumMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/album/{id}", corNetwork.getShortcut(), libAlbum.getId()))
+        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/album/{id}", corNetwork.getShortcut(), libAlbum.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(libAlbum.getId().intValue()))
@@ -282,7 +282,7 @@ public class LibAlbumResourceImplTest {
     @Transactional
     public void getNonExistingLibAlbum() throws Exception {
         // Get the libAlbum
-        restLibAlbumMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/album/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/album/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -300,7 +300,7 @@ public class LibAlbumResourceImplTest {
                 .description(UPDATED_DESCRIPTION);
         LibAlbumDTO libLibraryDTO = libAlbumMapper.DB2DTO((updatedLibAlbum));
 
-        restLibAlbumMockMvc.perform(put("/api/v1/network/{networkShortcut}/library/album", corNetwork.getShortcut())
+        restLibAlbumMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/library/album", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isOk());
@@ -330,7 +330,7 @@ public class LibAlbumResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libAlbumDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
-        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/album/{id}", corNetwork.getShortcut(), libAlbum.getId())
+        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/album/{id}", corNetwork.getShortcut(), libAlbum.getId())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isOk());
@@ -352,7 +352,7 @@ public class LibAlbumResourceImplTest {
         LibAlbumDTO libLibraryDTO = libAlbumMapper.DB2DTO(libAlbum);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restLibAlbumMockMvc.perform(put("/api/v1/network/{networkShortcut}/library/album", corNetwork.getShortcut())
+        restLibAlbumMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/library/album", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isCreated());
@@ -370,7 +370,7 @@ public class LibAlbumResourceImplTest {
         int databaseSizeBeforeDelete = libAlbumRepository.findAll().size();
 
         // Get the libAlbum
-        restLibAlbumMockMvc.perform(delete("/api/v1/network/{networkShortcut}/library/album/{id}", corNetwork.getShortcut(), libAlbum.getId())
+        restLibAlbumMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/library/album/{id}", corNetwork.getShortcut(), libAlbum.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

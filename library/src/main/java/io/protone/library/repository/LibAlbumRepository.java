@@ -16,9 +16,9 @@ public interface LibAlbumRepository extends JpaRepository<LibAlbum, Long> {
 
     LibAlbum findOneByNameAndArtistAndNetwork(String name, LibArtist artist, CorNetwork network);
 
-    Slice<LibAlbum> findSliceByNetwork_Shortcut(String networkShortcut, Pageable pagable);
+    Slice<LibAlbum> findSliceByNetwork_Shortcut(String organizationShortcut, Pageable pagable);
 
-    LibAlbum findOneByIdAndNetwork_Shortcut(Long id, String networkShortcut);
+    LibAlbum findOneByIdAndNetwork_Shortcut(Long id, String organizationShortcut);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String networkShortcut);
+    void deleteByIdAndNetwork_Shortcut(Long id, String organizationShortcut);
 }

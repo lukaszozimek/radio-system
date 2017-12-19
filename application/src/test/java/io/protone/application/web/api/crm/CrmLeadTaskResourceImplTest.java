@@ -139,7 +139,7 @@ public class CrmLeadTaskResourceImplTest {
         // Create the CrmTask
         CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask.network(corNetwork).lead(crmLead));
 
-        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), crmLead.getShortname())
+        restCrmTaskMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), crmLead.getShortname())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskDTO)))
             .andExpect(status().isCreated());
@@ -167,7 +167,7 @@ public class CrmLeadTaskResourceImplTest {
         CrmTaskDTO existingCrmTaskDTO = crmTaskMapper.DB2DTO(existingCrmTask.lead(crmLead));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), crmLead.getShortname())
+        restCrmTaskMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), crmLead.getShortname())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCrmTaskDTO)))
             .andExpect(status().isBadRequest());
@@ -187,7 +187,7 @@ public class CrmLeadTaskResourceImplTest {
         crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).lead(crmLead));
 
         // Get all the crmTaskList
-        restCrmTaskMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task?sort=id,desc", corNetwork.getShortcut(), crmLead.getShortname()))
+        restCrmTaskMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}/task?sort=id,desc", corNetwork.getShortcut(), crmLead.getShortname()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(crmTask.getId().intValue())))
@@ -206,7 +206,7 @@ public class CrmLeadTaskResourceImplTest {
         crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).lead(crmLead));
 
         // Get the crmTask
-        restCrmTaskMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{id}", corNetwork.getShortcut(), crmLead.getShortname(), crmTask.getId()))
+        restCrmTaskMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}/task/{id}", corNetwork.getShortcut(), crmLead.getShortname(), crmTask.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmTask.getId().intValue()))
@@ -220,7 +220,7 @@ public class CrmLeadTaskResourceImplTest {
     @Transactional
     public void getNonExistingCrmTask() throws Exception {
         // Get the crmTask
-        restCrmTaskMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{id}", corNetwork.getShortcut(), crmLead.getShortname(), Long.MAX_VALUE))
+        restCrmTaskMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}/task/{id}", corNetwork.getShortcut(), crmLead.getShortname(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -242,7 +242,7 @@ public class CrmLeadTaskResourceImplTest {
             .comment(UPDATED_COMMENT);
         CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(updatedCrmTask);
 
-        restCrmTaskMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
+        restCrmTaskMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskDTO)))
             .andExpect(status().isOk());
@@ -268,7 +268,7 @@ public class CrmLeadTaskResourceImplTest {
         CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask.lead(crmLead));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCrmTaskMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), crmLead.getShortname())
+        restCrmTaskMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), crmLead.getShortname())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskDTO)))
             .andExpect(status().isCreated());
@@ -288,7 +288,7 @@ public class CrmLeadTaskResourceImplTest {
         int databaseSizeBeforeDelete = crmTaskRepository.findAll().size();
 
         // Get the crmTask
-        restCrmTaskMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{id}", corNetwork.getShortcut(), crmLead.getShortname(), crmTask.getId())
+        restCrmTaskMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}/task/{id}", corNetwork.getShortcut(), crmLead.getShortname(), crmTask.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
@@ -309,7 +309,7 @@ public class CrmLeadTaskResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         CrmTaskDTO cfgMarkerConfigurationDTO = crmTaskMapper.DB2DTO(crmTask);
 
-        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), crmLead.getShortname())
+        restCrmTaskMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), crmLead.getShortname())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());

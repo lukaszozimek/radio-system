@@ -26,11 +26,11 @@ public interface CrmContactResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmContactDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmContactDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CrmContactDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/contact",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/contact",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<CrmContactDTO> updateContactWithoutAvatarUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CrmContactDTO> updateContactWithoutAvatarUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                         @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestBody CrmContactDTO crmContactDTO) throws URISyntaxException, TikaException, IOException, SAXException;
 
 
@@ -41,10 +41,10 @@ public interface CrmContactResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmContactDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmContactDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CrmContactDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/contact/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<CrmContactDTO> updateContactWithAvatarUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CrmContactDTO> updateContactWithAvatarUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                          @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestPart("crmContactDTO") CrmContactDTO crmContactDTO,
                                                          @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException;
@@ -57,10 +57,10 @@ public interface CrmContactResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmContactDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmContactDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CrmContactDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/contact",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/contact",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<CrmContactDTO> createContactUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CrmContactDTO> createContactUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                          @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestPart("crmContactDTO") CrmContactDTO crmContactDTO,
                                                          @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException;
 
@@ -71,10 +71,10 @@ public interface CrmContactResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmContactDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmContactDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CrmContactDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/contact",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/contact",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<CrmContactThinDTO>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<CrmContactThinDTO>> getAllContactUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "getContactId", notes = "", response = CrmContactDTO.class, tags = {"TRAFFIC", "CRM",})
@@ -83,10 +83,10 @@ public interface CrmContactResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmContactDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmContactDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CrmContactDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/contact/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<CrmContactDTO> getContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CrmContactDTO> getContactUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                      @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
@@ -96,10 +96,10 @@ public interface CrmContactResource {
             @ApiResponse(code = 204, message = "No Content", response = Void.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/contact/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteContactUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteContactUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                   @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 

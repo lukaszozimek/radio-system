@@ -35,11 +35,11 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<TraPlaylistDTO> creatChannelTrafficPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraPlaylistDTO> creatChannelTrafficPlaylistUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                         @RequestBody TraPlaylistDTO traPlaylistDTO) throws URISyntaxException;
 
@@ -51,10 +51,10 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/{date}",
         produces = {"*/*"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteChannelTrafficPlaylistUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteChannelTrafficPlaylistUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
@@ -65,10 +65,10 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/{date}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<TraPlaylistDTO> getChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraPlaylistDTO> getChannelTrafficPlaylistUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                      @ApiParam(value = "date", required = true) @Valid @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
@@ -78,10 +78,10 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraPlaylistThinDTO>> getAllChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraPlaylistThinDTO>> getAllChannelTrafficPlaylistUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -91,10 +91,10 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{fromDate}/{toDate}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/{fromDate}/{toDate}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraPlaylistDTO>> getAllChannelTrafficPlaylistInRangeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraPlaylistDTO>> getAllChannelTrafficPlaylistInRangeUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                      @ApiParam(value = "fromDate", required = true) @PathVariable("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                                                      @ApiParam(value = "toDate", required = true) @PathVariable("toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate);
@@ -105,10 +105,10 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/batch",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/batch",
         produces = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<List<TraPlaylistDTO>> createChannelTrafficPlaylistInRangeUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraPlaylistDTO>> createChannelTrafficPlaylistInRangeUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                       @ApiParam(value = "traPlaylistDTO", required = true) @Valid @RequestBody List<TraPlaylistDTO> traPlaylistDTO) throws URISyntaxException;
 
@@ -119,10 +119,10 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}/download",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/{date}/download",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    void getDownloadChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    void getDownloadChannelTrafficPlaylistUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                    @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                    HttpServletResponse response) throws IOException;
@@ -135,11 +135,11 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<TraPlaylistDTO> updateChannelTrafficPlaylistUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraPlaylistDTO> updateChannelTrafficPlaylistUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                         @ApiParam(value = "traPlaylistDTO", required = true) @Valid @RequestBody TraPlaylistDTO traPlaylistDTO) throws URISyntaxException;
 
@@ -150,11 +150,11 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/advertisment/shuffle",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/advertisment/shuffle",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<List<TraPlaylistDTO>> shuffleCommercialUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraPlaylistDTO>> shuffleCommercialUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                    @ApiParam(value = "traShuffleAdvertismentDTO", required = true) @RequestBody TraShuffleAdvertisementDTO traShuffleAdvertismentDTO) throws InterruptedException, TrafficShuffleReindexException;
 

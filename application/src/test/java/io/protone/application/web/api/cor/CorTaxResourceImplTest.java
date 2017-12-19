@@ -132,7 +132,7 @@ public class CorTaxResourceImplTest {
         // Create the CorTax
         CorTaxDTO corTaxDTO = corTaxMapper.DB2DTO(corTax);
 
-        restCorTaxMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax", corNetwork.getShortcut())
+        restCorTaxMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corTaxDTO)))
             .andExpect(status().isCreated());
@@ -159,7 +159,7 @@ public class CorTaxResourceImplTest {
         CorTaxDTO existingCorTaxDTO = corTaxMapper.DB2DTO(existingCorTax);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorTaxMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax", corNetwork.getShortcut())
+        restCorTaxMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCorTaxDTO)))
             .andExpect(status().isBadRequest());
@@ -176,7 +176,7 @@ public class CorTaxResourceImplTest {
         corTaxRepository.saveAndFlush(corTax.network(corNetwork));
 
         // Get all the corTaxList
-        restCorTaxMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax?sort=id,desc", corNetwork.getShortcut()))
+        restCorTaxMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(corTax.getId().intValue())))
@@ -194,7 +194,7 @@ public class CorTaxResourceImplTest {
         corTaxRepository.saveAndFlush(corTax.network(corNetwork));
 
         // Get the corTax
-        restCorTaxMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax/{id}", corNetwork.getShortcut(), corTax.getId()))
+        restCorTaxMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax/{id}", corNetwork.getShortcut(), corTax.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(corTax.getId().intValue()))
@@ -209,7 +209,7 @@ public class CorTaxResourceImplTest {
     @Transactional
     public void getNonExistingCorTax() throws Exception {
         // Get the corTax
-        restCorTaxMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCorTaxMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -230,7 +230,7 @@ public class CorTaxResourceImplTest {
             .active(UPDATED_ACTIVE);
         CorTaxDTO corTaxDTO = corTaxMapper.DB2DTO(corTax);
 
-        restCorTaxMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax", corNetwork.getShortcut())
+        restCorTaxMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corTaxDTO)))
             .andExpect(status().isOk());
@@ -255,7 +255,7 @@ public class CorTaxResourceImplTest {
         CorTaxDTO corTaxDTO = corTaxMapper.DB2DTO(corTax);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorTaxMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax", corNetwork.getShortcut())
+        restCorTaxMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corTaxDTO)))
             .andExpect(status().isCreated());
@@ -273,7 +273,7 @@ public class CorTaxResourceImplTest {
         int databaseSizeBeforeDelete = corTaxRepository.findAll().size();
 
         // Get the corTax
-        restCorTaxMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax/{id}", corNetwork.getShortcut(), corTax.getId())
+        restCorTaxMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax/{id}", corNetwork.getShortcut(), corTax.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

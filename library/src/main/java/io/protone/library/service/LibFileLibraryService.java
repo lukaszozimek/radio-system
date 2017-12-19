@@ -40,28 +40,28 @@ public class LibFileLibraryService {
     @Inject
     private CorImageItemService corImageItemService;
 
-    public Slice<LibFileLibrary> findLibraries(String networkShortcut, Pageable pageable) {
-        return libFileLibraryRepository.findSliceByNetwork_Shortcut(networkShortcut, pageable);
+    public Slice<LibFileLibrary> findLibraries(String organizationShortcut, Pageable pageable) {
+        return libFileLibraryRepository.findSliceByNetwork_Shortcut(organizationShortcut, pageable);
     }
 
-    public LibFileLibrary findLibrary(String networkShortcut, String libraryShortcut) {
-        return libFileLibraryRepository.findOneByNetwork_ShortcutAndShortcut(networkShortcut, libraryShortcut);
+    public LibFileLibrary findLibrary(String organizationShortcut, String libraryShortcut) {
+        return libFileLibraryRepository.findOneByNetwork_ShortcutAndShortcut(organizationShortcut, libraryShortcut);
     }
 
-    public void deleteLibrary(String libraryShortcut, String networkShortcut) {
-        libFileLibraryRepository.deleteByShortcutAndNetwork_Shortcut(libraryShortcut, networkShortcut);
+    public void deleteLibrary(String libraryShortcut, String organizationShortcut) {
+        libFileLibraryRepository.deleteByShortcutAndNetwork_Shortcut(libraryShortcut, organizationShortcut);
     }
 
-    public Slice<LibFileLibrary> findLibrariesByChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
-        return libFileLibraryRepository.findSliceByNetwork_ShortcutAndChannels_ShortcutIn(networkShortcut, channelShortcut, pageable);
+    public Slice<LibFileLibrary> findLibrariesByChannel(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return libFileLibraryRepository.findSliceByNetwork_ShortcutAndChannels_ShortcutIn(organizationShortcut, channelShortcut, pageable);
     }
 
-    public LibFileLibrary findLibraryByChannel(String networkShortcut, String channelShortcut, String libraryShortcut) {
-        return libFileLibraryRepository.findOneByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(networkShortcut, channelShortcut, libraryShortcut);
+    public LibFileLibrary findLibraryByChannel(String organizationShortcut, String channelShortcut, String libraryShortcut) {
+        return libFileLibraryRepository.findOneByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(organizationShortcut, channelShortcut, libraryShortcut);
     }
 
-    public void deleteLibrary(String libraryShortcut, String channelShortcut, String networkShortcut) {
-        libFileLibraryRepository.deleteByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(networkShortcut, channelShortcut, libraryShortcut);
+    public void deleteLibrary(String libraryShortcut, String channelShortcut, String organizationShortcut) {
+        libFileLibraryRepository.deleteByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(organizationShortcut, channelShortcut, libraryShortcut);
     }
 
     public LibFileLibrary createOrUpdateLibrary(LibFileLibrary libLibrary) throws CreateBucketException {

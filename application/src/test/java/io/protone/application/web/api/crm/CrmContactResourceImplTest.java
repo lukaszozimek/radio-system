@@ -170,7 +170,7 @@ public class CrmContactResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(crmContactDTO));
 
-        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
+        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/contact", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -202,7 +202,7 @@ public class CrmContactResourceImplTest {
                 "application/json", TestUtil.convertObjectToJsonBytes(crmContactDTO));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
+        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/contact", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isBadRequest());
 
@@ -224,7 +224,7 @@ public class CrmContactResourceImplTest {
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.gif"));
         MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(crmContactDTO));
-        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
+        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/contact", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isBadRequest());
 
@@ -246,7 +246,7 @@ public class CrmContactResourceImplTest {
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.gif"));
         MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(existingCrmContactDTO));
-        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
+        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/contact", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isBadRequest());
 
@@ -264,7 +264,7 @@ public class CrmContactResourceImplTest {
         crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
 
         // Get all the crmContactList
-        restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact?sort=id,desc", corNetwork.getShortcut()))
+        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(crmContact.getId().intValue())))
@@ -284,7 +284,7 @@ public class CrmContactResourceImplTest {
         crmContactRepository.saveAndFlush(crmContact.avatar(corImageItem).network(corNetwork));
 
         // Get all the crmContactList
-        restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact?sort=id,desc", corNetwork.getShortcut()))
+        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(crmContact.getId().intValue())))
@@ -307,7 +307,7 @@ public class CrmContactResourceImplTest {
         crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
 
         // Get the crmContact
-        restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName()))
+        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(crmContact.getId().intValue()))
@@ -326,7 +326,7 @@ public class CrmContactResourceImplTest {
         crmContactRepository.saveAndFlush(crmContact.avatar(corImageItem).network(corNetwork));
 
         // Get the crmContact
-        restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName()))
+        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(crmContact.getId().intValue()))
@@ -343,7 +343,7 @@ public class CrmContactResourceImplTest {
     @Transactional
     public void getNonExistingCrmContact() throws Exception {
         // Get the crmContact
-        restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName(), Long.MAX_VALUE))
+        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -367,7 +367,7 @@ public class CrmContactResourceImplTest {
                 .vatNumber(UPDATED_VAT_NUMBER);
         CrmContactDTO crmContactDTO = crmContactMapper.DB2DTO(updatedCrmContact);
 
-        restCrmContactMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
+        restCrmContactMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/contact", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(crmContactDTO)))
                 .andExpect(status().isOk());
@@ -404,7 +404,7 @@ public class CrmContactResourceImplTest {
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.gif"));
         MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(crmContactDTO));
-        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName())
+        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isOk());
 
@@ -430,7 +430,7 @@ public class CrmContactResourceImplTest {
         CrmContactDTO crmContactDTO = crmContactMapper.DB2DTO(crmContact);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCrmContactMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
+        restCrmContactMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/contact", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(crmContactDTO)))
                 .andExpect(status().isCreated());
@@ -448,7 +448,7 @@ public class CrmContactResourceImplTest {
         int databaseSizeBeforeDelete = crmContactRepository.findAll().size();
 
         // Get the crmContact
-        restCrmContactMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName())
+        restCrmContactMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -48,10 +47,6 @@ public class SchSchedule extends SchBlock implements Serializable {
         return this;
     }
 
-    public SchSchedule network(CorNetwork network) {
-        this.setNetwork(network);
-        return this;
-    }
 
     public SchSchedule channel(CorChannel channel) {
         this.setChannel(channel);

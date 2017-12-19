@@ -44,11 +44,11 @@ public class CorFilterResourceImpl implements CorFilterResource {
 
 
     @Override
-    public ResponseEntity<List<CorFilterDTO>> getAllFilterForTypeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<CorFilterDTO>> getAllFilterForTypeUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                           @ApiParam(value = "type", required = true) @PathVariable("type") CorEntityTypeEnum typeEnum,
                                                                           @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CorFilter");
-        Slice<CorFilter> corFilters = corFilterService.findAll(networkShortcut, typeEnum, pagable);
+        Slice<CorFilter> corFilters = corFilterService.findAll(organizationShortcut, typeEnum, pagable);
         List<CorFilterDTO> CorFilterDTOS = corFilterMapper.DBs2DTOs(corFilters.getContent());
         return Optional.ofNullable(CorFilterDTOS)
                 .map(result -> new ResponseEntity<>(
@@ -59,12 +59,12 @@ public class CorFilterResourceImpl implements CorFilterResource {
     }
 
     @Override
-    public ResponseEntity<CorFilterDTO> getFilterForTypeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CorFilterDTO> getFilterForTypeUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                  @ApiParam(value = "type", required = true) @PathVariable("type") CorEntityTypeEnum typeEnum,
                                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get CorFilter : {}", networkShortcut);
+        log.debug("REST request to get CorFilter : {}", organizationShortcut);
 
-        CorFilter CorFilter = corFilterService.findOne(id, typeEnum, networkShortcut);
+        CorFilter CorFilter = corFilterService.findOne(id, typeEnum, organizationShortcut);
         CorFilterDTO CorFilterDTO = corFilterMapper.DB2DTO(CorFilter);
         return Optional.ofNullable(CorFilterDTO)
                 .map(result -> new ResponseEntity<>(
@@ -74,13 +74,13 @@ public class CorFilterResourceImpl implements CorFilterResource {
     }
 
     @Override
-    public ResponseEntity<CorFilterDTO> updateFilterUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CorFilterDTO> updateFilterUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                              @ApiParam(value = "corFilterDTO", required = true) @Valid @RequestBody CorFilterDTO corFilterDTO) throws URISyntaxException {
         log.debug("REST request to update CorFilter : {}", corFilterDTO);
         if (corFilterDTO.getId() == null) {
-            return createFilterUsingPOST(networkShortcut, corFilterDTO);
+            return createFilterUsingPOST(organizationShortcut, corFilterDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CorFilter CorFilter = corFilterMapper.DTO2DB(corFilterDTO, corNetwork);
         CorFilter = corFilterService.save(CorFilter);
         CorFilterDTO result = corFilterMapper.DB2DTO(CorFilter);
@@ -90,26 +90,26 @@ public class CorFilterResourceImpl implements CorFilterResource {
     }
 
     @Override
-    public ResponseEntity<CorFilterDTO> createFilterUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "corFilterDTO", required = true)
+    public ResponseEntity<CorFilterDTO> createFilterUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "corFilterDTO", required = true)
     @Valid @RequestBody CorFilterDTO corFilterDTO) throws URISyntaxException {
         log.debug("REST request to saveCorContact CorFilter : {}", corFilterDTO);
         if (corFilterDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorFilter", "idexists", "A new CorFilter cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CorFilter corFilter = corFilterMapper.DTO2DB(corFilterDTO, corNetwork);
         corFilter = corFilterService.save(corFilter);
         CorFilterDTO result = corFilterMapper.DB2DTO(corFilter);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/traffic/dictionary/currency/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/traffic/dictionary/currency/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert("CorFilter", result.getId().toString())).body(result);
     }
 
     @Override
-    public ResponseEntity<Void> deleteFilterUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteFilterUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                         @ApiParam(value = "type", required = true) @PathVariable("type") CorEntityTypeEnum typeEnum,
                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete CorFilter : {}", id);
-        corFilterService.delete(id, networkShortcut);
+        corFilterService.delete(id, organizationShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CorTax", id.toString())).build();
     }
 }

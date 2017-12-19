@@ -161,7 +161,7 @@ public class TraAdvertisementResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("traAdvertisementDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(traAdvertisementDTO));
 
-        restTraAdvertisementMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
+        restTraAdvertisementMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/traffic/advertisement", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -191,7 +191,7 @@ public class TraAdvertisementResourceImplTest {
                 "application/json", TestUtil.convertObjectToJsonBytes(existingTraAdvertisementDTO));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraAdvertisementMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
+        restTraAdvertisementMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/traffic/advertisement", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -217,7 +217,7 @@ public class TraAdvertisementResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("traAdvertisementDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(traAdvertisementDTO));
 
-        restTraAdvertisementMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
+        restTraAdvertisementMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/traffic/advertisement", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -233,7 +233,7 @@ public class TraAdvertisementResourceImplTest {
         traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).customer(crmAccount).mediaItem(Sets.newHashSet(libMediaItem)));
 
         // Get all the traAdvertisementList
-        restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement?sort=id,desc", corNetwork.getShortcut()))
+        restTraAdvertisementMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/advertisement?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traAdvertisement.getId().intValue())))
@@ -248,7 +248,7 @@ public class TraAdvertisementResourceImplTest {
         traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).customer(crmAccount).mediaItem(Sets.newHashSet(libMediaItem)));
 
         // Get the traAdvertisement
-        restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement/{id}", corNetwork.getShortcut(), traAdvertisement.getId()))
+        restTraAdvertisementMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/advertisement/{id}", corNetwork.getShortcut(), traAdvertisement.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(traAdvertisement.getId().intValue()))
@@ -260,7 +260,7 @@ public class TraAdvertisementResourceImplTest {
     @Transactional
     public void getNonExistingTraAdvertisement() throws Exception {
         // Get the traAdvertisement
-        restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restTraAdvertisementMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/advertisement/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -280,7 +280,7 @@ public class TraAdvertisementResourceImplTest {
                 .description(UPDATED_DESCRIPTION);
         TraAdvertisementDTO traAdvertisementDTO = traAdvertisementMapper.DB2DTO(updatedTraAdvertisement);
 
-        restTraAdvertisementMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
+        restTraAdvertisementMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/traffic/advertisement", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traAdvertisementDTO)))
                 .andExpect(status().isOk());
@@ -302,7 +302,7 @@ public class TraAdvertisementResourceImplTest {
         TraAdvertisementDTO traAdvertisementDTO = traAdvertisementMapper.DB2DTO(traAdvertisement);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraAdvertisementMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
+        restTraAdvertisementMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/traffic/advertisement", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traAdvertisementDTO)))
                 .andExpect(status().isCreated());
@@ -320,7 +320,7 @@ public class TraAdvertisementResourceImplTest {
         int databaseSizeBeforeDelete = traAdvertisementRepository.findAll().size();
 
         // Get the traAdvertisement
-        restTraAdvertisementMockMvc.perform(delete("/api/v1/network/{networkShortcut}/traffic/advertisement/{id}", corNetwork.getShortcut(), traAdvertisement.getId())
+        restTraAdvertisementMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/traffic/advertisement/{id}", corNetwork.getShortcut(), traAdvertisement.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
@@ -338,7 +338,7 @@ public class TraAdvertisementResourceImplTest {
         traAdvertisementRepository.saveAndFlush(traAdvertisement.customer(crmAccount).network(corNetwork).mediaItem(Sets.newHashSet(libMediaItem)));
 
         // Get all the traAdvertisementList
-        restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))
+        restTraAdvertisementMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/advertisement/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traAdvertisement.getId().intValue())))

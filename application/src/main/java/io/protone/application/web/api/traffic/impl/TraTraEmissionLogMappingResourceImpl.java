@@ -41,13 +41,13 @@ public class TraTraEmissionLogMappingResourceImpl implements TraTraEmissionLogMa
     private TraMediaPlanEmissionMapper traMediaPlanEmissionMapper;
 
     @Override
-    public ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "traEmissionLogDescriptorDTO", required = true) @RequestPart("traEmissionLogDescriptorDTO")
                                                                                    @Valid TraEmissionLogDescriptorDTO traEmissionLogDescriptorDTO,
                                                                                    @ApiParam(value = "files", required = true) @RequestPart("file") MultipartFile file) throws IOException {
 
-        TraLogDiff traLogDiff = traEmissionLogService.transform(traEmissionLogDescriptorDTO, file, networkShortcut, channelShortcut);
+        TraLogDiff traLogDiff = traEmissionLogService.transform(traEmissionLogDescriptorDTO, file, organizationShortcut, channelShortcut);
         TraPlaylistDiffDTO response = new TraPlaylistDiffDTO();
         if (traLogDiff != null) {
             response.setParsedFromExcel(traMediaPlanEmissionMapper.DBTraLogEmissions2DTOs(traLogDiff.getTraLogEmissions()));

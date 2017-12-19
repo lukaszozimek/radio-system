@@ -43,12 +43,12 @@ public class TraCompanyResourceImpl implements TraCompanyResource {
 
 
     @Override
-    public ResponseEntity<List<TraCompanyDTO>> getAllCompanyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<TraCompanyDTO>> getAllCompanyUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable) {
 
 
-        log.debug("REST request to get all TraCompanyDTO, for Network: {}", networkShortcut);
-        Slice<TraCompany> entity = traCompanyService.getAllCompany(networkShortcut, pagable);
+        log.debug("REST request to get all TraCompanyDTO, for Network: {}", organizationShortcut);
+        Slice<TraCompany> entity = traCompanyService.getAllCompany(organizationShortcut, pagable);
         List<TraCompanyDTO> response = traCompanyMapper.DBs2DTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -61,10 +61,10 @@ public class TraCompanyResourceImpl implements TraCompanyResource {
 
 
     @Override
-    public ResponseEntity<TraCompanyDTO> getCompanyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraCompanyDTO> getCompanyUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                             @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get TraCompanyDTO : {}, for Network: {}", id, networkShortcut);
-        TraCompany entity = traCompanyService.getCompany(id, networkShortcut);
+        log.debug("REST request to get TraCompanyDTO : {}, for Network: {}", id, organizationShortcut);
+        TraCompany entity = traCompanyService.getCompany(id, organizationShortcut);
         TraCompanyDTO response = traCompanyMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -74,13 +74,13 @@ public class TraCompanyResourceImpl implements TraCompanyResource {
     }
 
     @Override
-    public ResponseEntity<TraCompanyDTO> updateCompanyUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraCompanyDTO> updateCompanyUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                @ApiParam(value = "discountPT", required = true) @RequestBody TraCompanyDTO traCompanyDTO) throws URISyntaxException {
-        log.debug("REST request to update TraCompanyDTO : {}, for Network: {}", traCompanyDTO, networkShortcut);
+        log.debug("REST request to update TraCompanyDTO : {}, for Network: {}", traCompanyDTO, organizationShortcut);
         if (traCompanyDTO.getId() == null) {
-            return createCompanyUsingPOST(networkShortcut, traCompanyDTO);
+            return createCompanyUsingPOST(organizationShortcut, traCompanyDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         TraCompany crmAccount = traCompanyMapper.DTO2DB(traCompanyDTO, corNetwork);
         TraCompany entity = traCompanyService.saveCompany(crmAccount);
         TraCompanyDTO response = traCompanyMapper.DB2DTO(entity);
@@ -90,26 +90,26 @@ public class TraCompanyResourceImpl implements TraCompanyResource {
     }
 
     @Override
-    public ResponseEntity<TraCompanyDTO> createCompanyUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraCompanyDTO> createCompanyUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                 @ApiParam(value = "traCompanyDTO", required = true) @RequestBody TraCompanyDTO traCompanyDTO) throws URISyntaxException {
-        log.debug("REST request to saveCorContact TraCustomer : {}, for Network: {}", traCompanyDTO, networkShortcut);
+        log.debug("REST request to saveCorContact TraCustomer : {}, for Network: {}", traCompanyDTO, organizationShortcut);
         if (traCompanyDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraCustomer", "idexists", "A new TraCustomer cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         TraCompany crmAccount = traCompanyMapper.DTO2DB(traCompanyDTO, corNetwork);
         TraCompany entity = traCompanyService.saveCompany(crmAccount);
         TraCompanyDTO response = traCompanyMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/traffic/company/" + traCompanyDTO.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/traffic/company/" + traCompanyDTO.getId()))
                 .body(response);
     }
 
 
     @Override
-    public ResponseEntity<Void> deleteCompanyUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteCompanyUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                          @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete TraDiscount : {}", id);
-        traCompanyService.deleteCompany(id, networkShortcut);
+        traCompanyService.deleteCompany(id, organizationShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("TraDiscount", id.toString())).build();
 
 

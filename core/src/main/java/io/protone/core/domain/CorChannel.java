@@ -52,6 +52,11 @@ public class CorChannel extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     private CorNetwork network;
 
+    @ManyToOne
+    @PodamExclude
+    @JsonIgnore
+    private CorOrganization corOrganization;
+
     @ManyToMany(mappedBy = "channels")
     @JsonIgnore
     @PodamExclude

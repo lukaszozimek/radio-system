@@ -50,28 +50,28 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
     private CorChannelService corChannelService;
 
     @Override
-    public ResponseEntity<TraBlockConfigurationDTO> creatTrafficBlockConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraBlockConfigurationDTO> creatTrafficBlockConfigurationUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                             @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO) throws URISyntaxException {
-        log.debug("REST request to saveCorContact TraOrder : {}, for Network: {}", traBlockConfigurationDTO, networkShortcut);
+        log.debug("REST request to saveCorContact TraOrder : {}, for Network: {}", traBlockConfigurationDTO, organizationShortcut);
         if (traBlockConfigurationDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraOrder", "idexists", "A new TraBlockConfiguration cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         TraBlockConfiguration traBlockConfiguration = traBlockConfigurationMapper.DTO2DB(traBlockConfigurationDTO, corNetwork, corChannel);
         TraBlockConfiguration entity = traBlockConfigurationService.saveBlockConfiguration(traBlockConfiguration);
         TraBlockConfigurationDTO response = traBlockConfigurationMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/traffic/block/" + response.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/traffic/block/" + response.getId()))
                 .body(response);
     }
 
     @Override
-    public ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
-        log.debug("REST request to get all TraBlockConfiguration, for Channel {},  Network: {}", channelShortcut, networkShortcut);
-        List<TraBlockConfiguration> entity = traBlockConfigurationService.getAllBlockConfigurations(networkShortcut, channelShortcut);
+        log.debug("REST request to get all TraBlockConfiguration, for Channel {},  Network: {}", channelShortcut, organizationShortcut);
+        List<TraBlockConfiguration> entity = traBlockConfigurationService.getAllBlockConfigurations(organizationShortcut, channelShortcut);
         List<TraBlockConfigurationDTO> response = traBlockConfigurationMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -81,11 +81,11 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
     }
 
     @Override
-    public ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationByDateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationByDateUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                         @ApiParam(value = "day", required = true) @PathVariable("day") CorDayOfWeekEnum day) {
-        log.debug("REST request to get all TraBlockConfiguration, for Channel {},  Network: {}", channelShortcut, networkShortcut);
-        List<TraBlockConfiguration> entity = traBlockConfigurationService.getAllBlockConfigurationsByDay(networkShortcut, day);
+        log.debug("REST request to get all TraBlockConfiguration, for Channel {},  Network: {}", channelShortcut, organizationShortcut);
+        List<TraBlockConfiguration> entity = traBlockConfigurationService.getAllBlockConfigurationsByDay(organizationShortcut, day);
         List<TraBlockConfigurationDTO> response = traBlockConfigurationMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -95,11 +95,11 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
     }
 
     @Override
-    public ResponseEntity<TraBlockConfigurationDTO> getTrafficBlockConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraBlockConfigurationDTO> getTrafficBlockConfigurationUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                          @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get TraBlockConfiguration : {}, for Channel {} Network: {}", id, channelShortcut, networkShortcut);
-        TraBlockConfiguration entity = traBlockConfigurationService.findConfigurationBlock(id, networkShortcut);
+        log.debug("REST request to get TraBlockConfiguration : {}, for Channel {} Network: {}", id, channelShortcut, organizationShortcut);
+        TraBlockConfiguration entity = traBlockConfigurationService.findConfigurationBlock(id, organizationShortcut);
         TraBlockConfigurationDTO response = traBlockConfigurationMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -109,16 +109,16 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
     }
 
     @Override
-    public ResponseEntity<TraBlockConfigurationDTO> updateTrafficBlockConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraBlockConfigurationDTO> updateTrafficBlockConfigurationUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                             @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO) throws URISyntaxException {
-        log.debug("REST request to update TraBlockConfiguration : {}, for Channel {} Network: {}", traBlockConfigurationDTO, channelShortcut, networkShortcut);
+        log.debug("REST request to update TraBlockConfiguration : {}, for Channel {} Network: {}", traBlockConfigurationDTO, channelShortcut, organizationShortcut);
 
         if (traBlockConfigurationDTO.getId() == null) {
-            return creatTrafficBlockConfigurationUsingPOST(networkShortcut, channelShortcut, traBlockConfigurationDTO);
+            return creatTrafficBlockConfigurationUsingPOST(organizationShortcut, channelShortcut, traBlockConfigurationDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         TraBlockConfiguration traBlockConfiguration = traBlockConfigurationMapper.DTO2DB(traBlockConfigurationDTO, corNetwork, corChannel);
         TraBlockConfiguration entity = traBlockConfigurationService.saveBlockConfiguration(traBlockConfiguration);
         TraBlockConfigurationDTO response = traBlockConfigurationMapper.DB2DTO(entity);
@@ -127,11 +127,11 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
     }
 
     @Override
-    public ResponseEntity<Void> deleteTrafficBlockConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteTrafficBlockConfigurationUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to delete TraBlockConfiguration : {}, for Channel {} Network: {}", id, channelShortcut, networkShortcut);
-        traBlockConfigurationService.deleteBlockConfiguration(id, networkShortcut);
+        log.debug("REST request to delete TraBlockConfiguration : {}, for Channel {} Network: {}", id, channelShortcut, organizationShortcut);
+        traBlockConfigurationService.deleteBlockConfiguration(id, organizationShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traBlockConfigurationDTO", id.toString())).build();
 
     }

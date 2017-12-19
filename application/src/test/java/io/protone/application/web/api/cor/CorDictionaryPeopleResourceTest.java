@@ -121,7 +121,7 @@ public class CorDictionaryPeopleResourceTest {
         // Create the CorPerson
         CorPersonDTO corPersonDTO = corPersonMapper.DB2DTO(corPerson);
 
-        restCorPersonMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people", corNetwork.getShortcut())
+        restCorPersonMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPersonDTO)))
             .andExpect(status().isCreated());
@@ -146,7 +146,7 @@ public class CorDictionaryPeopleResourceTest {
         CorPersonDTO existingCorPersonDTO = corPersonMapper.DB2DTO(existingCorPerson);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorPersonMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people", corNetwork.getShortcut())
+        restCorPersonMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCorPersonDTO)))
             .andExpect(status().isBadRequest());
@@ -166,7 +166,7 @@ public class CorDictionaryPeopleResourceTest {
         // Create the CorPerson, which fails.
         CorPersonDTO corPersonDTO = corPersonMapper.DB2DTO(corPerson);
 
-        restCorPersonMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people", corNetwork.getShortcut())
+        restCorPersonMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPersonDTO)))
             .andExpect(status().isBadRequest());
@@ -185,7 +185,7 @@ public class CorDictionaryPeopleResourceTest {
         // Create the CorPerson, which fails.
         CorPersonDTO corPersonDTO = corPersonMapper.DB2DTO(corPerson);
 
-        restCorPersonMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people", corNetwork.getShortcut())
+        restCorPersonMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPersonDTO)))
             .andExpect(status().isBadRequest());
@@ -201,7 +201,7 @@ public class CorDictionaryPeopleResourceTest {
         corPersonRepository.saveAndFlush(corPerson.network(corNetwork));
 
         // Get all the corPersonList
-        restCorPersonMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people?sort=id,desc", corNetwork.getShortcut()))
+        restCorPersonMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(corPerson.getId().intValue())))
@@ -217,7 +217,7 @@ public class CorDictionaryPeopleResourceTest {
         corPersonRepository.saveAndFlush(corPerson.network(corNetwork));
 
         // Get the corPerson
-        restCorPersonMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people/{id}", corNetwork.getShortcut(), corPerson.getId()))
+        restCorPersonMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people/{id}", corNetwork.getShortcut(), corPerson.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(corPerson.getId().intValue()))
@@ -230,7 +230,7 @@ public class CorDictionaryPeopleResourceTest {
     @Transactional
     public void getNonExistingCorPerson() throws Exception {
         // Get the corPerson
-        restCorPersonMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCorPersonMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -249,7 +249,7 @@ public class CorDictionaryPeopleResourceTest {
             .description(UPDATED_DESCRIPTION);
         CorPersonDTO corPersonDTO = corPersonMapper.DB2DTO(updatedCorPerson);
 
-        restCorPersonMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people", corNetwork.getShortcut())
+        restCorPersonMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPersonDTO)))
             .andExpect(status().isOk());
@@ -272,7 +272,7 @@ public class CorDictionaryPeopleResourceTest {
         CorPersonDTO corPersonDTO = corPersonMapper.DB2DTO(corPerson);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorPersonMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people", corNetwork.getShortcut())
+        restCorPersonMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPersonDTO)))
             .andExpect(status().isCreated());
@@ -290,7 +290,7 @@ public class CorDictionaryPeopleResourceTest {
         int databaseSizeBeforeDelete = corPersonRepository.findAll().size();
 
         // Get the corPerson
-        restCorPersonMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people/{id}", corNetwork.getShortcut(), corPerson.getId())
+        restCorPersonMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people/{id}", corNetwork.getShortcut(), corPerson.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

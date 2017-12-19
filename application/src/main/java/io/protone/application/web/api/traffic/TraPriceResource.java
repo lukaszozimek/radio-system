@@ -22,10 +22,10 @@ public interface TraPriceResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraPriceDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraPriceDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraPriceDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/price",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/price",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<TraPriceDTO>> getAllPriceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraPriceDTO>> getAllPriceUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                               @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -35,10 +35,10 @@ public interface TraPriceResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraPriceDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraPriceDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraPriceDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/price/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/price/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<TraPriceDTO> getPriceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraPriceDTO> getPriceUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                      @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -49,11 +49,11 @@ public interface TraPriceResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraPriceDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraPriceDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraPriceDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/price",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/price",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<TraPriceDTO> updatePriceUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraPriceDTO> updatePriceUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                         @ApiParam(value = "traPriceDTO", required = true) @RequestBody TraPriceDTO traPriceDTO) throws URISyntaxException;
 
 
@@ -64,11 +64,11 @@ public interface TraPriceResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraPriceDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraPriceDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraPriceDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/price",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/price",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<TraPriceDTO> createPriceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraPriceDTO> createPriceUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                          @ApiParam(value = "traPriceDTO", required = true) @RequestBody TraPriceDTO traPriceDTO) throws URISyntaxException;
 
 
@@ -78,10 +78,10 @@ public interface TraPriceResource {
             @ApiResponse(code = 204, message = "No Content", response = Void.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/price/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/price/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deletePriceUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deletePriceUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                   @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 

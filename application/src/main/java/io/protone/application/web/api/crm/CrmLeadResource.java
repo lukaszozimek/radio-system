@@ -25,11 +25,11 @@ public interface CrmLeadResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmLeadDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmLeadDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmLeadDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/lead",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/lead",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<CrmLeadDTO> updateLeadUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CrmLeadDTO> updateLeadUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                   @ApiParam(value = "crmLeadDTO", required = true) @RequestBody CrmLeadDTO crmLeadDTO) throws URISyntaxException;
 
     @ApiOperation(value = "createLead", notes = "", response = CrmLeadDTO.class, tags = {"CRM"})
@@ -39,11 +39,11 @@ public interface CrmLeadResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmLeadDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmLeadDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmLeadDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/lead",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/lead",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<CrmLeadDTO> createLeadUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CrmLeadDTO> createLeadUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                    @ApiParam(value = "crmLeadDTO", required = true) @RequestBody CrmLeadDTO crmLeadDTO) throws URISyntaxException;
 
     @ApiOperation(value = "getAllLeads", notes = "", response = CrmLeadDTO.class, responseContainer = "List", tags = {"CRM"})
@@ -52,10 +52,10 @@ public interface CrmLeadResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmLeadDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmLeadDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmLeadDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/lead",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/lead",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CrmLeadThinDTO>> getAllLeadsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<CrmLeadThinDTO>> getAllLeadsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                              @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -65,10 +65,10 @@ public interface CrmLeadResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmLeadDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmLeadDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmLeadDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/lead/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<CrmLeadDTO> getLeadUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CrmLeadDTO> getLeadUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
@@ -78,10 +78,10 @@ public interface CrmLeadResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/lead/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteLeadUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteLeadUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 

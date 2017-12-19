@@ -143,20 +143,20 @@ public class CrmTaskService {
         return crmTaskRepository.findSliceByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
-    public void deleteCustomerTaskComment(Long taskId, Long id, String networkShortcut) {
-        CrmTask crmTask = crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, networkShortcut);
+    public void deleteCustomerTaskComment(Long taskId, Long id, String organizationShortcut) {
+        CrmTask crmTask = crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, organizationShortcut);
         crmTask.getComments().removeIf(crmTaskComment -> crmTaskComment.getId() == id);
         crmTaskRepository.save(crmTask);
-        crmTaskCommentService.deleteByCrmTaskIdAndCommentId(taskId, id, networkShortcut);
+        crmTaskCommentService.deleteByCrmTaskIdAndCommentId(taskId, id, organizationShortcut);
 
     }
 
-    public CrmTaskComment getTaskCommentAssociatedWithTask(String networkShortcut, Long taskId, Long id) {
-        return crmTaskCommentService.findByCrmTaskId(id, taskId, networkShortcut);
+    public CrmTaskComment getTaskCommentAssociatedWithTask(String organizationShortcut, Long taskId, Long id) {
+        return crmTaskCommentService.findByCrmTaskId(id, taskId, organizationShortcut);
     }
 
-    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String networkShortcut) {
-        CrmTask crmTask = crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, networkShortcut);
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String organizationShortcut) {
+        CrmTask crmTask = crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, organizationShortcut);
         if (requestEnitity != null) {
             CrmTaskComment crmTaskComment = crmTaskCommentService.saveCrmTaskComment(requestEnitity);
             crmTask.addComments(crmTaskComment);
@@ -167,8 +167,8 @@ public class CrmTaskService {
 
     }
 
-    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
-        return crmTaskCommentService.findByCrmTaskId(taskId, networkShortcut, pagable);
+    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String organizationShortcut, Pageable pagable) {
+        return crmTaskCommentService.findByCrmTaskId(taskId, organizationShortcut, pagable);
     }
 
 }

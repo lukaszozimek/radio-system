@@ -133,7 +133,7 @@ public class SchScheduleResourceImplTest {
         // Create the SchSchedule
         SchScheduleDTO traPlaylistDTO = schScheduleMapper.DB2DTO(schSchedule);
 
-        restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -156,7 +156,7 @@ public class SchScheduleResourceImplTest {
         SchScheduleDTO existingSchScheduleDTO = schScheduleMapper.DB2DTO(existingSchSchedule);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingSchScheduleDTO)))
                 .andExpect(status().isBadRequest());
@@ -173,7 +173,7 @@ public class SchScheduleResourceImplTest {
         schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
 
         // Get all the schSchedules
-        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchScheduleMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schSchedule.getId().intValue())))
@@ -187,7 +187,7 @@ public class SchScheduleResourceImplTest {
         schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
 
         // Get all the schSchedules
-        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/from/{from}/to/{to}", corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate(), LocalDate.now().plusYears(1)))
+        restSchScheduleMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/from/{from}/to/{to}", corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate(), LocalDate.now().plusYears(1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schSchedule.getId().intValue())))
@@ -201,7 +201,7 @@ public class SchScheduleResourceImplTest {
         schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
 
         // Get the schSchedule
-        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
+        restSchScheduleMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(schSchedule.getId().intValue()))
@@ -213,7 +213,7 @@ public class SchScheduleResourceImplTest {
     public void getNonExistingSchSchedule() throws Exception {
         // Get the schSchedule
         LocalDate localDate = LocalDate.now();
-        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), localDate))
+        restSchScheduleMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), localDate))
                 .andExpect(status().isNotFound());
     }
 
@@ -230,7 +230,7 @@ public class SchScheduleResourceImplTest {
                 .date(UPDATED_PLAYLIST_DATE);
         SchScheduleDTO traPlaylistDTO = schScheduleMapper.DB2DTO(updatedSchSchedule);
 
-        restSchScheduleMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isOk());
@@ -250,7 +250,7 @@ public class SchScheduleResourceImplTest {
         SchScheduleDTO schScheduleDTO = schScheduleMapper.DB2DTO(schSchedule);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSchScheduleMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schScheduleDTO)))
                 .andExpect(status().isCreated());
@@ -268,7 +268,7 @@ public class SchScheduleResourceImplTest {
         int databaseSizeBeforeDelete = schScheduleRepository.findAll().size();
 
         // Get the schSchedule
-        restSchScheduleMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
+        restSchScheduleMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
@@ -289,7 +289,7 @@ public class SchScheduleResourceImplTest {
         // Create the TraOrder, which fails.
         SchScheduleDTO schScheduleDTO = schScheduleMapper.DB2DTO(schSchedule);
 
-        restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schScheduleDTO)))
                 .andExpect(status().isBadRequest());

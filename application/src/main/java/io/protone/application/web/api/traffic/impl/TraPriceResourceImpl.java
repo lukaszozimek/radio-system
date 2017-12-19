@@ -43,12 +43,12 @@ public class TraPriceResourceImpl implements TraPriceResource {
 
 
     @Override
-    public ResponseEntity<List<TraPriceDTO>> getAllPriceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<TraPriceDTO>> getAllPriceUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable) {
 
 
-        log.debug("REST request to get all TraPriceDTO, for Network: {}", networkShortcut);
-        Slice<TraPrice> entity = traPriceService.getAllPrice(networkShortcut, pagable);
+        log.debug("REST request to get all TraPriceDTO, for Network: {}", organizationShortcut);
+        Slice<TraPrice> entity = traPriceService.getAllPrice(organizationShortcut, pagable);
         List<TraPriceDTO> response = traPriceMapper.DBs2DTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -61,10 +61,10 @@ public class TraPriceResourceImpl implements TraPriceResource {
 
 
     @Override
-    public ResponseEntity<TraPriceDTO> getPriceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraPriceDTO> getPriceUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get TraPriceDTO : {}, for Network: {}", id, networkShortcut);
-        TraPrice entity = traPriceService.getPrice(id, networkShortcut);
+        log.debug("REST request to get TraPriceDTO : {}, for Network: {}", id, organizationShortcut);
+        TraPrice entity = traPriceService.getPrice(id, organizationShortcut);
         TraPriceDTO response = traPriceMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -74,13 +74,13 @@ public class TraPriceResourceImpl implements TraPriceResource {
     }
 
     @Override
-    public ResponseEntity<TraPriceDTO> updatePriceUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraPriceDTO> updatePriceUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                            @ApiParam(value = "discountPT", required = true) @RequestBody TraPriceDTO traPriceDTO) throws URISyntaxException {
-        log.debug("REST request to update TraPriceDTO : {}, for Network: {}", traPriceDTO, networkShortcut);
+        log.debug("REST request to update TraPriceDTO : {}, for Network: {}", traPriceDTO, organizationShortcut);
         if (traPriceDTO.getId() == null) {
-            return createPriceUsingPOST(networkShortcut, traPriceDTO);
+            return createPriceUsingPOST(organizationShortcut, traPriceDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         TraPrice crmAccount = traPriceMapper.DTO2DB(traPriceDTO, corNetwork);
         TraPrice entity = traPriceService.savePrice(crmAccount);
         TraPriceDTO response = traPriceMapper.DB2DTO(entity);
@@ -90,26 +90,26 @@ public class TraPriceResourceImpl implements TraPriceResource {
     }
 
     @Override
-    public ResponseEntity<TraPriceDTO> createPriceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraPriceDTO> createPriceUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                             @ApiParam(value = "traPriceDTO", required = true) @RequestBody TraPriceDTO traPriceDTO) throws URISyntaxException {
-        log.debug("REST request to saveCorContact TraPrice : {}, for Network: {}", traPriceDTO, networkShortcut);
+        log.debug("REST request to saveCorContact TraPrice : {}, for Network: {}", traPriceDTO, organizationShortcut);
         if (traPriceDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraPrice", "idexists", "A new TraPrice cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         TraPrice crmAccount = traPriceMapper.DTO2DB(traPriceDTO, corNetwork);
         TraPrice entity = traPriceService.savePrice(crmAccount);
         TraPriceDTO response = traPriceMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/traffic/price/" + traPriceDTO.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/traffic/price/" + traPriceDTO.getId()))
                 .body(response);
     }
 
 
     @Override
-    public ResponseEntity<Void> deletePriceUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deletePriceUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete TraPrice : {}", id);
-        traPriceService.deletePrice(id, networkShortcut);
+        traPriceService.deletePrice(id, organizationShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("TraPrice", id.toString())).build();
 
 

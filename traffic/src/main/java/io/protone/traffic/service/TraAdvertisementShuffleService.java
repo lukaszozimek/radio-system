@@ -45,18 +45,18 @@ public class TraAdvertisementShuffleService {
         return lastTimeStop < blockLenght && (lastTimeStop + mediaItemLenght.longValue()) <= blockLenght;
     }
 
-    public List<TraPlaylist> shuffleCommercials(TraShuffleAdvertisementDTO tarShuffleAdvertisementPT, String networkShortcut, String channelShortcut) throws InterruptedException, TrafficShuffleReindexException {
+    public List<TraPlaylist> shuffleCommercials(TraShuffleAdvertisementDTO tarShuffleAdvertisementPT, String organizationShortcut, String channelShortcut) throws InterruptedException, TrafficShuffleReindexException {
         log.debug("Selecting Shuffling strategy");
         if (tarShuffleAdvertisementPT.getTraShuffleAdvertisementOptionalDTO().isFirstPosition()) {
             log.debug("Selecting first postion startegy");
-            return traAdverstimentShuffleFistInBlock.shuffleCommercials(tarShuffleAdvertisementPT, networkShortcut, channelShortcut);
+            return traAdverstimentShuffleFistInBlock.shuffleCommercials(tarShuffleAdvertisementPT, organizationShortcut, channelShortcut);
 
         } else if (tarShuffleAdvertisementPT.getTraShuffleAdvertisementOptionalDTO().isLastPostion()) {
             log.debug("Selecting last postion startegy");
-            return traAdverstimentShuffleLastInBlock.shuffleCommercials(tarShuffleAdvertisementPT, networkShortcut, channelShortcut);
+            return traAdverstimentShuffleLastInBlock.shuffleCommercials(tarShuffleAdvertisementPT, organizationShortcut, channelShortcut);
         }
         log.debug("Selecting default postion startegy");
-        return traAdvertismentShuffleDefault.shuffleCommercials(tarShuffleAdvertisementPT, networkShortcut, channelShortcut);
+        return traAdvertismentShuffleDefault.shuffleCommercials(tarShuffleAdvertisementPT, organizationShortcut, channelShortcut);
     }
 }
 

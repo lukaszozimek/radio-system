@@ -136,7 +136,7 @@ public class SchClockTemplateResourceImplTest {
         // Create the SchClock
         SchClockTemplateDTO schClockTemplateDTO = schClockTemplateMapper.DB2DTO(clockConfiguration);
 
-        restSchClockMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchClockMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schClockTemplateDTO)))
                 .andExpect(status().isCreated());
@@ -160,7 +160,7 @@ public class SchClockTemplateResourceImplTest {
         SchClockTemplateDTO existingSchClockTemplateDTO = schClockTemplateMapper.DB2DTO(existingSchClock);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSchClockMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchClockMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingSchClockTemplateDTO)))
                 .andExpect(status().isBadRequest());
@@ -177,7 +177,7 @@ public class SchClockTemplateResourceImplTest {
         schClockTemplateRepository.saveAndFlush(clockConfiguration.network(corNetwork).channel(corChannel));
 
         // Get all the traPlaylistList
-        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchClockMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(clockConfiguration.getId().intValue())))
@@ -197,7 +197,7 @@ public class SchClockTemplateResourceImplTest {
         schClockTemplateRepository.saveAndFlush(clockConfiguration.network(corNetwork).channel(corChannel).clockCategory(corDictionary));
 
         // Get all the traPlaylistList
-        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut(), CLOCK_TEST_CATEGORY))
+        restSchClockMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut(), CLOCK_TEST_CATEGORY))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(clockConfiguration.getId().intValue())))
@@ -213,7 +213,7 @@ public class SchClockTemplateResourceImplTest {
         schClockTemplateRepository.saveAndFlush(clockConfiguration.network(corNetwork).channel(corChannel));
 
         // Get the clockConfiguration
-        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME))
+        restSchClockMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(clockConfiguration.getId().intValue()))
@@ -225,7 +225,7 @@ public class SchClockTemplateResourceImplTest {
     @Transactional
     public void getNonExistingSchClockConfiguration() throws Exception {
         // Get the clockConfiguration
-        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
+        restSchClockMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
 
     }
@@ -243,7 +243,7 @@ public class SchClockTemplateResourceImplTest {
                 .name(UPDATED_NAME).shortName(UPDATED_SHORTNAME);
         SchClockTemplateDTO schClockTemplateDTO = schClockTemplateMapper.DB2DTO(updatedSchClock);
 
-        restSchClockMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchClockMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schClockTemplateDTO)))
                 .andExpect(status().isOk());
@@ -265,7 +265,7 @@ public class SchClockTemplateResourceImplTest {
         SchClockTemplateDTO schClockTemplateDTO = schClockTemplateMapper.DB2DTO(clockConfiguration);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSchClockMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchClockMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schClockTemplateDTO)))
                 .andExpect(status().isCreated());
@@ -283,7 +283,7 @@ public class SchClockTemplateResourceImplTest {
         int databaseSizeBeforeDelete = schClockTemplateRepository.findAll().size();
 
         // Get the clockConfiguration
-        restSchClockMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME)
+        restSchClockMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME)
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

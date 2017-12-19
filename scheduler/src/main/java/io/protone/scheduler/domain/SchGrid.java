@@ -2,7 +2,6 @@ package io.protone.scheduler.domain;
 
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -105,18 +104,6 @@ public class SchGrid extends SchEventTemplate implements Serializable {
         this.gridCategory = gridCategory;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
-    public SchGrid network(CorNetwork network) {
-        this.network = network;
-        return this;
-    }
 
     public CorChannel getChannel() {
         return channel;

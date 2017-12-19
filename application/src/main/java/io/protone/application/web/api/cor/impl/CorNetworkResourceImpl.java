@@ -37,7 +37,7 @@ public class CorNetworkResourceImpl implements CorNetworkResource {
     private CorNetworkService corNetworkService;
 
     @Override
-    public ResponseEntity<List<CorNetworkDTO>> getAllNetworksUsingGET() {
+    public ResponseEntity<List<CorNetworkDTO>> getAllNetworksUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut) {
         log.debug("REST request to get all CorNetworks");
         List<CorNetwork> networks = corNetworkService.findAllNetworks();
         return ResponseEntity.ok()
@@ -46,9 +46,9 @@ public class CorNetworkResourceImpl implements CorNetworkResource {
     }
 
     @Override
-    public ResponseEntity<CorNetworkDTO> createNetworkUsingPOST(
-            @ApiParam(value = "network", required = true) @Valid @RequestPart("network") CorNetworkDTO network,
-            @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException {
+    public ResponseEntity<CorNetworkDTO> createNetworkUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                @ApiParam(value = "network", required = true) @Valid @RequestPart("network") CorNetworkDTO network,
+                                                                @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException {
         log.debug("REST request to saveCorContact CorNetwork : {}", network);
         if (network.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("corNetwork", "idexists", "A new corNetwork cannot already have an ID")).body(null);
@@ -62,10 +62,10 @@ public class CorNetworkResourceImpl implements CorNetworkResource {
     }
 
     @Override
-    public ResponseEntity<CorNetworkDTO> updateNetworkUsingPUT(@ApiParam(value = "network", required = true) @Valid @RequestBody CorNetworkDTO network) throws URISyntaxException {
+    public ResponseEntity<CorNetworkDTO> updateNetworkUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "network", required = true) @Valid @RequestBody CorNetworkDTO network) throws URISyntaxException {
         log.debug("REST request to update CorNetwork : {}", network);
         if (network.getId() == null) {
-            return createNetworkUsingPOST(network, null);
+            return createNetworkUsingPOST(organizationShortcut, network, null);
         }
         CorNetwork corNetwork = corNetworkMapper.DTO2DB(network);
         corNetwork = corNetworkService.save(corNetwork);
@@ -77,6 +77,7 @@ public class CorNetworkResourceImpl implements CorNetworkResource {
 
     @Override
     public ResponseEntity<CorNetworkDTO> updateNetworkWithLogoUsingPOST(
+            @ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
             @ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
             @ApiParam(value = "network", required = true) @Valid @RequestPart("network") CorNetworkDTO network,
             @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException {
@@ -84,7 +85,8 @@ public class CorNetworkResourceImpl implements CorNetworkResource {
     }
 
     @Override
-    public ResponseEntity<Void> deleteNetworkUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<Void> deleteNetworkUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                         @ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
         log.debug("REST request to delete CorNetwork : {}", networkShortcut);
         corNetworkService.deleteNetwork(networkShortcut);
         return ResponseEntity.ok().build();
@@ -92,7 +94,7 @@ public class CorNetworkResourceImpl implements CorNetworkResource {
     }
 
     @Override
-    public ResponseEntity<CorNetworkDTO> getNetworkUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<CorNetworkDTO> getNetworkUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
         log.debug("REST request to get CorNetwork : {}", networkShortcut);
         CorNetwork cORNetwork = corNetworkService.findNetwork(networkShortcut);
         CorNetworkDTO cORNetworkDTO = corNetworkMapper.DB2DTO(cORNetwork);

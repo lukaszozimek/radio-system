@@ -55,17 +55,17 @@ public class LibFileItemService {
     private MediaUtils mediaUtils;
 
 
-    public Slice<LibFileItem> findAllLibFileItems(String networkShortcut, String libraryShortcut, Pageable pageable) {
-        return libFileItemRepository.findSliceByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pageable);
+    public Slice<LibFileItem> findAllLibFileItems(String organizationShortcut, String libraryShortcut, Pageable pageable) {
+        return libFileItemRepository.findSliceByNetwork_ShortcutAndLibrary_Shortcut(organizationShortcut, libraryShortcut, pageable);
     }
 
-    public LibFileItem findLibFileItem(String networkShortcut, String libraryShortcut, String idx) {
-        return libFileItemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
+    public LibFileItem findLibFileItem(String organizationShortcut, String libraryShortcut, String idx) {
+        return libFileItemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(organizationShortcut, libraryShortcut, idx);
     }
 
-    public LibFileItem uploadFileItem(String networkShortcut, String libraryShortcut, MultipartFile file) throws IOException {
+    public LibFileItem uploadFileItem(String organizationShortcut, String libraryShortcut, MultipartFile file) throws IOException {
         LibFileItem libFileItem = new LibFileItem();
-        LibFileLibrary libFileLibrary = libraryService.findLibrary(networkShortcut, libraryShortcut);
+        LibFileLibrary libFileLibrary = libraryService.findLibrary(organizationShortcut, libraryShortcut);
         ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
         byte[] inputStream = new byte[bais.available()];
         Supplier<ByteArrayInputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
@@ -107,9 +107,9 @@ public class LibFileItemService {
         }
     }
 
-    public LibFileItem uploadFileItemWithPredefinedContentType(String networkShortcut, String libraryShortcut, MultipartFile file, String contentType) throws IOException {
+    public LibFileItem uploadFileItemWithPredefinedContentType(String organizationShortcut, String libraryShortcut, MultipartFile file, String contentType) throws IOException {
         LibFileItem libFileItem = new LibFileItem();
-        LibFileLibrary libFileLibrary = libraryService.findLibrary(networkShortcut, libraryShortcut);
+        LibFileLibrary libFileLibrary = libraryService.findLibrary(organizationShortcut, libraryShortcut);
         ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
         String fileUUID = UUID.randomUUID().toString();
         try {
@@ -144,8 +144,8 @@ public class LibFileItemService {
         }
     }
 
-    public byte[] download(String networkShortcut, String libraryShortcut, String idx) throws IOException {
-        LibFileItem libFileItem = this.findLibFileItem(networkShortcut, libraryShortcut, idx);
+    public byte[] download(String organizationShortcut, String libraryShortcut, String idx) throws IOException {
+        LibFileItem libFileItem = this.findLibFileItem(organizationShortcut, libraryShortcut, idx);
         return download(libFileItem);
     }
 
@@ -176,8 +176,8 @@ public class LibFileItemService {
     }
 
     @Transactional
-    public void deleteFile(String networkShortcut, String libraryShortcut, String idx) {
-        LibFileItem libFileItem = this.findLibFileItem(networkShortcut, libraryShortcut, idx);
+    public void deleteFile(String organizationShortcut, String libraryShortcut, String idx) {
+        LibFileItem libFileItem = this.findLibFileItem(organizationShortcut, libraryShortcut, idx);
         if (libFileItem != null) {
             deleteFile(libFileItem);
         }
@@ -203,10 +203,10 @@ public class LibFileItemService {
         }
     }
 
-    public void moveFileItem(String networkShortcut, String libraryPrefix, String idx, String libraryShortcut) {
-        LibFileLibrary dstLibarary = this.libraryService.findLibrary(networkShortcut, libraryShortcut);
+    public void moveFileItem(String organizationShortcut, String libraryPrefix, String idx, String libraryShortcut) {
+        LibFileLibrary dstLibarary = this.libraryService.findLibrary(organizationShortcut, libraryShortcut);
         if (dstLibarary != null) {
-            LibFileItem optionalItemDB = libFileItemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
+            LibFileItem optionalItemDB = libFileItemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(organizationShortcut, libraryShortcut, idx);
             if (optionalItemDB != null) {
                 optionalItemDB.setLibrary(dstLibarary);
                 libFileItemRepository.saveAndFlush(optionalItemDB);

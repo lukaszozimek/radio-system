@@ -30,10 +30,10 @@ public interface SchScheduleResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<SchScheduleThinDTO>> getAllSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<SchScheduleThinDTO>> getAllSchedulerScheduleForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -43,10 +43,10 @@ public interface SchScheduleResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/from/{from}/to/{to}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/from/{from}/to/{to}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<SchScheduleThinDTO>> getAllSchedulerScheduleFromToDateForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<SchScheduleThinDTO>> getAllSchedulerScheduleFromToDateForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                  @ApiParam(value = "from", required = true) @PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
                                                                                                  @ApiParam(value = "to", required = true) @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to);
@@ -58,11 +58,11 @@ public interface SchScheduleResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<SchScheduleDTO> creatSchedulerScheduleForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchScheduleDTO> creatSchedulerScheduleForChannelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                              @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchScheduleDTO schScheduleDTO) throws URISyntaxException;
 
@@ -73,10 +73,10 @@ public interface SchScheduleResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
             @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteSchedulerScheduleForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteSchedulerScheduleForChannelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                       @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
@@ -87,10 +87,10 @@ public interface SchScheduleResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SchScheduleDTO> getSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchScheduleDTO> getSchedulerScheduleForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                           @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
@@ -101,11 +101,11 @@ public interface SchScheduleResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<SchScheduleDTO> updateSchedulerScheduleForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchScheduleDTO> updateSchedulerScheduleForChannelUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                              @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchScheduleDTO schScheduleDTO) throws URISyntaxException;
 
@@ -116,10 +116,10 @@ public interface SchScheduleResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}/{gridShortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}/{gridShortName}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SchScheduleDTO> buildSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchScheduleDTO> buildSchedulerScheduleForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                             @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                                             @ApiParam(value = "gridShortName", required = true) @PathVariable("gridShortName") String gridShortName) throws Exception;
@@ -131,11 +131,11 @@ public interface SchScheduleResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SchScheduleDTO> buildDefaultSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchScheduleDTO> buildDefaultSchedulerScheduleForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) throws URISyntaxException;
 

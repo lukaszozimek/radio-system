@@ -42,12 +42,12 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
     private CorCountryMapper corCountryMapper;
 
     @Override
-    public ResponseEntity<CorCountryDTO> updateCountryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "confCountryPt", required = true) @Valid @RequestBody CorCountryDTO countryPt) throws URISyntaxException {
+    public ResponseEntity<CorCountryDTO> updateCountryUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "confCountryPt", required = true) @Valid @RequestBody CorCountryDTO countryPt) throws URISyntaxException {
         log.debug("REST request to update CorTax : {}", countryPt);
         if (countryPt.getId() == null) {
-            return createCountryUsingPOST(networkShortcut, countryPt);
+            return createCountryUsingPOST(organizationShortcut, countryPt);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CorCountry corCountry = corCountryMapper.DTO2DB(countryPt, corNetwork);
         corCountry = corCountryRepository.save(corCountry);
         CorCountryDTO result = corCountryMapper.DB2DTO(corCountry);
@@ -57,31 +57,31 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
     }
 
     @Override
-    public ResponseEntity<CorCountryDTO> createCountryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "confCountryPt", required = true) @Valid @RequestBody CorCountryDTO countryPt) throws URISyntaxException {
+    public ResponseEntity<CorCountryDTO> createCountryUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "confCountryPt", required = true) @Valid @RequestBody CorCountryDTO countryPt) throws URISyntaxException {
         log.debug("REST request to saveCorContact CorCountry : {}", countryPt);
         if (countryPt.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorCountry", "idexists", "A new CorCountry cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CorCountry corCountry = corCountryMapper.DTO2DB(countryPt, corNetwork);
         corCountry = corCountryRepository.save(corCountry);
         CorCountryDTO result = corCountryMapper.DB2DTO(corCountry);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/network/dictionary/country/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/organization/dictionary/country/" + result.getId()))
                 .body(result);
     }
 
     @Override
-    public ResponseEntity<Void> deleteCountryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteCountryUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete CorCountry : {}", id);
         corCountryRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("corCountry", id.toString())).build();
     }
 
     @Override
-    public ResponseEntity<List<CorCountryDTO>> getAllCountriesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<CorCountryDTO>> getAllCountriesUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get CorCountry : {}", networkShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        log.debug("REST request to get CorCountry : {}", organizationShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
         Slice<CorCountry> corCurrencies = corCountryRepository.findSliceByNetwork(corNetwork, pagable);
         List<CorCountryDTO> confCurrencyPTS = corCountryMapper.DBs2DTOs(corCurrencies.getContent());
@@ -94,9 +94,9 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
     }
 
     @Override
-    public ResponseEntity<CorCountryDTO> getCountryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get CorCountry : {}", networkShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+    public ResponseEntity<CorCountryDTO> getCountryUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+        log.debug("REST request to get CorCountry : {}", organizationShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
         CorCountry corTax = corCountryRepository.findOneByIdAndNetwork(id, corNetwork);
         CorCountryDTO confTaxPTS = corCountryMapper.DB2DTO(corTax);

@@ -5,7 +5,6 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -82,10 +81,6 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     @ManyToOne
     protected SchLogConfiguration schLogConfiguration;
 
-
-    @ManyToOne
-    @PodamExclude
-    protected CorNetwork network;
 
     @ManyToOne
     @PodamExclude
@@ -172,13 +167,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
         this.schLogConfiguration = schLogConfiguration;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
 
     public CorChannel getChannel() {
         return channel;
@@ -257,11 +246,6 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
         return this;
     }
 
-    public SchEventTemplate network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
-
     public SchEventTemplate channel(CorChannel corChannel) {
         this.channel = corChannel;
         return this;
@@ -331,7 +315,6 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
                 Objects.equal(getEmissions(), that.getEmissions()) &&
                 getEventType() == that.getEventType() &&
                 Objects.equal(getSchLogConfiguration(), that.getSchLogConfiguration()) &&
-                Objects.equal(getNetwork(), that.getNetwork()) &&
                 Objects.equal(getChannel(), that.getChannel()) &&
                 Objects.equal(getSequence(), that.getSequence());
 
@@ -339,7 +322,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId(), getName(), getSequence(), getInstance(), getShortName(), getEventCategory(), getSchEventTemplates(), getEmissionsLog(), getEmissions(), getEventType(), getSchLogConfiguration(), getNetwork(), getChannel());
+        return Objects.hashCode(getId(), getName(), getSequence(), getInstance(), getShortName(), getEventCategory(), getSchEventTemplates(), getEmissionsLog(), getEmissions(), getEventType(), getSchLogConfiguration(),  getChannel());
     }
 
 

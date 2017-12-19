@@ -14,8 +14,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface LibArtistRepository extends JpaRepository<LibArtist, Long> {
     LibArtist findOneByNameAndNetwork(String name, CorNetwork corNetwork);
 
-    Slice<LibArtist> findSliceByNetwork_Shortcut(String networkShortcut, Pageable pagable);
+    Slice<LibArtist> findSliceByNetwork_Shortcut(String organizationShortcut, Pageable pagable);
 
-    LibArtist findOneByIdAndNetwork_Shortcut(Long id, String networkShortcut);
-    void deleteByIdAndNetwork_Shortcut(Long id, String networkShortcut);
+    LibArtist findOneByIdAndNetwork_Shortcut(Long id, String organizationShortcut);
+    void deleteByIdAndNetwork_Shortcut(Long id, String organizationShortcut);
 }

@@ -156,7 +156,7 @@ public class CorChannelResourceTest {
                 "application/json", TestUtil.convertObjectToJsonBytes(corChannelDTO));
 
 
-        restCorChannelMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
+        restCorChannelMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isCreated());
 
@@ -183,7 +183,7 @@ public class CorChannelResourceTest {
                 "application/json", TestUtil.convertObjectToJsonBytes(existingCorChannelDTO));
 
 
-        restCorChannelMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
+        restCorChannelMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isBadRequest());
 
@@ -206,7 +206,7 @@ public class CorChannelResourceTest {
                 "application/json", TestUtil.convertObjectToJsonBytes(corChannelDTO));
 
 
-        restCorChannelMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
+        restCorChannelMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isBadRequest());
 
@@ -228,7 +228,7 @@ public class CorChannelResourceTest {
                 "application/json", TestUtil.convertObjectToJsonBytes(corChannelDTO));
 
 
-        restCorChannelMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
+        restCorChannelMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isBadRequest());
 
@@ -245,7 +245,7 @@ public class CorChannelResourceTest {
         corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
 
         // Get all the corChannelList
-        restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel?sort=id,desc", corNetwork.getShortcut()))
+        restCorChannelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(corChannel.getId().intValue())))
@@ -262,7 +262,7 @@ public class CorChannelResourceTest {
         corChannelRepository.saveAndFlush(corChannel.logo(corImageItem).network(corNetwork));
 
         // Get all the corChannelList
-        restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel?sort=id,desc", corNetwork.getShortcut()))
+        restCorChannelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(corChannel.getId().intValue())))
@@ -280,7 +280,7 @@ public class CorChannelResourceTest {
         corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
 
         // Get the corChannel
-        restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restCorChannelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(corChannel.getId().intValue()))
@@ -298,7 +298,7 @@ public class CorChannelResourceTest {
         corChannelRepository.saveAndFlush(corChannel.logo(corImageItem).network(corNetwork));
 
         // Get the corChannel
-        restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restCorChannelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(corChannel.getId().intValue()))
@@ -312,7 +312,7 @@ public class CorChannelResourceTest {
     @Test
     public void getNonExistingCorChannel() throws Exception {
         // Get the corChannel
-        restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCorChannelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -333,7 +333,7 @@ public class CorChannelResourceTest {
                 .name(UPDATED_NAME)
                 .description(UPDATED_DESCRIPTION);
         CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(updatedCorChannel);
-        restCorChannelMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
+        restCorChannelMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corChannelDTO)))
                 .andExpect(status().isOk());
@@ -369,7 +369,7 @@ public class CorChannelResourceTest {
                 "application/json", TestUtil.convertObjectToJsonBytes(corChannelDTO));
 
 
-        restCorChannelMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), corChannel.getShortcut())
+        restCorChannelMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isOk());
@@ -392,7 +392,7 @@ public class CorChannelResourceTest {
         CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(corChannel);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorChannelMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
+        restCorChannelMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corChannelDTO)))
                 .andExpect(status().isCreated());
@@ -410,7 +410,7 @@ public class CorChannelResourceTest {
         int databaseSizeBeforeDelete = corChannelRepository.findAll().size();
 
         // Get the corChannel
-        restCorChannelMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), localcorChannel.getShortcut())
+        restCorChannelMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), localcorChannel.getShortcut())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

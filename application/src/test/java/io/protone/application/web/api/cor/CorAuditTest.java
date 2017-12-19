@@ -150,7 +150,7 @@ public class CorAuditTest {
         MockMultipartFile jsonFile = new MockMultipartFile("network", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(corNetworkDTO));
         // pass channel to filter
-        String corNetworkDTOWithId = restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network")
+        String corNetworkDTOWithId = restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization")
                 .file(emptyFile)
                 .file(jsonFile)
                 .header("Authorization", "Bearer " + token.getIdToken()))
@@ -168,7 +168,7 @@ public class CorAuditTest {
 
         Thread.sleep(10000);
 
-        String corNetworkDTOWithId1 = restLibLibraryMockMvc.perform(put("/api/v1/network")
+        String corNetworkDTOWithId1 = restLibLibraryMockMvc.perform(put("/api/v1/organization")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(networkDTO))
                 .header("Authorization", "Bearer " + tokenUser.getIdToken()))

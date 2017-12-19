@@ -133,7 +133,7 @@ public class TraCompanyResourceImplTest {
         // Create the TraDiscount
         TraCompanyDTO traMediaPlanTemplateDTO = traCompanyMapper.DB2DTO(traCompany);
 
-        restTraMediaPlantMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/traffic/company", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/company", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isCreated());
@@ -156,7 +156,7 @@ public class TraCompanyResourceImplTest {
         TraCompanyDTO existingTraCompanyDTO = traCompanyMapper.DB2DTO(existingTraDiscount);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraMediaPlantMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/traffic/company", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/company", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingTraCompanyDTO)))
                 .andExpect(status().isBadRequest());
@@ -173,7 +173,7 @@ public class TraCompanyResourceImplTest {
         traCompanyRepository.saveAndFlush(traCompany.network(corNetwork));
 
         // Get all the traMediaPlanList
-        restTraMediaPlantMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/company?sort=id,desc", corNetwork.getShortcut()))
+        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/company?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traCompany.getId().intValue())))
@@ -192,7 +192,7 @@ public class TraCompanyResourceImplTest {
         traCompanyRepository.saveAndFlush(traCompany.network(corNetwork));
 
         // Get the traCompany
-        restTraMediaPlantMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/company/{id}", corNetwork.getShortcut(), traCompany.getId()))
+        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/company/{id}", corNetwork.getShortcut(), traCompany.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(traCompany.getId().intValue()))
@@ -208,7 +208,7 @@ public class TraCompanyResourceImplTest {
     @Transactional
     public void getNonExistingTraCompany() throws Exception {
         // Get the traCompany
-        restTraMediaPlantMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/company/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/company/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -227,7 +227,7 @@ public class TraCompanyResourceImplTest {
                 .shortName(UPDATED_SHORT_NAME);
         TraCompanyDTO traMediaPlanTemplateDTO = traCompanyMapper.DB2DTO(this.traCompany);
 
-        restTraMediaPlantMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/traffic/company", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/traffic/company", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isOk());
@@ -252,7 +252,7 @@ public class TraCompanyResourceImplTest {
         TraCompanyDTO traMediaPlanTemplateDTO = traCompanyMapper.DB2DTO(traCompany);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraMediaPlantMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/traffic/company", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/traffic/company", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isCreated());
@@ -270,7 +270,7 @@ public class TraCompanyResourceImplTest {
         int databaseSizeBeforeDelete = traCompanyRepository.findAll().size();
 
         // Get the traCompany
-        restTraMediaPlantMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/traffic/company/{id}", corNetwork.getShortcut(), traCompany.getId())
+        restTraMediaPlantMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/traffic/company/{id}", corNetwork.getShortcut(), traCompany.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

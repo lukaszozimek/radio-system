@@ -17,11 +17,11 @@ public interface PlayoutResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/play",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/play",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> playDeckUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> playDeckUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
@@ -33,11 +33,11 @@ public interface PlayoutResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/stop",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/stop",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> stopDeckUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> stopDeckUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
@@ -48,11 +48,11 @@ public interface PlayoutResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/pause",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/pause",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> pauseDeckUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> pauseDeckUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
@@ -63,11 +63,11 @@ public interface PlayoutResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/unload",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/unload",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> unloadDeckUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> unloadDeckUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
@@ -79,11 +79,11 @@ public interface PlayoutResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/mode/{modeType}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/playout/mode/{modeType}",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> switchPlayoutModeUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> switchPlayoutModeUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                     @ApiParam(value = "modeType", required = true) @PathVariable("modeType") String modeType);
 
@@ -94,11 +94,11 @@ public interface PlayoutResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/playlist/{date}/load",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/playout/playlist/{date}/load",
         produces = {"*/*"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<Void> loadPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> loadPlaylistUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                @ApiParam(value = "date", required = true) @PathVariable("date") String date);
 
@@ -109,11 +109,11 @@ public interface PlayoutResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/playlist/{date}/refresh",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/playout/playlist/{date}/refresh",
         produces = {"*/*"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<Void> refreshPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> refreshPlaylistUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                   @ApiParam(value = "date", required = true) @PathVariable("date") String date);
 

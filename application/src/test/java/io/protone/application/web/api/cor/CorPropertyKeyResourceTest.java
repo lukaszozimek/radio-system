@@ -108,7 +108,7 @@ public class CorPropertyKeyResourceTest {
         // Create the CorPropertyKey
         CorKeyDTO corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(corPropertyKey);
 
-        restCorPropertyKeyMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key/", corNetwork.getShortcut())
+        restCorPropertyKeyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPropertyKeyDTO)))
             .andExpect(status().isCreated());
@@ -131,7 +131,7 @@ public class CorPropertyKeyResourceTest {
         CorKeyDTO existingCorPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(existingCorPropertyKey);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorPropertyKeyMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key/", corNetwork.getShortcut())
+        restCorPropertyKeyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCorPropertyKeyDTO)))
             .andExpect(status().isBadRequest());
@@ -151,7 +151,7 @@ public class CorPropertyKeyResourceTest {
         // Create the CorPropertyKey, which fails.
         CorKeyDTO corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(corPropertyKey);
 
-        restCorPropertyKeyMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key/", corNetwork.getShortcut())
+        restCorPropertyKeyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPropertyKeyDTO)))
             .andExpect(status().isBadRequest());
@@ -167,7 +167,7 @@ public class CorPropertyKeyResourceTest {
         CorPropertyKey propertyKey = corPropertyKeyRepository.saveAndFlush(corPropertyKey.network(corNetwork));
 
         // Get all the corPropertyKeyList
-        restCorPropertyKeyMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key?sort=id,desc", corNetwork.getShortcut()))
+        restCorPropertyKeyMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(propertyKey.getId().intValue())))
@@ -181,7 +181,7 @@ public class CorPropertyKeyResourceTest {
         corPropertyKeyRepository.saveAndFlush(corPropertyKey.network(corNetwork));
 
         // Get the corPropertyKey
-        restCorPropertyKeyMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key/{id}", corNetwork.getShortcut(), corPropertyKey.getId()))
+        restCorPropertyKeyMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/{id}", corNetwork.getShortcut(), corPropertyKey.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(corPropertyKey.getId().intValue()))
@@ -192,7 +192,7 @@ public class CorPropertyKeyResourceTest {
     @Transactional
     public void getNonExistingCorPropertyKey() throws Exception {
         // Get the corPropertyKey
-        restCorPropertyKeyMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCorPropertyKeyMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -209,7 +209,7 @@ public class CorPropertyKeyResourceTest {
             .key(UPDATED_KEY);
         CorKeyDTO corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(updatedCorPropertyKey);
 
-        restCorPropertyKeyMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key", corNetwork.getShortcut())
+        restCorPropertyKeyMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPropertyKeyDTO)))
             .andExpect(status().isOk());
@@ -230,7 +230,7 @@ public class CorPropertyKeyResourceTest {
         CorKeyDTO corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(corPropertyKey);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorPropertyKeyMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key", corNetwork.getShortcut())
+        restCorPropertyKeyMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPropertyKeyDTO)))
             .andExpect(status().isCreated());
@@ -248,7 +248,7 @@ public class CorPropertyKeyResourceTest {
         int databaseSizeBeforeDelete = corPropertyKeyRepository.findAll().size();
 
         // Get the corPropertyKey
-        restCorPropertyKeyMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key/{id}", corNetwork.getShortcut(), corPropertyKey.getId())
+        restCorPropertyKeyMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/{id}", corNetwork.getShortcut(), corPropertyKey.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

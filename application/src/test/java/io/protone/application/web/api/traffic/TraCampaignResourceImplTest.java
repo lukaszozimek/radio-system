@@ -146,7 +146,7 @@ public class TraCampaignResourceImplTest {
         // Create the TraCampaign
         TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign.shortName(DEFAULT_SHORT_NAME).customer(crmAccount));
 
-        restTraCampaignMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
+        restTraCampaignMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/campaign", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
             .andExpect(status().isCreated());
@@ -172,7 +172,7 @@ public class TraCampaignResourceImplTest {
         TraCampaignDTO existingTraCampaignDTO = traCampaignMapper.DB2DTO(existingTraCampaign.shortName(DEFAULT_SHORT_NAME).customer(crmAccount));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraCampaignMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
+        restTraCampaignMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/campaign", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingTraCampaignDTO)))
             .andExpect(status().isBadRequest());
@@ -192,7 +192,7 @@ public class TraCampaignResourceImplTest {
         // Create the TraCampaign, which fails.
         TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign);
 
-        restTraCampaignMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
+        restTraCampaignMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/campaign", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
             .andExpect(status().isBadRequest());
@@ -211,7 +211,7 @@ public class TraCampaignResourceImplTest {
         // Create the TraCampaign, which fails.
         TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign);
 
-        restTraCampaignMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
+        restTraCampaignMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/campaign", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
             .andExpect(status().isBadRequest());
@@ -228,7 +228,7 @@ public class TraCampaignResourceImplTest {
         traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).customer(crmAccount));
 
         // Get all the traCampaignList
-        restTraCampaignMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/campaign?sort=id,desc", corNetwork.getShortcut()))
+        restTraCampaignMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/campaign?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(traCampaign.getId().intValue())))
@@ -245,7 +245,7 @@ public class TraCampaignResourceImplTest {
         traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).customer(crmAccount));
 
         // Get the traCampaign
-        restTraCampaignMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), traCampaign.getShortName()))
+        restTraCampaignMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), traCampaign.getShortName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(traCampaign.getId().intValue()))
@@ -259,7 +259,7 @@ public class TraCampaignResourceImplTest {
     @Transactional
     public void getNonExistingTraCampaign() throws Exception {
         // Get the traCampaign
-        restTraCampaignMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restTraCampaignMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -280,7 +280,7 @@ public class TraCampaignResourceImplTest {
             .prize(UPDATED_PRIZE);
         TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(updatedTraCampaign.customer(crmAccount));
 
-        restTraCampaignMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
+        restTraCampaignMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/traffic/campaign", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
             .andExpect(status().isOk());
@@ -305,7 +305,7 @@ public class TraCampaignResourceImplTest {
         TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign.customer(crmAccount));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraCampaignMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
+        restTraCampaignMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/traffic/campaign", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
             .andExpect(status().isCreated());
@@ -323,7 +323,7 @@ public class TraCampaignResourceImplTest {
         int databaseSizeBeforeDelete = traCampaignRepository.findAll().size();
 
         // Get the traCampaign
-        restTraCampaignMockMvc.perform(delete("/api/v1/network/{networkShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), "xxx")
+        restTraCampaignMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), "xxx")
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
@@ -344,7 +344,7 @@ public class TraCampaignResourceImplTest {
         traCampaignRepository.saveAndFlush(traCampaign.customer(crmAccount).network(corNetwork).customer(crmAccount));
 
         // Get all the traCampaignList
-        restTraCampaignMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/campaign/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))
+        restTraCampaignMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/campaign/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(traCampaign.getId().intValue())))

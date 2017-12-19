@@ -134,7 +134,7 @@ public class SchEventTemplateConfigurationResourceImplTest {
         // Create the SchEventTemplate
         SchEventTemplateDTO schEventTemplateDTO = schEventTemplateMapper.DB2DTO(schEventConfiguration);
 
-        restSchEventMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchEventMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/event/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schEventTemplateDTO)))
                 .andExpect(status().isCreated());
@@ -159,7 +159,7 @@ public class SchEventTemplateConfigurationResourceImplTest {
         SchEventTemplateDTO existingSchEventTemplateDTO = schEventTemplateMapper.DB2DTO(existingSchEvent);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSchEventMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchEventMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/event/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingSchEventTemplateDTO)))
                 .andExpect(status().isBadRequest());
@@ -176,7 +176,7 @@ public class SchEventTemplateConfigurationResourceImplTest {
          schEventRepository.saveAndFlush(schEventConfiguration.network(corNetwork).channel(corChannel));
 
         // Get all the traPlaylistList
-        restSchEventMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchEventMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/event/configuration?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schEventConfiguration.getId().intValue())))
@@ -194,7 +194,7 @@ public class SchEventTemplateConfigurationResourceImplTest {
         schEventRepository.saveAndFlush(schEventConfiguration.network(corNetwork).channel(corChannel).eventCategory(corDictionary));
 
         // Get all the traPlaylistList
-        restSchEventMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut(), TEST_EVENT_CATEGORY))
+        restSchEventMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/event/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut(), TEST_EVENT_CATEGORY))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schEventConfiguration.getId().intValue())))
@@ -210,7 +210,7 @@ public class SchEventTemplateConfigurationResourceImplTest {
           schEventRepository.saveAndFlush(schEventConfiguration.network(corNetwork).channel(corChannel));
 
         // Get the schEventConfiguration
-        restSchEventMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME))
+        restSchEventMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/event/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(schEventConfiguration.getId().intValue()))
@@ -222,7 +222,7 @@ public class SchEventTemplateConfigurationResourceImplTest {
     @Transactional
     public void getNonExistingSchEvent() throws Exception {
 
-        restSchEventMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
+        restSchEventMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/event/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -239,7 +239,7 @@ public class SchEventTemplateConfigurationResourceImplTest {
                 .name(UPDATED_NAME).shortName(UPDATED_SHORTNAME);
         SchEventTemplateDTO traPlaylistDTO = schEventTemplateMapper.DB2DTO(updatedSchEvent);
 
-        restSchEventMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchEventMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/event/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isOk());
@@ -261,7 +261,7 @@ public class SchEventTemplateConfigurationResourceImplTest {
         SchEventTemplateDTO traPlaylistDTO = schEventTemplateMapper.DB2DTO(schEventConfiguration);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSchEventMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchEventMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/event/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -279,7 +279,7 @@ public class SchEventTemplateConfigurationResourceImplTest {
         int databaseSizeBeforeDelete = schEventRepository.findAll().size();
 
         // Get the schEventConfiguration
-        restSchEventMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME)
+        restSchEventMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/event/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME)
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

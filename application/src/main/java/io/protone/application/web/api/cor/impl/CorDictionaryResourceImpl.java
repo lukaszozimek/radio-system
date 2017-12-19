@@ -44,15 +44,15 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
     private CorDictionaryRepository corDictionaryRepository;
 
     @Override
-    public ResponseEntity<CorDictionaryDTO> updateDictionaryValueUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CorDictionaryDTO> updateDictionaryValueUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                           @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                           @ApiParam(value = "type", required = true) @PathVariable("type") String type,
                                                                           @ApiParam(value = "corDictionaryDTO", required = true) @Valid @RequestBody CorDictionaryDTO corDictionaryDTO) throws URISyntaxException {
         log.debug("REST request to update CorDictionary : {}", corDictionaryDTO);
         if (corDictionaryDTO.getId() == null) {
-            return createDictionaryValueUsingPOST(networkShortcut, module, type, corDictionaryDTO);
+            return createDictionaryValueUsingPOST(organizationShortcut, module, type, corDictionaryDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CorDictionary corDictionary = corDictionaryMapper.DTO2DB(corDictionaryDTO, corNetwork, new CorModule().name(module), new CorDictionaryType().name(type));
         corDictionary = corDictionaryRepository.save(corDictionary);
         CorDictionaryDTO result = corDictionaryMapper.DB2DTO(corDictionary);
@@ -62,7 +62,7 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
     }
 
     @Override
-    public ResponseEntity<CorDictionaryDTO> createDictionaryValueUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CorDictionaryDTO> createDictionaryValueUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                            @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                            @ApiParam(value = "type", required = true) @PathVariable("type") String type,
                                                                            @ApiParam(value = "corDictionaryDTO", required = true) @Valid @RequestBody CorDictionaryDTO corDictionaryDTO) throws URISyntaxException {
@@ -70,16 +70,16 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
         if (corDictionaryDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorDictionary", "idexists", "A new CorDictionary cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CorDictionary corDictionary = corDictionaryMapper.DTO2DB(corDictionaryDTO, corNetwork, new CorModule().name(module), new CorDictionaryType().name(type));
         corDictionary = corDictionaryRepository.save(corDictionary);
         CorDictionaryDTO result = corDictionaryMapper.DB2DTO(corDictionary);
 
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/network/dictionary/" + module + "/" + type + "/" + result.getId())).body(result);
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/organization/dictionary/" + module + "/" + type + "/" + result.getId())).body(result);
     }
 
     @Override
-    public ResponseEntity<Void> deleteDictionaryValueUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteDictionaryValueUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                  @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                  @ApiParam(value = "type", required = true) @PathVariable("type") String type,
                                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
@@ -89,13 +89,13 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
     }
 
     @Override
-    public ResponseEntity<List<CorDictionaryDTO>> getAllDictionaryValueUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<CorDictionaryDTO>> getAllDictionaryValueUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                 @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                                 @ApiParam(value = "type", required = true) @PathVariable("type") String type,
                                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get CorDictionary : {}", networkShortcut);
+        log.debug("REST request to get CorDictionary : {}", organizationShortcut);
 
-        Slice<CorDictionary> corDictionaries = corDictionaryRepository.findSliceByCorDictionaryTypeAndCorModuleAndNetwork_Shortcut(type, module, networkShortcut, pagable);
+        Slice<CorDictionary> corDictionaries = corDictionaryRepository.findSliceByCorDictionaryTypeAndCorModuleAndNetwork_Shortcut(type, module, organizationShortcut, pagable);
         List<CorDictionaryDTO> corDictionaryDTOS = corDictionaryMapper.DBs2DTOs(corDictionaries.getContent());
         return Optional.ofNullable(corDictionaryDTOS)
                 .map(result -> new ResponseEntity<>(
@@ -106,14 +106,14 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
     }
 
     @Override
-    public ResponseEntity<CorDictionaryDTO> getDictionaryValueGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CorDictionaryDTO> getDictionaryValueGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                   @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                   @ApiParam(value = "type", required = true) @PathVariable("type") String type,
                                                                   @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get CorDictionary : {}", networkShortcut);
+        log.debug("REST request to get CorDictionary : {}", organizationShortcut);
 
 
-        CorDictionary corDictionary = corDictionaryRepository.findByIdAndCorDictionaryTypeAndCorModuleAndNetwork_Shortcut(id, type, module, networkShortcut);
+        CorDictionary corDictionary = corDictionaryRepository.findByIdAndCorDictionaryTypeAndCorModuleAndNetwork_Shortcut(id, type, module, organizationShortcut);
         CorDictionaryDTO corDictionaryDTO = corDictionaryMapper.DB2DTO(corDictionary);
         return Optional.ofNullable(corDictionaryDTO)
                 .map(result -> new ResponseEntity<>(

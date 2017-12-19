@@ -167,7 +167,7 @@ public class SchLogResourceImplTest {
 
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/withseparator/musicLog/20160703.MUS");
         MockMultipartFile multipartFile = new MockMultipartFile("files", "20160703.MUS", "application/octet-stream", inputStream);
-        restSchLogMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getSchLogConfiguration().getExtension())
+        restSchLogMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/{extension}", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getSchLogConfiguration().getExtension())
                 .file(multipartFile))
                 .andExpect(status().isCreated());
 
@@ -186,7 +186,7 @@ public class SchLogResourceImplTest {
         schLogRepository.saveAndFlush(schLog.fileItem(libFileItem).schLogConfiguration(schLogConfiguration).network(corNetwork).channel(corChannel));
 
         // Get all the traPlaylistList
-        restSchLogMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getSchLogConfiguration().getExtension()))
+        restSchLogMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/{extension}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getSchLogConfiguration().getExtension()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schLog.getId().intValue())))
@@ -204,7 +204,7 @@ public class SchLogResourceImplTest {
         int databaseSizeBeforeDelete = schLogRepository.findAll().size();
 
         // Get the schLog
-        restSchLogMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getSchLogConfiguration().getExtension(), schLog.getDate())
+        restSchLogMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/{extension}/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getSchLogConfiguration().getExtension(), schLog.getDate())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

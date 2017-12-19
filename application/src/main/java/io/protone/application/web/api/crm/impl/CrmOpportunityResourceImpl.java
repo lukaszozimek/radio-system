@@ -42,12 +42,12 @@ public class CrmOpportunityResourceImpl implements CrmOpportunityResource {
     private CrmOpportunityMapper crmOpportunityMapper;
 
     @Override
-    public ResponseEntity<CrmOpportunityDTO> updateOpportunityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmOpportunityDTO", required = true) @Valid @RequestBody CrmOpportunityDTO crmOpportunityDTO) throws URISyntaxException {
+    public ResponseEntity<CrmOpportunityDTO> updateOpportunityUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "crmOpportunityDTO", required = true) @Valid @RequestBody CrmOpportunityDTO crmOpportunityDTO) throws URISyntaxException {
         log.debug("REST request to update CorNetwork : {}", crmOpportunityDTO);
         if (crmOpportunityDTO.getId() == null) {
-            return createOpportunityUsingPOST(networkShortcut, crmOpportunityDTO);
+            return createOpportunityUsingPOST(organizationShortcut, crmOpportunityDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
         CrmOpportunity crmOpportunity = crmOpportunityMapper.DTO2DB(crmOpportunityDTO, corNetwork);
         CrmOpportunity entity = crmOpportunityService.saveOpportunity(crmOpportunity);
@@ -61,35 +61,35 @@ public class CrmOpportunityResourceImpl implements CrmOpportunityResource {
     }
 
     @Override
-    public ResponseEntity<CrmOpportunityDTO> createOpportunityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmOpportunityDTO", required = true) @Valid @RequestBody CrmOpportunityDTO crmOpportunityDTO) throws URISyntaxException {
-        log.debug("REST request to saveCorContact CrmOpportunity : {}, for Network: {}", crmOpportunityDTO, networkShortcut);
+    public ResponseEntity<CrmOpportunityDTO> createOpportunityUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "crmOpportunityDTO", required = true) @Valid @RequestBody CrmOpportunityDTO crmOpportunityDTO) throws URISyntaxException {
+        log.debug("REST request to saveCorContact CrmOpportunity : {}, for Network: {}", crmOpportunityDTO, organizationShortcut);
         if (crmOpportunityDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmOpportunity", "idexists", "A new CrmOpportunity cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
         CrmOpportunity crmOpportunity = crmOpportunityMapper.DTO2DB(crmOpportunityDTO, corNetwork);
         CrmOpportunity entity = crmOpportunityService.saveOpportunity(crmOpportunity);
         CrmOpportunityDTO response = crmOpportunityMapper.DB2DTO(entity);
 
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/opportunity/" + response.getName()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/crm/opportunity/" + response.getName()))
                 .body(response);
     }
 
     @Override
-    public ResponseEntity<List<CrmOpportunityThinDTO>> getAllOpportunitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<CrmOpportunityThinDTO>> getAllOpportunitiesUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all CrmOpportunity, for Network: {}", networkShortcut);
-        Slice<CrmOpportunity> entity = crmOpportunityService.getAllOpportunity(networkShortcut, pagable);
+        log.debug("REST request to get all CrmOpportunity, for Network: {}", organizationShortcut);
+        Slice<CrmOpportunity> entity = crmOpportunityService.getAllOpportunity(organizationShortcut, pagable);
         List<CrmOpportunityThinDTO> response = crmOpportunityMapper.DBs2ThinDTOs(entity.getContent());
 
         return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(entity)).body(response);
     }
 
     @Override
-    public ResponseEntity<CrmOpportunityDTO> getOpportunityUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        log.debug("REST request to get CrmOpportunity : {}, for Network: {}", shortName, networkShortcut);
-        CrmOpportunity entity = crmOpportunityService.getOpportunity(shortName, networkShortcut);
+    public ResponseEntity<CrmOpportunityDTO> getOpportunityUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+        log.debug("REST request to get CrmOpportunity : {}, for Network: {}", shortName, organizationShortcut);
+        CrmOpportunity entity = crmOpportunityService.getOpportunity(shortName, organizationShortcut);
         CrmOpportunityDTO response = crmOpportunityMapper.DB2DTO(entity);
 
         return Optional.ofNullable(response)
@@ -100,9 +100,9 @@ public class CrmOpportunityResourceImpl implements CrmOpportunityResource {
     }
 
     @Override
-    public ResponseEntity<Void> deleteOpportunityUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        log.debug("REST request to delete CrmOpportunity : {}, for Network: {}", shortName, networkShortcut);
-        crmOpportunityService.deleteOpportunity(shortName, networkShortcut);
+    public ResponseEntity<Void> deleteOpportunityUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+        log.debug("REST request to delete CrmOpportunity : {}, for Network: {}", shortName, organizationShortcut);
+        crmOpportunityService.deleteOpportunity(shortName, organizationShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmOpportunity", shortName.toString())).build();
     }
 }

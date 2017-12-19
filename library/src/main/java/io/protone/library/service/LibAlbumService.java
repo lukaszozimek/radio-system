@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
-
 import java.io.IOException;
 import java.util.Set;
 
@@ -89,17 +88,17 @@ public class LibAlbumService {
     }
 
     @Transactional
-    public Slice<LibAlbum> findAlbums(String networkShortcut, Pageable pagable) {
-        return libAlbumRepository.findSliceByNetwork_Shortcut(networkShortcut, pagable);
+    public Slice<LibAlbum> findAlbums(String organizationShortcut, Pageable pagable) {
+        return libAlbumRepository.findSliceByNetwork_Shortcut(organizationShortcut, pagable);
     }
 
     @Transactional
-    public void deleteAlbum(Long id, String networkShortcut) {
-        libAlbumRepository.deleteByIdAndNetwork_Shortcut(id, networkShortcut);
+    public void deleteAlbum(Long id, String organizationShortcut) {
+        libAlbumRepository.deleteByIdAndNetwork_Shortcut(id, organizationShortcut);
     }
 
     @Transactional
-    public LibAlbum findAlbum(String networkShortcut, Long id) {
-        return libAlbumRepository.findOneByIdAndNetwork_Shortcut(id, networkShortcut);
+    public LibAlbum findAlbum(String organizationShortcut, Long id) {
+        return libAlbumRepository.findOneByIdAndNetwork_Shortcut(id, organizationShortcut);
     }
 }

@@ -30,11 +30,11 @@ public interface SchClockTemplateResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchClockTemplateDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchClockTemplateDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchClockTemplateDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<SchClockTemplateDTO> creatSchedulerClockForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchClockTemplateDTO> creatSchedulerClockForChannelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                @ApiParam(value = "clockDTO", required = true) @Valid @RequestBody SchClockTemplateDTO clockDTO) throws URISyntaxException;
 
@@ -44,10 +44,10 @@ public interface SchClockTemplateResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchClockTemplateThinDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchClockTemplateThinDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchClockTemplateThinDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<SchClockTemplateThinDTO>> getAllSchedulerClockForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<SchClockTemplateThinDTO>> getAllSchedulerClockForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -57,10 +57,10 @@ public interface SchClockTemplateResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchClockTemplateThinDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchClockTemplateThinDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchClockTemplateThinDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/category/{name}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/category/{name}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<SchClockTemplateThinDTO>> getAllSchedulerClockForChannelGroupedByCategoryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<SchClockTemplateThinDTO>> getAllSchedulerClockForChannelGroupedByCategoryUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                           @ApiParam(value = "name", required = true) @PathVariable("name") String name,
                                                                                                           @ApiParam(value = "pagable", required = true) Pageable pagable);
@@ -71,10 +71,10 @@ public interface SchClockTemplateResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchClockTemplateDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchClockTemplateDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchClockTemplateDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SchClockTemplateDTO> getSchedulerClockForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchClockTemplateDTO> getSchedulerClockForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName
     );
@@ -87,11 +87,11 @@ public interface SchClockTemplateResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchClockTemplateDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchClockTemplateDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchClockTemplateDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<SchClockTemplateDTO> updateSchedulerClockForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchClockTemplateDTO> updateSchedulerClockForChannelUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                @ApiParam(value = "clockDTO", required = true) @Valid @RequestBody SchClockTemplateDTO clockDTO) throws URISyntaxException;
 
@@ -103,10 +103,10 @@ public interface SchClockTemplateResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
             @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteSchedulerClockForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteSchedulerClockForChannelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                    @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName
     );

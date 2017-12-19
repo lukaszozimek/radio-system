@@ -57,11 +57,11 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
     private CorChannelService corChannelService;
 
     @Override
-    public ResponseEntity<List<SchScheduleThinDTO>> getAllSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<SchScheduleThinDTO>> getAllSchedulerScheduleForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all SchSchedule, for Channel {}, Network: {}", channelShortcut, networkShortcut);
-        Slice<SchSchedule> entity = schScheduleService.findSchSchedulesForNetworkAndChannel(networkShortcut, channelShortcut, pagable);
+        log.debug("REST request to get all SchSchedule, for Channel {}, Network: {}", channelShortcut, organizationShortcut);
+        Slice<SchSchedule> entity = schScheduleService.findSchSchedulesForNetworkAndChannel(organizationShortcut, channelShortcut, pagable);
         List<SchScheduleThinDTO> response = schScheduleMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -74,12 +74,12 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
     }
 
     @Override
-    public ResponseEntity<List<SchScheduleThinDTO>> getAllSchedulerScheduleFromToDateForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<SchScheduleThinDTO>> getAllSchedulerScheduleFromToDateForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                         @ApiParam(value = "from", required = true) @PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
                                                                                                         @ApiParam(value = "to", required = true) @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-        log.debug("REST request to get all SchSchedule, for Channel {}, Network: {}", channelShortcut, networkShortcut);
-        List<SchSchedule> entity = schScheduleService.findSchSchedulesForNetworkAndChannelBetweenDates(networkShortcut, channelShortcut, from, to);
+        log.debug("REST request to get all SchSchedule, for Channel {}, Network: {}", channelShortcut, organizationShortcut);
+        List<SchSchedule> entity = schScheduleService.findSchSchedulesForNetworkAndChannelBetweenDates(organizationShortcut, channelShortcut, from, to);
         List<SchScheduleThinDTO> response = schScheduleMapper.DBs2ThinDTOs(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -89,37 +89,37 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
     }
 
     @Override
-    public ResponseEntity<SchScheduleDTO> creatSchedulerScheduleForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchScheduleDTO> creatSchedulerScheduleForChannelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                     @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchScheduleDTO schScheduleDTO) throws URISyntaxException {
-        log.debug("REST request to saveScheduleDTO SchSchedule: {}, for Channel {} Network: {}", schScheduleDTO, channelShortcut, networkShortcut);
+        log.debug("REST request to saveScheduleDTO SchSchedule: {}, for Channel {} Network: {}", schScheduleDTO, channelShortcut, organizationShortcut);
         if (schScheduleDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SchSchedule", "idexists", "A new SchSchedule cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         SchSchedule schSchedule = schScheduleMapper.DTO2DB(schScheduleDTO, corNetwork, corChannel);
         SchSchedule entity = schScheduleService.saveSchedule(schSchedule);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
                 .body(response);
     }
 
     @Override
-    public ResponseEntity<Void> deleteSchedulerScheduleForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteSchedulerScheduleForChannelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                              @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        log.debug("REST request to delete SchSchedule : {}, for Network: {}", date, networkShortcut);
-        schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
+        log.debug("REST request to delete SchSchedule : {}, for Network: {}", date, organizationShortcut);
+        schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(organizationShortcut, channelShortcut, date);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("schSchedule", date.toString())).build();
     }
 
     @Override
-    public ResponseEntity<SchScheduleDTO> getSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchScheduleDTO> getSchedulerScheduleForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        SchScheduleDTO response = schScheduleService.findSchScheduleForNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
+        SchScheduleDTO response = schScheduleService.findSchScheduleForNetworkAndChannelAndDate(organizationShortcut, channelShortcut, date);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
@@ -129,17 +129,17 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
     }
 
     @Override
-    public ResponseEntity<SchScheduleDTO> updateSchedulerScheduleForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchScheduleDTO> updateSchedulerScheduleForChannelUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                     @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchScheduleDTO schScheduleDTO) throws URISyntaxException {
-        log.debug("REST request to saveScheduleDTO SchSchedule : {}, for Channel {} Network: {}", schScheduleDTO, channelShortcut, networkShortcut);
+        log.debug("REST request to saveScheduleDTO SchSchedule : {}, for Channel {} Network: {}", schScheduleDTO, channelShortcut, organizationShortcut);
 
         if (schScheduleDTO.getId() == null) {
-            return creatSchedulerScheduleForChannelUsingPOST(networkShortcut, channelShortcut, schScheduleDTO);
+            return creatSchedulerScheduleForChannelUsingPOST(organizationShortcut, channelShortcut, schScheduleDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         SchSchedule schSchedule = schScheduleMapper.DTO2DB(schScheduleDTO, corNetwork, corChannel);
         SchSchedule entity = schScheduleService.saveSchedule(schSchedule);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
@@ -147,27 +147,27 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
     }
 
     @Override
-    public ResponseEntity<SchScheduleDTO> buildSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchScheduleDTO> buildSchedulerScheduleForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                                                    @ApiParam(value = "gridShortName", required = true) @PathVariable("gridShortName") String gridShortName) throws Exception {
-        SchSchedule currentSchedule = schScheduleService.findSchScheduleEntityForNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
+        SchSchedule currentSchedule = schScheduleService.findSchScheduleEntityForNetworkAndChannelAndDate(organizationShortcut, channelShortcut, date);
         if (currentSchedule != null) {
-            schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
+            schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(organizationShortcut, channelShortcut, date);
         }
-        SchSchedule entity = schScheduleServiceWrapper.buildSchedule(date, gridShortName, networkShortcut, channelShortcut);
+        SchSchedule entity = schScheduleServiceWrapper.buildSchedule(date, gridShortName, organizationShortcut, channelShortcut);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
                 .body(response);
     }
 
     @Override
-    public ResponseEntity<SchScheduleDTO> buildDefaultSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchScheduleDTO> buildDefaultSchedulerScheduleForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                           @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) throws URISyntaxException {
-        SchSchedule entity = schScheduleServiceWrapper.buildDefaultSchedule(date, networkShortcut, channelShortcut);
+        SchSchedule entity = schScheduleServiceWrapper.buildDefaultSchedule(date, organizationShortcut, channelShortcut);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
                 .body(response);
     }
 }

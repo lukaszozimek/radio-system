@@ -17,11 +17,11 @@ public interface PlayoutShotResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/play",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/play",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> playShotUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> playShotUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
@@ -33,11 +33,11 @@ public interface PlayoutShotResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/stop",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/stop",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> stopShotUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> stopShotUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
@@ -49,11 +49,11 @@ public interface PlayoutShotResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/pause",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/pause",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> pauseShotUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> pauseShotUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
@@ -65,11 +65,11 @@ public interface PlayoutShotResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/unload",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/unload",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> unloadShotUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> unloadShotUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 

@@ -24,11 +24,11 @@ public interface CorDictionaryPeopleResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorPersonDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorPersonDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorPersonDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/people",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<CorPersonDTO> updatePersonUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorPersonDTO> updatePersonUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                       @ApiParam(value = "personDTO", required = true) @Valid @RequestBody CorPersonDTO personDTO) throws URISyntaxException;
 
     @ApiOperation(value = "DTO2DB", notes = "", response = CorPersonDTO.class, tags = {"CORE"})
@@ -38,11 +38,11 @@ public interface CorDictionaryPeopleResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorPersonDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorPersonDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorPersonDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/people",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<CorPersonDTO> createPersonUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorPersonDTO> createPersonUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                        @ApiParam(value = "personDTO", required = true) @Valid @RequestBody CorPersonDTO personDTO) throws URISyntaxException;
 
 
@@ -52,10 +52,10 @@ public interface CorDictionaryPeopleResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/people/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deletePersonUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deletePersonUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -65,10 +65,10 @@ public interface CorDictionaryPeopleResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorPersonDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorPersonDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorPersonDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/people",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CorPersonDTO>> getAllPeopleUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<CorPersonDTO>> getAllPeopleUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                             @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -78,10 +78,10 @@ public interface CorDictionaryPeopleResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorPersonDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorPersonDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorPersonDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/people/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/people/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<CorPersonDTO> getPersonUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorPersonDTO> getPersonUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                    @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 

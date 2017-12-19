@@ -165,7 +165,7 @@ public class CorUserConfigurationResourceTest {
         MockMultipartFile jsonFile = new MockMultipartFile("corUserDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(corDictionaryDTO));
 
-        restCorUserMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
+        restCorUserMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/configuration/user", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -193,7 +193,7 @@ public class CorUserConfigurationResourceTest {
                 "application/json", TestUtil.convertObjectToJsonBytes(existingCorDictionaryDTO));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorUserMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
+        restCorUserMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/configuration/user", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -210,7 +210,7 @@ public class CorUserConfigurationResourceTest {
         corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
 
         // Get all the corDictionaryList
-        restCorUserMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/user?sort=id,desc", corNetwork.getShortcut()))
+        restCorUserMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/user?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(corUser.getId().intValue())))
@@ -225,7 +225,7 @@ public class CorUserConfigurationResourceTest {
         corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
 
         // Get the corUser
-        restCorUserMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/user/{login}", corNetwork.getShortcut(), corUser.getLogin()))
+        restCorUserMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/user/{login}", corNetwork.getShortcut(), corUser.getLogin()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(corUser.getId().intValue()))
@@ -236,7 +236,7 @@ public class CorUserConfigurationResourceTest {
     @Transactional
     public void getNonExistingCorUser() throws Exception {
         // Get the corUser
-        restCorUserMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/user/{login}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCorUserMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/user/{login}", corNetwork.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -255,7 +255,7 @@ public class CorUserConfigurationResourceTest {
                 .passwordhash(UPDATED_PASSWORD_HASH);
         CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser1);
 
-        restCorUserMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
+        restCorUserMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/user", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corDictionaryDTO)))
                 .andExpect(status().isOk());
@@ -283,7 +283,7 @@ public class CorUserConfigurationResourceTest {
         MockMultipartFile jsonFile = new MockMultipartFile("corUserDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(corDictionaryDTO));
 
-        restCorUserMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
+        restCorUserMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/configuration/user", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -310,7 +310,7 @@ public class CorUserConfigurationResourceTest {
         corDictionaryDTO.setEmail("lfllflflflflf@com.pl");
         corDictionaryDTO.setId(null);
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorUserMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
+        restCorUserMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/user", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corDictionaryDTO)))
                 .andExpect(status().isCreated());
@@ -329,7 +329,7 @@ public class CorUserConfigurationResourceTest {
         int databaseSizeBeforeDelete = corUserRepository.findAll().size();
 
         // Get the corUser
-        restCorUserMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/user/{login}", corNetwork.getShortcut(), corUser.getLogin())
+        restCorUserMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/user/{login}", corNetwork.getShortcut(), corUser.getLogin())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

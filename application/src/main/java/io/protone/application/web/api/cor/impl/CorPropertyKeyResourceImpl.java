@@ -42,9 +42,9 @@ public class CorPropertyKeyResourceImpl implements CorPropertyKeyResource {
     private CorPropertyKeyMapper corPropertyKeyMapper;
 
     @Override
-    public ResponseEntity<CorKeyDTO> getPropertyKeyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "keyName", required = true) @PathVariable("id") String id) {
+    public ResponseEntity<CorKeyDTO> getPropertyKeyUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "keyName", required = true) @PathVariable("id") String id) {
         log.debug("REST request to get CorPropertyKey : {}", id);
-        CorPropertyKey cORPropertyKey = corPropertyKeyRepository.findByIdAndNetwork_Shortcut(Long.parseLong(id), networkShortcut);
+        CorPropertyKey cORPropertyKey = corPropertyKeyRepository.findByIdAndNetwork_Shortcut(Long.parseLong(id), organizationShortcut);
         CorKeyDTO cORPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(cORPropertyKey);
         return Optional.ofNullable(cORPropertyKeyDTO)
                 .map(result -> new ResponseEntity<>(
@@ -54,18 +54,18 @@ public class CorPropertyKeyResourceImpl implements CorPropertyKeyResource {
     }
 
     @Override
-    public ResponseEntity<Void> deletePropertyKeyUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "keyName", required = true) @PathVariable("id") String id) {
+    public ResponseEntity<Void> deletePropertyKeyUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "keyName", required = true) @PathVariable("id") String id) {
         log.debug("REST request to delete CorPropertyKey : {}", id);
-        corPropertyKeyRepository.deleteByIdAndNetwork_Shortcut(Long.parseLong(id), networkShortcut);
+        corPropertyKeyRepository.deleteByIdAndNetwork_Shortcut(Long.parseLong(id), organizationShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cORPropertyKey", id.toString())).build();
 
     }
 
     @Override
-    public ResponseEntity<List<CorKeyDTO>> getAllPropertyKeysUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<CorKeyDTO>> getAllPropertyKeysUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CorPropertyKeys");
-        Slice<CorPropertyKey> cORPropertyKeys = corPropertyKeyRepository.findSliceByNetwork_Shortcut(networkShortcut, pagable);
+        Slice<CorPropertyKey> cORPropertyKeys = corPropertyKeyRepository.findSliceByNetwork_Shortcut(organizationShortcut, pagable);
         List<CorKeyDTO> corKeyDTOList = corPropertyKeyMapper.DBs2DTOs(cORPropertyKeys.getContent());
         return Optional.ofNullable(corKeyDTOList)
                 .map(result -> new ResponseEntity<>(
@@ -77,12 +77,12 @@ public class CorPropertyKeyResourceImpl implements CorPropertyKeyResource {
 
 
     @Override
-    public ResponseEntity<CorKeyDTO> updatePropertyKeyUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "propertyKeyDTO", required = true) @Valid @RequestBody CorKeyDTO propertyKeyDTO) throws URISyntaxException {
+    public ResponseEntity<CorKeyDTO> updatePropertyKeyUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "propertyKeyDTO", required = true) @Valid @RequestBody CorKeyDTO propertyKeyDTO) throws URISyntaxException {
         log.debug("REST request to update CorPropertyKey : {}", propertyKeyDTO);
         if (propertyKeyDTO.getId() == null) {
-            return createPropertyKeyUsingPOST(networkShortcut, propertyKeyDTO);
+            return createPropertyKeyUsingPOST(organizationShortcut, propertyKeyDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CorPropertyKey cORPropertyKey = corPropertyKeyMapper.DTO2DB(propertyKeyDTO, corNetwork);
         cORPropertyKey = corPropertyKeyRepository.save(cORPropertyKey);
         CorKeyDTO result = corPropertyKeyMapper.DB2DTO(cORPropertyKey);
@@ -91,16 +91,16 @@ public class CorPropertyKeyResourceImpl implements CorPropertyKeyResource {
     }
 
     @Override
-    public ResponseEntity<CorKeyDTO> createPropertyKeyUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "propertyKeyDTO", required = true) @Valid @RequestBody CorKeyDTO propertyKeyDTO) throws URISyntaxException {
+    public ResponseEntity<CorKeyDTO> createPropertyKeyUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "propertyKeyDTO", required = true) @Valid @RequestBody CorKeyDTO propertyKeyDTO) throws URISyntaxException {
         log.debug("REST request to saveCorContact CorPropertyKey : {}", propertyKeyDTO);
         if (propertyKeyDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORPropertyKey", "idexists", "A new cORPropertyKey cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CorPropertyKey cORPropertyKey = corPropertyKeyMapper.DTO2DB(propertyKeyDTO, corNetwork);
         cORPropertyKey = corPropertyKeyRepository.save(cORPropertyKey);
         CorKeyDTO cORPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(cORPropertyKey);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/network/dictionary/property/key" + cORPropertyKeyDTO.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/organization/dictionary/property/key" + cORPropertyKeyDTO.getId()))
                 .headers(HeaderUtil.createEntityUpdateAlert("cORPropertyKey", cORPropertyKeyDTO.getId().toString()))
                 .body(cORPropertyKeyDTO);
     }

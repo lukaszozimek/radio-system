@@ -65,17 +65,17 @@ public class LibArtistService {
     }
 
     @Transactional
-    public Slice<LibArtist> findArtists(String networkShortcut, Pageable pagable) {
-        return libArtistRepository.findSliceByNetwork_Shortcut(networkShortcut, pagable);
+    public Slice<LibArtist> findArtists(String organizationShortcut, Pageable pagable) {
+        return libArtistRepository.findSliceByNetwork_Shortcut(organizationShortcut, pagable);
     }
 
     @Transactional
-    public void deleteArtist(Long id, String networkShortcut) {
-        libArtistRepository.deleteByIdAndNetwork_Shortcut(id, networkShortcut);
+    public void deleteArtist(Long id, String organizationShortcut) {
+        libArtistRepository.deleteByIdAndNetwork_Shortcut(id, organizationShortcut);
     }
 
     @Transactional
-    public LibArtist findArtist(String networkShortcut, Long id) {
-        return libArtistRepository.findOneByIdAndNetwork_Shortcut(id, networkShortcut);
+    public LibArtist findArtist(String organizationShortcut, Long id) {
+        return libArtistRepository.findOneByIdAndNetwork_Shortcut(id, organizationShortcut);
     }
 }

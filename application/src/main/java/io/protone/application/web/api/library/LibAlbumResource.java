@@ -26,11 +26,11 @@ public interface LibAlbumResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibAlbumDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibAlbumDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibAlbumDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/album",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/album",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<LibAlbumDTO> updateAlbumWithOutCoverUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibAlbumDTO> updateAlbumWithOutCoverUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                 @ApiParam(value = "libraryDTO", required = true) @Valid @RequestBody LibAlbumDTO libraryDTO) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException;
 
 
@@ -41,10 +41,10 @@ public interface LibAlbumResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibAlbumDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibAlbumDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibAlbumDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/album/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/album/{id}",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<LibAlbumDTO> updateAlbumWithCoverUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibAlbumDTO> updateAlbumWithCoverUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id,
                                                               @ApiParam(value = "libraryDTO", required = true) @Valid @RequestPart("libraryDTO") LibAlbumDTO libraryDTO,
                                                               @ApiParam(value = "cover") @RequestPart("cover") MultipartFile cover
@@ -58,10 +58,10 @@ public interface LibAlbumResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibAlbumDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibAlbumDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibAlbumDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/album",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/album",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<LibAlbumDTO>> getAllAlbumsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<LibAlbumDTO>> getAllAlbumsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                            @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -72,10 +72,10 @@ public interface LibAlbumResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibAlbumDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibAlbumDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibAlbumDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/album",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/album",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<LibAlbumDTO> createAlbumUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibAlbumDTO> createAlbumUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                      @ApiParam(value = "libraryDTO", required = true) @Valid @RequestPart("libraryDTO") LibAlbumDTO libraryDTO,
                                                      @ApiParam(value = "cover") @RequestPart("cover") MultipartFile cover
     ) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException;
@@ -87,10 +87,10 @@ public interface LibAlbumResource {
             @ApiResponse(code = 204, message = "No Content", response = Void.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/album/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/album/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteAlbumUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteAlbumUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                 @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -100,10 +100,10 @@ public interface LibAlbumResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibAlbumDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibAlbumDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibAlbumDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/album/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/album/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<LibAlbumDTO> getAlbumUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibAlbumDTO> getAlbumUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 }

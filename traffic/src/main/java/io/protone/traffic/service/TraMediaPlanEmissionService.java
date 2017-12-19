@@ -29,7 +29,7 @@ public class TraMediaPlanEmissionService {
         return traEmissionRepository.saveAndFlush(traEmission);
     }
     @Transactional
-    public List<TraMediaPlanEmission> findEmissionsByNetworkShortcutAndChannelShortcutAndMediaplanId(String netwrokShorcut, String corChannel, Long mediaItemId) {
+    public List<TraMediaPlanEmission> findEmissionsByorganizationShortcutAndChannelShortcutAndMediaplanId(String netwrokShorcut, String corChannel, Long mediaItemId) {
         return traEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(netwrokShorcut, corChannel, mediaItemId);
     }
     @Transactional

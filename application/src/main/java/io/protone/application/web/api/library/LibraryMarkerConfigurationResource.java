@@ -25,11 +25,11 @@ public interface LibraryMarkerConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = LibMarkerConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = LibMarkerConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibMarkerConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/library/marker",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/library/marker",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<LibMarkerConfigurationDTO> updateMarkerConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibMarkerConfigurationDTO> updateMarkerConfigurationUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                 @ApiParam(value = "markerConfigurationDTO", required = true) @Valid @RequestBody LibMarkerConfigurationDTO markerConfigurationPT) throws URISyntaxException;
 
 
@@ -40,11 +40,11 @@ public interface LibraryMarkerConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = LibMarkerConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = LibMarkerConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibMarkerConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/library/marker",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/library/marker",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<LibMarkerConfigurationDTO> createMarkerConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibMarkerConfigurationDTO> createMarkerConfigurationUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                  @ApiParam(value = "markerConfigurationPT", required = true) @Valid @RequestBody LibMarkerConfigurationDTO markerConfigurationPT) throws URISyntaxException;
 
 
@@ -54,10 +54,10 @@ public interface LibraryMarkerConfigurationResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/library/marker/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/library/marker/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteMarkerConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteMarkerConfigurationUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                               @ApiParam(value = "id", required = true) @PathVariable("id") String id);
 
 
@@ -67,10 +67,10 @@ public interface LibraryMarkerConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = LibMarkerConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = LibMarkerConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibMarkerConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/library/marker",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/library/marker",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<LibMarkerConfigurationDTO>> getAllMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<LibMarkerConfigurationDTO>> getAllMarkerConfigurationUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -80,10 +80,10 @@ public interface LibraryMarkerConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = LibMarkerConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = LibMarkerConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibMarkerConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/library/marker/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/library/marker/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<LibMarkerConfigurationDTO> getMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibMarkerConfigurationDTO> getMarkerConfigurationUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                              @ApiParam(value = "id", required = true) @PathVariable("id") String id);
 
 

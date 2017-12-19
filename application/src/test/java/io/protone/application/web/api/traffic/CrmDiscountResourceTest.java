@@ -7,10 +7,10 @@ import io.protone.application.web.api.crm.impl.CrmDiscountResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
-import io.protone.crm.domain.CrmDiscount;
-import io.protone.crm.repostiory.CrmDiscountRepository;
 import io.protone.crm.api.dto.CrmDiscountDTO;
+import io.protone.crm.domain.CrmDiscount;
 import io.protone.crm.mapper.CrmDiscountMapper;
+import io.protone.crm.repostiory.CrmDiscountRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -123,7 +123,7 @@ public class CrmDiscountResourceTest {
         // Create the TraDiscount
         CrmDiscountDTO crmDiscountDTO = crmDiscountMapper.DB2DTO(traDiscount);
 
-        restTraDiscountMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/crm/discount", corNetwork.getShortcut())
+        restTraDiscountMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/crm/discount", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmDiscountDTO)))
             .andExpect(status().isCreated());
@@ -148,7 +148,7 @@ public class CrmDiscountResourceTest {
         CrmDiscountDTO existingCrmDiscountDTO = crmDiscountMapper.DB2DTO(existingTraDiscount);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraDiscountMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/crm/discount", corNetwork.getShortcut())
+        restTraDiscountMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/crm/discount", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCrmDiscountDTO)))
             .andExpect(status().isBadRequest());
@@ -165,7 +165,7 @@ public class CrmDiscountResourceTest {
         traDiscountRepository.saveAndFlush(traDiscount.network(corNetwork));
 
         // Get all the traDiscountList
-        restTraDiscountMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/crm/discount?sort=id,desc", corNetwork.getShortcut()))
+        restTraDiscountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/crm/discount?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(traDiscount.getId().intValue())))
@@ -181,7 +181,7 @@ public class CrmDiscountResourceTest {
         traDiscountRepository.saveAndFlush(traDiscount.network(corNetwork));
 
         // Get the traDiscount
-        restTraDiscountMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/crm/discount/{id}", corNetwork.getShortcut(), traDiscount.getId()))
+        restTraDiscountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/crm/discount/{id}", corNetwork.getShortcut(), traDiscount.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(traDiscount.getId().intValue()))
@@ -194,7 +194,7 @@ public class CrmDiscountResourceTest {
     @Transactional
     public void getNonExistingTraDiscount() throws Exception {
         // Get the traDiscount
-        restTraDiscountMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/crm/discount/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restTraDiscountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/crm/discount/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -213,7 +213,7 @@ public class CrmDiscountResourceTest {
             .discount(UPDATED_DISCOUNT);
         CrmDiscountDTO crmDiscountDTO = crmDiscountMapper.DB2DTO(traDiscount);
 
-        restTraDiscountMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/crm/discount", corNetwork.getShortcut())
+        restTraDiscountMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/crm/discount", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmDiscountDTO)))
             .andExpect(status().isOk());
@@ -236,7 +236,7 @@ public class CrmDiscountResourceTest {
         CrmDiscountDTO crmDiscountDTO = crmDiscountMapper.DB2DTO(traDiscount);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraDiscountMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/crm/discount", corNetwork.getShortcut())
+        restTraDiscountMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/crm/discount", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmDiscountDTO)))
             .andExpect(status().isCreated());
@@ -254,7 +254,7 @@ public class CrmDiscountResourceTest {
         int databaseSizeBeforeDelete = traDiscountRepository.findAll().size();
 
         // Get the traDiscount
-        restTraDiscountMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/crm/discount/{id}", corNetwork.getShortcut(), traDiscount.getId())
+        restTraDiscountMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/crm/discount/{id}", corNetwork.getShortcut(), traDiscount.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

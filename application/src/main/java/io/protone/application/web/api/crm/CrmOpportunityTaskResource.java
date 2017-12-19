@@ -24,10 +24,10 @@ public interface CrmOpportunityTaskResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/opportunity/{shortName}/task",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CrmTaskDTO>> getAllOpportunityActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<CrmTaskDTO>> getAllOpportunityActivitiesUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -39,11 +39,11 @@ public interface CrmOpportunityTaskResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/opportunity/{shortName}/task",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<CrmTaskDTO> updateOpportunityActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CrmTaskDTO> updateOpportunityActivityUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                  @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                  @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
 
@@ -55,11 +55,11 @@ public interface CrmOpportunityTaskResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/opportunity/{shortName}/task",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<CrmTaskDTO> createOpportunityActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CrmTaskDTO> createOpportunityActivityUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                   @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                   @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
 
@@ -69,10 +69,10 @@ public interface CrmOpportunityTaskResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/opportunity/{shortName}/task/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteOpportunityActivityUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteOpportunityActivityUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                               @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
@@ -83,10 +83,10 @@ public interface CrmOpportunityTaskResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/opportunity/{shortName}/task/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<CrmTaskDTO> getOpportunityActivityUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CrmTaskDTO> getOpportunityActivityUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                               @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 

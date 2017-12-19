@@ -2,7 +2,6 @@ package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibMediaItem;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -54,9 +53,6 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<SchAttachmentTemplate> attachments = new ArrayList<>();
 
-    @ManyToOne
-    @PodamExclude
-    protected CorNetwork network;
 
     @ManyToOne
     @PodamExclude
@@ -145,18 +141,6 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
-    public SchEmissionTemplate network(CorNetwork network) {
-        this.network = network;
-        return this;
-    }
 
     public CorChannel getChannel() {
         return channel;

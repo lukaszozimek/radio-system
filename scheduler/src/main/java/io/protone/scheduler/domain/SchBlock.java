@@ -2,7 +2,6 @@ package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -53,10 +52,6 @@ public class SchBlock extends SchTimeParams implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<SchEmission> emissions = new ArrayList<>();
-
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
 
     @ManyToOne
     @PodamExclude
@@ -158,19 +153,6 @@ public class SchBlock extends SchTimeParams implements Serializable {
     public SchBlock removeEmission(SchEmission emission) {
         emission.block(null);
         this.emissions.remove(emission);
-        return this;
-    }
-
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
-    public SchBlock network(CorNetwork network) {
-        this.network = network;
         return this;
     }
 

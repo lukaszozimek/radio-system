@@ -21,7 +21,7 @@ public interface SchLogRepository extends JpaRepository<SchLog, Long> {
             "left join fetch log.schLogConfiguration as logConf " +
             "left join fetch logConf.logColumns as logColumns " +
             "where n.shortcut = :network  and ch.shortcut= :channelShortcut and logConf.extension=:extension")
-    Slice<SchLog> findAllByNetwork_ShortcutAndChannel_ShortcutAndSchLogConfiguration_Extension(@Param("network") String networkShortCut, @Param("channelShortcut") String channelShortcut, @Param("extension") String extension, Pageable pageable);
+    Slice<SchLog> findAllByNetwork_ShortcutAndChannel_ShortcutAndSchLogConfiguration_Extension(@Param("network") String organizationShortcut, @Param("channelShortcut") String channelShortcut, @Param("extension") String extension, Pageable pageable);
 
     @Query("select log from SchLog as log " +
             "left join fetch log.network as n " +
@@ -29,7 +29,7 @@ public interface SchLogRepository extends JpaRepository<SchLog, Long> {
             "left join fetch log.schLogConfiguration as logConf " +
             "left join fetch logConf.logColumns as logColumns " +
             "where n.shortcut = :network  and ch.shortcut= :channelShortcut and log.date= :date and logConf.extension=:extension")
-    SchLog findOneByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(@Param("network") String networkShortCut, @Param("channelShortcut") String channelShortcut, @Param("date") LocalDate date, @Param("extension") String configurationExtension);
+    SchLog findOneByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(@Param("network") String organizationShortcut, @Param("channelShortcut") String channelShortcut, @Param("date") LocalDate date, @Param("extension") String configurationExtension);
 
-    void deleteByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(String networkShortcut, String channelShortcut, LocalDate date, String configurationExtension);
+    void deleteByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(String organizationShortcut, String channelShortcut, LocalDate date, String configurationExtension);
 }

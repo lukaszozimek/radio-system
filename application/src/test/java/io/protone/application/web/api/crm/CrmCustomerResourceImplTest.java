@@ -163,7 +163,7 @@ public class CrmCustomerResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("crmAccountDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(crmAccountDTO));
 
-        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/customer", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -193,7 +193,7 @@ public class CrmCustomerResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("crmAccountDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(existingCrmAccountDTO));
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/customer", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -212,7 +212,7 @@ public class CrmCustomerResourceImplTest {
         crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
 
         // Get all the crmAccountList
-        restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/customer?sort=id,desc", corNetwork.getShortcut()))
+        restCrmAccountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/customer?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(crmAccount.getId().intValue())))
@@ -233,7 +233,7 @@ public class CrmCustomerResourceImplTest {
         crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
 
         // Get the crmAccount
-        restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName()))
+        restCrmAccountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(crmAccount.getId().intValue()))
@@ -253,7 +253,7 @@ public class CrmCustomerResourceImplTest {
         crmAccountRepository.saveAndFlush(crmAccount.avatar(corImageItem).network(corNetwork));
 
         // Get all the crmAccountList
-        restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/customer?sort=id,desc", corNetwork.getShortcut()))
+        restCrmAccountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/customer?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(crmAccount.getId().intValue())))
@@ -274,7 +274,7 @@ public class CrmCustomerResourceImplTest {
         crmAccountRepository.saveAndFlush(crmAccount.avatar(corImageItem).network(corNetwork));
 
         // Get the crmAccount
-        restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName()))
+        restCrmAccountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(crmAccount.getId().intValue()))
@@ -299,7 +299,7 @@ public class CrmCustomerResourceImplTest {
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("crmAccountDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(crmAccountDTO));
-        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/customer", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isBadRequest());
 
@@ -320,7 +320,7 @@ public class CrmCustomerResourceImplTest {
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("crmAccountDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(crmAccountDTO));
-        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/customer", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isBadRequest());
         List<CrmAccount> crmAccounts = crmAccountRepository.findAll();
@@ -331,7 +331,7 @@ public class CrmCustomerResourceImplTest {
     @Transactional
     public void getNonExistingCrmAccount() throws Exception {
         // Get the crmAccount
-        restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCrmAccountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -354,7 +354,7 @@ public class CrmCustomerResourceImplTest {
                 .vatNumber(UPDATED_VAT_NUMBER);
         CrmAccountDTO crmAccountDTO = crmAccountMapper.DB2DTO(updatedCrmAccount);
 
-        restCrmAccountMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/customer", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(crmAccountDTO)))
                 .andExpect(status().isOk());
@@ -393,7 +393,7 @@ public class CrmCustomerResourceImplTest {
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("crmAccountDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(crmAccountDTO));
-        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName())
+        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isOk());
 
@@ -418,7 +418,7 @@ public class CrmCustomerResourceImplTest {
         CrmAccountDTO crmAccountDTO = crmAccountMapper.DB2DTO(crmAccount);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCrmAccountMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/customer", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(crmAccountDTO)))
                 .andExpect(status().isCreated());
@@ -437,7 +437,7 @@ public class CrmCustomerResourceImplTest {
         int databaseSizeBeforeDelete = crmAccountRepository.findAll().size();
 
         // Get the crmAccount
-        restCrmAccountMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName())
+        restCrmAccountMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

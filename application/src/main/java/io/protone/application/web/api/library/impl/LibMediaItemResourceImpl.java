@@ -56,7 +56,7 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     private CorNetworkService corNetworkService;
 
     @Override
-    public ResponseEntity<LibMediaItemDTO> updateItemWithImagesByNetworShortcutAndLibraryPrefixUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<LibMediaItemDTO> updateItemWithImagesByNetworShortcutAndLibraryPrefixUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                          @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                          @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
                                                                                                          @ApiParam(value = "fileItem", required = true) @RequestPart("fileItem") @Valid LibMediaItemDTO mediaItem,
@@ -65,7 +65,7 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("LibMediaItem", "missingID", "Can't edit Element if File doesn't exist")).body(null);
 
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         LibMediaItem requestEntity = libMediaItemMapper.DTO2DB(mediaItem, corNetwork);
         LibMediaItem entity = libMediaItemService.update(covers, requestEntity, corNetwork);
         LibMediaItemDTO response = libMediaItemMapper.DB2DTO(entity);
@@ -74,11 +74,11 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<LibMediaItemThinDTO> updateItemContentByNetworShortcutAndLibraryPrefixUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<LibMediaItemThinDTO> updateItemContentByNetworShortcutAndLibraryPrefixUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                           @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                           @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
                                                                                                           @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile files) throws IOException, TikaException, SAXException {
-        LibMediaItem entitiy = libMediaItemService.updateItemContent(networkShortcut, libraryPrefix, idx, files);
+        LibMediaItem entitiy = libMediaItemService.updateItemContent(organizationShortcut, libraryPrefix, idx, files);
         LibMediaItemThinDTO response = libMediaItemThinMapper.DB2DTO(entitiy);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -89,14 +89,14 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<LibMediaItemDTO> updateItemByWithoutImagesNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<LibMediaItemDTO> updateItemByWithoutImagesNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                            @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                            @ApiParam(value = "fileItem", required = true) @RequestBody @Valid LibMediaItemDTO mediaItem) throws IOException {
         if (mediaItem.getId() == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("LibMediaItem", "missingID", "Can't edit Element if File doesn't exist")).body(null);
 
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         LibMediaItem requestEntity = libMediaItemMapper.DTO2DB(mediaItem, corNetwork);
         LibMediaItem entity = libMediaItemService.update(requestEntity, corNetwork);
         LibMediaItemDTO response = libMediaItemMapper.DB2DTO(entity);
@@ -105,32 +105,32 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<Void> moveMediaItemUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> moveMediaItemUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                       @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                       @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
                                                       @ApiParam(value = "libraryShortcut", required = true) @PathVariable("libraryShortcut") String libraryShortcut) {
         log.debug("REST request to move Libarary Item {} from {} to {}", idx, libraryPrefix, libraryShortcut);
-        libMediaItemService.moveMediaItem(networkShortcut, libraryPrefix, idx, libraryShortcut);
+        libMediaItemService.moveMediaItem(organizationShortcut, libraryPrefix, idx, libraryShortcut);
         return ResponseEntity.ok().build();
     }
 
 
     @Override
-    public ResponseEntity<List<LibMediaItemThinDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<LibMediaItemThinDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                          @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all LibMediaLibraryDTO");
-        Slice<LibMediaItem> entities = libMediaItemService.getMediaItems(networkShortcut, libraryPrefix, pagable);
+        Slice<LibMediaItem> entities = libMediaItemService.getMediaItems(organizationShortcut, libraryPrefix, pagable);
         List<LibMediaItemThinDTO> response = libMediaItemThinMapper.DBs2DTOs(entities.getContent());
         return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(entities))
                 .body(response);
     }
 
     @Override
-    public ResponseEntity<LibMediaItemThinDTO> uploadItemsByNetworShortcutAndLibraryPrefix(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<LibMediaItemThinDTO> uploadItemsByNetworShortcutAndLibraryPrefix(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                  @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                  @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile files) throws IOException, TikaException, SAXException {
-        LibMediaItem entities = libMediaItemService.upload(networkShortcut, libraryPrefix, files);
+        LibMediaItem entities = libMediaItemService.upload(organizationShortcut, libraryPrefix, files);
         LibMediaItemThinDTO response = libMediaItemThinMapper.DB2DTO(entities);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -140,9 +140,9 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<byte[]> streamItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true)
+    public ResponseEntity<byte[]> streamItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "libraryPrefix", required = true)
     @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx) throws IOException {
-        byte[] data = libMediaItemService.download(networkShortcut, libraryPrefix, idx);
+        byte[] data = libMediaItemService.download(organizationShortcut, libraryPrefix, idx);
         return Optional.ofNullable(data)
                 .map(result -> new ResponseEntity<>(
                         result,
@@ -151,7 +151,7 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<LibMediaItemDTO> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<LibMediaItemDTO> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                               @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                               @ApiParam(value = "fileItem", required = true) @RequestBody LibMediaItemDTO mediaItem) {
@@ -159,7 +159,7 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<List<LibMediaItemThinDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<LibMediaItemThinDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                          @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
@@ -167,14 +167,14 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<LibMediaItemDTO> getItemsByNetworShortcutAndChannelShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<LibMediaItemDTO> getItemsByNetworShortcutAndChannelShortcutAndLibrarUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                        @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix) {
         return null;
     }
 
     @Override
-    public ResponseEntity<Void> deleteItemByNetworShortcutAndChannelShortcutAndLibraryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteItemByNetworShortcutAndChannelShortcutAndLibraryUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                   @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                   @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx) {
@@ -182,7 +182,7 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<LibMediaItemDTO> getItemByNetworShortcutAndChannelShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<LibMediaItemDTO> getItemByNetworShortcutAndChannelShortcutAndLibrarUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                       @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                       @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx) {
@@ -190,7 +190,7 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<byte[]> getItemStreamByNetworShortcutAndChannelShortcutAndLibraryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<byte[]> getItemStreamByNetworShortcutAndChannelShortcutAndLibraryUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                     @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                     @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx) {
@@ -198,9 +198,9 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<LibMediaItemDTO> getItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx) {
+    public ResponseEntity<LibMediaItemDTO> getItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx) {
         log.debug("REST request to get item: {}", idx);
-        LibMediaItem entity = libMediaItemService.getMediaItem(networkShortcut, libraryPrefix, idx);
+        LibMediaItem entity = libMediaItemService.getMediaItem(organizationShortcut, libraryPrefix, idx);
         LibMediaItemDTO response = libMediaItemMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -211,9 +211,9 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
 
 
     @Override
-    public ResponseEntity<Void> deleteItemByNetworShortcutAndLibrarUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx) {
+    public ResponseEntity<Void> deleteItemByNetworShortcutAndLibrarUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx) {
         log.debug("REST request to delete item : {}", idx);
-        libMediaItemService.deleteItem(networkShortcut, libraryPrefix, idx);
+        libMediaItemService.deleteItem(organizationShortcut, libraryPrefix, idx);
         return ResponseEntity.ok().build();
     }
 }

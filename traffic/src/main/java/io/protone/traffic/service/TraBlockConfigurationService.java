@@ -20,13 +20,13 @@ public class TraBlockConfigurationService {
     private TraBlockConfigurationRepository traBlockConfigurationRepository;
 
 
-    public TraBlockConfiguration findConfigurationBlock(Long id, String networkShortcut) {
-        return traBlockConfigurationRepository.findOneByIdAndNetwork_Shortcut(id, networkShortcut);
+    public TraBlockConfiguration findConfigurationBlock(Long id, String organizationShortcut) {
+        return traBlockConfigurationRepository.findOneByIdAndNetwork_Shortcut(id, organizationShortcut);
     }
 
     @Transactional
-    public void deleteBlockConfiguration(Long id, String networkShortcut) {
-        traBlockConfigurationRepository.deleteByIdAndNetwork_Shortcut(id, networkShortcut);
+    public void deleteBlockConfiguration(Long id, String organizationShortcut) {
+        traBlockConfigurationRepository.deleteByIdAndNetwork_Shortcut(id, organizationShortcut);
     }
 
     @Transactional
@@ -34,12 +34,12 @@ public class TraBlockConfigurationService {
         return traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration);
     }
 
-    public List<TraBlockConfiguration> getAllBlockConfigurations(String networkShortcut, String channelShortcut) {
-        return traBlockConfigurationRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut);
+    public List<TraBlockConfiguration> getAllBlockConfigurations(String organizationShortcut, String channelShortcut) {
+        return traBlockConfigurationRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut);
     }
 
-    public List<TraBlockConfiguration> getAllBlockConfigurationsByDay(String networkShortcut, CorDayOfWeekEnum day) {
-        return traBlockConfigurationRepository.findAllByNetwork_ShortcutAndDay(networkShortcut, day);
+    public List<TraBlockConfiguration> getAllBlockConfigurationsByDay(String organizationShortcut, CorDayOfWeekEnum day) {
+        return traBlockConfigurationRepository.findAllByNetwork_ShortcutAndDay(organizationShortcut, day);
 
     }
 }

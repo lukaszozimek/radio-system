@@ -181,7 +181,7 @@ public class LibraryMediaResourceChannelImplTest {
         MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -210,7 +210,7 @@ public class LibraryMediaResourceChannelImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(existingLibMediaLibraryDTO));
         // An entity with an existing ID cannot be created, so this API call must fail
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -233,7 +233,7 @@ public class LibraryMediaResourceChannelImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -256,7 +256,7 @@ public class LibraryMediaResourceChannelImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -279,7 +279,7 @@ public class LibraryMediaResourceChannelImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -302,7 +302,7 @@ public class LibraryMediaResourceChannelImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -321,7 +321,7 @@ public class LibraryMediaResourceChannelImplTest {
         libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).channels(Sets.newHashSet(corChannel)));
 
         // Get all the libLibraryList
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(libMediaLibrary.getId().intValue())))
@@ -340,7 +340,7 @@ public class LibraryMediaResourceChannelImplTest {
         libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).shortcut("123").channels(Sets.newHashSet(corChannel)));
 
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), "123"))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), "123"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(libMediaLibrary.getId().intValue()))
@@ -360,7 +360,7 @@ public class LibraryMediaResourceChannelImplTest {
         libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).mainImage(corImageItem).channels(Sets.newHashSet(corChannel)));
 
         // Get all the libLibraryList
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(libMediaLibrary.getId().intValue())))
@@ -379,7 +379,7 @@ public class LibraryMediaResourceChannelImplTest {
         libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).mainImage(corImageItem).shortcut("123").channels(Sets.newHashSet(corChannel)));
 
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), "123"))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), "123"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(libMediaLibrary.getId().intValue()))
@@ -395,7 +395,7 @@ public class LibraryMediaResourceChannelImplTest {
     @Transactional
     public void getNonExistingLibLibrary() throws Exception {
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -416,7 +416,7 @@ public class LibraryMediaResourceChannelImplTest {
                 .description(UPDATED_DESCRIPTION);
         LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO((updatedLibMediaLibrary));
 
-        restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO)))
                 .andExpect(status().isOk());
@@ -441,7 +441,7 @@ public class LibraryMediaResourceChannelImplTest {
         LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO(libMediaLibrary.channels(Sets.newHashSet(corChannel)));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO)))
                 .andExpect(status().isCreated());
@@ -459,7 +459,7 @@ public class LibraryMediaResourceChannelImplTest {
         int databaseSizeBeforeDelete = libLibraryRepository.findAll().size();
 
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut())
+        restLibLibraryMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

@@ -44,11 +44,11 @@ public class CrmCustomerTaskResourceImpl implements CrmCustomerTaskResource {
 
 
     @Override
-    public ResponseEntity<List<CrmTaskThinDTO>> getAllCustomerActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<CrmTaskThinDTO>> getAllCustomerActivitiesUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                  @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all CrmAccount CrmTask, for CrmAccount: {} and Network: {}", shortName, networkShortcut);
-        Slice<CrmTask> entities = crmCustomerService.getTasksAssociatedWithAccount(shortName, networkShortcut, pagable);
+        log.debug("REST request to get all CrmAccount CrmTask, for CrmAccount: {} and Network: {}", shortName, organizationShortcut);
+        Slice<CrmTask> entities = crmCustomerService.getTasksAssociatedWithAccount(shortName, organizationShortcut, pagable);
         List<CrmTaskThinDTO> response = crmTaskMapper.DBs2ThinDTOs(entities.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -61,45 +61,45 @@ public class CrmCustomerTaskResourceImpl implements CrmCustomerTaskResource {
     }
 
     @Override
-    public ResponseEntity<CrmTaskDTO> updateCustomerActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
-        log.debug("REST request to update  CrmAccount CrmTask : {}, for CrmAccount: {} and Network: {}", crmTaskDTO, shortName, networkShortcut);
+    public ResponseEntity<CrmTaskDTO> updateCustomerActivityUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
+        log.debug("REST request to update  CrmAccount CrmTask : {}, for CrmAccount: {} and Network: {}", crmTaskDTO, shortName, organizationShortcut);
         if (crmTaskDTO.getId() == null) {
-            return createCustomerActivityUsingPOST(networkShortcut, shortName, crmTaskDTO);
+            return createCustomerActivityUsingPOST(organizationShortcut, shortName, crmTaskDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CrmTask requestEnitity = crmTaskMapper.DTO2DB(crmTaskDTO, corNetwork);
-        CrmTask entity = crmCustomerService.saveOrUpdateTaskAssociatiedWithAccount(requestEnitity, shortName, networkShortcut);
+        CrmTask entity = crmCustomerService.saveOrUpdateTaskAssociatiedWithAccount(requestEnitity, shortName, organizationShortcut);
         CrmTaskDTO response = crmTaskMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
     }
 
     @Override
-    public ResponseEntity<CrmTaskDTO> createCustomerActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
-        log.debug("REST request to saveCorContact CrmAccount CrmTask : {}, for CrmAccount: {} and Network: {}", crmTaskDTO, shortName, networkShortcut);
+    public ResponseEntity<CrmTaskDTO> createCustomerActivityUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
+        log.debug("REST request to saveCorContact CrmAccount CrmTask : {}, for CrmAccount: {} and Network: {}", crmTaskDTO, shortName, organizationShortcut);
         if (crmTaskDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmTask", "idexists", "A new CrmTask cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CrmTask requestEnitity = crmTaskMapper.DTO2DB(crmTaskDTO, corNetwork);
-        CrmTask entity = crmCustomerService.saveOrUpdateTaskAssociatiedWithAccount(requestEnitity, shortName, networkShortcut);
+        CrmTask entity = crmCustomerService.saveOrUpdateTaskAssociatiedWithAccount(requestEnitity, shortName, organizationShortcut);
         CrmTaskDTO response = crmTaskMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/customer/" + shortName + "/task/" + entity.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/crm/customer/" + shortName + "/task/" + entity.getId()))
                 .body(response);
 
     }
 
     @Override
-    public ResponseEntity<Void> deleteCustomerActivityUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to delete CrmAccount CrmTask : {}, for CrmAccount: {} and Network: {}", id, shortName, networkShortcut);
-        crmCustomerService.deleteCustomerTask(shortName, id, networkShortcut);
+    public ResponseEntity<Void> deleteCustomerActivityUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+        log.debug("REST request to delete CrmAccount CrmTask : {}, for CrmAccount: {} and Network: {}", id, shortName, organizationShortcut);
+        crmCustomerService.deleteCustomerTask(shortName, id, organizationShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmTask", shortName.toString())).build();
     }
 
     @Override
-    public ResponseEntity<CrmTaskDTO> getCustomerActivityUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get CrmAccount CrmTask : {}, for CrmAccount: {} and Network: {}", id, shortName, networkShortcut);
+    public ResponseEntity<CrmTaskDTO> getCustomerActivityUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+        log.debug("REST request to get CrmAccount CrmTask : {}, for CrmAccount: {} and Network: {}", id, shortName, organizationShortcut);
 
-        CrmTask entity = crmCustomerService.getTaskAssociatedWithAccount(id, networkShortcut);
+        CrmTask entity = crmCustomerService.getTaskAssociatedWithAccount(id, organizationShortcut);
         CrmTaskDTO response = crmTaskMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(

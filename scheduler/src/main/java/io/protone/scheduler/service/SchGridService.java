@@ -45,37 +45,37 @@ public class SchGridService {
     }
 
     @Transactional(readOnly = true)
-    public Slice<SchGrid> findSchGridsForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
-        return schGridRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndType(networkShortcut, channelShortcut, SchDiscriminators.GRID_TEMPLATE, pageable);
+    public Slice<SchGrid> findSchGridsForNetworkAndChannel(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return schGridRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndType(organizationShortcut, channelShortcut, SchDiscriminators.GRID_TEMPLATE, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Slice<SchGrid> findAllDefaultGrids(String networkShortcut, String channelShortcut, Pageable pageable) {
-        return schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndType(networkShortcut, channelShortcut, true, SchDiscriminators.GRID_TEMPLATE, pageable);
+    public Slice<SchGrid> findAllDefaultGrids(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndType(organizationShortcut, channelShortcut, true, SchDiscriminators.GRID_TEMPLATE, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Slice<SchGrid> findAllGridsByCategoryNaem(String networkShortcut, String channelShortcut, String categoryName, Pageable pageable) {
-        return schGridRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndGridCategory_NameAndType(networkShortcut, channelShortcut, categoryName, SchDiscriminators.GRID_TEMPLATE, pageable);
+    public Slice<SchGrid> findAllGridsByCategoryNaem(String organizationShortcut, String channelShortcut, String categoryName, Pageable pageable) {
+        return schGridRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndGridCategory_NameAndType(organizationShortcut, channelShortcut, categoryName, SchDiscriminators.GRID_TEMPLATE, pageable);
     }
 
     @Transactional(readOnly = true)
-    public SchGridDTO findSchGridForNetworkAndChannelAndShortNameDTO(String networkShortcut, String channelShortcut, String shortName) {
-        return schGridMapper.DB2DTO(schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndType(networkShortcut, channelShortcut, shortName, SchDiscriminators.GRID_TEMPLATE));
+    public SchGridDTO findSchGridForNetworkAndChannelAndShortNameDTO(String organizationShortcut, String channelShortcut, String shortName) {
+        return schGridMapper.DB2DTO(schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndType(organizationShortcut, channelShortcut, shortName, SchDiscriminators.GRID_TEMPLATE));
     }
 
     @Transactional(readOnly = true)
-    public SchGrid findSchGridForNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-        return schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndType(networkShortcut, channelShortcut, shortName, SchDiscriminators.GRID_TEMPLATE);
+    public SchGrid findSchGridForNetworkAndChannelAndShortName(String organizationShortcut, String channelShortcut, String shortName) {
+        return schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndType(organizationShortcut, channelShortcut, shortName, SchDiscriminators.GRID_TEMPLATE);
     }
 
     @Transactional
-    public void deleteSchGridByNetworkAndChannelAndShortNAme(String networkShortcut, String channelShortcut, String shortName) {
-        schGridRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndType(networkShortcut, channelShortcut, shortName, SchDiscriminators.GRID_TEMPLATE);
+    public void deleteSchGridByNetworkAndChannelAndShortNAme(String organizationShortcut, String channelShortcut, String shortName) {
+        schGridRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndType(organizationShortcut, channelShortcut, shortName, SchDiscriminators.GRID_TEMPLATE);
     }
 
     @Transactional(readOnly = true)
-    public SchGrid findOneByNetworkShortcutAndChannelShortcutAndDefaultGridAndDayOfWeek(String networkShortcut, String channelShortcut, Boolean defaultGrid, CorDayOfWeekEnum corDayOfWeekEnum) {
-        return this.schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeekAndType(networkShortcut, channelShortcut, defaultGrid, corDayOfWeekEnum, SchDiscriminators.GRID_TEMPLATE);
+    public SchGrid findOneByorganizationShortcutAndChannelShortcutAndDefaultGridAndDayOfWeek(String organizationShortcut, String channelShortcut, Boolean defaultGrid, CorDayOfWeekEnum corDayOfWeekEnum) {
+        return this.schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeekAndType(organizationShortcut, channelShortcut, defaultGrid, corDayOfWeekEnum, SchDiscriminators.GRID_TEMPLATE);
     }
 }

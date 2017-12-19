@@ -156,7 +156,7 @@ public class LibraryFileResourceChannelImplTest {
         // Create the LibFileLibrary
         LibFileLibraryDTO libLibraryDTO = libFileLibraryMapper.DB2DTO(libLibrary.channels(Sets.newHashSet(corChannel)));
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isCreated());
@@ -183,7 +183,7 @@ public class LibraryFileResourceChannelImplTest {
         LibFileLibraryDTO existingLibFileLibraryDTO = libFileLibraryMapper.DB2DTO(existingLibLibrary);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingLibFileLibraryDTO)))
                 .andExpect(status().isBadRequest());
@@ -204,7 +204,7 @@ public class LibraryFileResourceChannelImplTest {
         LibFileLibraryDTO libLibraryDTO = libFileLibraryMapper.DB2DTO(libLibrary);
 
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isBadRequest());
@@ -224,7 +224,7 @@ public class LibraryFileResourceChannelImplTest {
         // Create the LibFileLibrary, which fails.
         LibFileLibraryDTO libLibraryDTO = libFileLibraryMapper.DB2DTO(libLibrary);
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isBadRequest());
@@ -243,7 +243,7 @@ public class LibraryFileResourceChannelImplTest {
         // Create the LibFileLibrary, which fails.
         LibFileLibraryDTO libLibraryDTO = libFileLibraryMapper.DB2DTO(libLibrary);
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isBadRequest());
@@ -263,7 +263,7 @@ public class LibraryFileResourceChannelImplTest {
         LibFileLibraryDTO libLibraryDTO = libFileLibraryMapper.DB2DTO(libLibrary);
 
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isBadRequest());
@@ -282,7 +282,7 @@ public class LibraryFileResourceChannelImplTest {
         libFileLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).channels(Sets.newHashSet(corChannel)));
 
         // Get all the libLibraryList
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/file?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(libLibrary.getId().intValue())))
@@ -301,7 +301,7 @@ public class LibraryFileResourceChannelImplTest {
         libFileLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("123").channels(Sets.newHashSet(corChannel)));
 
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), "123"))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/file/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), "123"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(libLibrary.getId().intValue()))
@@ -315,7 +315,7 @@ public class LibraryFileResourceChannelImplTest {
     @Transactional
     public void getNonExistingLibLibrary() throws Exception {
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/file/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -336,7 +336,7 @@ public class LibraryFileResourceChannelImplTest {
                 .description(UPDATED_DESCRIPTION);
         LibFileLibraryDTO libLibraryDTO = libFileLibraryMapper.DB2DTO((updatedLibLibrary));
 
-        restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isOk());
@@ -361,7 +361,7 @@ public class LibraryFileResourceChannelImplTest {
         LibFileLibraryDTO libLibraryDTO = libFileLibraryMapper.DB2DTO(libLibrary.channels(Sets.newHashSet(corChannel)));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
+        restLibLibraryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/file", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isCreated());
@@ -379,7 +379,7 @@ public class LibraryFileResourceChannelImplTest {
         int databaseSizeBeforeDelete = libFileLibraryRepository.findAll().size();
 
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), libLibrary.getShortcut())
+        restLibLibraryMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/file/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), libLibrary.getShortcut())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

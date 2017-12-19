@@ -12,9 +12,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @SuppressWarnings("unused")
 public interface CorPropertyKeyRepository extends JpaRepository<CorPropertyKey, Long> {
 
-    Slice<CorPropertyKey> findSliceByNetwork_Shortcut(String networkShortcut, Pageable pageable);
+    Slice<CorPropertyKey> findSliceByNetwork_Shortcut(String organizationShortcut, Pageable pageable);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String networkShortcut);
+    void deleteByIdAndNetwork_Shortcut(Long id, String organizationShortcut);
 
-    CorPropertyKey findByIdAndNetwork_Shortcut(Long id, String networkShortcut);
+    CorPropertyKey findByIdAndNetwork_Shortcut(Long id, String organizationShortcut);
 }

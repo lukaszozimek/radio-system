@@ -14,11 +14,11 @@ import java.util.List;
  * A Schedule repository.
  */
 public interface SchScheduleRepository extends JpaRepository<SchSchedule, Long> {
-    Slice<SchSchedule> findAllByNetwork_ShortcutAndChannel_Shortcut(String networkShortcut, String channelShortcut, Pageable pageable);
+    Slice<SchSchedule> findAllByNetwork_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut, Pageable pageable);
 
-    SchSchedule findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(String networkShortcut, String channelShortcut, LocalDate date);
+    SchSchedule findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(String organizationShortcut, String channelShortcut, LocalDate date);
 
-    void deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(String networkShortcut, String channelShortcut, LocalDate date);
+    void deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(String organizationShortcut, String channelShortcut, LocalDate date);
 
 
     @Query("select schedule  from SchSchedule as schedule " +

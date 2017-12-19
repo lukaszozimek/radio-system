@@ -36,7 +36,7 @@ public class TraMediaPlanPlaylistDateService {
     }
 
 
-    public List<TraMediaPlanPlaylistDate> findMediaPlanDatesByNetworkShortcutAndChannelShortcutAndMediaplanId(String networkShortcut, String channelShortcut, Long id) {
-        return traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(networkShortcut, channelShortcut, id);
+    public List<TraMediaPlanPlaylistDate> findMediaPlanDatesByorganizationShortcutAndChannelShortcutAndMediaplanId(String organizationShortcut, String channelShortcut, Long id) {
+        return traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(organizationShortcut, channelShortcut, id);
     }
 }

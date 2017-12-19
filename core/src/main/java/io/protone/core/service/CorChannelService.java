@@ -35,14 +35,14 @@ public class CorChannelService {
         return channelRepository.findSliceByNetwork_Shortcut(network, pageable);
     }
 
-    public CorChannel findChannel(String networkShortcut, String channelShortcut) {
-        CorChannel channel = channelRepository.findOneByNetwork_ShortcutAndShortcut(networkShortcut, channelShortcut);
+    public CorChannel findChannel(String organizationShortcut, String channelShortcut) {
+        CorChannel channel = channelRepository.findOneByNetwork_ShortcutAndShortcut(organizationShortcut, channelShortcut);
         return channel;
     }
 
 
-    public void deleteChannel(String networkShortcut, String channelShortcut) {
-        channelRepository.deleteByShortcutAndNetwork_Shortcut(channelShortcut, networkShortcut);
+    public void deleteChannel(String organizationShortcut, String channelShortcut) {
+        channelRepository.deleteByShortcutAndNetwork_Shortcut(channelShortcut, organizationShortcut);
     }
 
     public CorChannel save(CorChannel channel) {

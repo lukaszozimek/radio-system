@@ -52,13 +52,13 @@ public class SchLogResourceImpl implements SchLogResource {
     @Inject
     private CorChannelService corChannelService;
 
-    public ResponseEntity<List<SchLogThinDTO>> getAllLogsForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<SchLogThinDTO>> getAllLogsForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                             @ApiParam(value = "extension", required = true) @PathVariable("extension") String extension,
                                                                             @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all SchLog, for Channel {}, Network: {}", channelShortcut, networkShortcut);
+        log.debug("REST request to get all SchLog, for Channel {}, Network: {}", channelShortcut, organizationShortcut);
 
-        Slice<SchLog> entity = schLogService.findSchLogForNetworkAndChannelExtension(networkShortcut, channelShortcut, extension, pagable);
+        Slice<SchLog> entity = schLogService.findSchLogForNetworkAndChannelExtension(organizationShortcut, channelShortcut, extension, pagable);
         List<SchLogThinDTO> response = schLogMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -70,15 +70,15 @@ public class SchLogResourceImpl implements SchLogResource {
     }
 
 
-    public ResponseEntity<List<SchLogDTO>> uploadLogForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<SchLogDTO>> uploadLogForChannelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                         @ApiParam(value = "extension", required = true) @PathVariable("extension") String extension,
                                                                         @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile[] files) throws URISyntaxException {
-        log.debug("REST request to saveSchLogDTO SchLogDTO : {}, for Channel {} Network: {}", channelShortcut, networkShortcut);
+        log.debug("REST request to saveSchLogDTO SchLogDTO : {}, for Channel {} Network: {}", channelShortcut, organizationShortcut);
 
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         List<SchLog> entity = schLogService.saveSchLog(files, corNetwork, corChannel);
         List<SchLogDTO> response = schLogMapper.DBs2DTOs(entity);
         return ResponseEntity.created(URI.create(""))
@@ -87,12 +87,12 @@ public class SchLogResourceImpl implements SchLogResource {
     }
 
 
-    public ResponseEntity<Void> deleteLogForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteLogForChannelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                @ApiParam(value = "extension", required = true) @PathVariable("extension") String extension,
                                                                @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        log.debug("REST request to delete SchLog : {}, for Network: {}", date, networkShortcut);
-        schLogService.deleteSchLogByNetworkAndChannelAndDateAndExtension(networkShortcut, channelShortcut, date, extension);
+        log.debug("REST request to delete SchLog : {}, for Network: {}", date, organizationShortcut);
+        schLogService.deleteSchLogByNetworkAndChannelAndDateAndExtension(organizationShortcut, channelShortcut, date, extension);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traOrder", date.toString())).build();
     }
 }

@@ -145,7 +145,7 @@ public class LibLabelResourceImplTest {
         LibLabelDTO libLibraryDTO = libLabelMapper.DB2DTO(libLibrary);
 
 
-        restLibLabelMockMvc.perform(post("/api/v1/network/{networkShortcut}/library/label", corNetwork.getShortcut())
+        restLibLabelMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/library/label", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)));
 
@@ -166,7 +166,7 @@ public class LibLabelResourceImplTest {
         LibLabel existingLibLabel = new LibLabel();
         existingLibLabel.setId(1L);
         LibLabelDTO existingLibLabelDTO = libLabelMapper.DB2DTO(existingLibLabel);
-        restLibLabelMockMvc.perform(post("/api/v1/network/{networkShortcut}/library/label", corNetwork.getShortcut())
+        restLibLabelMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/library/label", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingLibLabelDTO)))
                 .andExpect(status().isBadRequest());
@@ -188,7 +188,7 @@ public class LibLabelResourceImplTest {
         // Create the LibLabel, which fails.
         LibLabelDTO libLibraryDTO = libLabelMapper.DB2DTO(libLibrary);
 
-        restLibLabelMockMvc.perform(post("/api/v1/network/{networkShortcut}/library/label", corNetwork.getShortcut())
+        restLibLabelMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/library/label", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isBadRequest());
@@ -207,7 +207,7 @@ public class LibLabelResourceImplTest {
         libLabelRepository.saveAndFlush(libLibrary.network(corNetwork));
 
         // Get all the libLibraryList
-        restLibLabelMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/label?sort=id,desc", corNetwork.getShortcut()))
+        restLibLabelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/label?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(libLibrary.getId().intValue())))
@@ -223,7 +223,7 @@ public class LibLabelResourceImplTest {
         libLabelRepository.saveAndFlush(libLibrary.network(corNetwork));
 
         // Get the libMediaLibrary
-        restLibLabelMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/label/{id}", corNetwork.getShortcut(), libLibrary.getId()))
+        restLibLabelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/label/{id}", corNetwork.getShortcut(), libLibrary.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(libLibrary.getId().intValue()))
@@ -236,7 +236,7 @@ public class LibLabelResourceImplTest {
     @Transactional
     public void getNonExistingLibLabel() throws Exception {
         // Get the libMediaLibrary
-        restLibLabelMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restLibLabelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -254,7 +254,7 @@ public class LibLabelResourceImplTest {
                 .description(UPDATED_DESCRIPTION);
         LibLabelDTO libLibraryDTO = libLabelMapper.DB2DTO((updatedLibLabel));
 
-        restLibLabelMockMvc.perform(put("/api/v1/network/{networkShortcut}/library/label", corNetwork.getShortcut())
+        restLibLabelMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/library/label", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isOk());
@@ -277,7 +277,7 @@ public class LibLabelResourceImplTest {
         LibLabelDTO libLibraryDTO = libLabelMapper.DB2DTO(libLibrary);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restLibLabelMockMvc.perform(put("/api/v1/network/{networkShortcut}/library/label", corNetwork.getShortcut())
+        restLibLabelMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/library/label", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isCreated());
@@ -295,7 +295,7 @@ public class LibLabelResourceImplTest {
         int databaseSizeBeforeDelete = libLabelRepository.findAll().size();
 
         // Get the libMediaLibrary
-        restLibLabelMockMvc.perform(delete("/api/v1/network/{networkShortcut}/library/label/{id}", corNetwork.getShortcut(), libLibrary.getId())
+        restLibLabelMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/library/label/{id}", corNetwork.getShortcut(), libLibrary.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

@@ -75,13 +75,13 @@ public class JWTFilter extends GenericFilterBean {
     }
 
     private boolean checkIfUserCanAccesResource(HttpServletRequest httpServletRequest, String jwt) {
-        if (httpServletRequest.getRequestURI().equals("/api/v1/network")) {
+        if (httpServletRequest.getRequestURI().equals("/api/v1/organization")) {
             return true;
         }
         if (httpServletRequest.getRequestURI().startsWith("/api/v1/user")) {
             return true;
         }
-        String newtworkShortcut = getNetworkShortcutFromPathParameter(httpServletRequest.getRequestURI());
+        String newtworkShortcut = getorganizationShortcutFromPathParameter(httpServletRequest.getRequestURI());
         String corChannelShortcut = getChannelShortcutFromPathParameter(httpServletRequest.getRequestURI());
 
         if (Strings.isNullOrEmpty(newtworkShortcut)) {
@@ -106,7 +106,7 @@ public class JWTFilter extends GenericFilterBean {
         return EMPTY;
     }
 
-    private String getNetworkShortcutFromPathParameter(String pathInfo) {
+    private String getorganizationShortcutFromPathParameter(String pathInfo) {
         String[] splitedUrl = pathInfo.split("/");
         if (splitedUrl.length >= 4) {
             return splitedUrl[4];
@@ -114,8 +114,8 @@ public class JWTFilter extends GenericFilterBean {
         return EMPTY;
     }
 
-    private boolean checkNetworkAcces(LinkedHashMap<String, String> corNetwork, String networkShortcut) {
-        if (corNetwork.get(NETWORK_SHORTCUT_KEY).equals(networkShortcut)) {
+    private boolean checkNetworkAcces(LinkedHashMap<String, String> corNetwork, String organizationShortcut) {
+        if (corNetwork.get(NETWORK_SHORTCUT_KEY).equals(organizationShortcut)) {
             return true;
         }
         return false;

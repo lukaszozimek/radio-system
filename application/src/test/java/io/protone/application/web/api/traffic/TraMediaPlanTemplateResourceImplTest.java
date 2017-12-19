@@ -160,7 +160,7 @@ public class TraMediaPlanTemplateResourceImplTest {
         // Create the TraDiscount
         TraMediaPlanTemplateDTO traMediaPlanTemplateDTO = traMediaPlanTemplateMapper.DB2DTO(traMediaPlanTemplate);
 
-        restTraMediaPlantMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/traffic/mediaplan/template", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/mediaplan/template", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isCreated());
@@ -183,7 +183,7 @@ public class TraMediaPlanTemplateResourceImplTest {
         TraMediaPlanTemplateDTO existingTraMediaPlanTemplateDTO = traMediaPlanTemplateMapper.DB2DTO(existingTraDiscount);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraMediaPlantMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/traffic/mediaplan/template", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/mediaplan/template", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingTraMediaPlanTemplateDTO)))
                 .andExpect(status().isBadRequest());
@@ -200,7 +200,7 @@ public class TraMediaPlanTemplateResourceImplTest {
         traMediaPlanTemplateRepository.saveAndFlush(traMediaPlanTemplate.network(corNetwork));
 
         // Get all the traMediaPlanList
-        restTraMediaPlantMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/mediaplan/template?sort=id,desc", corNetwork.getShortcut()))
+        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/mediaplan/template?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traMediaPlanTemplate.getId().intValue())))
@@ -225,7 +225,7 @@ public class TraMediaPlanTemplateResourceImplTest {
         traMediaPlanTemplateRepository.saveAndFlush(traMediaPlanTemplate.network(corNetwork));
 
         // Get the traMediaPlanTemplate
-        restTraMediaPlantMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/mediaplan/template/{id}", corNetwork.getShortcut(), traMediaPlanTemplate.getId()))
+        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/mediaplan/template/{id}", corNetwork.getShortcut(), traMediaPlanTemplate.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(traMediaPlanTemplate.getId().intValue()))
@@ -247,7 +247,7 @@ public class TraMediaPlanTemplateResourceImplTest {
     @Transactional
     public void getNonExistingTraMediaPlanTemplate() throws Exception {
         // Get the traMediaPlanTemplate
-        restTraMediaPlantMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/mediaplan/template/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/mediaplan/template/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -272,7 +272,7 @@ public class TraMediaPlanTemplateResourceImplTest {
                 .lastEmissionValueCell(UPDATED_LAST_EMISSION_VALUE_CELL);
         TraMediaPlanTemplateDTO traMediaPlanTemplateDTO = traMediaPlanTemplateMapper.DB2DTO(this.traMediaPlanTemplate);
 
-        restTraMediaPlantMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/traffic/mediaplan/template", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/traffic/mediaplan/template", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isOk());
@@ -305,7 +305,7 @@ public class TraMediaPlanTemplateResourceImplTest {
         TraMediaPlanTemplateDTO traMediaPlanTemplateDTO = traMediaPlanTemplateMapper.DB2DTO(traMediaPlanTemplate);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraMediaPlantMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/traffic/mediaplan/template", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/traffic/mediaplan/template", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isCreated());
@@ -323,7 +323,7 @@ public class TraMediaPlanTemplateResourceImplTest {
         int databaseSizeBeforeDelete = traMediaPlanTemplateRepository.findAll().size();
 
         // Get the traMediaPlanTemplate
-        restTraMediaPlantMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/traffic/mediaplan/template/{id}", corNetwork.getShortcut(), traMediaPlanTemplate.getId())
+        restTraMediaPlantMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/traffic/mediaplan/template/{id}", corNetwork.getShortcut(), traMediaPlanTemplate.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

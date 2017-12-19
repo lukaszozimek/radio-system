@@ -25,11 +25,11 @@ public interface TraCustomerResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraCustomerDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/customer",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<TraCustomerDTO> updateTrafficCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraCustomerDTO> updateTrafficCustomerUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                  @ApiParam(value = "traCustomerDTO", required = true) @Valid @RequestBody TraCustomerDTO traCustomerDTO) throws URISyntaxException, TikaException, IOException, SAXException;
 
 
@@ -40,11 +40,11 @@ public interface TraCustomerResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraCustomerDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/customer",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<TraCustomerDTO> createTrafficCustomerUsingPOST(
-            @ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+            @ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
             @ApiParam(value = "traCustomerDTO", required = true) @Valid @RequestPart TraCustomerDTO traCustomerDTO,
             @ApiParam(value = "avatar", required = false) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException;
 
@@ -56,11 +56,11 @@ public interface TraCustomerResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraCustomerDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/{customerShortcut}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/customer/{customerShortcut}",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<TraCustomerDTO> updateTrafficCustomerUsingPOST(
-            @ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+            @ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
             @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
             @ApiParam(value = "traCustomerDTO", required = true) @Valid @RequestPart TraCustomerDTO traCustomerDTO,
             @ApiParam(value = "avatar", required = false) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException;
@@ -72,10 +72,10 @@ public interface TraCustomerResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraCustomerDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/customer",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<TraCustomerDTO>> getAllTrafficCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraCustomerDTO>> getAllTrafficCustomersUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -85,10 +85,10 @@ public interface TraCustomerResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraCustomerDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/{customerShortcut}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/customer/{customerShortcut}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<TraCustomerDTO> getTrafficCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraCustomerDTO> getTrafficCustomerUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                               @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut);
 
 
@@ -98,10 +98,10 @@ public interface TraCustomerResource {
             @ApiResponse(code = 204, message = "No Content", response = Void.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/{customerShortcut}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/customer/{customerShortcut}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteTrafficCustomerUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteTrafficCustomerUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                           @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut);
 
 

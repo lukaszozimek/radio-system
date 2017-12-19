@@ -33,13 +33,13 @@ public class SchEventTemplateService {
     private SchEventTemplateMapper schEventTemplateMapper;
 
     @Transactional(readOnly = true)
-    public Slice<SchEventTemplate> findSchEventTemplatesForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pagable) {
-        return eventRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndInstanceAndType(networkShortcut, channelShortcut, false, SchDiscriminators.EVENT_TEMPLATE, pagable);
+    public Slice<SchEventTemplate> findSchEventTemplatesForNetworkAndChannel(String organizationShortcut, String channelShortcut, Pageable pagable) {
+        return eventRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndInstanceAndType(organizationShortcut, channelShortcut, false, SchDiscriminators.EVENT_TEMPLATE, pagable);
     }
 
     @Transactional(readOnly = true)
-    public Slice<SchEventTemplate> findAllEventsByCategoryName(String networkShortcut, String channelShortcut, String categoryName, Pageable pageable) {
-        return eventRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndEventCategory_NameAndInstanceAndType(networkShortcut, channelShortcut, categoryName, false, SchDiscriminators.EVENT_TEMPLATE, pageable);
+    public Slice<SchEventTemplate> findAllEventsByCategoryName(String organizationShortcut, String channelShortcut, String categoryName, Pageable pageable) {
+        return eventRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndEventCategory_NameAndInstanceAndType(organizationShortcut, channelShortcut, categoryName, false, SchDiscriminators.EVENT_TEMPLATE, pageable);
     }
 
     @Transactional
@@ -107,17 +107,17 @@ public class SchEventTemplateService {
 
 
     @Transactional
-    public void deleteSchEventTemplateByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-        eventRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
+    public void deleteSchEventTemplateByNetworkAndChannelAndShortName(String organizationShortcut, String channelShortcut, String shortName) {
+        eventRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(organizationShortcut, channelShortcut, shortName);
     }
 
     @Transactional(readOnly = true)
-    public SchEventTemplate findSchEventTemplatesForNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-        return eventRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndInstanceAndType(networkShortcut, channelShortcut, shortName, false, SchDiscriminators.EVENT_TEMPLATE);
+    public SchEventTemplate findSchEventTemplatesForNetworkAndChannelAndShortName(String organizationShortcut, String channelShortcut, String shortName) {
+        return eventRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndInstanceAndType(organizationShortcut, channelShortcut, shortName, false, SchDiscriminators.EVENT_TEMPLATE);
     }
 
     @Transactional(readOnly = true)
-    public SchEventTemplateDTO findSchEventTemplatesForNetworkAndChannelAndShortNameDTO(String networkShortcut, String channelShortcut, String shortName) {
-        return schEventTemplateMapper.DB2DTO(eventRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndInstanceAndType(networkShortcut, channelShortcut, shortName, false, SchDiscriminators.EVENT_TEMPLATE));
+    public SchEventTemplateDTO findSchEventTemplatesForNetworkAndChannelAndShortNameDTO(String organizationShortcut, String channelShortcut, String shortName) {
+        return schEventTemplateMapper.DB2DTO(eventRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndInstanceAndType(organizationShortcut, channelShortcut, shortName, false, SchDiscriminators.EVENT_TEMPLATE));
     }
 }

@@ -27,11 +27,11 @@ public interface TraBlockConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraBlockConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/block",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<TraBlockConfigurationDTO> creatTrafficBlockConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraBlockConfigurationDTO> creatTrafficBlockConfigurationUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                      @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO) throws URISyntaxException;
 
@@ -42,10 +42,10 @@ public interface TraBlockConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraBlockConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/block",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut
     );
 
@@ -56,10 +56,10 @@ public interface TraBlockConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraBlockConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/block/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<TraBlockConfigurationDTO> getTrafficBlockConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraBlockConfigurationDTO> getTrafficBlockConfigurationUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                   @ApiParam(value = "id", required = true) @PathVariable("id") Long id
 
@@ -72,11 +72,11 @@ public interface TraBlockConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraBlockConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/block",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<TraBlockConfigurationDTO> updateTrafficBlockConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraBlockConfigurationDTO> updateTrafficBlockConfigurationUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                      @ApiParam(value = "id", required = true) @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO
     ) throws URISyntaxException;
@@ -88,10 +88,10 @@ public interface TraBlockConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/block/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteTrafficBlockConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteTrafficBlockConfigurationUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                     @ApiParam(value = "id", required = true) @PathVariable("id") Long id
     );
@@ -102,10 +102,10 @@ public interface TraBlockConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraBlockConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{day}/",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/block/{day}/",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationByDateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationByDateUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                  @ApiParam(value = "day", required = true) @PathVariable("day") CorDayOfWeekEnum day);
 }

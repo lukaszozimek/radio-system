@@ -52,28 +52,28 @@ public class SchClockTemplateResourceImpl implements SchClockTemplateResource {
     private CorChannelService corChannelService;
 
     @Override
-    public ResponseEntity<SchClockTemplateDTO> creatSchedulerClockForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchClockTemplateDTO> creatSchedulerClockForChannelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                       @ApiParam(value = "clockDTO", required = true) @Valid @RequestBody SchClockTemplateDTO clockDTO) throws URISyntaxException {
-        log.debug("REST request to savSchClockConfigurationDTO SchClockTemplateDTO : {}, for Channel {} Network: {}", clockDTO, channelShortcut, networkShortcut);
+        log.debug("REST request to savSchClockConfigurationDTO SchClockTemplateDTO : {}, for Channel {} Network: {}", clockDTO, channelShortcut, organizationShortcut);
         if (clockDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SchClockTemplate", "idexists", "A new SchClockTemplate cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         SchClockTemplate schClock = schClockTemplateMapper.DTO2DB(clockDTO, corNetwork, corChannel);
         SchClockTemplateDTO response = schClockTemplateService.saveClockConfiguration(schClock);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/clock/" + response.getShortName()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/clock/" + response.getShortName()))
                 .body(response);
     }
 
     @Override
-    public ResponseEntity<List<SchClockTemplateThinDTO>> getAllSchedulerClockForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<SchClockTemplateThinDTO>> getAllSchedulerClockForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all SchClockTemplate, for Channel {}, Network: {}", channelShortcut, networkShortcut);
-        Slice<SchClockTemplate> entity = schClockTemplateService.findSchClockConfigurationsForNetworkAndChannel(networkShortcut, channelShortcut, pagable);
+        log.debug("REST request to get all SchClockTemplate, for Channel {}, Network: {}", channelShortcut, organizationShortcut);
+        Slice<SchClockTemplate> entity = schClockTemplateService.findSchClockConfigurationsForNetworkAndChannel(organizationShortcut, channelShortcut, pagable);
         List<SchClockTemplateThinDTO> response = schClockTemplateMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -85,12 +85,12 @@ public class SchClockTemplateResourceImpl implements SchClockTemplateResource {
     }
 
     @Override
-    public ResponseEntity<List<SchClockTemplateThinDTO>> getAllSchedulerClockForChannelGroupedByCategoryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<SchClockTemplateThinDTO>> getAllSchedulerClockForChannelGroupedByCategoryUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                                  @ApiParam(value = "name", required = true) @PathVariable("name") String name,
                                                                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all SchClockTemplate, for Channel {}, Network: {}", channelShortcut, networkShortcut);
-        Slice<SchClockTemplate> entity = schClockTemplateService.findAllClocksByCategoryName(networkShortcut, channelShortcut, name, pagable);
+        log.debug("REST request to get all SchClockTemplate, for Channel {}, Network: {}", channelShortcut, organizationShortcut);
+        Slice<SchClockTemplate> entity = schClockTemplateService.findAllClocksByCategoryName(organizationShortcut, channelShortcut, name, pagable);
         List<SchClockTemplateThinDTO> response = schClockTemplateMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -102,11 +102,11 @@ public class SchClockTemplateResourceImpl implements SchClockTemplateResource {
     }
 
     @Override
-    public ResponseEntity<SchClockTemplateDTO> getSchedulerClockForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchClockTemplateDTO> getSchedulerClockForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        log.debug("REST request to get SchClockTemplate : {}, for Network: {}", shortName, networkShortcut);
-        SchClockTemplateDTO response = schClockTemplateService.findDTOSchClockConfigurationForNetworkAndChannelAndShortName(networkShortcut, channelShortcut, shortName);
+        log.debug("REST request to get SchClockTemplate : {}, for Network: {}", shortName, organizationShortcut);
+        SchClockTemplateDTO response = schClockTemplateService.findDTOSchClockConfigurationForNetworkAndChannelAndShortName(organizationShortcut, channelShortcut, shortName);
 
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -116,28 +116,28 @@ public class SchClockTemplateResourceImpl implements SchClockTemplateResource {
     }
 
     @Override
-    public ResponseEntity<SchClockTemplateDTO> updateSchedulerClockForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchClockTemplateDTO> updateSchedulerClockForChannelUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                       @ApiParam(value = "clockDTO", required = true) @Valid @RequestBody SchClockTemplateDTO clockDTO) throws URISyntaxException {
-        log.debug("REST request to saveSchClockConfigurationDTO SchClockTemplateDTO : {}, for Channel {} Network: {}", clockDTO, channelShortcut, networkShortcut);
+        log.debug("REST request to saveSchClockConfigurationDTO SchClockTemplateDTO : {}, for Channel {} Network: {}", clockDTO, channelShortcut, organizationShortcut);
 
         if (clockDTO.getId() == null) {
-            return creatSchedulerClockForChannelUsingPOST(networkShortcut, channelShortcut, clockDTO);
+            return creatSchedulerClockForChannelUsingPOST(organizationShortcut, channelShortcut, clockDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         SchClockTemplate schClock = schClockTemplateMapper.DTO2DB(clockDTO, corNetwork, corChannel);
         SchClockTemplateDTO response = schClockTemplateService.saveClockConfiguration(schClock);
         return ResponseEntity.ok().body(response);
     }
 
     @Override
-    public ResponseEntity<Void> deleteSchedulerClockForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteSchedulerClockForChannelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        log.debug("REST request to delete SchClockTemplate : {}, for Network: {}", shortName, networkShortcut);
-        schClockTemplateService.deleteSchClockConfigurationByNetworkAndChannelAndShortName(networkShortcut, channelShortcut, shortName);
+        log.debug("REST request to delete SchClockTemplate : {}, for Network: {}", shortName, organizationShortcut);
+        schClockTemplateService.deleteSchClockConfigurationByNetworkAndChannelAndShortName(organizationShortcut, channelShortcut, shortName);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("SchClockTemplate", shortName.toString())).build();
     }
 

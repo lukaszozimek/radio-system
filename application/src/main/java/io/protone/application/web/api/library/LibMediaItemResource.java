@@ -27,11 +27,11 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibMediaItemDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}/item",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<LibMediaItemDTO> updateItemByWithoutImagesNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibMediaItemDTO> updateItemByWithoutImagesNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                     @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                     @ApiParam(value = "fileItem", required = true) @RequestBody @Valid LibMediaItemDTO mediaItem
     ) throws IOException;
@@ -43,10 +43,10 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
             @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item/{idx}/move/{libraryShortcut}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}/item/{idx}/move/{libraryShortcut}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<Void> moveMediaItemUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> moveMediaItemUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
                                                @ApiParam(value = "libraryShortcut", required = true) @PathVariable("libraryShortcut") String libraryShortcut);
@@ -58,10 +58,10 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibMediaItemDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item/{idx}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}/item/{idx}",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<LibMediaItemDTO> updateItemWithImagesByNetworShortcutAndLibraryPrefixUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibMediaItemDTO> updateItemWithImagesByNetworShortcutAndLibraryPrefixUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                   @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                   @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
                                                                                                   @ApiParam(value = "fileItem", required = true) @RequestPart("fileItem") @Valid LibMediaItemDTO mediaItem,
@@ -75,10 +75,10 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibMediaItemDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item/{idx}/content",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}/item/{idx}/content",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<LibMediaItemThinDTO> updateItemContentByNetworShortcutAndLibraryPrefixUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibMediaItemThinDTO> updateItemContentByNetworShortcutAndLibraryPrefixUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                       @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                       @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
                                                                                                       @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile files) throws IOException, TikaException, SAXException;
@@ -89,11 +89,11 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemThinDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemThinDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibMediaItemThinDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}/item",
             consumes = {"*/*"},
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<LibMediaItemThinDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<LibMediaItemThinDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                   @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -103,10 +103,10 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemThinDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemThinDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibMediaItemThinDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}/item",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<LibMediaItemThinDTO> uploadItemsByNetworShortcutAndLibraryPrefix(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibMediaItemThinDTO> uploadItemsByNetworShortcutAndLibraryPrefix(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                           @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                           @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile files) throws Exception;
 
@@ -117,10 +117,10 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibMediaItemDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item/{idx}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}/item/{idx}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<LibMediaItemDTO> getItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibMediaItemDTO> getItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                              @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                              @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx);
 
@@ -131,10 +131,10 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 204, message = "No Content", response = Void.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item/{idx}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}/item/{idx}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteItemByNetworShortcutAndLibrarUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteItemByNetworShortcutAndLibrarUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                         @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                         @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx);
 
@@ -145,9 +145,9 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = ByteArrayInputStream.class),
             @ApiResponse(code = 403, message = "Forbidden", response = ByteArrayInputStream.class),
             @ApiResponse(code = 404, message = "Not Found", response = ByteArrayInputStream.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item/{idx}/stream",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}/item/{idx}/stream",
             method = RequestMethod.GET)
-    ResponseEntity<byte[]> streamItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<byte[]> streamItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                        @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                        @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx) throws IOException;
 
@@ -158,11 +158,11 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibMediaItemDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<LibMediaItemDTO> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibMediaItemDTO> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                        @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                        @ApiParam(value = "fileItem", required = true) @RequestBody LibMediaItemDTO mediaItem);
@@ -173,10 +173,10 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 204, message = "No Content", response = LibMediaItemThinDTO.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemThinDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemThinDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<LibMediaItemThinDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<LibMediaItemThinDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                   @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable);
@@ -188,11 +188,11 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibMediaItemDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item",
             produces = {"*/*"},
             consumes = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<LibMediaItemDTO> getItemsByNetworShortcutAndChannelShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibMediaItemDTO> getItemsByNetworShortcutAndChannelShortcutAndLibrarUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                 @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix);
 
@@ -203,10 +203,10 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 204, message = "No Content", response = Void.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item/{idx}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item/{idx}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteItemByNetworShortcutAndChannelShortcutAndLibraryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteItemByNetworShortcutAndChannelShortcutAndLibraryUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                            @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                            @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx);
@@ -218,10 +218,10 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibMediaItemDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item/{idx}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item/{idx}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<LibMediaItemDTO> getItemByNetworShortcutAndChannelShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibMediaItemDTO> getItemByNetworShortcutAndChannelShortcutAndLibrarUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx);
@@ -233,10 +233,10 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = ByteArrayInputStream.class),
             @ApiResponse(code = 403, message = "Forbidden", response = ByteArrayInputStream.class),
             @ApiResponse(code = 404, message = "Not Found", response = ByteArrayInputStream.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item/{idx}/stream",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item/{idx}/stream",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<byte[]> getItemStreamByNetworShortcutAndChannelShortcutAndLibraryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<byte[]> getItemStreamByNetworShortcutAndChannelShortcutAndLibraryUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                              @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                              @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx);

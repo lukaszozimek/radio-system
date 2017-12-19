@@ -29,10 +29,10 @@ public interface SchLogResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchLogDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchLogDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchLogDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/{extension}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<SchLogThinDTO>> getAllLogsForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<SchLogThinDTO>> getAllLogsForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                      @ApiParam(value = "extension", required = true) @PathVariable("extension") String extension,
                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable);
@@ -45,10 +45,10 @@ public interface SchLogResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchLogDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchLogDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchLogDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/{extension}",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<SchLogDTO>> uploadLogForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<SchLogDTO>> uploadLogForChannelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                  @ApiParam(value = "extension", required = true) @PathVariable("extension") String extension,
                                                                  @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile[] files) throws URISyntaxException;
@@ -61,10 +61,10 @@ public interface SchLogResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
             @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}/{date}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/{extension}/{date}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteLogForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteLogForChannelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                         @ApiParam(value = "extension", required = true) @PathVariable("extension") String extension,
                                                         @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date);

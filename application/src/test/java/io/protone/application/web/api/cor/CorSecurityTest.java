@@ -133,7 +133,7 @@ public class CorSecurityTest {
         List<LinkedHashMap<String, String>> corChannelSet = (ArrayList<LinkedHashMap<String, String>>) jwsHeader.get(CHANNEL);
 
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media", corNetworkMap.get("shortcut"), corChannelSet.stream().findFirst().get().get("shortcut"))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corNetworkMap.get("shortcut"), corChannelSet.stream().findFirst().get().get("shortcut"))
             .header("Authorization", "Bearer " + token.getIdToken()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
@@ -154,7 +154,7 @@ public class CorSecurityTest {
         JwsHeader jwsHeader = tokenProvider.getUserAuthorizationAccess(token.getIdToken());
         LinkedHashMap<String, String> corNetworkMap = (LinkedHashMap<String, String>) jwsHeader.get(NETWORK);
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/media", corNetworkMap.get("shortcut"))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/media", corNetworkMap.get("shortcut"))
             .header("Authorization", "Bearer " + token.getIdToken()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
@@ -174,7 +174,7 @@ public class CorSecurityTest {
 
 
         // pass channel to filter
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/", "channel")
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/", "channel")
             .header("Authorization", "Bearer " + token.getIdToken()))
             .andExpect(status().isUnauthorized());
     }
@@ -197,7 +197,7 @@ public class CorSecurityTest {
 
 
         // pass channel to filter
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{libraryPrefix}", corNetworkMap.get("shortcut"), "channel")
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/{libraryPrefix}", corNetworkMap.get("shortcut"), "channel")
             .header("Authorization", "Bearer " + token.getIdToken()))
             .andExpect(status().isNotFound());
     }
@@ -221,7 +221,7 @@ public class CorSecurityTest {
 
 
         // pass channel to filter
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel", corNetworkMap.get("shortcut"))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel", corNetworkMap.get("shortcut"))
             .header("Authorization", "Bearer " + token.getIdToken()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
@@ -241,7 +241,7 @@ public class CorSecurityTest {
         JWTToken token = mapper.readValue(jwtToken, JWTToken.class);
 
         // pass channel to filter
-        restLibLibraryMockMvc.perform(get("/api/v1/network")
+        restLibLibraryMockMvc.perform(get("/api/v1/organization")
             .header("Authorization", "Bearer " + token.getIdToken()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));

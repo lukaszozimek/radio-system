@@ -55,13 +55,13 @@ public class SchScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public Slice<SchSchedule> findSchSchedulesForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
-        return schScheduleRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut, pageable);
+    public Slice<SchSchedule> findSchSchedulesForNetworkAndChannel(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return schScheduleRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
     @Transactional(readOnly = true)
-    public SchScheduleDTO findSchScheduleForNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
-        SchSchedule schSchedule = schScheduleRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
+    public SchScheduleDTO findSchScheduleForNetworkAndChannelAndDate(String organizationShortcut, String channelShortcut, LocalDate date) {
+        SchSchedule schSchedule = schScheduleRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(organizationShortcut, channelShortcut, date);
 
         if (schSchedule != null) {
             return schScheduleDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schScheduleMapper.DB2DTO(schSchedule));
@@ -70,14 +70,14 @@ public class SchScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public SchSchedule findSchScheduleEntityForNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
-        return schScheduleRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
+    public SchSchedule findSchScheduleEntityForNetworkAndChannelAndDate(String organizationShortcut, String channelShortcut, LocalDate date) {
+        return schScheduleRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(organizationShortcut, channelShortcut, date);
 
     }
 
     @Transactional
-    public void deleteSchScheduleByNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
-        SchSchedule schSchedule = findSchScheduleEntityForNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
+    public void deleteSchScheduleByNetworkAndChannelAndDate(String organizationShortcut, String channelShortcut, LocalDate date) {
+        SchSchedule schSchedule = findSchScheduleEntityForNetworkAndChannelAndDate(organizationShortcut, channelShortcut, date);
 
         if (schSchedule != null) {
             schSchedule.getBlocks().stream().forEach(schBlockSchBlock -> {
@@ -85,11 +85,11 @@ public class SchScheduleService {
             });
 
             schScheduleRepository.delete(schSchedule);
-            schPlaylistService.deleteSchPlaylistByNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
+            schPlaylistService.deleteSchPlaylistByNetworkAndChannelAndDate(organizationShortcut, channelShortcut, date);
         }
     }
 
-    public List<SchSchedule> findSchSchedulesForNetworkAndChannelBetweenDates(String networkShortcut, String channelShortcut, LocalDate from, LocalDate to) {
-        return schScheduleRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndDateBetween(networkShortcut, channelShortcut, from, to);
+    public List<SchSchedule> findSchSchedulesForNetworkAndChannelBetweenDates(String organizationShortcut, String channelShortcut, LocalDate from, LocalDate to) {
+        return schScheduleRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndDateBetween(organizationShortcut, channelShortcut, from, to);
     }
 }

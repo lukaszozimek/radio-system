@@ -53,13 +53,13 @@ public class SchLogConfigurationResourceImpl implements SchLogConfigurationResou
     private CorChannelService corChannelService;
 
     @Override
-    public ResponseEntity<List<SchLogConfigurationThinDTO>> getAllLogsConfigurationsForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<SchLogConfigurationThinDTO>> getAllLogsConfigurationsForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable) {
 
-        log.debug("REST request to get all SchLogConfiguration, for Channel {}, Network: {}", channelShortcut, networkShortcut);
+        log.debug("REST request to get all SchLogConfiguration, for Channel {}, Network: {}", channelShortcut, organizationShortcut);
 
-        Slice<SchLogConfiguration> entity = schLogConfigurationService.findSchLogConfigurationForNetworkAndChannel(networkShortcut, channelShortcut, pagable);
+        Slice<SchLogConfiguration> entity = schLogConfigurationService.findSchLogConfigurationForNetworkAndChannel(organizationShortcut, channelShortcut, pagable);
         List<SchLogConfigurationThinDTO> response = schLogConfigurationMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -72,41 +72,41 @@ public class SchLogConfigurationResourceImpl implements SchLogConfigurationResou
 
 
     @Override
-    public ResponseEntity<SchLogConfigurationDTO> creatLogsConfigurationsForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchLogConfigurationDTO> creatLogsConfigurationsForChannelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                              @ApiParam(value = "schLogConfigurationDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schLogConfigurationDTO) throws URISyntaxException, CreateBucketException {
-        log.debug("REST request to saveSchLogConfigurationDTO SchLogConfigurationDTO : {}, for Channel {} Network: {}", schLogConfigurationDTO, channelShortcut, networkShortcut);
+        log.debug("REST request to saveSchLogConfigurationDTO SchLogConfigurationDTO : {}, for Channel {} Network: {}", schLogConfigurationDTO, channelShortcut, organizationShortcut);
         if (schLogConfigurationDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SchLogConfiguration", "idexists", "A new SchLogConfiguration cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         SchLogConfiguration schLogConfiguration = schLogConfigurationMapper.DTO2DB(schLogConfigurationDTO, corNetwork, corChannel);
         SchLogConfiguration entity = schLogConfigurationService.saveSchLogConfiguration(schLogConfiguration);
         SchLogConfigurationDTO response = schLogConfigurationMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/event/" + response.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/event/" + response.getId()))
                 .body(response);
     }
 
 
     @Override
-    public ResponseEntity<Void> deleteLogsConfigurationsForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteLogsConfigurationsForChannelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to delete SchLogConfiguration : {}, for Network: {}", id, networkShortcut);
-        schLogConfigurationService.deleteSchLogConfigurationByNetworkAndChannelAndId(networkShortcut, channelShortcut, id);
+        log.debug("REST request to delete SchLogConfiguration : {}, for Network: {}", id, organizationShortcut);
+        schLogConfigurationService.deleteSchLogConfigurationByNetworkAndChannelAndId(organizationShortcut, channelShortcut, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traOrder", id.toString())).build();
     }
 
 
     @Override
-    public ResponseEntity<SchLogConfigurationDTO> getLogsConfigurationsForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchLogConfigurationDTO> getLogsConfigurationsForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                           @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get SchLogConfiguration : {}, for Network: {}", id, networkShortcut);
+        log.debug("REST request to get SchLogConfiguration : {}, for Network: {}", id, organizationShortcut);
 
-        SchLogConfiguration entity = schLogConfigurationService.findSchLogConfigurationForNetworkAndChannelAndId(networkShortcut, channelShortcut, id);
+        SchLogConfiguration entity = schLogConfigurationService.findSchLogConfigurationForNetworkAndChannelAndId(organizationShortcut, channelShortcut, id);
         SchLogConfigurationDTO response = schLogConfigurationMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -117,16 +117,16 @@ public class SchLogConfigurationResourceImpl implements SchLogConfigurationResou
 
 
     @Override
-    public ResponseEntity<SchLogConfigurationDTO> updateLogsConfigurationsForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchLogConfigurationDTO> updateLogsConfigurationsForChannelUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                              @ApiParam(value = "schLogConfigurationDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schLogConfigurationDTO) throws URISyntaxException, CreateBucketException {
-        log.debug("REST request to saveSchLogConfigurationDTO SchLogConfigurationDTO : {}, for Channel {} Network: {}", schLogConfigurationDTO, channelShortcut, networkShortcut);
+        log.debug("REST request to saveSchLogConfigurationDTO SchLogConfigurationDTO : {}, for Channel {} Network: {}", schLogConfigurationDTO, channelShortcut, organizationShortcut);
         if (schLogConfigurationDTO.getId() == null) {
-            return creatLogsConfigurationsForChannelUsingPOST(networkShortcut, channelShortcut, schLogConfigurationDTO);
+            return creatLogsConfigurationsForChannelUsingPOST(organizationShortcut, channelShortcut, schLogConfigurationDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         SchLogConfiguration schEventConfiguration = schLogConfigurationMapper.DTO2DB(schLogConfigurationDTO, corNetwork, corChannel);
         SchLogConfiguration entity = schLogConfigurationService.saveSchLogConfiguration(schEventConfiguration);
         SchLogConfigurationDTO response = schLogConfigurationMapper.DB2DTO(entity);

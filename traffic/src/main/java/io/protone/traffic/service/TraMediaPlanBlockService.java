@@ -28,7 +28,7 @@ public class TraMediaPlanBlockService {
     }
 
     @Transactional
-    public List<TraMediaPlanBlock> findBlockByNetworkShortcutAndChannelShortcutAndMediaplanId(String netwrokShorcut, String corChannel, Long mediaItemId) {
+    public List<TraMediaPlanBlock> findBlockByorganizationShortcutAndChannelShortcutAndMediaplanId(String netwrokShorcut, String corChannel, Long mediaItemId) {
         return traBlockRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(netwrokShorcut, corChannel, mediaItemId);
     }
 

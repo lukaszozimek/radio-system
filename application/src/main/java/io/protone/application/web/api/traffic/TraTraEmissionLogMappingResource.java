@@ -28,10 +28,10 @@ public interface TraTraEmissionLogMappingResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDiffDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDiffDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDiffDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/log",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/log",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                             @ApiParam(value = "traEmissionLogDescriptorDTO", required = true) @RequestPart("traEmissionLogDescriptorDTO") @Valid TraEmissionLogDescriptorDTO traEmissionLogDescriptorDTO,
                                                                             @ApiParam(value = "files", required = true) @RequestPart("file") MultipartFile file) throws IOException;

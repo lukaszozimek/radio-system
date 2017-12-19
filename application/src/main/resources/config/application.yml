@@ -104,7 +104,7 @@ jhipster:
 
 application:
     s3:
-        url: https://minio.protone.io
+        url: http://localhost:9000
         username: protone-dev
         password: protone-dev
         bucket: protone

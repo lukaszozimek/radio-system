@@ -75,15 +75,15 @@ public class SchScheduleBuilderService {
 
 
     @Transactional
-    public SchSchedule buildScheduleForDate(LocalDate localDate, String gridShortName, String networkShortcut, String channelShortcut) throws Exception {
-        SchGrid schGrid = this.schGridService.findSchGridForNetworkAndChannelAndShortName(networkShortcut, channelShortcut, gridShortName);
+    public SchSchedule buildScheduleForDate(LocalDate localDate, String gridShortName, String organizationShortcut, String channelShortcut) throws Exception {
+        SchGrid schGrid = this.schGridService.findSchGridForNetworkAndChannelAndShortName(organizationShortcut, channelShortcut, gridShortName);
         return build(schGrid, localDate);
     }
 
     @Transactional
-    public SchSchedule buildDefaultSchedule(LocalDate localDate, String networkShortcut, String channelShortcut) {
+    public SchSchedule buildDefaultSchedule(LocalDate localDate, String organizationShortcut, String channelShortcut) {
         CorDayOfWeekEnum corDayOfWeekEnum = corDayOfWeekEnumMap.get(localDate.getDayOfWeek());
-        SchGrid schGrid = SerializationUtils.clone(this.schGridService.findOneByNetworkShortcutAndChannelShortcutAndDefaultGridAndDayOfWeek(networkShortcut, channelShortcut, true, corDayOfWeekEnum));
+        SchGrid schGrid = SerializationUtils.clone(this.schGridService.findOneByorganizationShortcutAndChannelShortcutAndDefaultGridAndDayOfWeek(organizationShortcut, channelShortcut, true, corDayOfWeekEnum));
         return build(schGrid, localDate);
     }
 

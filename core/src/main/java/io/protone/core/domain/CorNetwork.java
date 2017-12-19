@@ -55,6 +55,23 @@ public class CorNetwork extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorUser> networkUsers = new HashSet<>();
 
+    @ManyToOne
+    @PodamExclude
+    @JsonIgnore
+    private CorOrganization corOrganization;
+
+    @ManyToOne
+    @PodamExclude
+    @JsonIgnore
+    private CorNetwork parentNetwork;
+
+    @OneToMany(mappedBy = "parentNetwork")
+    @JsonIgnore
+    @PodamExclude
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CorNetwork> childNetworks = new HashSet<>();
+
+
     public Long getId() {
         return id;
     }

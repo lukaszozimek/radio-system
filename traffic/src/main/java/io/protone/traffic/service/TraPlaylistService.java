@@ -52,13 +52,13 @@ public class TraPlaylistService {
     }
 
     @Transactional
-    public List<TraPlaylist> getTraPlaylistListInRange(LocalDate from, LocalDate to, String networkshortcut, String channelShortcut) {
+    public List<TraPlaylist> getTraPlaylistListInRange(LocalDate from, LocalDate to, String organizationShortcut, String channelShortcut) {
         long difference = ChronoUnit.DAYS.between(from, to);
         List<TraPlaylist> traPlaylists = Lists.newArrayList();
         if(difference ==0){
-            TraPlaylist traPlaylist = getTraPlaylistList(from.plusDays(difference), networkshortcut, channelShortcut);
+            TraPlaylist traPlaylist = getTraPlaylistList(from.plusDays(difference), organizationShortcut, channelShortcut);
             if (traPlaylist == null) {
-                TraPlaylist createdPlaylist = createPlaylistIfWasNotCreatedEarlier(from.plusDays(difference), networkshortcut, channelShortcut);
+                TraPlaylist createdPlaylist = createPlaylistIfWasNotCreatedEarlier(from.plusDays(difference), organizationShortcut, channelShortcut);
                 traPlaylists.add(createdPlaylist);
             } else if (traPlaylist.getPlaylists().isEmpty()) {
                 TraPlaylist createdPlaylist = createPlaylistIfBlockConfigurationWasnNotProvided(from.plusDays(difference), traPlaylist);
@@ -69,9 +69,9 @@ public class TraPlaylistService {
             }
         }
         for (int i = 0; i < difference; i++) {
-            TraPlaylist traPlaylist = getTraPlaylistList(from.plusDays(i), networkshortcut, channelShortcut);
+            TraPlaylist traPlaylist = getTraPlaylistList(from.plusDays(i), organizationShortcut, channelShortcut);
             if (traPlaylist == null) {
-                TraPlaylist createdPlaylist = createPlaylistIfWasNotCreatedEarlier(from.plusDays(i), networkshortcut, channelShortcut);
+                TraPlaylist createdPlaylist = createPlaylistIfWasNotCreatedEarlier(from.plusDays(i), organizationShortcut, channelShortcut);
                 traPlaylists.add(createdPlaylist);
             } else if (traPlaylist.getPlaylists().isEmpty()) {
                 TraPlaylist createdPlaylist = createPlaylistIfBlockConfigurationWasnNotProvided(from.plusDays(i), traPlaylist);
@@ -85,10 +85,10 @@ public class TraPlaylistService {
     }
 
     @Transactional
-    public TraPlaylist getTraPlaylistList(LocalDate date, String networkshortcut, String channelShortcut) {
-        TraPlaylist traPlaylist = traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, networkshortcut, channelShortcut);
+    public TraPlaylist getTraPlaylistList(LocalDate date, String organizationShortcut, String channelShortcut) {
+        TraPlaylist traPlaylist = traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, organizationShortcut, channelShortcut);
         if (traPlaylist == null) {
-            TraPlaylist createdPlaylist = createIfNotExist(date, networkshortcut, channelShortcut);
+            TraPlaylist createdPlaylist = createIfNotExist(date, organizationShortcut, channelShortcut);
             createdPlaylist = savePlaylist(createdPlaylist);
             return createdPlaylist;
         } else if (traPlaylist.getPlaylists().isEmpty()) {
@@ -99,14 +99,14 @@ public class TraPlaylistService {
     }
 
     @Transactional
-    public Slice<TraPlaylist> getAllPlaylistList(String networkshortcut, String channelShortcut, Pageable pageable) {
-        return traPlaylistRepository.findSliceByNetwork_ShortcutAndChannel_Shortcut(networkshortcut, channelShortcut, pageable);
+    public Slice<TraPlaylist> getAllPlaylistList(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return traPlaylistRepository.findSliceByNetwork_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
 
     @Transactional
-    public void deleteOneTraPlaylistList(LocalDate date, String networkshortcut, String channelShortcut) {
-        TraPlaylist traPlaylist = traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, networkshortcut, channelShortcut);
+    public void deleteOneTraPlaylistList(LocalDate date, String organizationShortcut, String channelShortcut) {
+        TraPlaylist traPlaylist = traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, organizationShortcut, channelShortcut);
         if (traPlaylist == null) {
             throw new EntityNotFoundException();
         }
@@ -114,8 +114,8 @@ public class TraPlaylistService {
         traPlaylistRepository.delete(traPlaylist);
     }
 
-    private TraPlaylist createPlaylistIfWasNotCreatedEarlier(LocalDate localDate, String networkshortcut, String channelShortcut) {
-        TraPlaylist createdPlaylist = createIfNotExist(localDate, networkshortcut, channelShortcut);
+    private TraPlaylist createPlaylistIfWasNotCreatedEarlier(LocalDate localDate, String organizationShortcut, String channelShortcut) {
+        TraPlaylist createdPlaylist = createIfNotExist(localDate, organizationShortcut, channelShortcut);
         return savePlaylist(createdPlaylist);
     }
 
@@ -124,10 +124,10 @@ public class TraPlaylistService {
         return savePlaylist(createdPlaylist);
     }
 
-    private TraPlaylist createIfNotExist(LocalDate localDate, String networkshortcut, String channelShortcut) {
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkshortcut);
-        CorChannel corChannel = corChannelService.findChannel(networkshortcut, channelShortcut);
-        return new TraPlaylist().network(corNetwork).channel(corChannel).playlistDate(localDate).playlists(traBlockService.buildBlocks(localDate, networkshortcut));
+    private TraPlaylist createIfNotExist(LocalDate localDate, String organizationShortcut, String channelShortcut) {
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        return new TraPlaylist().network(corNetwork).channel(corChannel).playlistDate(localDate).playlists(traBlockService.buildBlocks(localDate, organizationShortcut));
     }
 
     private TraPlaylist createBlocksIfConfigurationWasNotProvided(LocalDate localDate, TraPlaylist traPlaylistWithoutBlocks) {

@@ -2,7 +2,6 @@ package io.protone.library.domain;
 
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorLibrary;
-import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -105,18 +104,7 @@ public class LibFileLibrary extends CorLibrary implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public LibFileLibrary network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
 
     public Set<CorChannel> getChannels() {
         return channels;

@@ -24,10 +24,10 @@ public interface CorUserConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorUserDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorUserDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorUserDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/user",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<CorUserDTO>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<CorUserDTO>> getAllUsersUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                          @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -37,10 +37,10 @@ public interface CorUserConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorUserDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorUserDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorUserDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user/{login}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/user/{login}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<CorUserDTO> getUserUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorUserDTO> getUserUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                @ApiParam(value = "login", required = true) @PathVariable("login") String login);
 
 
@@ -51,11 +51,11 @@ public interface CorUserConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorUserDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorUserDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorUserDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/user",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<CorUserDTO> updateUserUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorUserDTO> updateUserUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                   @ApiParam(value = "contactStatusPT", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException, TikaException, IOException, SAXException;
 
     @ApiOperation(value = "updateUserWithAvatar", notes = "", response = CorUserDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
@@ -65,10 +65,10 @@ public interface CorUserConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorUserDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorUserDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorUserDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user/{login}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/user/{login}",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<CorUserDTO> updateUserWithAvatarUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorUserDTO> updateUserWithAvatarUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                              @ApiParam(value = "login", required = true) @PathVariable("login") String login,
                                                              @ApiParam(value = "corUserDTO", required = true) @Valid @RequestPart("corUserDTO") CorUserDTO corUserDTO,
                                                              @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException;
@@ -80,10 +80,10 @@ public interface CorUserConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorUserDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorUserDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorUserDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/user",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<CorUserDTO> createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorUserDTO> createUserUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                    @ApiParam(value = "corUserDTO", required = true) @Valid @RequestPart("corUserDTO") CorUserDTO corUserDTO,
                                                    @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException;
 
@@ -94,10 +94,10 @@ public interface CorUserConfigurationResource {
             @ApiResponse(code = 204, message = "No Content", response = Void.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user/{login}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/user/{login}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteUserUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteUserUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                @ApiParam(value = "login", required = true) @PathVariable("login") String login);
 
 }

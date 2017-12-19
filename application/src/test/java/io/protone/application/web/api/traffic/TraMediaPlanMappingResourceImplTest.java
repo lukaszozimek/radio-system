@@ -255,7 +255,7 @@ public class TraMediaPlanMappingResourceImplTest {
 
         TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(firstFile, mediaPlanDescriptor, corNetwork, corChannel);
         TraMediaPlanAdvertisementAssigneDTO traMediaPlanAdvertisementAssigneDTO = new TraMediaPlanAdvertisementAssigneDTO().mediaPlanId(traMediaPlan.getId()).libMediaItemIdx(libMediaItem.getIdx());
-        restTraMediaPlanMappingMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan",
+        restTraMediaPlanMappingMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan",
                 corNetwork.getShortcut(),
                 corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)

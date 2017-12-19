@@ -30,16 +30,16 @@ public class CorFilterService {
         return corFilterRepository.saveAndFlush(corFilter.user(corUser.get()));
     }
 
-    public CorFilter findOne(Long id, CorEntityTypeEnum corEntityTypeEnum, String networkShortcut) {
-        return corFilterRepository.findOneByIdAndNetwork_ShortcutAndTypeAndCorUser_Login(id,networkShortcut, corEntityTypeEnum, SecurityUtils.getCurrentUserLogin());
+    public CorFilter findOne(Long id, CorEntityTypeEnum corEntityTypeEnum, String organizationShortcut) {
+        return corFilterRepository.findOneByIdAndNetwork_ShortcutAndTypeAndCorUser_Login(id,organizationShortcut, corEntityTypeEnum, SecurityUtils.getCurrentUserLogin());
     }
 
-    public Slice<CorFilter> findAll(String networkShortcut, CorEntityTypeEnum corEntityTypeEnum, Pageable pagable) {
-        return corFilterRepository.findSliceByNetwork_ShortcutAndTypeAndCorUser_Login(networkShortcut, corEntityTypeEnum, SecurityUtils.getCurrentUserLogin(), pagable);
+    public Slice<CorFilter> findAll(String organizationShortcut, CorEntityTypeEnum corEntityTypeEnum, Pageable pagable) {
+        return corFilterRepository.findSliceByNetwork_ShortcutAndTypeAndCorUser_Login(organizationShortcut, corEntityTypeEnum, SecurityUtils.getCurrentUserLogin(), pagable);
     }
 
     @Transactional
-    public void delete(Long id, String networkShortcut) {
-        corFilterRepository.deleteByIdAndNetwork_Shortcut(id, networkShortcut);
+    public void delete(Long id, String organizationShortcut) {
+        corFilterRepository.deleteByIdAndNetwork_Shortcut(id, organizationShortcut);
     }
 }

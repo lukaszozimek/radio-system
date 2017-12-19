@@ -11,11 +11,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SchClockRepository extends JpaRepository<SchClock, Long> {
 
 
-    Slice<SchClock> findAllByNetwork_ShortcutAndChannel_Shortcut(String networkShortCut, String channelShortcut, Pageable pageable);
+    Slice<SchClock> findAllByNetwork_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut, Pageable pageable);
 
 
-    SchClock findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortcut, String channelShortcut, String shortName);
+    SchClock findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(String organizationShortcut, String channelShortcut, String shortName);
 
-    void deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortcut, String channelShortcut, String shortName);
+    void deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(String organizationShortcut, String channelShortcut, String shortName);
 
 }

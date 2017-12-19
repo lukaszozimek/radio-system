@@ -35,13 +35,13 @@ public class CrmContactConverterResourceImpl implements CrmContactConverterResou
     private CrmContactMapper crmContactMapper;
 
     @Override
-    public ResponseEntity<CrmContactDTO> convertLeadToContact(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CrmContactDTO> convertLeadToContact(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                       @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) throws URISyntaxException {
-        log.debug("REST request to convert Lead : {}, for Network: {} to CrmContact", shortName, networkShortcut);
-        CrmLead lead = crmLeadService.getLead(shortName, networkShortcut);
+        log.debug("REST request to convert Lead : {}, for Network: {} to CrmContact", shortName, organizationShortcut);
+        CrmLead lead = crmLeadService.getLead(shortName, organizationShortcut);
         CrmContact crmOpportunity = crmContactService.convertCrmLeadToContact(lead);
         CrmContactDTO response = crmContactMapper.DB2DTO(crmOpportunity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/opportunity/" + response.getName()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/crm/opportunity/" + response.getName()))
                 .body(response);
     }
 }

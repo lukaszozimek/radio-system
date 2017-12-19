@@ -62,8 +62,8 @@ public class TraBlockService {
     }
 
     @Transactional
-    public Set<TraBlock> buildBlocks(LocalDate localDate, String networkshortcut) {
-        List<TraBlockConfiguration> traBlockConfigurations = traBlockConfigurationService.getAllBlockConfigurationsByDay(networkshortcut, corDayOfWeekEnumMap.get(localDate.getDayOfWeek()));
+    public Set<TraBlock> buildBlocks(LocalDate localDate, String organizationShortcut) {
+        List<TraBlockConfiguration> traBlockConfigurations = traBlockConfigurationService.getAllBlockConfigurationsByDay(organizationShortcut, corDayOfWeekEnumMap.get(localDate.getDayOfWeek()));
         if (traBlockConfigurations.isEmpty()) {
             return new HashSet<>();
         }

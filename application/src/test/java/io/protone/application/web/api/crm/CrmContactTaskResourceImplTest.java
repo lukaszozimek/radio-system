@@ -138,7 +138,7 @@ public class CrmContactTaskResourceImplTest {
         // Create the CrmTask
         CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask.network(corNetwork).contact(crmContact));
 
-        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), crmContact.getShortName())
+        restCrmTaskMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), crmContact.getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskDTO)))
             .andExpect(status().isCreated());
@@ -166,7 +166,7 @@ public class CrmContactTaskResourceImplTest {
         CrmTaskDTO existingCrmTaskDTO = crmTaskMapper.DB2DTO(existingCrmTask.contact(crmContact));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
+        restCrmTaskMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCrmTaskDTO)))
             .andExpect(status().isBadRequest());
@@ -186,7 +186,7 @@ public class CrmContactTaskResourceImplTest {
         crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).contact(crmContact));
 
         // Get all the crmTaskList
-        restCrmTaskMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}/task?sort=id,desc", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName()))
+        restCrmTaskMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task?sort=id,desc", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(crmTask.getId().intValue())))
@@ -205,7 +205,7 @@ public class CrmContactTaskResourceImplTest {
         crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).contact(crmContact));
 
         // Get the crmTask
-        restCrmTaskMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}/task/{id}", corNetwork.getShortcut(), crmContact.getShortName(), crmTask.getId()))
+        restCrmTaskMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task/{id}", corNetwork.getShortcut(), crmContact.getShortName(), crmTask.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmTask.getId().intValue()))
@@ -219,7 +219,7 @@ public class CrmContactTaskResourceImplTest {
     @Transactional
     public void getNonExistingCrmTask() throws Exception {
         // Get the crmTask
-        restCrmTaskMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}/task/{id}", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName(), Long.MAX_VALUE))
+        restCrmTaskMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task/{id}", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -241,7 +241,7 @@ public class CrmContactTaskResourceImplTest {
             .comment(UPDATED_COMMENT);
         CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(updatedCrmTask);
 
-        restCrmTaskMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
+        restCrmTaskMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskDTO)))
             .andExpect(status().isOk());
@@ -267,7 +267,7 @@ public class CrmContactTaskResourceImplTest {
         CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask.contact(crmContact));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCrmTaskMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
+        restCrmTaskMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskDTO)))
             .andExpect(status().isCreated());
@@ -287,7 +287,7 @@ public class CrmContactTaskResourceImplTest {
         int databaseSizeBeforeDelete = crmTaskRepository.findAll().size();
 
         // Get the crmTask
-        restCrmTaskMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/contact/{shortName}/task/{id}", corNetwork.getShortcut(), crmContact.getShortName(), crmTask.getId())
+        restCrmTaskMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task/{id}", corNetwork.getShortcut(), crmContact.getShortName(), crmTask.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
@@ -308,7 +308,7 @@ public class CrmContactTaskResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         CrmTaskDTO cfgMarkerConfigurationDTO = crmTaskMapper.DB2DTO(crmTask);
 
-        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), crmContact.getShortName())
+        restCrmTaskMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), crmContact.getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());

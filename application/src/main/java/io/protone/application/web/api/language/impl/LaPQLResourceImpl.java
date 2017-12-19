@@ -36,9 +36,9 @@ public class LaPQLResourceImpl implements LaPQLResource {
     private LaPQLMappingService pqlMappingService;
 
     @Override
-    public List queryElements(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public List queryElements(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                               @ApiParam(value = "corFilterDTO", required = true) @RequestBody @Valid CorFilterThinDTO corFilterDTO) throws IOException {
-        log.debug("REST request Query for {}", corFilterDTO, networkShortcut);
+        log.debug("REST request Query for {}", corFilterDTO, organizationShortcut);
         CorFilter corFilter = corFilterMapper.DTO2DB(corFilterDTO);
         List entites = pqlService.getObjectList(corFilter);
         return pqlMappingService.DBs2DTOs(entites, corFilter.getType());

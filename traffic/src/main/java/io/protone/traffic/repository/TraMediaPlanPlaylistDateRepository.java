@@ -14,11 +14,11 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface TraMediaPlanPlaylistDateRepository extends JpaRepository<TraMediaPlanPlaylistDate,Long> {
 
-    TraMediaPlanPlaylistDate findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(LocalDate date, String networkshortcut, String channelShortcut);
+    TraMediaPlanPlaylistDate findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(LocalDate date, String organizationShortcut, String channelShortcut);
 
-    List<TraMediaPlanPlaylistDate> findAllByNetwork_ShortcutAndChannel_Shortcut(String networkshortcut, String channelShortcut, Pageable pageable);
+    List<TraMediaPlanPlaylistDate> findAllByNetwork_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut, Pageable pageable);
 
-    void deleteByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(LocalDate date, String networkshortcut, String channelShortcut);
+    void deleteByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(LocalDate date, String organizationShortcut, String channelShortcut);
 
     List<TraMediaPlanPlaylistDate> findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(String shortcut, String shortcut1, Long id);
 }

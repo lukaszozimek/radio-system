@@ -250,18 +250,6 @@ public class LibMediaItem extends CorItem implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public LibMediaItem network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
 
     public Set<CorPerson> getAuthors() {
         return authors;
@@ -453,7 +441,6 @@ public class LibMediaItem extends CorItem implements Serializable {
                 ", artist=" + artist +
                 ", album=" + album +
                 ", track=" + track +
-                ", network=" + network +
                 ", authors=" + authors +
                 ", composers=" + composers +
                 ", markers=" + markers +

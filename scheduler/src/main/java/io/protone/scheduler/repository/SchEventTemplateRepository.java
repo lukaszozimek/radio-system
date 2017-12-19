@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface SchEventTemplateRepository extends JpaRepository<SchEventTemplate, Long> {
 
-    void deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortCut, String channelShortcut, String shortName);
+    void deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(String organizationShortcut, String channelShortcut, String shortName);
 
     @Query("select event from SchEventTemplate as event " +
             "left join fetch event.network as n " +
@@ -20,7 +20,7 @@ public interface SchEventTemplateRepository extends JpaRepository<SchEventTempla
             "left join fetch event.schLogConfiguration as logConf " +
             "left join fetch logConf.logColumns as logColumns " +
             "where n.shortcut = :network  and ch.shortcut= :channelShortcut and event.instance =:instance and event.type =:type")
-    Slice<SchEventTemplate> findAllByNetwork_ShortcutAndChannel_ShortcutAndInstanceAndType(@Param("network") String networkShortCut, @Param("channelShortcut") String channelShortcut, @Param("instance") boolean instance, @Param("type") String type, Pageable pageable);
+    Slice<SchEventTemplate> findAllByNetwork_ShortcutAndChannel_ShortcutAndInstanceAndType(@Param("network") String organizationShortcut, @Param("channelShortcut") String channelShortcut, @Param("instance") boolean instance, @Param("type") String type, Pageable pageable);
 
     @Query("select event from SchEventTemplate as event " +
             "left join fetch event.network as n " +
@@ -28,7 +28,7 @@ public interface SchEventTemplateRepository extends JpaRepository<SchEventTempla
             "left join fetch event.schLogConfiguration as logConf " +
             "left join fetch logConf.logColumns as logColumns " +
             "where n.shortcut = :network and event.shortName =:shortName and ch.shortcut= :channelShortcut and event.instance =:instance  and event.type =:type")
-    SchEventTemplate findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndInstanceAndType(@Param("network") String networkShortCut, @Param("channelShortcut") String channelShortcut, @Param("shortName") String shortName, @Param("instance") boolean instance, @Param("type") String type);
+    SchEventTemplate findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndInstanceAndType(@Param("network") String organizationShortcut, @Param("channelShortcut") String channelShortcut, @Param("shortName") String shortName, @Param("instance") boolean instance, @Param("type") String type);
 
-    Slice<SchEventTemplate> findAllByNetwork_ShortcutAndChannel_ShortcutAndEventCategory_NameAndInstanceAndType(String networkShortcut, String channelShortcut, String categoryName, boolean instance, String type, Pageable pageable);
+    Slice<SchEventTemplate> findAllByNetwork_ShortcutAndChannel_ShortcutAndEventCategory_NameAndInstanceAndType(String organizationShortcut, String channelShortcut, String categoryName, boolean instance, String type, Pageable pageable);
 }

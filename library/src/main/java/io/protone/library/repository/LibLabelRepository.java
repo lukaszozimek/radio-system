@@ -12,9 +12,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @SuppressWarnings("unused")
 public interface LibLabelRepository extends JpaRepository<LibLabel,Long> {
 
-    Slice<LibLabel> findSliceByNetwork_Shortcut(String networkShortcut, Pageable pagable);
+    Slice<LibLabel> findSliceByNetwork_Shortcut(String organizationShortcut, Pageable pagable);
 
-    LibLabel findOneByIdAndNetwork_Shortcut(Long id, String networkShortcut);
+    LibLabel findOneByIdAndNetwork_Shortcut(Long id, String organizationShortcut);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String networkShortcut);
+    void deleteByIdAndNetwork_Shortcut(Long id, String organizationShortcut);
 }

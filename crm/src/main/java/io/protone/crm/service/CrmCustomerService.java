@@ -116,19 +116,19 @@ public class CrmCustomerService {
         }
     }
 
-    public void deleteCustomerTaskComment(Long taskId, Long id, String networkShortcut) {
-        crmTaskService.deleteCustomerTaskComment(taskId, id, networkShortcut);
+    public void deleteCustomerTaskComment(Long taskId, Long id, String organizationShortcut) {
+        crmTaskService.deleteCustomerTaskComment(taskId, id, organizationShortcut);
     }
 
-    public CrmTaskComment getTaskCommentAssociatedWithTask(String networkShortcut, Long taskId, Long id) {
-        return crmTaskService.getTaskCommentAssociatedWithTask(networkShortcut, taskId, id);
+    public CrmTaskComment getTaskCommentAssociatedWithTask(String organizationShortcut, Long taskId, Long id) {
+        return crmTaskService.getTaskCommentAssociatedWithTask(organizationShortcut, taskId, id);
     }
 
-    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String networkShortcut) {
-        return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String organizationShortcut) {
+        return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, organizationShortcut);
     }
 
-    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
-        return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
+    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String organizationShortcut, Pageable pagable) {
+        return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, organizationShortcut, pagable);
     }
 }

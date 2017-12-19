@@ -2,7 +2,6 @@ package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -33,10 +32,6 @@ public class SchPlaylist extends SchBaseEntity implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<SchEmission> emissions = new ArrayList<>();
-
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
 
     @ManyToOne
     @PodamExclude
@@ -89,18 +84,6 @@ public class SchPlaylist extends SchBaseEntity implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
-    public SchPlaylist network(CorNetwork network) {
-        this.network = network;
-        return this;
-    }
 
     public CorChannel getChannel() {
         return channel;

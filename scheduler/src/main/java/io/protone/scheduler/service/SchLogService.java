@@ -47,20 +47,20 @@ public class SchLogService {
 
 
     @Transactional
-    public List<SchLog> saveSchLog(MultipartFile[] multipartFile, CorNetwork networkShortcut, CorChannel channelShortcut) {
+    public List<SchLog> saveSchLog(MultipartFile[] multipartFile, CorNetwork organizationShortcut, CorChannel channelShortcut) {
 
         if (multipartFile != null) {
             return Arrays.asList(multipartFile).stream().map(multipartFile1 -> {
                 String extension = multipartFile1.getOriginalFilename().split("\\.")[1].toLowerCase();
-                SchLogConfiguration schLogConfiguration = schLogConfigurationService.findOneSchlogConfigurationByNetworkAndChannelAndExtension(networkShortcut.getShortcut(), channelShortcut.getShortcut(), extension);
+                SchLogConfiguration schLogConfiguration = schLogConfigurationService.findOneSchlogConfigurationByNetworkAndChannelAndExtension(organizationShortcut.getShortcut(), channelShortcut.getShortcut(), extension);
                 if (schLogConfiguration != null) {
                     SchLog logtoSave = new SchLog();
-                    logtoSave.network(networkShortcut);
+                    logtoSave.network(organizationShortcut);
                     logtoSave.channel(channelShortcut);
                     logtoSave.setSchLogConfiguration(schLogConfiguration);
                     logtoSave.setDate(LocalDate.parse(multipartFile1.getOriginalFilename().split("\\.")[0], DateTimeFormatter.ofPattern(schLogConfiguration.getPattern())));
                     try {
-                        logtoSave.setLibFileItem(libFileItemService.uploadFileItemWithPredefinedContentType(networkShortcut.getShortcut(), extension.toLowerCase(), multipartFile1,"text/*"));
+                        logtoSave.setLibFileItem(libFileItemService.uploadFileItemWithPredefinedContentType(organizationShortcut.getShortcut(), extension.toLowerCase(), multipartFile1,"text/*"));
                     } catch (IOException e) {
                         log.error("There was a problem with storing Item in Storage");
                     }
@@ -74,17 +74,17 @@ public class SchLogService {
     }
 
     @Transactional(readOnly = true)
-    public Slice<SchLog> findSchLogForNetworkAndChannelExtension(String networkShortcut, String channelShortcut, String extension, Pageable pageable) {
-        return schLogRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndSchLogConfiguration_Extension(networkShortcut, channelShortcut, extension, pageable);
+    public Slice<SchLog> findSchLogForNetworkAndChannelExtension(String organizationShortcut, String channelShortcut, String extension, Pageable pageable) {
+        return schLogRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndSchLogConfiguration_Extension(organizationShortcut, channelShortcut, extension, pageable);
     }
 
-    public SchLog findSchLogForNetworkAndChannelAndDateAndExtension(String networkShortcut, String channelShortcut, LocalDate date, String extension) {
-        return schLogRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(networkShortcut, channelShortcut, date, extension);
+    public SchLog findSchLogForNetworkAndChannelAndDateAndExtension(String organizationShortcut, String channelShortcut, LocalDate date, String extension) {
+        return schLogRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(organizationShortcut, channelShortcut, date, extension);
     }
 
     @Transactional
-    public void deleteSchLogByNetworkAndChannelAndDateAndExtension(String networkShortcut, String channelShortcut, LocalDate date, String extension) {
-        SchLog schLog = schLogRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(networkShortcut, channelShortcut, date, extension);
+    public void deleteSchLogByNetworkAndChannelAndDateAndExtension(String organizationShortcut, String channelShortcut, LocalDate date, String extension) {
+        SchLog schLog = schLogRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(organizationShortcut, channelShortcut, date, extension);
         this.libFileItemService.deleteFile(schLog.getLibFileItem());
         this.schLogRepository.delete(schLog);
     }

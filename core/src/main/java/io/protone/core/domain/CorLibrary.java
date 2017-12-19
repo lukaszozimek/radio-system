@@ -43,8 +43,7 @@ public abstract class CorLibrary extends AbstractAuditingEntity implements Seria
     @Column(name = "description")
     protected String description;
 
-    @ManyToOne
-    protected CorNetwork network;
+
 
 
 

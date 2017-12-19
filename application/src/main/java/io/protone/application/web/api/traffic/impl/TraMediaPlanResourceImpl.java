@@ -83,7 +83,7 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
     private ObjectMapper objectMapper;
 
     @Override
-    public ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                   @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestPart("traMediaPlanDescriptorDTO") @Valid TraMediaPlanDescriptorDTO traMediaPlanDescriptorDTO,
                                                                                   @ApiParam(value = "file", required = true) @RequestPart("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException, InvalidFormatException {
@@ -92,8 +92,8 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
         if (traMediaPlanDescriptor == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraMediaPlanDTO", "wrongSchema", "Can't add Element if TraMediaPlanDescriptorDTO doesn't exist")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         TraMediaPlan entity = traMediaPlanService.saveMediaPlan(file, traMediaPlanDescriptor, corNetwork, corChannel);
         TraMediaPlanDTO response = traMediaPlanMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
@@ -104,26 +104,26 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
     }
 
     @Override
-    public ResponseEntity<Void> deleteChannelTrafficMediaPlanUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteChannelTrafficMediaPlanUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                          @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete TraMediaPlan : {}", id);
-        traMediaPlanService.deleteMediaPlan(id, networkShortcut, channelShortcut);
+        traMediaPlanService.deleteMediaPlan(id, organizationShortcut, channelShortcut);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<TraMediaPlanDTO> getChannelTrafficMediaPlanUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraMediaPlanDTO> getChannelTrafficMediaPlanUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get TraMediaPlan: {}", id);
-        TraMediaPlan entity = traMediaPlanService.getMediaPlan(id, networkShortcut, channelShortcut);
+        TraMediaPlan entity = traMediaPlanService.getMediaPlan(id, organizationShortcut, channelShortcut);
         TraMediaPlanDTO response = null;
 
         if (entity != null) {
-            List<TraMediaPlanBlock> blockList = traMediaPlanBlockService.findBlockByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
-            List<TraMediaPlanPlaylistDate> dateList = traMediaPlanPlaylistDateService.findMediaPlanDatesByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
-            List<TraMediaPlanEmission> emissionList = traMediaPlanEmissionService.findEmissionsByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
+            List<TraMediaPlanBlock> blockList = traMediaPlanBlockService.findBlockByorganizationShortcutAndChannelShortcutAndMediaplanId(organizationShortcut, channelShortcut, id);
+            List<TraMediaPlanPlaylistDate> dateList = traMediaPlanPlaylistDateService.findMediaPlanDatesByorganizationShortcutAndChannelShortcutAndMediaplanId(organizationShortcut, channelShortcut, id);
+            List<TraMediaPlanEmission> emissionList = traMediaPlanEmissionService.findEmissionsByorganizationShortcutAndChannelShortcutAndMediaplanId(organizationShortcut, channelShortcut, id);
             response = traMediaPlanMapper.DB2DTO(entity, blockList, dateList, emissionList);
 
         }
@@ -135,25 +135,25 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
     }
 
     @Override
-    public ResponseEntity<List<TraMediaPlanThinDTO>> getAllChannelTrafficMediaPlanUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<TraMediaPlanThinDTO>> getAllChannelTrafficMediaPlanUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                            @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraMediaPlan");
-        Slice<TraMediaPlan> entities = traMediaPlanService.getMediaPlans(networkShortcut, channelShortcut, pagable);
+        Slice<TraMediaPlan> entities = traMediaPlanService.getMediaPlans(organizationShortcut, channelShortcut, pagable);
         List<TraMediaPlanThinDTO> response = traMediaPlanMapper.DBsThin2DTOsThin(entities.getContent());
         return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(entities))
                 .body(response);
     }
 
     @Override
-    public ResponseEntity<TraMediaPlanDTO> updateChannelTrafficMediaPlanUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraMediaPlanDTO> updateChannelTrafficMediaPlanUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                  @ApiParam(value = "traMediaPlanDTO", required = true) @Valid @RequestBody TraMediaPlanDTO traMediaPlanDTO) throws URISyntaxException {
         if (traMediaPlanDTO.getId() == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraMediaPlan", "missingID", "Can't edit Element if File doesn't exist")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         TraMediaPlan requestEntity = traMediaPlanMapper.DTO2DB(traMediaPlanDTO, corNetwork, corChannel);
         TraMediaPlan entity = traMediaPlanService.updateMediaPlan(requestEntity);
         TraMediaPlanDTO response = traMediaPlanMapper.DB2DTO(entity);

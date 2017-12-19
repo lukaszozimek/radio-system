@@ -146,7 +146,7 @@ public class TraInvoiceResourceImplTest {
         // Create the TraInvoice
         TraInvoiceDTO traInvoiceDTO = traInvoiceMapper.DB2DTO(traInvoice.customer(crmAccount).company(traCompany));
 
-        restTraInvoiceMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/invoice", corNetwork.getShortcut())
+        restTraInvoiceMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/invoice", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traInvoiceDTO)))
                 .andExpect(status().isCreated());
@@ -173,7 +173,7 @@ public class TraInvoiceResourceImplTest {
         TraInvoiceDTO existingTraInvoiceDTO = traInvoiceMapper.DB2DTO(existingTraInvoice.customer(crmAccount).company(traCompany));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraInvoiceMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/invoice", corNetwork.getShortcut())
+        restTraInvoiceMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/invoice", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingTraInvoiceDTO)))
                 .andExpect(status().isBadRequest());
@@ -192,7 +192,7 @@ public class TraInvoiceResourceImplTest {
         traInvoiceRepository.saveAndFlush(traInvoice.network(corNetwork).company(traCompany).customer(crmAccount));
 
         // Get all the traInvoiceList
-        restTraInvoiceMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/invoice?sort=id,desc", corNetwork.getShortcut()))
+        restTraInvoiceMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/invoice?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traInvoice.getId().intValue())))
@@ -210,7 +210,7 @@ public class TraInvoiceResourceImplTest {
         traInvoiceRepository.saveAndFlush(traInvoice.network(corNetwork).company(traCompany).customer(crmAccount));
 
         // Get the traInvoice
-        restTraInvoiceMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/invoice/{id}", corNetwork.getShortcut(), traInvoice.getId()))
+        restTraInvoiceMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/invoice/{id}", corNetwork.getShortcut(), traInvoice.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(traInvoice.getId().intValue()))
@@ -223,7 +223,7 @@ public class TraInvoiceResourceImplTest {
     @Transactional
     public void getNonExistingTraInvoice() throws Exception {
         // Get the traInvoice
-        restTraInvoiceMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/invoice/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restTraInvoiceMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/invoice/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -243,7 +243,7 @@ public class TraInvoiceResourceImplTest {
                 .paymentDay(UPDATED_PAYMENT_DAY);
         TraInvoiceDTO traInvoiceDTO = traInvoiceMapper.DB2DTO(updatedTraInvoice);
 
-        restTraInvoiceMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/invoice", corNetwork.getShortcut())
+        restTraInvoiceMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/traffic/invoice", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traInvoiceDTO)))
                 .andExpect(status().isOk());
@@ -268,7 +268,7 @@ public class TraInvoiceResourceImplTest {
         TraInvoiceDTO traInvoiceDTO = traInvoiceMapper.DB2DTO(traInvoice.customer(crmAccount).company(traCompany));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraInvoiceMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/invoice", corNetwork.getShortcut())
+        restTraInvoiceMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/traffic/invoice", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traInvoiceDTO)))
                 .andExpect(status().isCreated());
@@ -288,7 +288,7 @@ public class TraInvoiceResourceImplTest {
         int databaseSizeBeforeDelete = traInvoiceRepository.findAll().size();
 
         // Get the traInvoice
-        restTraInvoiceMockMvc.perform(delete("/api/v1/network/{networkShortcut}/traffic/invoice/{id}", corNetwork.getShortcut(), traInvoice.getId())
+        restTraInvoiceMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/traffic/invoice/{id}", corNetwork.getShortcut(), traInvoice.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
@@ -305,7 +305,7 @@ public class TraInvoiceResourceImplTest {
         traInvoiceRepository.saveAndFlush(traInvoice.customer(crmAccount).network(corNetwork).company(traCompany));
 
         // Get all the traInvoiceList
-        restTraInvoiceMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/invoice/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))
+        restTraInvoiceMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/invoice/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traInvoice.getId().intValue())))

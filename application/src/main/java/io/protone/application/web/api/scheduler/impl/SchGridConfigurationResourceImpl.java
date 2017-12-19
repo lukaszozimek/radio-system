@@ -52,12 +52,12 @@ public class SchGridConfigurationResourceImpl implements SchGridConfigurationRes
 
 
     @Override
-    public ResponseEntity<SchGridDTO> getSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchGridDTO> getSchedulerGridForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        log.debug("REST request to get SchGrid : {}, for Network: {}", shortName, networkShortcut);
+        log.debug("REST request to get SchGrid : {}, for Network: {}", shortName, organizationShortcut);
 
-        SchGridDTO response = schGridService.findSchGridForNetworkAndChannelAndShortNameDTO(networkShortcut, channelShortcut, shortName);
+        SchGridDTO response = schGridService.findSchGridForNetworkAndChannelAndShortNameDTO(organizationShortcut, channelShortcut, shortName);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
@@ -66,11 +66,11 @@ public class SchGridConfigurationResourceImpl implements SchGridConfigurationRes
     }
 
     @Override
-    public ResponseEntity<List<SchGridThinDTO>> getAllSchedulerDefaultGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<SchGridThinDTO>> getAllSchedulerDefaultGridForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                              @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all SchGrid, for Channel {}, Network: {}", channelShortcut, networkShortcut);
-        Slice<SchGrid> entity = schGridService.findAllDefaultGrids(networkShortcut, channelShortcut, pagable);
+        log.debug("REST request to get all SchGrid, for Channel {}, Network: {}", channelShortcut, organizationShortcut);
+        Slice<SchGrid> entity = schGridService.findAllDefaultGrids(organizationShortcut, channelShortcut, pagable);
         List<SchGridThinDTO> response = schGridMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -82,12 +82,12 @@ public class SchGridConfigurationResourceImpl implements SchGridConfigurationRes
     }
 
     @Override
-    public ResponseEntity<List<SchGridThinDTO>> getAllSchedulerGridForChannelGroupedByCategoryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<SchGridThinDTO>> getAllSchedulerGridForChannelGroupedByCategoryUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                        @ApiParam(value = "name", required = true) @PathVariable("name") String name,
                                                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all SchGrid, for Channel {}, Network: {}", channelShortcut, networkShortcut);
-        Slice<SchGrid> entity = schGridService.findAllGridsByCategoryNaem(networkShortcut, channelShortcut, name, pagable);
+        log.debug("REST request to get all SchGrid, for Channel {}, Network: {}", channelShortcut, organizationShortcut);
+        Slice<SchGrid> entity = schGridService.findAllGridsByCategoryNaem(organizationShortcut, channelShortcut, name, pagable);
         List<SchGridThinDTO> response = schGridMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -99,11 +99,11 @@ public class SchGridConfigurationResourceImpl implements SchGridConfigurationRes
     }
 
     @Override
-    public ResponseEntity<List<SchGridThinDTO>> getAllSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<SchGridThinDTO>> getAllSchedulerGridForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all SchGrid, for Channel {}, Network: {}", channelShortcut, networkShortcut);
-        Slice<SchGrid> entity = schGridService.findSchGridsForNetworkAndChannel(networkShortcut, channelShortcut, pagable);
+        log.debug("REST request to get all SchGrid, for Channel {}, Network: {}", channelShortcut, organizationShortcut);
+        Slice<SchGrid> entity = schGridService.findSchGridsForNetworkAndChannel(organizationShortcut, channelShortcut, pagable);
         List<SchGridThinDTO> response = schGridMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -115,42 +115,42 @@ public class SchGridConfigurationResourceImpl implements SchGridConfigurationRes
     }
 
     @Override
-    public ResponseEntity<SchGridDTO> creatSchedulerPlaylistForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchGridDTO> creatSchedulerPlaylistForChannelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                 @ApiParam(value = "schGridDTO", required = true) @Valid @RequestBody SchGridDTO schGridDTO) throws URISyntaxException {
-        log.debug("REST request to saveSchGridDTO SchGridDTO : {}, for Channel {} Network: {}", schGridDTO, channelShortcut, networkShortcut);
+        log.debug("REST request to saveSchGridDTO SchGridDTO : {}, for Channel {} Network: {}", schGridDTO, channelShortcut, organizationShortcut);
         if (schGridDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SchGrid", "idexists", "A new SchGrid cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         SchGrid traOrder = schGridMapper.DTO2DB(schGridDTO, corNetwork, corChannel);
         SchGridDTO response = schGridService.saveGrid(traOrder);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/grid/" + response.getShortName()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/grid/" + response.getShortName()))
                 .body(response);
     }
 
     @Override
-    public ResponseEntity<Void> deleteSchedulerGridForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<Void> deleteSchedulerGridForChannelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        log.debug("REST request to delete SchGridDTO : {}, for Network: {}", shortName, networkShortcut);
-        schGridService.deleteSchGridByNetworkAndChannelAndShortNAme(networkShortcut, channelShortcut, shortName);
+        log.debug("REST request to delete SchGridDTO : {}, for Network: {}", shortName, organizationShortcut);
+        schGridService.deleteSchGridByNetworkAndChannelAndShortNAme(organizationShortcut, channelShortcut, shortName);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traOrder", shortName.toString())).build();
     }
 
     @Override
-    public ResponseEntity<SchGridDTO> updateSchedulerGridForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<SchGridDTO> updateSchedulerGridForChannelUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                             @ApiParam(value = "schGridDTO", required = true) @Valid @RequestBody SchGridDTO schGridDTO) throws URISyntaxException {
-        log.debug("REST request to updateSchGridDTO SchGridDTO : {}, for Channel {} Network: {}", schGridDTO, channelShortcut, networkShortcut);
+        log.debug("REST request to updateSchGridDTO SchGridDTO : {}, for Channel {} Network: {}", schGridDTO, channelShortcut, organizationShortcut);
         if (schGridDTO.getId() == null) {
-            return creatSchedulerPlaylistForChannelUsingPOST(networkShortcut, channelShortcut, schGridDTO);
+            return creatSchedulerPlaylistForChannelUsingPOST(organizationShortcut, channelShortcut, schGridDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
-        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         SchGrid traOrder = schGridMapper.DTO2DB(schGridDTO, corNetwork, corChannel);
         SchGridDTO response = schGridService.saveGrid(traOrder);
         return ResponseEntity.ok().body(response);

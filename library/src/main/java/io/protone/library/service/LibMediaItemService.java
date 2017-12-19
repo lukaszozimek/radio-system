@@ -113,16 +113,16 @@ public class LibMediaItemService {
     }
 
     @Transactional(readOnly = true)
-    public LibMediaItem getMediaItem(String networkShortcut, String libraryShortcut, String idx) {
-        Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
+    public LibMediaItem getMediaItem(String organizationShortcut, String libraryShortcut, String idx) {
+        Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(organizationShortcut, libraryShortcut, idx);
         return optionalItemDB.orElse(null);
     }
 
     @Transactional
-    public void moveMediaItem(String networkShortcut, String libraryShortcut, String idx, String dstLibararyShortcut) {
-        LibMediaLibrary dstLibarary = this.libraryService.findLibrary(networkShortcut, dstLibararyShortcut);
+    public void moveMediaItem(String organizationShortcut, String libraryShortcut, String idx, String dstLibararyShortcut) {
+        LibMediaLibrary dstLibarary = this.libraryService.findLibrary(organizationShortcut, dstLibararyShortcut);
         if (dstLibarary != null) {
-            Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
+            Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(organizationShortcut, libraryShortcut, idx);
             if (optionalItemDB.isPresent()) {
                 optionalItemDB.get().setLibrary(dstLibarary);
                 itemRepository.saveAndFlush(optionalItemDB.get());
@@ -132,8 +132,8 @@ public class LibMediaItemService {
 
 
     @Transactional
-    public Slice<LibMediaItem> getMediaItems(String networkShortcut, String libraryShortcut, Pageable pagable) {
-        return itemRepository.findSliceByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pagable);
+    public Slice<LibMediaItem> getMediaItems(String organizationShortcut, String libraryShortcut, Pageable pagable) {
+        return itemRepository.findSliceByNetwork_ShortcutAndLibrary_Shortcut(organizationShortcut, libraryShortcut, pagable);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -168,14 +168,14 @@ public class LibMediaItemService {
     }
 
     @Transactional
-    public List<LibMediaItem> upload(String networkShortcut, String libraryShortcut, MultipartFile[] files) throws IOException, TikaException, SAXException {
+    public List<LibMediaItem> upload(String organizationShortcut, String libraryShortcut, MultipartFile[] files) throws IOException, TikaException, SAXException {
 
         List<LibMediaItem> result = new ArrayList<>();
 
         if (files == null || files.length == 0) {
             return result;
         }
-        LibMediaLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
+        LibMediaLibrary libraryDB = libraryService.findLibrary(organizationShortcut, libraryShortcut);
         if (libraryDB == null) {
             return result;
         }
@@ -206,8 +206,8 @@ public class LibMediaItemService {
     }
 
     @Transactional
-    public LibMediaItem upload(String networkShortcut, String libraryShortcut, MultipartFile file) throws IOException, TikaException, SAXException {
-        LibMediaLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
+    public LibMediaItem upload(String organizationShortcut, String libraryShortcut, MultipartFile file) throws IOException, TikaException, SAXException {
+        LibMediaLibrary libraryDB = libraryService.findLibrary(organizationShortcut, libraryShortcut);
         if (libraryDB == null) {
             return null;
         }
@@ -234,12 +234,12 @@ public class LibMediaItemService {
     }
 
     @Transactional
-    public LibMediaItem updateItemContent(String networkShortcut, String libraryShortcut, String idx, MultipartFile file) throws IOException, TikaException, SAXException {
-        LibMediaLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
+    public LibMediaItem updateItemContent(String organizationShortcut, String libraryShortcut, String idx, MultipartFile file) throws IOException, TikaException, SAXException {
+        LibMediaLibrary libraryDB = libraryService.findLibrary(organizationShortcut, libraryShortcut);
         if (libraryDB == null) {
             return null;
         }
-        LibMediaItem mediaItem = getMediaItem(networkShortcut, libraryShortcut, idx);
+        LibMediaItem mediaItem = getMediaItem(organizationShortcut, libraryShortcut, idx);
         if (mediaItem == null) {
             return null;
         }
@@ -264,14 +264,14 @@ public class LibMediaItemService {
     }
 
     @Transactional
-    public byte[] download(String networkShortcut, String libraryShortcut, String idx) throws IOException {
-        LibMediaItem itemDB = getMediaItem(networkShortcut, libraryShortcut, idx);
+    public byte[] download(String organizationShortcut, String libraryShortcut, String idx) throws IOException {
+        LibMediaItem itemDB = getMediaItem(organizationShortcut, libraryShortcut, idx);
         return libItemTypeFileServiceMap.get(itemDB.getItemType().name()).download(itemDB);
     }
 
 
-    public void deleteItem(String networkShortcut, String libraryShortcut, String idx) {
-        LibMediaItem itemToDelete = getMediaItem(networkShortcut, libraryShortcut, idx);
+    public void deleteItem(String organizationShortcut, String libraryShortcut, String idx) {
+        LibMediaItem itemToDelete = getMediaItem(organizationShortcut, libraryShortcut, idx);
         libMarkerService.detachLibMarkers(itemToDelete.getMarkers());
         corPropertyService.detachProperties(itemToDelete.getProperites());
         itemToDelete.setProperites(Sets.newHashSet());

@@ -32,10 +32,10 @@ public interface TraMediaPlanResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/mediaplan",
         produces = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                            @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestPart("traMediaPlanDescriptorDTO")@Valid TraMediaPlanDescriptorDTO traMediaPlanDescriptorDTO,
                                                                            @ApiParam(value = "files", required = true) @RequestPart("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException, InvalidFormatException;
@@ -48,10 +48,10 @@ public interface TraMediaPlanResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}",
         produces = {"*/*"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteChannelTrafficMediaPlanUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteChannelTrafficMediaPlanUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                   @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
@@ -62,10 +62,10 @@ public interface TraMediaPlanResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<TraMediaPlanDTO> getChannelTrafficMediaPlanUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraMediaPlanDTO> getChannelTrafficMediaPlanUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
@@ -75,10 +75,10 @@ public interface TraMediaPlanResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/mediaplan",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraMediaPlanThinDTO>> getAllChannelTrafficMediaPlanUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraMediaPlanThinDTO>> getAllChannelTrafficMediaPlanUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                     @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -90,11 +90,11 @@ public interface TraMediaPlanResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/mediaplan",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<TraMediaPlanDTO> updateChannelTrafficMediaPlanUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraMediaPlanDTO> updateChannelTrafficMediaPlanUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                           @ApiParam(value = "traMediaPlanDTO", required = true) @Valid @RequestBody TraMediaPlanDTO traPlaylistDTO) throws URISyntaxException;
 }

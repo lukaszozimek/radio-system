@@ -26,11 +26,11 @@ public interface CorChannelResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorChannelDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorChannelDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorChannelDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<CorChannelDTO> updateChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorChannelDTO> updateChannelUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                         @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO) throws URISyntaxException, TikaException, IOException, SAXException;
 
     @ApiOperation(value = "updateChannelWithLogo", notes = "", response = CorChannelDTO.class, tags = {"CORE",})
@@ -40,10 +40,10 @@ public interface CorChannelResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorChannelDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorChannelDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorChannelDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<CorChannelDTO> updateChannelWithLogoUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorChannelDTO> updateChannelWithLogoUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                  @ApiParam(value = "channelDTO", required = true) @Valid @RequestPart CorChannelDTO channelDTO,
                                                                  @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException;
@@ -56,10 +56,10 @@ public interface CorChannelResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorChannelDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorChannelDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorChannelDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<CorChannelDTO> createChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorChannelDTO> createChannelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                          @ApiParam(value = "channelDTO", required = true) @Valid @RequestPart("channelDTO") CorChannelDTO channelDTO,
                                                          @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException;
 
@@ -70,10 +70,10 @@ public interface CorChannelResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorChannelDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorChannelDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorChannelDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<CorChannelDTO>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<CorChannelDTO>> getAllChannelsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "getChannel", notes = "", response = CorChannelDTO.class, tags = {"CORE",})
@@ -82,10 +82,10 @@ public interface CorChannelResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorChannelDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorChannelDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorChannelDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<CorChannelDTO> getChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<CorChannelDTO> getChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut);
 
     @ApiOperation(value = "deleteChannel", notes = "", response = Void.class, tags = {"CORE",})
@@ -94,10 +94,10 @@ public interface CorChannelResource {
             @ApiResponse(code = 204, message = "No Content", response = Void.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteChannelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut);
 
 
