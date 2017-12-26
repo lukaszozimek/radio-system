@@ -1,3 +1,108 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:233b10c9a86be8802031f57112f0a33de46253818d7eb5be8e885e5138adfe74
-size 2063
+[Mediacom]
+ID=PLAN
+WersjaPliku=2
+IdStacji=1600
+IdAgencji=1002
+Adresat=
+Nadawca=Iwona Ksi¹¿ek
+Data=2017-09-02
+Opis=
+[Zlecenie]
+TypZlecenia=Spot reklamowy
+Kategoria=4
+DataPlatnosci=
+TypPlatnosci=przelew
+Opcje=0
+IloscReklam=1
+NrZleceniaAgencji=110195
+HandlowiecAgencji=doradca Eurozet
+IdHandlowcaAgencji=0000
+[Zleceniodawca]
+ID=0
+Nazwa=EUROZET
+Nip=5260026186
+Adres=¯urawia 8
+Miasto=Warszawa
+Kod=00-503
+Opis=
+[Reklamodawca]
+ID=0
+Nazwa=Ford Polska Sp. z o.o.
+Nip=5260019312
+Adres=ul. Taœmowa 7 /
+Miasto=Warszawa
+Kod=02-677
+Opis=
+[Reklama]
+ID=0
+Nazwa=110195_FordTransitod5_06_(30)
+Nagranie=
+CzasTrwania=30
+Zaiks1=
+Zaiks2=
+Zaiks3=
+Zaiks4=
+Zaiks5=
+Zaiks6=
+Producent=
+Branza=Motoryzacja
+Produkt=
+Opis=
+[Kwoty]
+KwotaCennikowa=63749,97
+Zwyzka=0
+Rabat1=0
+Rabat2=0
+Prowizja1=0
+Prowizja2=0
+Produkcja=0
+Prawa=0
+Netto=0
+KwotaVAT=0
+OpcjeZlecenia=0
+OpcjePasma=0
+Opis=
+[Badania]
+GRP=
+Zasieg=
+Czestotliwosc=
+Grupa=
+Opis=
+[Komentarz]
+Linia1=
+[Tresc]
+Linia1=110195-2017P FordTransitod5_06
+Linia2=
+Linia3=
+Linia4=
+Linia5=
+Linia6=
+[Emisje]
+Pozycjonowanie1=0
+Limit1=
+OpcjeBloku=19
+OpcjePasma=0
+EmisjaOd=2017-09-05
+EmisjaDo=2017-09-23
+IloscEmisji=21
+Emisja1=2017-09-06 14:30-14:59 0 0 0 0
+Emisja2=2017-09-06 07:30-07:59 0 0 0 0
+Emisja3=2017-09-09 06:30-06:59 0 0 0 0
+Emisja4=2017-09-25 18:30-18:59 0 0 0 0
+Emisja5=2017-09-27 09:00-09:29 0 0 0 0
+Emisja6=2017-09-27 15:30-15:59 0 0 0 0
+Emisja7=2017-09-27 17:00-17:29 0 0 0 0
+Emisja8=2017-09-27 18:00-18:29 0 0 0 0
+Emisja9=2017-09-29 06:30-06:59 0 0 0 0
+Emisja10=2017-09-29 07:30-07:59 0 0 0 0
+Emisja11=2017-09-29 17:00-17:29 0 0 0 0
+Emisja12=2017-09-29 18:30-18:59 0 0 0 0
+Emisja13=2017-10-01 06:30-06:59 0 0 0 0
+Emisja14=2017-10-02 15:30-15:59 0 0 0 0
+Emisja15=2017-10-02 18:00-18:29 0 0 0 0
+Emisja16=2017-10-03 09:00-09:29 0 0 0 0
+Emisja17=2017-10-03 17:30-17:59 0 0 0 0
+Emisja18=2017-10-03 18:30-18:59 0 0 0 0
+Emisja19=2017-10-04 06:30-06:59 0 0 0 0
+Emisja20=2017-10-04 08:00-08:29 0 0 0 0
+Emisja21=2017-10-04 15:30-15:59 0 0 0 0

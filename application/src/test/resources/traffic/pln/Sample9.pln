@@ -1,3 +1,144 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ba300de38457c9390ef6d3d831c12806188e571daff009d7ac8aa21b17d4cbd5
-size 3566
+[Mediacom]
+ID=PLAN
+WersjaPliku=2
+IdStacji=1600
+IdAgencji=1002
+Adresat=
+Nadawca=Iwona Ksi¹¿ek
+Data=2017-09-08
+Opis=
+[Zlecenie]
+TypZlecenia=Spot reklamowy
+Kategoria=4
+DataPlatnosci=
+TypPlatnosci=przelew
+Opcje=0
+IloscReklam=1
+NrZleceniaAgencji=112531
+HandlowiecAgencji=doradca Eurozet
+IdHandlowcaAgencji=0000
+[Zleceniodawca]
+ID=0
+Nazwa=EUROZET
+Nip=5260026186
+Adres=¯urawia 8
+Miasto=Warszawa
+Kod=00-503
+Opis=
+[Reklamodawca]
+ID=0
+Nazwa=ORANGE POLSKA SA
+Nip=5260250995
+Adres=Jerozolimskie 160 /
+Miasto=WARSZAWA
+Kod=02-326
+Opis=
+[Reklama]
+ID=0
+Nazwa=112531_OrangePrepaid11_09-31_10_ZETT_(30)
+Nagranie=
+CzasTrwania=30
+Zaiks1=
+Zaiks2=
+Zaiks3=
+Zaiks4=
+Zaiks5=
+Zaiks6=
+Producent=
+Branza=TELEKOMUNIKACJA
+Produkt=
+Opis=
+[Kwoty]
+KwotaCennikowa=177749,37
+Zwyzka=0
+Rabat1=0
+Rabat2=0
+Prowizja1=0
+Prowizja2=0
+Produkcja=0
+Prawa=0
+Netto=0
+KwotaVAT=0
+OpcjeZlecenia=0
+OpcjePasma=0
+Opis=
+[Badania]
+GRP=
+Zasieg=
+Czestotliwosc=
+Grupa=
+Opis=
+[Komentarz]
+Linia1=
+[Tresc]
+Linia1=112531-2017P OrangePrepaid11_09-31_10_ZETT
+Linia2=
+Linia3=
+Linia4=
+Linia5=
+Linia6=
+[Emisje]
+Pozycjonowanie1=0
+Limit1=
+OpcjeBloku=19
+OpcjePasma=0
+EmisjaOd=2017-09-11
+EmisjaDo=2017-10-31
+IloscEmisji=57
+Emisja1=2017-09-11 08:00-08:29 0 0 0 0
+Emisja2=2017-09-11 11:00-11:29 0 0 0 0
+Emisja3=2017-09-11 14:30-14:59 0 0 0 0
+Emisja4=2017-09-13 07:00-07:29 0 0 0 0
+Emisja5=2017-09-13 12:00-12:29 0 0 0 0
+Emisja6=2017-09-13 17:30-17:59 0 0 0 0
+Emisja7=2017-09-15 06:30-06:59 0 0 0 0
+Emisja8=2017-09-15 11:00-11:29 0 0 0 0
+Emisja9=2017-09-15 18:30-18:59 0 0 0 0
+Emisja10=2017-09-17 10:00-10:29 0 0 0 0
+Emisja11=2017-09-17 14:00-14:29 0 0 0 0
+Emisja12=2017-09-17 16:00-16:29 0 0 0 0
+Emisja13=2017-09-19 06:30-06:59 0 0 0 0
+Emisja14=2017-09-19 13:00-13:29 0 0 0 0
+Emisja15=2017-09-19 18:00-18:29 0 0 0 0
+Emisja16=2017-09-21 07:30-07:59 0 0 0 0
+Emisja17=2017-09-21 10:00-10:29 0 0 0 0
+Emisja18=2017-09-21 19:30-19:59 0 0 0 0
+Emisja19=2017-09-23 09:30-09:59 0 0 0 0
+Emisja20=2017-09-23 14:00-14:29 0 0 0 0
+Emisja21=2017-09-23 16:30-16:59 0 0 0 0
+Emisja22=2017-10-02 06:00-06:29 0 0 0 0
+Emisja23=2017-10-02 11:30-11:59 0 0 0 0
+Emisja24=2017-10-02 18:00-18:29 0 0 0 0
+Emisja25=2017-10-04 07:00-07:29 0 0 0 0
+Emisja26=2017-10-04 12:30-12:59 0 0 0 0
+Emisja27=2017-10-04 16:00-16:29 0 0 0 0
+Emisja28=2017-10-06 08:00-08:29 0 0 0 0
+Emisja29=2017-10-06 17:00-17:29 0 0 0 0
+Emisja30=2017-10-06 19:00-19:29 0 0 0 0
+Emisja31=2017-10-08 08:30-08:59 0 0 0 0
+Emisja32=2017-10-08 09:30-09:59 0 0 0 0
+Emisja33=2017-10-08 14:00-14:29 0 0 0 0
+Emisja34=2017-10-10 07:30-07:59 0 0 0 0
+Emisja35=2017-10-10 12:00-12:29 0 0 0 0
+Emisja36=2017-10-10 16:30-16:59 0 0 0 0
+Emisja37=2017-10-12 07:00-07:29 0 0 0 0
+Emisja38=2017-10-12 13:30-13:59 0 0 0 0
+Emisja39=2017-10-12 18:00-18:29 0 0 0 0
+Emisja40=2017-10-14 11:30-11:59 0 0 0 0
+Emisja41=2017-10-14 14:30-14:59 0 0 0 0
+Emisja42=2017-10-14 17:30-17:59 0 0 0 0
+Emisja43=2017-10-23 08:30-08:59 0 0 0 0
+Emisja44=2017-10-23 11:00-11:29 0 0 0 0
+Emisja45=2017-10-23 18:00-18:29 0 0 0 0
+Emisja46=2017-10-25 07:30-07:59 0 0 0 0
+Emisja47=2017-10-25 12:30-12:59 0 0 0 0
+Emisja48=2017-10-25 17:00-17:29 0 0 0 0
+Emisja49=2017-10-27 06:30-06:59 0 0 0 0
+Emisja50=2017-10-27 11:30-11:59 0 0 0 0
+Emisja51=2017-10-27 16:00-16:29 0 0 0 0
+Emisja52=2017-10-29 12:30-12:59 0 0 0 0
+Emisja53=2017-10-29 14:30-14:59 0 0 0 0
+Emisja54=2017-10-29 17:00-17:29 0 0 0 0
+Emisja55=2017-10-31 08:00-08:29 0 0 0 0
+Emisja56=2017-10-31 10:30-10:59 0 0 0 0
+Emisja57=2017-10-31 16:00-16:29 0 0 0 0

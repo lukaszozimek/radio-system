@@ -1,3 +1,135 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a530ab1f11a4ef88dc2965d2fc7894d1582ddd460926d6c620bdedc735823292
-size 3154
+[Mediacom]
+ID=PLAN
+WersjaPliku=2
+IdStacji=1600
+IdAgencji=1002
+Adresat=
+Nadawca=Iwona Ksi¹¿ek
+Data=2017-09-08
+Opis=
+[Zlecenie]
+TypZlecenia=Spot reklamowy
+Kategoria=4
+DataPlatnosci=
+TypPlatnosci=przelew
+Opcje=0
+IloscReklam=1
+NrZleceniaAgencji=112955
+HandlowiecAgencji=doradca Eurozet
+IdHandlowcaAgencji=0000
+[Zleceniodawca]
+ID=0
+Nazwa=EUROZET
+Nip=5260026186
+Adres=¯urawia 8
+Miasto=Warszawa
+Kod=00-503
+Opis=
+[Reklamodawca]
+ID=0
+Nazwa=P4 SP Z O O
+Nip=9512120077
+Adres=Taœmowa 7 /
+Miasto=Warszawa
+Kod=02-677
+Opis=
+[Reklama]
+ID=0
+Nazwa=112955_Play9_09-21_10_(30)
+Nagranie=
+CzasTrwania=30
+Zaiks1=
+Zaiks2=
+Zaiks3=
+Zaiks4=
+Zaiks5=
+Zaiks6=
+Producent=
+Branza=TELEKOMUNIKACJA
+Produkt=
+Opis=
+[Kwoty]
+KwotaCennikowa=151899,98
+Zwyzka=0
+Rabat1=0
+Rabat2=0
+Prowizja1=0
+Prowizja2=0
+Produkcja=0
+Prawa=0
+Netto=0
+KwotaVAT=0
+OpcjeZlecenia=0
+OpcjePasma=0
+Opis=
+[Badania]
+GRP=
+Zasieg=
+Czestotliwosc=
+Grupa=
+Opis=
+[Komentarz]
+Linia1=
+[Tresc]
+Linia1=112955-2017P Play9_09-21_10
+Linia2=
+Linia3=
+Linia4=
+Linia5=
+Linia6=
+[Emisje]
+Pozycjonowanie1=0
+Limit1=
+OpcjeBloku=19
+OpcjePasma=0
+EmisjaOd=2017-09-09
+EmisjaDo=2017-10-21
+IloscEmisji=48
+Emisja1=2017-09-09 09:00-09:29 0 0 0 0
+Emisja2=2017-09-09 14:00-14:29 0 0 0 0
+Emisja3=2017-09-09 16:00-16:29 0 0 0 0
+Emisja4=2017-09-11 06:00-06:29 0 0 0 0
+Emisja5=2017-09-11 13:00-13:29 0 0 0 0
+Emisja6=2017-09-11 19:00-19:29 0 0 0 0
+Emisja7=2017-09-13 10:00-10:29 0 0 0 0
+Emisja8=2017-09-13 13:30-13:59 0 0 0 0
+Emisja9=2017-09-13 18:00-18:29 0 0 0 0
+Emisja10=2017-09-15 10:00-10:29 0 0 0 0
+Emisja11=2017-09-15 12:00-12:29 0 0 0 0
+Emisja12=2017-09-15 19:00-19:29 0 0 0 0
+Emisja13=2017-09-17 09:00-09:29 0 0 0 0
+Emisja14=2017-09-17 13:00-13:29 0 0 0 0
+Emisja15=2017-09-17 14:30-14:59 0 0 0 0
+Emisja16=2017-09-19 10:00-10:29 0 0 0 0
+Emisja17=2017-09-19 13:30-13:59 0 0 0 0
+Emisja18=2017-09-19 19:00-19:29 0 0 0 0
+Emisja19=2017-09-21 06:30-06:59 0 0 0 0
+Emisja20=2017-09-21 13:00-13:29 0 0 0 0
+Emisja21=2017-09-21 14:30-14:59 0 0 0 0
+Emisja22=2017-09-23 07:30-07:59 0 0 0 0
+Emisja23=2017-09-23 15:00-15:29 0 0 0 0
+Emisja24=2017-09-23 16:00-16:29 0 0 0 0
+Emisja25=2017-10-07 09:00-09:29 0 0 0 0
+Emisja26=2017-10-07 14:00-14:29 0 0 0 0
+Emisja27=2017-10-07 16:00-16:29 0 0 0 0
+Emisja28=2017-10-09 06:00-06:29 0 0 0 0
+Emisja29=2017-10-09 13:00-13:29 0 0 0 0
+Emisja30=2017-10-09 19:00-19:29 0 0 0 0
+Emisja31=2017-10-11 10:00-10:29 0 0 0 0
+Emisja32=2017-10-11 13:30-13:59 0 0 0 0
+Emisja33=2017-10-11 18:00-18:29 0 0 0 0
+Emisja34=2017-10-13 10:00-10:29 0 0 0 0
+Emisja35=2017-10-13 12:00-12:29 0 0 0 0
+Emisja36=2017-10-13 19:00-19:29 0 0 0 0
+Emisja37=2017-10-15 09:00-09:29 0 0 0 0
+Emisja38=2017-10-15 13:00-13:29 0 0 0 0
+Emisja39=2017-10-15 14:30-14:59 0 0 0 0
+Emisja40=2017-10-17 10:00-10:29 0 0 0 0
+Emisja41=2017-10-17 13:30-13:59 0 0 0 0
+Emisja42=2017-10-17 19:00-19:29 0 0 0 0
+Emisja43=2017-10-19 06:30-06:59 0 0 0 0
+Emisja44=2017-10-19 13:00-13:29 0 0 0 0
+Emisja45=2017-10-19 14:30-14:59 0 0 0 0
+Emisja46=2017-10-21 07:30-07:59 0 0 0 0
+Emisja47=2017-10-21 15:00-15:29 0 0 0 0
+Emisja48=2017-10-21 16:00-16:29 0 0 0 0

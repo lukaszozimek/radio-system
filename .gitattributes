@@ -179,4 +179,4 @@ Procfile    text
 ##OTHER
 *.xls binary
 *.xlsx binary
-*.pln text
+*.pln binary

@@ -1,3 +1,108 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:09f290ba74bfc31ee12bbe65f5ab5d22fb4c1f1a376c9192fbe0049cd0934dd3
-size 2063
+[Mediacom]
+ID=PLAN
+WersjaPliku=2
+IdStacji=1600
+IdAgencji=1002
+Adresat=
+Nadawca=Iwona Ksi¹¿ek
+Data=2017-06-02
+Opis=
+[Zlecenie]
+TypZlecenia=Spot reklamowy
+Kategoria=4
+DataPlatnosci=
+TypPlatnosci=przelew
+Opcje=0
+IloscReklam=1
+NrZleceniaAgencji=110195
+HandlowiecAgencji=doradca Eurozet
+IdHandlowcaAgencji=0000
+[Zleceniodawca]
+ID=0
+Nazwa=EUROZET
+Nip=5260026186
+Adres=¯urawia 8
+Miasto=Warszawa
+Kod=00-503
+Opis=
+[Reklamodawca]
+ID=0
+Nazwa=Ford Polska Sp. z o.o.
+Nip=5260019312
+Adres=ul. Taœmowa 7 /
+Miasto=Warszawa
+Kod=02-677
+Opis=
+[Reklama]
+ID=0
+Nazwa=110195_FordTransitod5_06_(30)
+Nagranie=
+CzasTrwania=30
+Zaiks1=
+Zaiks2=
+Zaiks3=
+Zaiks4=
+Zaiks5=
+Zaiks6=
+Producent=
+Branza=Motoryzacja
+Produkt=
+Opis=
+[Kwoty]
+KwotaCennikowa=63749,97
+Zwyzka=0
+Rabat1=0
+Rabat2=0
+Prowizja1=0
+Prowizja2=0
+Produkcja=0
+Prawa=0
+Netto=0
+KwotaVAT=0
+OpcjeZlecenia=0
+OpcjePasma=0
+Opis=
+[Badania]
+GRP=
+Zasieg=
+Czestotliwosc=
+Grupa=
+Opis=
+[Komentarz]
+Linia1=
+[Tresc]
+Linia1=110195-2017P FordTransitod5_06
+Linia2=
+Linia3=
+Linia4=
+Linia5=
+Linia6=
+[Emisje]
+Pozycjonowanie1=0
+Limit1=
+OpcjeBloku=19
+OpcjePasma=0
+EmisjaOd=2017-06-05
+EmisjaDo=2017-06-23
+IloscEmisji=21
+Emisja1=2017-06-05 06:30-06:59 0 0 0 0
+Emisja2=2017-06-05 07:30-07:59 0 0 0 0
+Emisja3=2017-06-05 17:30-17:59 0 0 0 0
+Emisja4=2017-06-05 18:30-18:59 0 0 0 0
+Emisja5=2017-06-07 09:00-09:29 0 0 0 0
+Emisja6=2017-06-07 15:30-15:59 0 0 0 0
+Emisja7=2017-06-07 17:00-17:29 0 0 0 0
+Emisja8=2017-06-07 18:00-18:29 0 0 0 0
+Emisja9=2017-06-09 06:30-06:59 0 0 0 0
+Emisja10=2017-06-09 07:30-07:59 0 0 0 0
+Emisja11=2017-06-09 17:00-17:29 0 0 0 0
+Emisja12=2017-06-09 18:30-18:59 0 0 0 0
+Emisja13=2017-06-19 06:30-06:59 0 0 0 0
+Emisja14=2017-06-19 15:30-15:59 0 0 0 0
+Emisja15=2017-06-19 18:00-18:29 0 0 0 0
+Emisja16=2017-06-21 09:00-09:29 0 0 0 0
+Emisja17=2017-06-21 17:30-17:59 0 0 0 0
+Emisja18=2017-06-21 18:30-18:59 0 0 0 0
+Emisja19=2017-06-23 06:30-06:59 0 0 0 0
+Emisja20=2017-06-23 08:00-08:29 0 0 0 0
+Emisja21=2017-06-23 15:30-15:59 0 0 0 0
