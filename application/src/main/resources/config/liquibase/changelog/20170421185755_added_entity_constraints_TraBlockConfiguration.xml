@@ -7,13 +7,6 @@
         Added the constraints for entity TraBlockConfiguration.
     -->
     <changeSet id="20170515200401-2" author="jhipster">
-
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="tra_block_configuration"
-                                 constraintName="fk_tra_block_configuration_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
-
         <addForeignKeyConstraint baseColumnNames="price_id"
                                  baseTableName="tra_block_configuration"
                                  constraintName="fk_tra_block_configuration_price_id"

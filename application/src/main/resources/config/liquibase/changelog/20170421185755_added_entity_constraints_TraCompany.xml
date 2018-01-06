@@ -15,11 +15,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_address"/>
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
+        <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="tra_company"
-                                 constraintName="fk_tra_company_network_id"
+                                 constraintName="fk_tra_company_channel_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+                                 referencedTableName="cor_channel"/>
 
         <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
                                  baseTableName="tra_company"

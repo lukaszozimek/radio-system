@@ -32,11 +32,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_dictionary"/>
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
+        <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="crm_task"
-                                 constraintName="fk_crm_task_network_id"
+                                 constraintName="fk_crm_task_channel_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+                                 referencedTableName="cor_channel"/>
 
         <addForeignKeyConstraint baseColumnNames="opportunity_id"
                                  baseTableName="crm_task"

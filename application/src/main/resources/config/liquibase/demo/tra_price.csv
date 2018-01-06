@@ -1,2 +1,2 @@
-id;name;valid_from;valid_to;base_price;price_last_postion;price_first_postion;base_length;network_id;created_by_id;last_modified_by_id
+id;name;valid_from;valid_to;base_price;price_last_postion;price_first_postion;base_length;channel_id;created_by_id;last_modified_by_id
 1;TEST;2017-08-01;2018-08-11;500;4100;420;30000;1;1;1

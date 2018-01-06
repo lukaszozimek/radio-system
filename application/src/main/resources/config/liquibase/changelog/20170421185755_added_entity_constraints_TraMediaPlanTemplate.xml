@@ -8,11 +8,11 @@
     -->
     <changeSet id="20170421185755-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
+        <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="tra_media_plan_template"
-                                 constraintName="fk_tra_media_plan_template_network_id"
+                                 constraintName="fk_tra_media_plan_template_channel_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+                                 referencedTableName="cor_channel"/>
         <addForeignKeyConstraint baseColumnNames="created_by_id"
                                  baseTableName="tra_media_plan_template"
                                  constraintName="fk_tra_media_plan_template_created_by_id"

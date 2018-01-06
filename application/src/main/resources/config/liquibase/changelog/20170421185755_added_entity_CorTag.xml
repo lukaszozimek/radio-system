@@ -23,7 +23,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="network_id" type="bigint">
+            <column name="channel_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

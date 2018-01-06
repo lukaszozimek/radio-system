@@ -57,7 +57,7 @@
             <column name="person_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>
-            <column name="network_id" type="bigint">
+            <column name="channel_id" type="bigint">
                 <constraints nullable="false" />
             </column>
             <column name="crm_lead_id" type="bigint">

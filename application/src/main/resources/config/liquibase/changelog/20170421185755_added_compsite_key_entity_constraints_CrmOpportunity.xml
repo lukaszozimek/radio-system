@@ -8,8 +8,8 @@
     -->
     <changeSet id="20170421185755-2" author="jhipster">
 
-        <addUniqueConstraint columnNames="short_name, network_id"
-                             constraintName="composite_key_constrain_crm_opportunity_short_name_network_id"
+        <addUniqueConstraint columnNames="short_name, channel_id"
+                             constraintName="composite_key_constrain_crm_opportunity_short_name_channel_id"
                              tableName="crm_opportunity"
         />
 

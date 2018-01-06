@@ -38,9 +38,6 @@
             <column name="sequence" type="integer">
                 <constraints nullable="true"/>
             </column>
-            <column name="network_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
             <column name="media_plan_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

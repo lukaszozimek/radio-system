@@ -8,11 +8,11 @@
     -->
     <changeSet id="20170421185755-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
+        <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="cor_tax"
-                                 constraintName="fk_cor_tax_network_id"
+                                 constraintName="fk_cor_tax_channel_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+                                 referencedTableName="cor_channel"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -20,12 +20,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_channel"/>
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="tra_media_plan_playlist_date"
-                                 constraintName="fk_tra_media_plan_playlist_date_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
-
         <addForeignKeyConstraint baseColumnNames="created_by_id"
                                  baseTableName="tra_media_plan_playlist_date"
                                  constraintName="fk_tra_media_plan_playlist_date_created_by_id"

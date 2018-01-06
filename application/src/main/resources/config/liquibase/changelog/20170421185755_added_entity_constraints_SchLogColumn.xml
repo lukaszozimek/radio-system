@@ -13,12 +13,6 @@
                                  constraintName="fk_configuration_sch_log_column_id"
                                  referencedColumnNames="id"
                                  referencedTableName="sch_log_configuration"/>
-        
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="sch_log_column"
-                                 constraintName="fk_sch_log_column_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
 
         <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="sch_log_column"

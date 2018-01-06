@@ -56,7 +56,7 @@
             <column name="last_emission_value_cell" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="network_id" type="bigint">
+            <column name="channel_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="created_by_id" type="bigint">

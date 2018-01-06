@@ -8,12 +8,6 @@
     -->
     <changeSet id="20170421185755-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="lib_file_item"
-                                 constraintName="fk_lib_file_item_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
-
         <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="lib_file_item"
                                  constraintName="fk_lib_file_item_channel_id"

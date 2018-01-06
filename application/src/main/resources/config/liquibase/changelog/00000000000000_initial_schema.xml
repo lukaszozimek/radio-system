@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <property name="now" value="now()" dbms="h2"/>
     <property name="now" value="current_timestamp" dbms="postgresql"/>
@@ -82,7 +82,7 @@
             <column name="created_date" type="timestamp" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="cor_image_item_id"  type="bigint">
+            <column name="cor_image_item_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
             <column name="last_modified_by_id" type="bigint"/>
@@ -110,6 +110,12 @@
                 <constraints nullable="true"/>
             </column>
 
+            <column name="parent_network_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="cor_organization_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
             <column name="network_users_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
@@ -119,7 +125,7 @@
             <column name="created_date" type="timestamp" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="cor_image_item_id"  type="bigint">
+            <column name="cor_image_item_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
             <column name="last_modified_by_id" type="bigint"/>
@@ -143,10 +149,12 @@
                 <constraints nullable="true"/>
             </column>
 
+            <column name="organization_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
             <column name="network_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
-
             <column name="channel_users_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
@@ -159,7 +167,7 @@
             <column name="created_date" type="timestamp" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="cor_image_item_id"  type="bigint">
+            <column name="cor_image_item_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
             <column name="last_modified_by_id" type="bigint"/>
@@ -167,7 +175,7 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 
-        <addUniqueConstraint columnNames="shortcut, network_id"
+        <addUniqueConstraint columnNames="shortcut, network_id, organization_id"
                              constraintName="composite_key_constrain_cor_channel_shortcut_network_id"
                              tableName="cor_channel"
         />
@@ -202,7 +210,9 @@
             <column name="langkey" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-
+            <column name="organization_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
             <column name="activationkey" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
@@ -219,7 +229,7 @@
             <column name="created_date" type="timestamp" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="cor_image_item_id"  type="bigint">
+            <column name="cor_image_item_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
             <column name="last_modified_by_id" type="bigint"/>
@@ -296,7 +306,7 @@
             <column name="module_name" type="varchar(250)">
                 <constraints nullable="false"/>
             </column>
-            <column name="network_id" type="bigint">
+            <column name="channel_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -318,15 +328,15 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="public_url" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
-            <column name="network_id" type="bigint">
-                <constraints nullable="true" />
+            <column name="organization_id" type="bigint">
+                <constraints nullable="true"/>
             </column>
             <column name="created_by_id" type="bigint">
                 <constraints nullable="false"/>
@@ -387,11 +397,11 @@
                                  referencedColumnNames="name"
                                  referencedTableName="cor_module"/>
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
+        <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="cor_dictionary"
-                                 constraintName="fk_cor_dictionary_network_id"
+                                 constraintName="fk_cor_dictionary_channel_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+                                 referencedTableName="cor_channel"/>
 
         <addForeignKeyConstraint baseColumnNames="cor_users_id"
                                  baseTableName="cor_user_channel"
@@ -433,11 +443,11 @@
                                  referencedTableName="cor_authority"/>
 
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
+        <addForeignKeyConstraint baseColumnNames="organization_id"
                                  baseTableName="cor_image_item"
                                  constraintName="fk_cor_image_item_network_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+                                 referencedTableName="cor_organization"/>
 
         <addForeignKeyConstraint baseColumnNames="created_by_id"
                                  baseTableName="cor_image_item"
@@ -483,6 +493,10 @@
                   file="config/liquibase/cor_users_authorities.csv"
                   separator=";"
                   tableName="cor_user_authority"/>
+        <loadData tableName="cor_organization"
+                  separator=";"
+                  file="config/liquibase/cor_organization.csv"
+                  encoding="UTF-8"/>
 
         <loadData tableName="cor_network"
                   separator=";"

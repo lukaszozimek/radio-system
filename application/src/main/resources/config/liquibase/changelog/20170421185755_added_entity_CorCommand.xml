@@ -26,7 +26,7 @@
             <column name="value" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="network_id" type="bigint">
+            <column name="channel_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

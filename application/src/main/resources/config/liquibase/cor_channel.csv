@@ -1,2 +1,2 @@
-id;shortcut;name;description;network_id;created_by_id;last_modified_by_id
+id;shortcut;name;description;organization_id;created_by_id;last_modified_by_id
 1;tes;test;test;1;1;1

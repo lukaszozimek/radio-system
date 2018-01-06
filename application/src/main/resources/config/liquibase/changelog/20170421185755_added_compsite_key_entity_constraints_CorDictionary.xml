@@ -10,8 +10,8 @@
 
 
 
-        <addUniqueConstraint columnNames="name, dictionary_type_name,module_name,network_id"
-                             constraintName="composite_key_constrain_cor_dictionary_dictionary_type_name_module_name_name_network_id"
+        <addUniqueConstraint columnNames="name, dictionary_type_name,module_name,channel_id"
+                             constraintName="composite_key_constrain_cor_dictionary_dictionary_type_name_module_name_name_channel_id"
                              tableName="cor_dictionary"
         />
 

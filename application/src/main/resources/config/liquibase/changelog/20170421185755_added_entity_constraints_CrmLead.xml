@@ -50,11 +50,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_dictionary"/>
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
+        <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="crm_lead"
-                                 constraintName="fk_crm_lead_network_id"
+                                 constraintName="fk_crm_lead_channel_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+                                 referencedTableName="cor_channel"/>
 
         <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
                                  baseTableName="crm_lead"

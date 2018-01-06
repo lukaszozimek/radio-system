@@ -9,12 +9,6 @@
     <changeSet id="20170720190704-2" author="jhipster">
 
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="sch_playlist"
-                                 constraintName="fk_sch_playlist_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
-
         <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="sch_playlist"
                                  constraintName="fk_sch_playlist_channel_id"

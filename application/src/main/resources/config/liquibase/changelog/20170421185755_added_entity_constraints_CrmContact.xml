@@ -26,11 +26,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_person"/>
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
+        <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="crm_contact"
-                                 constraintName="fk_crm_contact_network_id"
+                                 constraintName="fk_crm_contact_channel_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+                                 referencedTableName="cor_channel"/>
 
         <addForeignKeyConstraint baseColumnNames="range_id"
                                  baseTableName="crm_contact"

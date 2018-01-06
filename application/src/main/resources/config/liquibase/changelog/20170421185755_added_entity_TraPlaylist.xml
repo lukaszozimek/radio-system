@@ -22,11 +22,6 @@
             <column name="playlist_date" type="date">
                 <constraints nullable="false" />
             </column>
-
-            <column name="network_id" type="bigint">
-                <constraints nullable="false" />
-            </column>
-
             <column name="channel_id" type="bigint">
                 <constraints nullable="false" />
             </column>

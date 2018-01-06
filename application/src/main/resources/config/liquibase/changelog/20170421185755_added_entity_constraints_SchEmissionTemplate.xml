@@ -28,12 +28,6 @@
                                  referencedTableName="sch_event_template"/>
 
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="sch_emission_template"
-                                 constraintName="fk_sch_emission_template_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
-
         <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="sch_emission_template"
                                  constraintName="fk_sch_emission_template_channel_id"

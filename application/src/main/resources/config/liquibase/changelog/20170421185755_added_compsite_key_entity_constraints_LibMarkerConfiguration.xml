@@ -10,12 +10,12 @@
 
 
 
-        <addUniqueConstraint columnNames="name, network_id"
-                             constraintName="composite_key_constrain_lib_marker_configuration_name_network_id"
+        <addUniqueConstraint columnNames="name, channel_id"
+                             constraintName="composite_key_constrain_lib_marker_configuration_name_channel_id"
                              tableName="lib_marker_configuration"
         />
-        <addUniqueConstraint columnNames="keyboard_shortcut, network_id"
-                             constraintName="composite_key_constrain_lib_marker_configuration_keyboard_shortcut_network_id"
+        <addUniqueConstraint columnNames="keyboard_shortcut, channel_id"
+                             constraintName="composite_key_constrain_lib_marker_configuration_keyboard_shortcut_channel_id"
                              tableName="lib_marker_configuration"
         />
 

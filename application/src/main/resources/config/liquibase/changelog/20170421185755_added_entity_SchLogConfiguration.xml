@@ -32,10 +32,6 @@
             <column name="spearator" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-            <column name="network_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-
             <column name="channel_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

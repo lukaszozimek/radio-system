@@ -20,11 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_address"/>
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
+        <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="crm_account"
-                                 constraintName="fk_crm_account_network_id"
+                                 constraintName="fk_crm_account_channel_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+                                 referencedTableName="cor_channel"/>
 
         <addForeignKeyConstraint baseColumnNames="discount_id"
                                  baseTableName="crm_account"

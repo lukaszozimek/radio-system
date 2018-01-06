@@ -20,11 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="lib_artist"/>
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
+        <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="lib_album"
-                                 constraintName="fk_lib_album_network_id"
+                                 constraintName="fk_lib_album_channel_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+                                 referencedTableName="cor_channel"/>
 
         <addForeignKeyConstraint baseColumnNames="created_by_id"
                                  baseTableName="lib_album"

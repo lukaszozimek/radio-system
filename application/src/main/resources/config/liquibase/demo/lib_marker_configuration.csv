@@ -1,4 +1,4 @@
-id;name;display_name;color;keyboard_shortcut;type;network_id
+id;name;display_name;color;keyboard_shortcut;type;channel_id
 1;AUDs;Audio Start;rgba(0, 255, 255,1);w;MT_BASIC;1
 2;AUDe;Audio End;rgba(255, 0, 0,1);s;MT_BASIC;1
 3;SEGs;Seq Start;rgba(255, 204, 0,1);a;MT_BASIC;1

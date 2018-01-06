@@ -8,13 +8,6 @@
     -->
     <changeSet id="20170421185755-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="lib_cloud_object"
-                                 constraintName="fk_lib_cloud_object_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
-
-
         <addForeignKeyConstraint baseColumnNames="created_by_id"
                                  baseTableName="lib_cloud_object"
                                  constraintName="fk_lib_cloud_object_created_by_id"

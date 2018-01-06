@@ -77,9 +77,6 @@
             <column name="sch_event_template_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
-            <column name="network_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
 
             <column name="clock_template_id" type="bigint">
                 <constraints nullable="true"/>

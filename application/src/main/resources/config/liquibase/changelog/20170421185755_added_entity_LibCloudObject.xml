@@ -46,12 +46,6 @@
             <column name="hash" type="varchar(100)">
                 <constraints nullable="false" />
             </column>
-
-
-            <column name="network_id" type="bigint">
-                <constraints nullable="false" />
-            </column>
-
             <column name="created_by_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

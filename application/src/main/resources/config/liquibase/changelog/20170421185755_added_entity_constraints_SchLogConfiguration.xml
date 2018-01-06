@@ -8,13 +8,6 @@
     -->
     <changeSet id="20170720190702-2" author="jhipster">
 
-        
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="sch_log_configuration"
-                                 constraintName="fk_sch_log_configuration_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
-
         <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="sch_log_configuration"
                                  constraintName="fk_sch_log_configuration_channel_id"

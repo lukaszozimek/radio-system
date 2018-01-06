@@ -1,2 +1,2 @@
-id;valid_from;valid_to;discount;network_id
+id;valid_from;valid_to;discount;channel_id
 1;2017-08-01;2018-08-11;10;1

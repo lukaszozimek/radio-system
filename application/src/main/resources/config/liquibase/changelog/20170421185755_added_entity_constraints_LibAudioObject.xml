@@ -20,12 +20,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="lib_media_item"/>
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="lib_audio_object"
-                                 constraintName="fk_lib_audio_object_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
-
         <addForeignKeyConstraint baseColumnNames="created_by_id"
                                  baseTableName="lib_audio_object"
                                  constraintName="fk_lib_audio_object_created_by_id"

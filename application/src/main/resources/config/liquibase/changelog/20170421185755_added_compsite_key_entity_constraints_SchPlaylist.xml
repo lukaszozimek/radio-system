@@ -8,8 +8,8 @@
     -->
     <changeSet id="20170421185755-2" author="jhipster">
 
-        <addUniqueConstraint columnNames="date, network_id, channel_id"
-                             constraintName="composit_key_constraint_sch_playlist_date_channel_id_network_id"
+        <addUniqueConstraint columnNames="date, channel_id"
+                             constraintName="composit_key_constraint_sch_playlist_date_channel_id"
                              tableName="sch_playlist"
         />
 

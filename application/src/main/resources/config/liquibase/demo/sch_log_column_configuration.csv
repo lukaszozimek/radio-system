@@ -1,19 +1,19 @@
-id;column_type;length;column_sequence;sch_log_configuration_id;network_id;channel_id;created_by_id;last_modified_by_id
-1;LCT_START_TIME;null;0;2;1;1;1;1
-2;LCT_IDX;null;2;2;1;1;1;1
-3;LCT_LIBRARY;null;1;2;1;1;1;1
-4;LCT_LENGHT;null;6;2;1;1;1;1
-5;LCT_NAME;null;4;2;1;1;1;1
+id;column_type;length;column_sequence;sch_log_configuration_id;channel_id;created_by_id;last_modified_by_id
+1;LCT_START_TIME;null;0;2;1;1;1
+2;LCT_IDX;null;2;2;1;1;1
+3;LCT_LIBRARY;null;1;2;1;1;1
+4;LCT_LENGHT;null;6;2;1;1;1
+5;LCT_NAME;null;4;2;1;1;1
 
 
-6;LCT_START_TIME;null;0;1;1;1;1;1
-7;LCT_IDX;null;2;1;1;1;1;1
-8;LCT_LIBRARY;null;1;1;1;1;1;1
-9;LCT_LENGHT;null;6;1;1;1;1;1
-10;LCT_NAME;null;4;1;1;1;1;1
+6;LCT_START_TIME;null;0;1;1;1;1
+7;LCT_IDX;null;2;1;1;1;1
+8;LCT_LIBRARY;null;1;1;1;1;1
+9;LCT_LENGHT;null;6;1;1;1;1
+10;LCT_NAME;null;4;1;1;1;1
 
-11;LCT_START_TIME;null;0;3;1;1;1;1
-12;LCT_IDX;null;2;3;1;1;1;1
-13;LCT_LIBRARY;null;1;3;1;1;1;1
-14;LCT_LENGHT;null;3;3;1;1;1;1
-15;LCT_NAME;null;4;3;1;1;1;1
+11;LCT_START_TIME;null;0;3;1;1;1
+12;LCT_IDX;null;2;3;1;1;1
+13;LCT_LIBRARY;null;1;3;1;1;1
+14;LCT_LENGHT;null;3;3;1;1;1
+15;LCT_NAME;null;4;3;1;1;1

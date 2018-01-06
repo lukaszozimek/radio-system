@@ -20,11 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_currency"/>
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
+        <addForeignKeyConstraint baseColumnNames="organization_id"
                                  baseTableName="cor_country"
-                                 constraintName="fk_cor_country_network_id"
+                                 constraintName="fk_cor_country_organization_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+                                 referencedTableName="cor_organization"/>
 
         <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
                                  baseTableName="cor_country"

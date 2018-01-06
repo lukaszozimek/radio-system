@@ -27,13 +27,13 @@
         <addPrimaryKey columnNames="lib_file_library_id, channels_id" tableName="lib_file_library_channel"/>
         <addForeignKeyConstraint baseColumnNames="lib_file_library_id"
                                  baseTableName="lib_file_library_channel"
-                                 constraintName="fk_lib_file_library_channel_id"
+                                 constraintName="fk_lib_file_library_shared_channel_id"
                                  referencedColumnNames="id"
                                  referencedTableName="lib_file_library"/>
 
         <addForeignKeyConstraint baseColumnNames="channels_id"
                                  baseTableName="lib_file_library_channel"
-                                 constraintName="fk_channel_lib_media_library_file__id"
+                                 constraintName="fk_shared_channel_lib_media_library_file__id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_channel"/>
     </changeSet>

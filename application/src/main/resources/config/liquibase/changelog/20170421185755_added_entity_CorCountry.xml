@@ -32,7 +32,7 @@
             <column name="currnecy_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>
-            <column name="network_id" type="bigint">
+            <column name="organization_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 

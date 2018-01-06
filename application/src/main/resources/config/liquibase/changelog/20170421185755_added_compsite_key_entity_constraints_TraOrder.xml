@@ -8,8 +8,8 @@
     -->
     <changeSet id="20170421185755-2" author="jhipster">
 
-        <addUniqueConstraint columnNames="name, network_id"
-                             constraintName="composite_key_constrain_tra_order_name_network_id"
+        <addUniqueConstraint columnNames="name, channel_id"
+                             constraintName="composite_key_constrain_tra_order_name_channel_id"
                              tableName="tra_order"
         />
     </changeSet>

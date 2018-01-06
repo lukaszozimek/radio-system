@@ -50,11 +50,6 @@
             <column name="last_postion" type="boolean">
                 <constraints nullable="false"/>
             </column>
-
-            <column name="network_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-
             <column name="channel_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
