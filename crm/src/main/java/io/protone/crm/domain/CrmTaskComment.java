@@ -1,7 +1,7 @@
 package io.protone.crm.domain;
 
 import io.protone.core.domain.AbstractAuditingEntity;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -30,7 +30,7 @@ public class CrmTaskComment extends AbstractAuditingEntity implements Serializab
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     @ManyToOne
     @PodamExclude
@@ -58,17 +58,17 @@ public class CrmTaskComment extends AbstractAuditingEntity implements Serializab
         this.comment = comment;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public CrmTaskComment network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CrmTaskComment channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
     public CrmTask getTaskComment() {

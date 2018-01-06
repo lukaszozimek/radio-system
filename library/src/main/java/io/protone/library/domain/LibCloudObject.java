@@ -59,8 +59,6 @@ public class LibCloudObject extends AbstractAuditingEntity implements Serializab
     private String hash;
 
 
-    @ManyToOne
-    private CorNetwork network;
 
 
     public Long getId() {
@@ -162,18 +160,6 @@ public class LibCloudObject extends AbstractAuditingEntity implements Serializab
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public LibCloudObject network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

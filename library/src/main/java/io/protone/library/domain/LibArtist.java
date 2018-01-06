@@ -1,8 +1,6 @@
 package io.protone.library.domain;
 
-import io.protone.core.domain.AbstractAuditingEntity;
-import io.protone.core.domain.CorImageItem;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.*;
 import io.protone.library.domain.enumeration.LibArtistTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -21,7 +19,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "lib_artist", uniqueConstraints =
-@UniqueConstraint(columnNames = {"name", "network_id"}))
+@UniqueConstraint(columnNames = {"name", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibArtist extends AbstractAuditingEntity implements Serializable {
 
@@ -49,7 +47,7 @@ public class LibArtist extends AbstractAuditingEntity implements Serializable {
     private CorImageItem mainImage;
 
     @ManyToOne
-    private CorNetwork network;
+    private CorChannel channel;
 
     @PodamExclude
     @OneToMany
@@ -128,16 +126,16 @@ public class LibArtist extends AbstractAuditingEntity implements Serializable {
         this.imageItems = imageItems;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
-    public LibArtist network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public LibArtist channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 

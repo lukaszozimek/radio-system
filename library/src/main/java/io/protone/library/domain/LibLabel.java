@@ -1,7 +1,7 @@
 package io.protone.library.domain;
 
 import io.protone.core.domain.AbstractAuditingEntity;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -16,9 +16,9 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "lib_label", uniqueConstraints =
-@UniqueConstraint(columnNames = {"name", "network_id"}))
+@UniqueConstraint(columnNames = {"name", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibLabel  extends AbstractAuditingEntity implements Serializable {
+public class LibLabel extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class LibLabel  extends AbstractAuditingEntity implements Serializable {
     private String description;
 
     @ManyToOne
-    private CorNetwork network;
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -72,16 +72,16 @@ public class LibLabel  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
-    public LibLabel network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public LibLabel channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 
@@ -108,9 +108,9 @@ public class LibLabel  extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "LibLabel{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", description='" + description + "'" +
-            '}';
+                "id=" + id +
+                ", name='" + name + "'" +
+                ", description='" + description + "'" +
+                '}';
     }
 }

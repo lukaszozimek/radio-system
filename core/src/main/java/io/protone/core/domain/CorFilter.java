@@ -45,7 +45,7 @@ public class CorFilter extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     @JsonIgnore
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -68,16 +68,16 @@ public class CorFilter extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
-    public CorFilter network(CorNetwork network) {
-        this.network = network;
+    public CorFilter channel(CorChannel network) {
+        this.channel = network;
         return this;
     }
 

@@ -52,9 +52,6 @@ public class LibTrack  extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private LibArtist artist;
 
-    @ManyToOne
-    private CorNetwork network;
-
     public Long getId() {
         return id;
     }
@@ -154,18 +151,6 @@ public class LibTrack  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public LibTrack network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

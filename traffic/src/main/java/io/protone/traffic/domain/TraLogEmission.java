@@ -36,7 +36,6 @@ public class TraLogEmission implements Serializable {
 
     private TraOrder order;
 
-    private CorNetwork network;
 
     private CorChannel channel;
 
@@ -104,19 +103,6 @@ public class TraLogEmission implements Serializable {
 
     public TraLogEmission order(TraOrder traOrder) {
         this.order = traOrder;
-        return this;
-    }
-
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public TraLogEmission network(CorNetwork corNetwork) {
-        this.network = corNetwork;
         return this;
     }
 

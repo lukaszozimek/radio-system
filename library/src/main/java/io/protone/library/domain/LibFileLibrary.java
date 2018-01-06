@@ -17,7 +17,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "lib_file_library",
-uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "network_id"}))
+        uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibFileLibrary extends CorLibrary implements Serializable {
 
@@ -28,7 +28,7 @@ public class LibFileLibrary extends CorLibrary implements Serializable {
             joinColumns = @JoinColumn(name = "lib_file_library_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "channels_id", referencedColumnName = "id"))
     @PodamExclude
-    private Set<CorChannel> channels = new HashSet<>();
+    private Set<CorChannel> sharedChannels = new HashSet<>();
 
 
     public Long getId() {
@@ -105,28 +105,31 @@ public class LibFileLibrary extends CorLibrary implements Serializable {
     }
 
 
-
-    public Set<CorChannel> getChannels() {
-        return channels;
+    public Set<CorChannel> getSharedChannels() {
+        return sharedChannels;
     }
 
-    public void setChannels(Set<CorChannel> corChannels) {
-        this.channels = corChannels;
+    public void setSharedChannels(Set<CorChannel> corChannels) {
+        this.sharedChannels = corChannels;
     }
 
     public LibFileLibrary channels(Set<CorChannel> corChannels) {
-        this.channels = corChannels;
+        this.sharedChannels = corChannels;
+        return this;
+    }
+
+    public LibFileLibrary channel(CorChannel corChannels) {
+        this.channel = corChannels;
         return this;
     }
 
     public LibFileLibrary addChannel(CorChannel corChannel) {
-        this.channels.add(corChannel);
-
+        this.sharedChannels.add(corChannel);
         return this;
     }
 
     public LibFileLibrary removeChannel(CorChannel corChannel) {
-        this.channels.remove(corChannel);
+        this.sharedChannels.remove(corChannel);
 
         return this;
     }

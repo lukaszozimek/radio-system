@@ -59,10 +59,6 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
-
-    @ManyToOne
-    @PodamExclude
     private CorChannel channel;
 
     @ManyToOne
@@ -130,19 +126,6 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
 
     public TraEmission order(TraOrder traOrder) {
         this.order = traOrder;
-        return this;
-    }
-
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public TraEmission network(CorNetwork corNetwork) {
-        this.network = corNetwork;
         return this;
     }
 

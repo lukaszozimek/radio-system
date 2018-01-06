@@ -54,9 +54,7 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
     @PodamExclude
     private TraPrice price;
 
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
+
 
     @ManyToOne
     @PodamExclude
@@ -173,18 +171,6 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public TraBlockConfiguration network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
 
     public LibMediaItem getBlockStartSound() {
         return blockStartSound;

@@ -31,8 +31,6 @@ public class LibDocumentObject extends AbstractAuditingEntity implements Seriali
     @ManyToOne
     private LibMediaItem mediaItem;
 
-    @ManyToOne
-    private CorNetwork network;
 
     public Long getId() {
         return id;
@@ -65,19 +63,6 @@ public class LibDocumentObject extends AbstractAuditingEntity implements Seriali
 
     public LibDocumentObject mediaItem(LibMediaItem libMediaItem) {
         this.mediaItem = libMediaItem;
-        return this;
-    }
-
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public LibDocumentObject network(CorNetwork corNetwork) {
-        this.network = corNetwork;
         return this;
     }
 

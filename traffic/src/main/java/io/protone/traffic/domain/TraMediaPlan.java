@@ -44,9 +44,6 @@ public class TraMediaPlan extends AbstractAuditingEntity implements Serializable
     @PodamExclude
     private CrmAccount account;
 
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
 
     public Long getId() {
         return id;
@@ -106,19 +103,6 @@ public class TraMediaPlan extends AbstractAuditingEntity implements Serializable
 
     public void setAccount(CrmAccount crmAccount) {
         this.account = crmAccount;
-    }
-
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public TraMediaPlan network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
     }
 
 

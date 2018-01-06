@@ -38,10 +38,6 @@ public class TraMediaPlanPlaylistDate extends AbstractAuditingEntity implements 
     @PodamExclude
     private CorChannel channel;
 
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
-
 
     public Long getId() {
         return id;
@@ -90,18 +86,6 @@ public class TraMediaPlanPlaylistDate extends AbstractAuditingEntity implements 
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public TraMediaPlanPlaylistDate network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -130,8 +114,7 @@ public class TraMediaPlanPlaylistDate extends AbstractAuditingEntity implements 
                 "id=" + id +
                 ", playlistDate=" + playlistDate +
                 ", mediaPlan=" + mediaPlan +
-                ", channel=" + channel +
-                ", network=" + network +
+                ", organization=" + channel +
                 '}';
     }
 

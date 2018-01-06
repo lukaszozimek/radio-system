@@ -85,12 +85,6 @@ public class SchClock extends SchBlock implements Serializable {
     }
 
 
-    public SchClock network(CorNetwork network) {
-        super.setNetwork(network);
-        return this;
-    }
-
-
     public SchClock channel(CorChannel channel) {
         super.setChannel(channel);
         return this;

@@ -44,10 +44,6 @@ public class TraMediaPlanBlock extends AbstractAuditingEntity implements Seriali
     private Long stopBlock;
 
     @ManyToOne
-    private CorNetwork network;
-
-
-    @ManyToOne
     @PodamExclude
     private CorChannel channel;
 
@@ -130,18 +126,6 @@ public class TraMediaPlanBlock extends AbstractAuditingEntity implements Seriali
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public TraMediaPlanBlock network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
 
 
     public CorChannel getChannel() {

@@ -182,18 +182,6 @@ public class SchAttachmentTemplate extends SchEmissionTemplate implements Serial
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public SchAttachmentTemplate network(CorNetwork network) {
-        this.network = network;
-        return this;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
 
     public CorChannel getChannel() {
         return channel;

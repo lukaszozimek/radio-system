@@ -17,7 +17,7 @@ import java.util.Set;
  * A LibMediaLibrary.
  */
 @Entity
-@Table(name = "lib_media_library", uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "network_id"}))
+@Table(name = "lib_media_library", uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "channel_id"}))
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibMediaLibrary extends CorLibrary implements Serializable {
@@ -33,7 +33,7 @@ public class LibMediaLibrary extends CorLibrary implements Serializable {
             joinColumns = @JoinColumn(name = "lib_media_library_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "channels_id", referencedColumnName = "id"))
     @PodamExclude
-    private Set<CorChannel> channels = new HashSet<>();
+    private Set<CorChannel> sharedChannels = new HashSet<>();
 
     @PodamExclude
     @OneToMany
@@ -117,27 +117,27 @@ public class LibMediaLibrary extends CorLibrary implements Serializable {
         return this;
     }
 
-    public Set<CorChannel> getChannels() {
-        return channels;
+    public Set<CorChannel> getSharedChannels() {
+        return sharedChannels;
     }
 
-    public void setChannels(Set<CorChannel> corChannels) {
-        this.channels = corChannels;
+    public void setSharedChannels(Set<CorChannel> corChannels) {
+        this.sharedChannels = corChannels;
     }
 
     public LibMediaLibrary channels(Set<CorChannel> corChannels) {
-        this.channels = corChannels;
+        this.sharedChannels = corChannels;
         return this;
     }
 
     public LibMediaLibrary addChannel(CorChannel corChannel) {
-        this.channels.add(corChannel);
+        this.sharedChannels.add(corChannel);
 
         return this;
     }
 
     public LibMediaLibrary removeChannel(CorChannel corChannel) {
-        this.channels.remove(corChannel);
+        this.sharedChannels.remove(corChannel);
 
         return this;
     }
@@ -163,6 +163,11 @@ public class LibMediaLibrary extends CorLibrary implements Serializable {
 
     public LibMediaLibrary mainImage(CorImageItem mainImage) {
         this.mainImage = mainImage;
+        return this;
+    }
+
+    public LibMediaLibrary channel(CorChannel corChannels) {
+        this.channel = corChannels;
         return this;
     }
 
@@ -205,6 +210,7 @@ public class LibMediaLibrary extends CorLibrary implements Serializable {
                 ", description='" + description + "'" +
                 '}';
     }
+
 
 
 }

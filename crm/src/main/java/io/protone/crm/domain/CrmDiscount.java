@@ -1,6 +1,6 @@
 package io.protone.crm.domain;
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
@@ -32,7 +32,7 @@ public class CrmDiscount {
     private Long discount;
 
     @ManyToOne
-    private CorNetwork network;
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -81,16 +81,16 @@ public class CrmDiscount {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corChannel) {
+        this.channel = corChannel;
     }
 
-    public CrmDiscount network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CrmDiscount channel(CorChannel corChannel) {
+        this.channel = corChannel;
         return this;
     }
 

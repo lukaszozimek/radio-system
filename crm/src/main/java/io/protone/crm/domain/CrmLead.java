@@ -17,7 +17,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "crm_lead", uniqueConstraints =
-@UniqueConstraint(columnNames = {"shortname", "network_id"}))
+@UniqueConstraint(columnNames = {"shortname", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CrmLead extends AbstractAuditingEntity implements Serializable {
 
@@ -70,7 +70,7 @@ public class CrmLead extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     @OneToMany(mappedBy = "lead", fetch = FetchType.EAGER)
     @JsonIgnore
@@ -216,16 +216,16 @@ public class CrmLead extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
-    public CrmLead network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CrmLead channel(CorChannel corChannel) {
+        this.channel = corChannel;
         return this;
     }
 

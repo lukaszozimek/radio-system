@@ -17,7 +17,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "crm_account", uniqueConstraints =
-@UniqueConstraint(columnNames = {"short_name", "network_id"}))
+@UniqueConstraint(columnNames = {"short_name", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CrmAccount extends AbstractAuditingEntity implements Serializable {
 
@@ -62,7 +62,7 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
@@ -229,16 +229,16 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corChannel) {
+        this.channel = corChannel;
     }
 
-    public CrmAccount network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CrmAccount channel(CorChannel corChannel) {
+        this.channel = corChannel;
         return this;
     }
 

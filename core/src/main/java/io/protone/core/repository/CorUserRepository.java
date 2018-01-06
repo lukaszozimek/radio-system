@@ -2,6 +2,7 @@ package io.protone.core.repository;
 
 
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.CorUser;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -30,9 +31,9 @@ public interface CorUserRepository extends JpaRepository<CorUser, Long> {
     Optional<CorUser> findOneWithAuthoritiesByLogin(String login);
 
     @EntityGraph(attributePaths = "authorities")
-    Optional<CorUser> findOneWithAuthoritiesByLoginAndNetworks(String login, Set<CorNetwork> corNetwork);
+    Optional<CorUser> findOneWithAuthoritiesByLoginAndOrganization_Shortcut(String login, String organizationShortcut);
 
-    Slice<CorUser> findSliceByNetworks(Set<CorNetwork> network, Pageable pageable);
+    Slice<CorUser> findSliceByOrganization_Shortcut(String organizationShortcut, Pageable pageable);
 
     CorUser findOneWithAuthoritiesById(Long id);
 

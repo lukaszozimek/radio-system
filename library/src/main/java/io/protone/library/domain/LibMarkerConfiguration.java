@@ -1,6 +1,7 @@
 package io.protone.library.domain;
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
 import io.protone.library.domain.enumeration.LibMarkerTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -15,7 +16,7 @@ import java.util.Objects;
  * A LibMarkerConfiguration.
  */
 @Entity
-@Table(name = "lib_marker_configuration", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "keyboard_shortcut", "network_id"}))
+@Table(name = "lib_marker_configuration", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "keyboard_shortcut", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibMarkerConfiguration implements Serializable {
 
@@ -52,7 +53,7 @@ public class LibMarkerConfiguration implements Serializable {
     private LibMarkerTypeEnum type;
 
     @ManyToOne
-    private CorNetwork network;
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -127,16 +128,8 @@ public class LibMarkerConfiguration implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public LibMarkerConfiguration network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public LibMarkerConfiguration channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 
@@ -163,12 +156,21 @@ public class LibMarkerConfiguration implements Serializable {
     @Override
     public String toString() {
         return "LibMarkerConfiguration{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", displayName='" + displayName + "'" +
-            ", color='" + color + "'" +
-            ", keyboardShortcut='" + keyboardShortcut + "'" +
-            ", type='" + type + "'" +
-            '}';
+                "id=" + id +
+                ", name='" + name + "'" +
+                ", displayName='" + displayName + "'" +
+                ", color='" + color + "'" +
+                ", keyboardShortcut='" + keyboardShortcut + "'" +
+                ", type='" + type + "'" +
+                '}';
     }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
 }

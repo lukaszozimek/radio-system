@@ -26,7 +26,7 @@ public  class CorImageItem extends AbstractAuditingEntity {
     protected String publicUrl;
 
     @ManyToOne
-    private CorNetwork network;
+    private CorOrganization organization;
 
     public Long getId() {
         return id;
@@ -61,16 +61,16 @@ public  class CorImageItem extends AbstractAuditingEntity {
         this.publicUrl = publicUrl;
         return this;
     }
-    public CorNetwork getNetwork() {
-        return network;
+    public CorOrganization getOrganization() {
+        return organization;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setOrganization(CorOrganization organization) {
+        this.organization = organization;
     }
 
-    public CorImageItem network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CorImageItem organization(CorOrganization organization) {
+        this.organization = organization;
         return this;
     }
 }

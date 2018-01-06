@@ -1,10 +1,7 @@
 package io.protone.crm.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
-import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.domain.CorUser;
+import io.protone.core.domain.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -21,7 +18,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "crm_opportunity", uniqueConstraints =
-@UniqueConstraint(columnNames = {"short_name", "network_id"}))
+@UniqueConstraint(columnNames = {"short_name", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CrmOpportunity extends AbstractAuditingEntity implements Serializable {
 
@@ -72,7 +69,7 @@ public class CrmOpportunity extends AbstractAuditingEntity implements Serializab
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     @OneToMany(mappedBy = "opportunity",fetch = FetchType.EAGER)
     @JsonIgnore
@@ -218,16 +215,16 @@ public class CrmOpportunity extends AbstractAuditingEntity implements Serializab
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
-    public CrmOpportunity network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CrmOpportunity channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 

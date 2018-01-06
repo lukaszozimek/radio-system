@@ -2,7 +2,7 @@ package io.protone.traffic.domain;
 
 
 import io.protone.core.domain.AbstractAuditingEntity;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -61,7 +61,7 @@ public class TraMediaPlanTemplate extends AbstractAuditingEntity implements Seri
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     public String getBlockStartCell() {
         return blockStartCell;
@@ -271,16 +271,16 @@ public class TraMediaPlanTemplate extends AbstractAuditingEntity implements Seri
                 '}';
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
-    public TraMediaPlanTemplate network(CorNetwork network) {
-        this.network = network;
+    public TraMediaPlanTemplate channel(CorChannel network) {
+        this.channel = network;
         return this;
     }
 

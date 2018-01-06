@@ -40,8 +40,9 @@ public abstract class CorItem extends AbstractAuditingEntity {
     @PodamExclude
     @OneToMany(mappedBy = "tags", fetch = EAGER)
     @JsonIgnore
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     protected Set<CorTag> tags = new HashSet<>();
+
     @PodamExclude
     @OneToMany(mappedBy = "libItemPropertyValue", fetch = EAGER)
     @JsonIgnore

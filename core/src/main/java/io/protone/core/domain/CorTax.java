@@ -23,7 +23,7 @@ public class CorTax implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "value")
@@ -39,7 +39,7 @@ public class CorTax implements Serializable {
     private Boolean active;
 
     @ManyToOne
-    private CorNetwork network;
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -114,17 +114,17 @@ public class CorTax implements Serializable {
         this.active = active;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public CorTax network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CorTax channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
     @Override
@@ -150,12 +150,12 @@ public class CorTax implements Serializable {
     @Override
     public String toString() {
         return "CorTax{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", value='" + value + "'" +
-            ", validFrom='" + validFrom + "'" +
-            ", validTo='" + validTo + "'" +
-            ", active='" + active + "'" +
-            '}';
+                "id=" + id +
+                ", name='" + name + "'" +
+                ", value='" + value + "'" +
+                ", validFrom='" + validFrom + "'" +
+                ", validTo='" + validTo + "'" +
+                ", active='" + active + "'" +
+                '}';
     }
 }

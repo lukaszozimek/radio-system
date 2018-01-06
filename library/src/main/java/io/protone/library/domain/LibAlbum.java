@@ -1,9 +1,7 @@
 package io.protone.library.domain;
 
 
-import io.protone.core.domain.AbstractAuditingEntity;
-import io.protone.core.domain.CorImageItem;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.*;
 import io.protone.library.domain.enumeration.LibAlbumTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -63,7 +61,7 @@ public class LibAlbum extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     @PodamExclude
     @OneToMany
@@ -186,16 +184,16 @@ public class LibAlbum extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
-    public LibAlbum network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public LibAlbum channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 

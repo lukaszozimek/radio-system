@@ -2,8 +2,8 @@ package io.protone.traffic.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmAccount;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -57,7 +57,7 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     @ManyToOne
     @PodamExclude
@@ -130,19 +130,6 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
 
     public TraInvoice customer(CrmAccount crmAccount) {
         this.customer = crmAccount;
-        return this;
-    }
-
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public TraInvoice network(CorNetwork corNetwork) {
-        this.network = corNetwork;
         return this;
     }
 
@@ -244,7 +231,7 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         if (customDiscount != null ? !customDiscount.equals(that.customDiscount) : that.customDiscount != null)
             return false;
         if (customer != null ? !customer.equals(that.customer) : that.customer != null) return false;
-        if (network != null ? !network.equals(that.network) : that.network != null) return false;
+        if (channel != null ? !channel.equals(that.channel) : that.channel != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (company != null ? !company.equals(that.company) : that.company != null) return false;
         return orders != null ? orders.equals(that.orders) : that.orders == null;
@@ -260,7 +247,7 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         result = 31 * result + (paymentDay != null ? paymentDay.hashCode() : 0);
         result = 31 * result + (customDiscount != null ? customDiscount.hashCode() : 0);
         result = 31 * result + (customer != null ? customer.hashCode() : 0);
-        result = 31 * result + (network != null ? network.hashCode() : 0);
+        result = 31 * result + (channel != null ? channel.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (company != null ? company.hashCode() : 0);
         result = 31 * result + (orders != null ? orders.hashCode() : 0);
@@ -278,10 +265,24 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
                 ", paymentDay=" + paymentDay +
                 ", customDiscount=" + customDiscount +
                 ", customer=" + customer +
-                ", network=" + network +
+                ", channel=" + channel +
                 ", status=" + status +
                 ", company=" + company +
                 ", orders=" + orders +
                 '}';
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
+
+    public TraInvoice channel(CorChannel corChannel) {
+        this.channel = corChannel;
+        return this;
     }
 }

@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "cor_dictionary", uniqueConstraints =
-@UniqueConstraint(columnNames = {"name", "dictionary_type_name", "module_name", "network_id"}))
+@UniqueConstraint(columnNames = {"name", "dictionary_type_name", "module_name", "channel_id"}))
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CorDictionary extends AbstractAuditingEntity implements Serializable {
@@ -41,7 +41,7 @@ public class CorDictionary extends AbstractAuditingEntity implements Serializabl
     private String corModule;
 
     @ManyToOne
-    private CorNetwork network;
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -116,17 +116,17 @@ public class CorDictionary extends AbstractAuditingEntity implements Serializabl
         this.corModule = corModule;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public CorDictionary network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CorDictionary channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
     @Override

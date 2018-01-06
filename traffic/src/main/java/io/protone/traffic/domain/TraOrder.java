@@ -2,8 +2,8 @@ package io.protone.traffic.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmAccount;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -24,7 +24,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "tra_order", uniqueConstraints =
-@UniqueConstraint(columnNames = {"name", "network_id"}))
+@UniqueConstraint(columnNames = {"name", "channel_id"}))
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class TraOrder extends AbstractAuditingEntity implements Serializable {
@@ -66,7 +66,7 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     @ManyToOne
     @PodamExclude
@@ -176,16 +176,16 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
-    public TraOrder network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public TraOrder channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 
@@ -305,7 +305,7 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
                 ", calculatedPrize=" + calculatedPrize +
                 ", customer=" + customer +
                 ", price=" + price +
-                ", network=" + network +
+                ", organization=" + channel +
                 ", status=" + status +
                 ", advertisment=" + advertisment +
                 ", campaign=" + campaign +

@@ -19,7 +19,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "tra_playlist", uniqueConstraints =
-@UniqueConstraint(columnNames = {"playlist_date", "network_id", "channel_id"}))
+@UniqueConstraint(columnNames = {"playlist_date", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class TraPlaylist extends AbstractAuditingEntity implements Serializable {
 
@@ -33,10 +33,6 @@ public class TraPlaylist extends AbstractAuditingEntity implements Serializable 
 
     @Column(name = "playlist_date", nullable = false, unique = true)
     private LocalDate playlistDate;
-
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
 
     @ManyToOne
     @PodamExclude
@@ -70,19 +66,6 @@ public class TraPlaylist extends AbstractAuditingEntity implements Serializable 
 
     public TraPlaylist playlistDate(LocalDate playlistDate) {
         this.playlistDate = playlistDate;
-        return this;
-    }
-
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public TraPlaylist network(CorNetwork corNetwork) {
-        this.network = corNetwork;
         return this;
     }
 

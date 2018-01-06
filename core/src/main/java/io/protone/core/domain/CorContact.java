@@ -39,7 +39,7 @@ public class CorContact extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     @ManyToOne
     @PodamExclude
@@ -79,16 +79,16 @@ public class CorContact extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
-    public CorContact network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CorContact network(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 

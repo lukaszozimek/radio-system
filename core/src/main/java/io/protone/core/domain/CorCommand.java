@@ -30,7 +30,7 @@ public class CorCommand implements Serializable {
 
 
     @ManyToOne
-    private CorNetwork network;
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -61,12 +61,12 @@ public class CorCommand implements Serializable {
         this.value = value;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
 
@@ -80,7 +80,7 @@ public class CorCommand implements Serializable {
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (value != null ? !value.equals(that.value) : that.value != null) return false;
-        return network != null ? network.equals(that.network) : that.network == null;
+        return channel != null ? channel.equals(that.channel) : that.channel == null;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class CorCommand implements Serializable {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + (network != null ? network.hashCode() : 0);
+        result = 31 * result + (channel != null ? channel.hashCode() : 0);
         return result;
     }
 
@@ -98,7 +98,7 @@ public class CorCommand implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", value='" + value + '\'' +
-                ", network=" + network +
+                ", organization=" + channel +
                 '}';
     }
 }

@@ -17,7 +17,7 @@ import java.util.Objects;
  * A Playlist.
  */
 @Entity
-@Table(name = "sch_playlist", uniqueConstraints = @UniqueConstraint(columnNames = {"date", "channel_id", "network_id"}))
+@Table(name = "sch_playlist", uniqueConstraints = @UniqueConstraint(columnNames = {"date", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SchPlaylist extends SchBaseEntity implements Serializable {
 

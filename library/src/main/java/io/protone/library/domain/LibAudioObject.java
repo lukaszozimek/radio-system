@@ -2,6 +2,7 @@ package io.protone.library.domain;
 
 import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.library.domain.enumeration.LibAudioQualityEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -54,10 +55,6 @@ public class LibAudioObject extends AbstractAuditingEntity implements Serializab
     @ManyToOne
     @PodamExclude
     private LibMediaItem mediaItem;
-
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
 
     public Long getId() {
         return id;
@@ -145,18 +142,6 @@ public class LibAudioObject extends AbstractAuditingEntity implements Serializab
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public LibAudioObject network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

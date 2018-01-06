@@ -56,8 +56,6 @@ public class LibVideoObject  extends AbstractAuditingEntity implements Serializa
     @ManyToOne
     private LibMediaItem mediaItem;
 
-    @ManyToOne
-    private CorNetwork network;
 
     public Long getId() {
         return id;
@@ -181,19 +179,6 @@ public class LibVideoObject  extends AbstractAuditingEntity implements Serializa
 
     public LibVideoObject mediaItem(LibMediaItem libMediaItem) {
         this.mediaItem = libMediaItem;
-        return this;
-    }
-
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public LibVideoObject network(CorNetwork corNetwork) {
-        this.network = corNetwork;
         return this;
     }
 

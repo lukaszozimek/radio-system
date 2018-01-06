@@ -1,5 +1,6 @@
 package io.protone.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
@@ -43,10 +44,17 @@ public abstract class CorLibrary extends AbstractAuditingEntity implements Seria
     @Column(name = "description")
     protected String description;
 
+    @ManyToOne
+    @JsonIgnore
+    @PodamExclude
+    protected CorChannel channel;
 
+    public CorChannel getChannel() {
+        return channel;
+    }
 
-
-
-
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
 
 }

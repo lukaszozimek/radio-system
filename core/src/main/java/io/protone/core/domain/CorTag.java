@@ -30,7 +30,7 @@ public class CorTag implements Serializable {
     private String tag;
 
     @ManyToOne
-    private CorNetwork network;
+    private CorChannel channel;
 
     @ManyToOne
     private CorItem tags;
@@ -56,16 +56,16 @@ public class CorTag implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
-    public CorTag network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CorTag channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 

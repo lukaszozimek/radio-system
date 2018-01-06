@@ -179,19 +179,6 @@ public class SchAttachment extends SchEmission implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
-    public SchAttachment network(CorNetwork network) {
-        this.network = network;
-        return this;
-    }
-
     public CorChannel getChannel() {
         return channel;
     }

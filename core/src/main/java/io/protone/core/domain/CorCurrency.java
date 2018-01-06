@@ -35,7 +35,7 @@ public class CorCurrency extends AbstractAuditingEntity implements Serializable 
     private String shortName;
 
     @ManyToOne
-    private CorNetwork network;
+    private CorOrganization organization;
 
     public Long getId() {
         return id;
@@ -97,17 +97,17 @@ public class CorCurrency extends AbstractAuditingEntity implements Serializable 
         this.shortName = shortName;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorOrganization getOrganization() {
+        return organization;
     }
 
-    public CorCurrency network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CorCurrency organization(CorOrganization corNetwork) {
+        this.organization = corNetwork;
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setOrganization(CorOrganization corNetwork) {
+        this.organization = corNetwork;
     }
 
     @Override

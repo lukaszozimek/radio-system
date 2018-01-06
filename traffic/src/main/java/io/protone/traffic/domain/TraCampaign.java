@@ -2,8 +2,8 @@ package io.protone.traffic.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmAccount;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -23,7 +23,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "tra_campaign", uniqueConstraints =
-@UniqueConstraint(columnNames = {"short_name", "network_id"}))
+@UniqueConstraint(columnNames = {"short_name", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class TraCampaign extends AbstractAuditingEntity implements Serializable {
 
@@ -58,7 +58,7 @@ public class TraCampaign extends AbstractAuditingEntity implements Serializable 
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     @ManyToOne
     @PodamExclude
@@ -156,16 +156,16 @@ public class TraCampaign extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
-    public TraCampaign network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public TraCampaign channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 
@@ -238,7 +238,7 @@ public class TraCampaign extends AbstractAuditingEntity implements Serializable 
                 ", endDate=" + endDate +
                 ", prize=" + prize +
                 ", customer=" + customer +
-                ", network=" + network +
+                ", organization=" + channel +
                 ", status=" + status +
                 ", orders=" + orders +
                 '}';

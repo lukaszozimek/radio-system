@@ -1,10 +1,7 @@
 package io.protone.crm.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
-import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.domain.CorUser;
+import io.protone.core.domain.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -53,7 +50,7 @@ public class CrmTask extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     @ManyToOne
     @PodamExclude
@@ -167,17 +164,17 @@ public class CrmTask extends AbstractAuditingEntity implements Serializable {
         this.status = corDictionary;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public CrmTask network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CrmTask channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
     public CrmOpportunity getOpportunity() {

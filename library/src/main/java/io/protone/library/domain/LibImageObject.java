@@ -44,8 +44,6 @@ public class LibImageObject  extends AbstractAuditingEntity implements Serializa
     @ManyToOne
     private LibMediaItem mediaItem;
 
-    @ManyToOne
-    private CorNetwork network;
 
     public Long getId() {
         return id;
@@ -119,20 +117,6 @@ public class LibImageObject  extends AbstractAuditingEntity implements Serializa
         this.mediaItem = libMediaItem;
         return this;
     }
-
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public LibImageObject network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
-
 
     @Override
     public boolean equals(Object o) {

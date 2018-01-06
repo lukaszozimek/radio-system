@@ -1,8 +1,6 @@
 package io.protone.traffic.domain;
 
-import io.protone.core.domain.AbstractAuditingEntity;
-import io.protone.core.domain.CorAddress;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -48,7 +46,7 @@ public class TraCompany extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
 
     public Long getId() {
@@ -107,12 +105,12 @@ public class TraCompany extends AbstractAuditingEntity implements Serializable {
         this.addres = addres;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     @Override
@@ -129,7 +127,7 @@ public class TraCompany extends AbstractAuditingEntity implements Serializable {
         if (taxId1 != null ? !taxId1.equals(that.taxId1) : that.taxId1 != null) return false;
         if (taxId2 != null ? !taxId2.equals(that.taxId2) : that.taxId2 != null) return false;
         if (addres != null ? !addres.equals(that.addres) : that.addres != null) return false;
-        return network != null ? network.equals(that.network) : that.network == null;
+        return channel != null ? channel.equals(that.channel) : that.channel == null;
     }
 
     @Override
@@ -141,7 +139,7 @@ public class TraCompany extends AbstractAuditingEntity implements Serializable {
         result = 31 * result + (taxId1 != null ? taxId1.hashCode() : 0);
         result = 31 * result + (taxId2 != null ? taxId2.hashCode() : 0);
         result = 31 * result + (addres != null ? addres.hashCode() : 0);
-        result = 31 * result + (network != null ? network.hashCode() : 0);
+        result = 31 * result + (channel != null ? channel.hashCode() : 0);
         return result;
     }
 
@@ -155,7 +153,7 @@ public class TraCompany extends AbstractAuditingEntity implements Serializable {
                 ", taxId1='" + taxId1 + '\'' +
                 ", taxId2='" + taxId2 + '\'' +
                 ", addres=" + addres +
-                ", network=" + network +
+                ", organization=" + channel +
                 '}';
     }
 
@@ -164,8 +162,8 @@ public class TraCompany extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public TraCompany network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public TraCompany channel(CorChannel channel) {
+        this.channel = channel;
         return this;
     }
 

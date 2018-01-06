@@ -1,8 +1,8 @@
 package io.protone.traffic.domain;
 
 import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.library.domain.LibMediaItem;
 import org.hibernate.annotations.Cache;
@@ -46,7 +46,7 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     @ManyToOne
     @PodamExclude
@@ -125,16 +125,16 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
-    public TraAdvertisement network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public TraAdvertisement channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 

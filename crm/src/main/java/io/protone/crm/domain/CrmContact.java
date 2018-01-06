@@ -18,7 +18,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "crm_contact", uniqueConstraints =
-@UniqueConstraint(columnNames = {"short_name", "network_id"}))
+@UniqueConstraint(columnNames = {"short_name", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CrmContact extends AbstractAuditingEntity implements Serializable {
 
@@ -82,7 +82,7 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    private CorChannel channel;
 
     @ManyToOne
     @PodamExclude
@@ -252,16 +252,16 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
-    public CrmContact network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CrmContact channel(CorChannel channel) {
+        this.channel = channel;
         return this;
     }
 
@@ -385,6 +385,7 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
         crmTask.setContact(null);
         return this;
     }
+
     public String getDescription() {
         return description;
     }
@@ -437,7 +438,7 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
                 ", country=" + country +
                 ", corImageItem=" + corImageItem +
                 ", person=" + person +
-                ", network=" + network +
+                ", organization=" + channel +
                 ", range=" + range +
                 ", size=" + size +
                 ", industry=" + industry +

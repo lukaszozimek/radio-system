@@ -55,7 +55,7 @@ public class CorNetwork extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorUser> networkUsers = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @PodamExclude
     @JsonIgnore
     private CorOrganization corOrganization;
@@ -207,4 +207,16 @@ public class CorNetwork extends AbstractAuditingEntity implements Serializable {
     }
 
 
+    public CorOrganization getCorOrganization() {
+        return corOrganization;
+    }
+
+    public void setCorOrganization(CorOrganization corOrganization) {
+        this.corOrganization = corOrganization;
+    }
+
+    public CorNetwork organization(CorOrganization corOrganization) {
+        this.corOrganization = corOrganization;
+        return this;
+    }
 }

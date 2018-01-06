@@ -58,10 +58,6 @@ public class TraMediaPlanEmission extends AbstractAuditingEntity implements Seri
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
-
-    @ManyToOne
-    @PodamExclude
     private CorChannel channel;
 
     @ManyToOne
@@ -140,18 +136,6 @@ public class TraMediaPlanEmission extends AbstractAuditingEntity implements Seri
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public TraMediaPlanEmission network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
 
     public CorChannel getChannel() {
         return channel;

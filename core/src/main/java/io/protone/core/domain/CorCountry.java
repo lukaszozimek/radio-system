@@ -37,7 +37,7 @@ public class CorCountry extends AbstractAuditingEntity implements Serializable {
     private CorCurrency currnecy;
 
     @ManyToOne
-    private CorNetwork network;
+    private CorOrganization organization;
 
     public Long getId() {
         return id;
@@ -99,17 +99,17 @@ public class CorCountry extends AbstractAuditingEntity implements Serializable {
         this.currnecy = corCurrency;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorOrganization getOrganization() {
+        return organization;
     }
 
-    public CorCountry network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CorCountry organization(CorOrganization corNetwork) {
+        this.organization = corNetwork;
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setOrganization(CorOrganization corNetwork) {
+        this.organization = corNetwork;
     }
 
     @Override

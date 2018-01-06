@@ -1,7 +1,7 @@
 package io.protone.traffic.domain;
 
 import io.protone.core.domain.AbstractAuditingEntity;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -53,7 +53,7 @@ public class TraPrice extends AbstractAuditingEntity implements Serializable {
     @Column(name = "base_length")
     private Long baseLength;
     @ManyToOne
-    private CorNetwork network;
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -158,16 +158,16 @@ public class TraPrice extends AbstractAuditingEntity implements Serializable {
         this.priceFirstPostion = priceFirstPostion;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
-    public TraPrice network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public TraPrice channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 
@@ -203,7 +203,7 @@ public class TraPrice extends AbstractAuditingEntity implements Serializable {
                 ", priceLastPostion=" + priceLastPostion +
                 ", priceFirstPostion=" + priceFirstPostion +
                 ", baseLength=" + baseLength +
-                ", network=" + network +
+                ", organization=" + channel +
                 '}';
     }
 

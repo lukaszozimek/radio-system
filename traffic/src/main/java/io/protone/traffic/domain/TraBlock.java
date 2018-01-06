@@ -47,9 +47,6 @@ public class TraBlock extends AbstractAuditingEntity implements Serializable {
     private Long stopBlock;
 
     @ManyToOne
-    private CorNetwork network;
-
-    @ManyToOne
     @PodamExclude
     private LibMediaItem blockStartSound;
 
@@ -140,18 +137,6 @@ public class TraBlock extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public TraBlock network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
 
     public LibMediaItem getBlockStartSound() {
         return blockStartSound;

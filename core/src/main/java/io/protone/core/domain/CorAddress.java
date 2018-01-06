@@ -44,7 +44,7 @@ public class CorAddress extends AbstractAuditingEntity implements Serializable {
     private String country;
 
     @ManyToOne
-    private CorNetwork network;
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -119,17 +119,17 @@ public class CorAddress extends AbstractAuditingEntity implements Serializable {
         this.country = country;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public CorAddress network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CorAddress network(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel corNetwork) {
+        this.channel = corNetwork;
     }
 
     @Override
