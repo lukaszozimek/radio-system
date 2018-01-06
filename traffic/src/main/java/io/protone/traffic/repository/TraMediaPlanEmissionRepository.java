@@ -10,11 +10,8 @@ import java.util.List;
  * Created by lukaszozimek on 16/08/2017.
  */
 public interface TraMediaPlanEmissionRepository extends JpaRepository<TraMediaPlanEmission, Long> {
-    List<TraMediaPlanEmission> findAllByNetwork_Shortcut(String shortcut, Pageable pageable);
+    List<TraMediaPlanEmission> findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(String organization, String channelShortcut, Long mediaPlanId);
 
-    List<TraMediaPlanEmission> findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(String newtorkShortcut,String channelShortcut, Long mediaPlanId);
-    TraMediaPlanEmission findOneByIdAndNetwork_Shortcut(Long id, String shortcut);
-
-    void deleteByIdAndNetwork_Shortcut(Long id, String shortcut);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 }
 

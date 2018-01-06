@@ -13,12 +13,12 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CorChannelRepository extends JpaRepository<CorChannel, Long> {
-    CorChannel findOneByNetwork_ShortcutAndShortcut(String network, String shortcut);
+    CorChannel findOneByOrganization_ShortcutAndShortcut(String organization, String shortcut);
 
-    void deleteByShortcutAndNetwork_Shortcut(String shortcut, String network);
+    void deleteByShortcutAndOrganization_Shortcut(String shortcut, String network);
 
     List<CorChannel> findAllByNetwork(CorNetwork network);
 
-    Slice<CorChannel> findSliceByNetwork_Shortcut(String network, Pageable pagable);
+    Slice<CorChannel> findSliceByOrganization_Shortcut(String network, Pageable pagable);
 
 }

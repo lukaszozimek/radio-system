@@ -14,17 +14,9 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface LibLibraryRepository extends JpaRepository<LibMediaLibrary, Long> {
-    LibMediaLibrary findOneByNetwork_ShortcutAndShortcut(String network, String shortcut);
+    LibMediaLibrary findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndShortcut(String network, String corChannel, String shortcut);
 
-    LibMediaLibrary findOneByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(String network, String corChannel, String shortcut);
+    Slice<LibMediaLibrary> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(String network, String channelShortcut, Pageable pageable);
 
-    List<LibMediaLibrary> findByNetwork(CorNetwork network);
-
-    Slice<LibMediaLibrary> findSliceByNetwork_Shortcut(String network, Pageable pageable);
-
-    Slice<LibMediaLibrary> findSliceByNetwork_ShortcutAndChannels_ShortcutIn(String network, String corChannel, Pageable pageable);
-
-    void deleteByShortcutAndNetwork_Shortcut(String shortcut, String network);
-
-    void deleteByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(String shortcut, String channelShortcut, String network);
+    void deleteByChannel_Organization_ShortcutAndChannel_ShortcutAndShortcut(String organizationShortcut, String channelShortcut, String libraryShortcut);
 }

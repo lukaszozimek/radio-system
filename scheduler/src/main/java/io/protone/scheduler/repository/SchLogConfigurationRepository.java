@@ -11,14 +11,10 @@ import java.util.List;
  * A Playlist repository.
  */
 public interface SchLogConfigurationRepository extends JpaRepository<SchLogConfiguration, Long> {
+    Slice<SchLogConfiguration> findAllByChannel_Organization_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut, Pageable pageable);
 
-    Slice<SchLogConfiguration> findAllByNetwork_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut, Pageable pageable);
+    SchLogConfiguration findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndId(String organizationShortcut, String channelShortcut, Long id);
 
-    List<SchLogConfiguration> findAllByNetwork_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut);
+    SchLogConfiguration findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndExtension(String organizationShortcut, String channelShortcut, String extension);
 
-    SchLogConfiguration findOneByNetwork_ShortcutAndChannel_ShortcutAndId(String organizationShortcut, String channelShortcut, Long id);
-
-    SchLogConfiguration findOneByNetwork_ShortcutAndChannel_ShortcutAndExtension(String organizationShortcut, String channelShortcut, String extension);
-
-    void deleteByNetwork_ShortcutAndChannel_ShortcutAndId(String organizationShortcut, String channelShortcut, Long id);
 }

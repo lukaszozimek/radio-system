@@ -12,7 +12,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface LibMarkerConfigurationRepository extends JpaRepository<LibMarkerConfiguration, Long> {
-    LibMarkerConfiguration findOneByIdAndNetwork(Long id, CorNetwork network);
+    LibMarkerConfiguration findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organizationShortcut, String channelShortcut);
 
-    List<LibMarkerConfiguration> findByNetwork(CorNetwork network);
+    List<LibMarkerConfiguration> findByChannel_Organization_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut);
 }

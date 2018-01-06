@@ -13,12 +13,12 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CorTaxRepository extends JpaRepository<CorTax, Long> {
-    List<CorTax> findByNetwork(CorNetwork corNetwork);
+    List<CorTax> findByChannel_Organization_Shortcut(String organizationShortcut);
 
-    Slice<CorTax> findSliceByNetwork_Shortcut(String network, Pageable pageable);
+    Slice<CorTax> findSliceByChannel_Organization_Shortcut(String organizationShortcut, Pageable pageable);
 
-    CorTax findOneByIdAndNetwork_Shortcut(Long id, String corNetwork);
+    CorTax findOneByIdAndChannel_Organization_Shortcut(Long id, String organizationShortcut);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String corNetwork);
+    void deleteByIdAndChannel_Organization_Shortcut(Long id, String organizationShortcut);
 
 }

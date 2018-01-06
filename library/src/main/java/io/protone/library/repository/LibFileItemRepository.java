@@ -12,9 +12,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @SuppressWarnings("unused")
 public interface LibFileItemRepository extends JpaRepository<LibFileItem, Long> {
 
-    LibFileItem findOneByIdAndNetwork_ShortcutAndChannel_Shortcut(LibFileItem itemDB, String organizationShortcut, String channelShortcut);
+    LibFileItem findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(LibFileItem itemDB, String organizationShortcut, String channelShortcut);
 
-    Slice<LibFileItem> findSliceByNetwork_ShortcutAndLibrary_Shortcut(String organizationShortcut, String libraryDB, Pageable pageable);
+    Slice<LibFileItem> findSliceByChannel_Organization_ShortcutAndChannel_ShortcutAndLibrary_Shortcut(String organizationShortcut, String channelShortcut, String libraryDB, Pageable pageable);
 
-    LibFileItem findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(String organizationShortcut, String libraryDB, String idx);
+    LibFileItem findByChannel_Organization_ShortcutAndChannel_ShortcutAndLibrary_ShortcutAndIdx(String organizationShortcut, String channelShortcut, String libraryDB, String idx);
 }

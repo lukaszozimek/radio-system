@@ -12,17 +12,16 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the CrmOpportunity entity.
  */
-@SuppressWarnings("unused")
 public interface CrmOpportunityRepository extends JpaRepository<CrmOpportunity, Long> {
-    List<CrmOpportunity> findByNetwork(CorNetwork network);
+    List<CrmOpportunity> findByChannel_Organization_ShortcutAndChannel_Shortcut(String organization, String channelShortcut);
 
-    void deleteByNameAndNetwork(String name, CorNetwork network);
+    void deleteByNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String name, String organization, String channelShortcut);
 
-    Slice<CrmOpportunity> findSliceByNetwork_Shortcut(String network, Pageable pageable);
+    Slice<CrmOpportunity> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(String organization, String channelShortcut, Pageable pageable);
 
-    CrmOpportunity findOneByNameAndNetwork(String name, CorNetwork network);
+    CrmOpportunity findOneByNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String name, String organization, String channelShortcut);
 
-    CrmOpportunity findOneByShortNameAndNetwork_Shortcut(String shortcut, String corNetwork);
+    CrmOpportunity findOneByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String shortcut, String organization, String channelShortcut);
 
-    void deleteByShortNameAndNetwork_Shortcut(String shortcut, String corNetwork);
+    void deleteByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String shortcut, String organization, String channelShortcut);
 }

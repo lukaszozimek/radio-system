@@ -14,11 +14,11 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CorCurrencyRepository extends JpaRepository<CorCurrency, Long> {
-    List<CorCurrency> findByNetwork(CorNetwork corNetwork);
+    List<CorCurrency> findByOrganization_Shortcut(String organizationShortcut);
 
-    Slice<CorCurrency> findSliceByNetwork_Shortcut(String network, Pageable pageable);
+    Slice<CorCurrency> findSliceByOrganization_Shortcut(String organizationShortcut, Pageable pageable);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String network);
+    void deleteByIdAndOrganization_Shortcut(Long id, String organizationShortcut);
 
-    CorCurrency findOneByIdAndNetwork_Shortcut(Long id, String corNetwork);
+    CorCurrency findOneByIdAndOrganization_Shortcut(Long id, String organizationShortcut);
 }

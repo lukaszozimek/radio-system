@@ -10,11 +10,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Spring Data JPA repository for the LibLabel entity.
  */
 @SuppressWarnings("unused")
-public interface LibLabelRepository extends JpaRepository<LibLabel,Long> {
+public interface LibLabelRepository extends JpaRepository<LibLabel, Long> {
 
-    Slice<LibLabel> findSliceByNetwork_Shortcut(String organizationShortcut, Pageable pagable);
+    Slice<LibLabel> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut, Pageable pagable);
 
-    LibLabel findOneByIdAndNetwork_Shortcut(Long id, String organizationShortcut);
+    LibLabel findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organizationShortcut, String channelShortcut);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String organizationShortcut);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organizationShortcut, String channelShortcut);
 }

@@ -13,11 +13,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CrmTaskCommentRepository extends JpaRepository<CrmTaskComment, Long> {
 
 
-    Slice<CrmTaskComment> findSliceByTaskComment_IdAndNetwork_Shortcut(Long taskId, String organizationShortcut, Pageable pageable);
+    Slice<CrmTaskComment> findSliceByTaskComment_IdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long taskId, String organization, String channelShortcut, Pageable pageable);
 
-    CrmTaskComment findOneByIdAndTaskComment_IdAndNetwork_Shortcut(Long commentId, Long taskId, String organizationShortcut);
+    CrmTaskComment findOneByIdAndTaskComment_IdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long commentId, Long taskId, String organization, String channelShortcut);
 
-    void deleteAllByTaskComment_IdAndNetwork_Shortcut(Long taskId, String networkShortuct);
+    void deleteAllByTaskComment_IdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long taskId, String organization, String channelShortcut);
 
-    void deleteAllByIdAndTaskComment_IdAndNetwork_Shortcut(Long id, Long taskId, String networkShortuct);
+    void deleteAllByIdAndTaskComment_IdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, Long taskId, String organization, String channelShortcut);
 }

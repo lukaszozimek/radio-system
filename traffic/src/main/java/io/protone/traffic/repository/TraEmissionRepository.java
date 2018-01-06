@@ -5,14 +5,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+
 /**
  * Spring Data JPA repository for the TraEmission entity.
  */
 @SuppressWarnings("unused")
-public interface TraEmissionRepository extends JpaRepository<TraEmission,Long> {
-    List<TraEmission> findAllByNetwork_Shortcut(String shortcut, Pageable pageable);
+public interface TraEmissionRepository extends JpaRepository<TraEmission, Long> {
+    List<TraEmission> findAllByChannel_Organization_ShortcutAndChannel_Shortcut(String organization, String channelShortcut, Pageable pageable);
 
-    TraEmission findOneByIdAndNetwork_Shortcut(Long id, String shortcut);
+    TraEmission findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String shortcut);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 }

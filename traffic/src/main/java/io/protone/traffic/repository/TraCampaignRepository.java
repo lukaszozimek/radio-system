@@ -15,15 +15,15 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface TraCampaignRepository extends JpaRepository<TraCampaign, Long> {
-    List<TraCampaign> findByNetwork(CorNetwork network);
 
-    Slice<TraCampaign> findSliceByNetwork_Shortcut(String network, Pageable pageable);
+    Slice<TraCampaign> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(String organization, String channelShortcut, Pageable pageable);
 
-    TraCampaign findByShortNameAndNetwork_Shortcut(String shortName, String network);
+    TraCampaign findByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String shortName, String organization, String channelShortcut);
 
-    Slice<TraCampaign> findSliceByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String corNetwork, Pageable pageable);
+    Slice<TraCampaign> findSliceByCustomer_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String crmAccount, String organization, String channelShortcut, Pageable pageable);
 
-    void deleteByShortNameAndNetwork_Shortcut(String shortcut, String corNetwork);
-    void deleteByCustomerAndNetwork_Shortcut(CrmAccount crmAccount, String corNetwork);
+    void deleteByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String shortcut, String organization, String channelShortcut);
+
+    void deleteByCustomerAndChannel_Organization_ShortcutAndChannel_Shortcut(CrmAccount crmAccount, String organization, String channelShortcut);
 
 }

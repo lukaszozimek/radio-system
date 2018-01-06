@@ -9,9 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by lukaszozimek on 11/08/2017.
  */
 public interface TraCompanyRepository extends JpaRepository<TraCompany, Long> {
-    Slice<TraCompany> findSliceByNetwork_Shortcut(String corNetwork, Pageable pageable);
+    Slice<TraCompany> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(String organization, String channelShortcut, Pageable pageable);
 
-    TraCompany findOneByIdAndNetwork_Shortcut(Long id, String corNetwork);
+    TraCompany findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String corNetwork);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 }

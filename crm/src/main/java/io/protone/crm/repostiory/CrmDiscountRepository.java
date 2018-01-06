@@ -9,11 +9,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Spring Data JPA repository for the TraDiscount entity.
  */
-@SuppressWarnings("unused")
 public interface CrmDiscountRepository extends JpaRepository<CrmDiscount, Long> {
 
-    Slice<CrmDiscount> findSliceByNetwork(CorNetwork corNetwork, Pageable pageable);
+    Slice<CrmDiscount> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(String organization, String channelShortcut, Pageable pageable);
 
-    CrmDiscount findOneByIdAndNetwork(Long id, CorNetwork corNetwork);
+    CrmDiscount findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 }
 

@@ -11,17 +11,12 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the CrmLead entity.
  */
-@SuppressWarnings("unused")
 public interface CrmLeadRepository extends JpaRepository<CrmLead, Long> {
-    void deleteByShortnameAndNetwork(String shortName, CorNetwork network);
+    List<CrmLead> findByChannel_Organization_Shortcut(String network);
 
-    List<CrmLead> findByNetwork(CorNetwork network);
+    Slice<CrmLead> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(String organization, String channelShortcut, Pageable pageable);
 
-    Slice<CrmLead> findSliceByNetwork_Shortcut(String network, Pageable pageable);
+    CrmLead findOneByShortnameAndChannel_Organization_ShortcutAndChannel_Shortcut(String shortcut, String organization, String channelShortcut);
 
-    CrmLead findOneByShortnameAndNetwork(String shortName, CorNetwork network);
-
-    CrmLead findOneByShortnameAndNetwork_Shortcut(String shortcut, String corNetwork);
-
-    void deleteByShortnameAndNetwork_Shortcut(String shortcut, String corNetwork);
+    void deleteByShortnameAndChannel_Organization_ShortcutAndChannel_Shortcut(String shortcut, String organization, String channelShortcut);
 }

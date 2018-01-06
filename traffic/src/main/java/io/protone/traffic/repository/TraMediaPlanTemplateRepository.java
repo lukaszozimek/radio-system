@@ -11,9 +11,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 @SuppressWarnings("unused")
 public interface TraMediaPlanTemplateRepository extends JpaRepository<TraMediaPlanTemplate, Long> {
-    Slice<TraMediaPlanTemplate> findSliceByNetwork_Shortcut(String shortcut, Pageable pageable);
+    Slice<TraMediaPlanTemplate> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(String organization, String channelShortcut, Pageable pageable);
 
-    TraMediaPlanTemplate findOneByIdAndNetwork_Shortcut(Long id, String shortcut);
+    TraMediaPlanTemplate findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String shortcut);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 }

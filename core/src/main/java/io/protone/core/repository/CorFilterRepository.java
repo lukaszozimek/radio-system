@@ -13,12 +13,12 @@ import java.util.List;
  * Created by lukaszozimek on 20.07.2017.
  */
 public interface CorFilterRepository extends JpaRepository<CorFilter, Long> {
-    List<CorFilter> findByNetwork(CorNetwork corNetwork);
+    List<CorFilter> findByChannel_Organization_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut);
 
-    Slice<CorFilter> findSliceByNetwork_ShortcutAndTypeAndCorUser_Login(String corNetwork, CorEntityTypeEnum type, String login, Pageable pageable);
+    Slice<CorFilter> findSliceByChannel_Organization_ShortcutAndChannel_ShortcutAndTypeAndCorUser_Login(String organizationShortcut, String channelShortcut, CorEntityTypeEnum type, String login, Pageable pageable);
 
-    CorFilter findOneByIdAndNetwork_ShortcutAndTypeAndCorUser_Login(Long id, String corNetwork, CorEntityTypeEnum type, String login);
+    CorFilter findOneByIdAndChannel_Organization_ShortcutAndChannel_ShortcutAndTypeAndCorUser_Login(Long id, String organizationShortcut, String channelShortcut, CorEntityTypeEnum type, String login);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String corNetwork);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organizationShortcut, String channelShortcut);
 
 }

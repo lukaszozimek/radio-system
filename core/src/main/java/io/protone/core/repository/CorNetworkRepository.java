@@ -2,6 +2,7 @@ package io.protone.core.repository;
 
 
 import io.protone.core.domain.CorNetwork;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -11,9 +12,11 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 public interface CorNetworkRepository extends JpaRepository<CorNetwork, Long> {
-    CorNetwork findOneByShortcut(String shortcut);
+    Slice<CorNetwork> findSliceByCorOrganization_Shortcut(String organizationShortcut);
 
-    void deleteByShortcut(String shortcut);
+    CorNetwork findOneByShortcutAndCorOrganization_Shortcut(String shortcut, String organizationShortcut);
 
-    Optional<CorNetwork> findOneByShortcutOrName(String shortcut, String name);
+    void deleteByShortcutAndCorOrganization_Shortcut(String shortcut, String organizationShortcut);
+
+    Optional<CorNetwork> findOneByShortcutOrNameAndCorOrganization_Shortcut(String shortcut, String name, String organizationShortcut);
 }

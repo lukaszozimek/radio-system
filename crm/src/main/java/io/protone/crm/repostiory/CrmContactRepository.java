@@ -9,11 +9,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Spring Data JPA repository for the CrmContact entity.
  */
-@SuppressWarnings("unused")
 public interface CrmContactRepository extends JpaRepository<CrmContact, Long> {
-    CrmContact findOneByShortNameAndNetwork_Shortcut(String shortname, String network);
+    CrmContact findOneByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String shortname, String organization, String channelShortcut);
 
-    Slice<CrmContact> findSliceByNetwork_Shortcut(String network, Pageable pagable);
+    Slice<CrmContact> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(String organization, String channelShortcut, Pageable pagable);
 
-    void deleteByShortNameAndNetwork_Shortcut(String shortname, String network);
+    void deleteByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String shortname, String organization, String channelShortcut );
 }

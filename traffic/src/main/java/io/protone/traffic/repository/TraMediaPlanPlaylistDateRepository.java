@@ -12,13 +12,13 @@ import java.util.List;
  * Spring Data JPA repository for the TraMediaPlanPlaylistDate entity.
  */
 @SuppressWarnings("unused")
-public interface TraMediaPlanPlaylistDateRepository extends JpaRepository<TraMediaPlanPlaylistDate,Long> {
+public interface TraMediaPlanPlaylistDateRepository extends JpaRepository<TraMediaPlanPlaylistDate, Long> {
 
-    TraMediaPlanPlaylistDate findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(LocalDate date, String organizationShortcut, String channelShortcut);
+    TraMediaPlanPlaylistDate findOneByPlaylistDateAndChannel_Organization_ShortcutAndChannel_Shortcut(LocalDate date, String organizationShortcut, String channelShortcut);
 
-    List<TraMediaPlanPlaylistDate> findAllByNetwork_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut, Pageable pageable);
+    List<TraMediaPlanPlaylistDate> findAllByChannel_Organization_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut, Pageable pageable);
 
-    void deleteByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(LocalDate date, String organizationShortcut, String channelShortcut);
+    void deleteByPlaylistDateAndChannel_Organization_ShortcutAndChannel_Shortcut(LocalDate date, String organizationShortcut, String channelShortcut);
 
-    List<TraMediaPlanPlaylistDate> findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(String shortcut, String shortcut1, Long id);
+    List<TraMediaPlanPlaylistDate> findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(String organization, String channelShortcut, Long id);
 }

@@ -2,7 +2,6 @@ package io.protone.core.repository;
 
 
 import io.protone.core.domain.CorCountry;
-import io.protone.core.domain.CorNetwork;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,9 +13,9 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CorCountryRepository extends JpaRepository<CorCountry, Long> {
-    List<CorCountry> findSliceByNetwork(CorNetwork corNetwork);
+    List<CorCountry> findSliceByOrganization_Shortcut(String organizationShortcut);
 
-    Slice<CorCountry> findSliceByNetwork(CorNetwork corNetwork, Pageable pageable);
+    Slice<CorCountry> findSliceByOrganization_Shortcut(String organizationShortcut, Pageable pageable);
 
-    CorCountry findOneByIdAndNetwork(Long id, CorNetwork corNetwork);
+    CorCountry findOneByIdAndOrganization_Shortcut(Long id, String organizationShortcut);
 }
