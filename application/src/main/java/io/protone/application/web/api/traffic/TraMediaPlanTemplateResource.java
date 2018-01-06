@@ -22,11 +22,12 @@ public interface TraMediaPlanTemplateResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanTemplateDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic//mediaplan/template",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic//mediaplan/template",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraMediaPlanTemplateDTO>> getAllTraMediaPlanTemplateUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                                @ApiParam(value = "pagable", required = true) Pageable pagable);
+                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                     @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "getTraMediaPlanTemplate", notes = "", response = TraMediaPlanTemplateDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
@@ -35,11 +36,12 @@ public interface TraMediaPlanTemplateResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanTemplateDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic//mediaplan/template/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic//mediaplan/template/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraMediaPlanTemplateDTO> getTraMediaPlanTemplateUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                       @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
+                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "updateTraMediaPlanTemplate", notes = "", response = TraMediaPlanTemplateDTO.class, tags = {"TRAFFIC",})
@@ -49,12 +51,13 @@ public interface TraMediaPlanTemplateResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanTemplateDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/mediaplan/template",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic/mediaplan/template",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<TraMediaPlanTemplateDTO> updateTraMediaPlanTemplateUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                          @ApiParam(value = "traMediaPlanTemplateDTO", required = true) @RequestBody TraMediaPlanTemplateDTO traMediaPlanTemplateDTO) throws URISyntaxException;
+                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                               @ApiParam(value = "traMediaPlanTemplateDTO", required = true) @RequestBody TraMediaPlanTemplateDTO traMediaPlanTemplateDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "createTraMediaPlanTemplate", notes = "", response = TraMediaPlanTemplateDTO.class, tags = {"TRAFFIC",})
@@ -64,12 +67,13 @@ public interface TraMediaPlanTemplateResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanTemplateDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanTemplateDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic//mediaplan/template",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic//mediaplan/template",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraMediaPlanTemplateDTO> createTraMediaPlanTemplateUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                           @ApiParam(value = "traMediaPlanTemplateDTO", required = true) @RequestBody TraMediaPlanTemplateDTO traMediaPlanTemplateDTO) throws URISyntaxException;
+                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                @ApiParam(value = "traMediaPlanTemplateDTO", required = true) @RequestBody TraMediaPlanTemplateDTO traMediaPlanTemplateDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteTraMediaPlanTemplate", notes = "", response = Void.class, tags = {"TRAFFIC",})
@@ -78,11 +82,12 @@ public interface TraMediaPlanTemplateResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic//mediaplan/template/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic//mediaplan/template/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteTraMediaPlanTemplateUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                   @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
+                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
 }

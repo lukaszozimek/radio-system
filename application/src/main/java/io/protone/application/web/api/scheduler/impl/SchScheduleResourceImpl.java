@@ -51,9 +51,6 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
     private SchScheduleMapper schScheduleMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
-
-    @Inject
     private CorChannelService corChannelService;
 
     @Override
@@ -96,13 +93,11 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
         if (schScheduleDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SchSchedule", "idexists", "A new SchSchedule cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        SchSchedule schSchedule = schScheduleMapper.DTO2DB(schScheduleDTO, corNetwork, corChannel);
+        SchSchedule schSchedule = schScheduleMapper.DTO2DB(schScheduleDTO, corChannel);
         SchSchedule entity = schScheduleService.saveSchedule(schSchedule);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/organization/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
                 .body(response);
     }
 
@@ -137,10 +132,8 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
         if (schScheduleDTO.getId() == null) {
             return creatSchedulerScheduleForChannelUsingPOST(organizationShortcut, channelShortcut, schScheduleDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        SchSchedule schSchedule = schScheduleMapper.DTO2DB(schScheduleDTO, corNetwork, corChannel);
+        SchSchedule schSchedule = schScheduleMapper.DTO2DB(schScheduleDTO, corChannel);
         SchSchedule entity = schScheduleService.saveSchedule(schSchedule);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
@@ -157,7 +150,7 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
         }
         SchSchedule entity = schScheduleServiceWrapper.buildSchedule(date, gridShortName, organizationShortcut, channelShortcut);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/organization/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
                 .body(response);
     }
 
@@ -167,7 +160,7 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
                                                                                           @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) throws URISyntaxException {
         SchSchedule entity = schScheduleServiceWrapper.buildDefaultSchedule(date, organizationShortcut, channelShortcut);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/organization/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
                 .body(response);
     }
 }

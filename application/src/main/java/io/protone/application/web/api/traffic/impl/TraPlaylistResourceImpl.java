@@ -7,7 +7,6 @@ import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorChannelService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.traffic.api.dto.TraPlaylistDTO;
 import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
 import io.protone.traffic.api.dto.thin.TraPlaylistThinDTO;
@@ -64,9 +63,6 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
     private TraPlaylistMapper traPlaylistMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
-
-    @Inject
     private CorChannelService corChannelService;
 
     @Inject
@@ -80,13 +76,12 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         if (traPlaylistDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraPlaylist", "idexists", "A new TraPlaylist cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        TraPlaylist traOrder = traPlaylistMapper.DTO2DB(traPlaylistDTO, corNetwork, corChannel);
+        TraPlaylist traOrder = traPlaylistMapper.DTO2DB(traPlaylistDTO, corChannel);
         TraPlaylist entity = traPlaylistService.savePlaylist(traOrder);
         TraPlaylistDTO response = traPlaylistMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/traffic/playlist/" + response.getPlaylistDate()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/organization/" + channelShortcut + "/traffic/playlist/" + response.getPlaylistDate()))
                 .body(response);
     }
 
@@ -150,11 +145,10 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
                                                                                              @ApiParam(value = "traPlaylistDTO", required = true) @Valid @RequestBody List<TraPlaylistDTO> traPlaylistDTOs) throws URISyntaxException {
         log.debug("REST request to saveCorContact List of TraPlaylist : {}, for Channel {} Network: {}", traPlaylistDTOs, channelShortcut, organizationShortcut);
         List<TraPlaylistDTO> traPlaylistDTOS = new ArrayList<>();
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
 
         traPlaylistDTOs.stream().forEach(traPlaylistDTO -> {
-            TraPlaylist traOrder = traPlaylistMapper.DTO2DB(traPlaylistDTO, corNetwork, corChannel);
+            TraPlaylist traOrder = traPlaylistMapper.DTO2DB(traPlaylistDTO, corChannel);
             TraPlaylist entity = traPlaylistService.savePlaylist(traOrder);
             traPlaylistDTOS.add(traPlaylistMapper.DB2DTO(entity));
 
@@ -224,10 +218,8 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         if (traPlaylistDTO.getId() == null) {
             return creatChannelTrafficPlaylistUsingPOST(organizationShortcut, channelShortcut, traPlaylistDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        TraPlaylist traOrder = traPlaylistMapper.DTO2DB(traPlaylistDTO, corNetwork, corChannel);
+        TraPlaylist traOrder = traPlaylistMapper.DTO2DB(traPlaylistDTO,  corChannel);
         TraPlaylist entity = traPlaylistService.savePlaylist(traOrder);
         TraPlaylistDTO response = traPlaylistMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);

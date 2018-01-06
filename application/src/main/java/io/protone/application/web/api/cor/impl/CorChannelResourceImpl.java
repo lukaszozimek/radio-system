@@ -7,9 +7,11 @@ import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.api.dto.CorChannelDTO;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.mapper.CorChannelMapper;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorOrganizationService;
 import io.swagger.annotations.ApiParam;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
@@ -43,12 +46,12 @@ public class CorChannelResourceImpl implements CorChannelResource {
 
     private CorChannelMapper corChannelMapper;
 
-    private CorNetworkService networkService;
+    private CorOrganizationService corOrganizationService;
 
-    public CorChannelResourceImpl(CorChannelService channelService, CorChannelMapper corChannelMapper, CorNetworkService networkService) {
+    public CorChannelResourceImpl(CorChannelService channelService, CorChannelMapper corChannelMapper, CorOrganizationService corOrganizationService) {
         this.channelService = channelService;
         this.corChannelMapper = corChannelMapper;
-        this.networkService = networkService;
+        this.corOrganizationService = corOrganizationService;
     }
 
     @Override
@@ -58,9 +61,9 @@ public class CorChannelResourceImpl implements CorChannelResource {
         if (channelDTO.getId() == null) {
             return createChannelUsingPOST(organizationShortcut, channelDTO, null);
         }
-        CorNetwork network = networkService.findNetwork(organizationShortcut);
+        CorOrganization organization = corOrganizationService.findOrganization(organizationShortcut);
 
-        CorChannel corChannel = corChannelMapper.DTO2DB(channelDTO, network);
+        CorChannel corChannel = corChannelMapper.DTO2DB(channelDTO, organization);
         corChannel = channelService.save(corChannel);
         CorChannelDTO result = corChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.ok()
@@ -77,9 +80,8 @@ public class CorChannelResourceImpl implements CorChannelResource {
         if (channelDTO.getId() == null) {
             return createChannelUsingPOST(organizationShortcut, channelDTO, logo);
         }
-        CorNetwork network = networkService.findNetwork(organizationShortcut);
-
-        CorChannel corChannel = corChannelMapper.DTO2DB(channelDTO, network);
+        CorOrganization organization = corOrganizationService.findOrganization(organizationShortcut);
+        CorChannel corChannel = corChannelMapper.DTO2DB(channelDTO, organization);
         corChannel = channelService.save(corChannel, logo);
         CorChannelDTO result = corChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.ok()
@@ -96,11 +98,11 @@ public class CorChannelResourceImpl implements CorChannelResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORChannel", "idexists", "A new cORChannel cannot already have an ID")).body(null);
         }
 
-        CorNetwork network = networkService.findNetwork(organizationShortcut);
-        CorChannel corChannel = corChannelMapper.DTO2DB(channelDTO, network);
+        CorOrganization organization = corOrganizationService.findOrganization(organizationShortcut);
+        CorChannel corChannel = corChannelMapper.DTO2DB(channelDTO, organization);
         corChannel = channelService.save(corChannel, logo);
         CorChannelDTO result = corChannelMapper.DB2DTO(corChannel);
-        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel" + result.getShortcut()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/organization" + result.getShortcut()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getShortcut().toString()))
                 .body(result);
     }

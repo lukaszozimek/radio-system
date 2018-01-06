@@ -4,8 +4,9 @@ package io.protone.application.web.api.library.impl;
 import io.protone.application.web.api.library.LibAlbumResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import io.protone.library.api.dto.LibAlbumDTO;
 import io.protone.library.domain.LibAlbum;
 import io.protone.library.mapper.LibAlbumMapper;
@@ -44,18 +45,19 @@ public class LibAlbumResourceImpl implements LibAlbumResource {
     private LibAlbumMapper libAlbumMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Override
     public ResponseEntity<LibAlbumDTO> updateAlbumWithOutCoverUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                        @ApiParam(value = "libAlbumDTO", required = true) @Valid @RequestBody LibAlbumDTO libAlbumDTO) throws URISyntaxException, TikaException, IOException, SAXException {
 
         log.debug("REST request to update album: {}", libAlbumDTO);
         if (libAlbumDTO.getId() == null) {
-            return createAlbumUsingPOST(organizationShortcut, libAlbumDTO, null);
+            return createAlbumUsingPOST(organizationShortcut, channelShortcut, libAlbumDTO, null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        LibAlbum entity = libAlbumMapper.DTO2DB(libAlbumDTO, corNetwork);
+        CorChannel channel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        LibAlbum entity = libAlbumMapper.DTO2DB(libAlbumDTO, channel);
         LibAlbum resultDB = libAlbumService.saveOrUpdate(entity);
         LibAlbumDTO albumDAO = libAlbumMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
@@ -64,6 +66,7 @@ public class LibAlbumResourceImpl implements LibAlbumResource {
 
     @Override
     public ResponseEntity<LibAlbumDTO> updateAlbumWithCoverUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                      @ApiParam(value = "id", required = true) @PathVariable("id") Long id,
                                                                      @ApiParam(value = "libAlbumDTO", required = true) @Valid @RequestPart("libAlbumDTO") LibAlbumDTO libAlbumDTO,
                                                                      @ApiParam(value = "cover") @RequestPart("cover") MultipartFile cover
@@ -72,10 +75,10 @@ public class LibAlbumResourceImpl implements LibAlbumResource {
         log.debug("REST request to update album: {}", libAlbumDTO);
 
         if (libAlbumDTO.getId() == null) {
-            return createAlbumUsingPOST(organizationShortcut, libAlbumDTO, cover);
+            return createAlbumUsingPOST(organizationShortcut, channelShortcut, libAlbumDTO, cover);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        LibAlbum entity = libAlbumMapper.DTO2DB(libAlbumDTO, corNetwork);
+        CorChannel channel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        LibAlbum entity = libAlbumMapper.DTO2DB(libAlbumDTO, channel);
         LibAlbum resultDB = libAlbumService.save(entity, cover, null);
         LibAlbumDTO albumDAO = libAlbumMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
@@ -85,10 +88,11 @@ public class LibAlbumResourceImpl implements LibAlbumResource {
 
     @Override
     public ResponseEntity<List<LibAlbumDTO>> getAllAlbumsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable) {
 
         log.debug("REST request to get all LibAlbumDTO");
-        Slice<LibAlbum> libraries = libAlbumService.findAlbums(organizationShortcut, pagable);
+        Slice<LibAlbum> libraries = libAlbumService.findAlbums(organizationShortcut, channelShortcut, pagable);
         return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(libraries))
                 .body(libAlbumMapper.DBs2DTOs(libraries.getContent()));
     }
@@ -96,6 +100,7 @@ public class LibAlbumResourceImpl implements LibAlbumResource {
 
     @Override
     public ResponseEntity<LibAlbumDTO> createAlbumUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                             @ApiParam(value = "libAlbumDTO", required = true) @Valid @RequestPart("libAlbumDTO") LibAlbumDTO libAlbumDTO,
                                                             @ApiParam(value = "cover") @RequestPart("cover") MultipartFile cover
     ) throws URISyntaxException, TikaException, IOException, SAXException {
@@ -104,8 +109,8 @@ public class LibAlbumResourceImpl implements LibAlbumResource {
         if (libAlbumDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("Album", "idexists", "A new Album cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        LibAlbum entity = libAlbumMapper.DTO2DB(libAlbumDTO, corNetwork);
+        CorChannel channel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        LibAlbum entity = libAlbumMapper.DTO2DB(libAlbumDTO, channel);
         LibAlbum resultDB = libAlbumService.save(entity, cover, null);
         LibAlbumDTO albumDAO = libAlbumMapper.DB2DTO(resultDB);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/library/album/" + albumDAO.getId()))
@@ -115,19 +120,21 @@ public class LibAlbumResourceImpl implements LibAlbumResource {
 
     @Override
     public ResponseEntity<Void> deleteAlbumUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
 
         log.debug("REST request to delete Album : {}", id);
-        libAlbumService.deleteAlbum(id, organizationShortcut);
+        libAlbumService.deleteAlbum(id, organizationShortcut, channelShortcut);
         return ResponseEntity.ok().build();
     }
 
 
     @Override
     public ResponseEntity<LibAlbumDTO> getAlbumUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get album: {}", id);
-        LibAlbum album = libAlbumService.findAlbum(organizationShortcut, id);
+        LibAlbum album = libAlbumService.findAlbum(organizationShortcut, channelShortcut, id);
         LibAlbumDTO dto = libAlbumMapper.DB2DTO(album);
         return Optional.ofNullable(dto)
                 .map(result -> new ResponseEntity<>(

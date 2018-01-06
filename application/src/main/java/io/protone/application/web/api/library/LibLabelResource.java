@@ -25,11 +25,12 @@ public interface LibLabelResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibLabelDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibLabelDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibLabelDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/label",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
     ResponseEntity<LibLabelDTO> updateLabelUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                     @ApiParam(value = "libraryDTO", required = true) @Valid @RequestBody LibLabelDTO libraryDTO) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException;
 
 
@@ -39,10 +40,11 @@ public interface LibLabelResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibLabelDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibLabelDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibLabelDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/label",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<LibLabelDTO>> getAllLabelsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                            @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -53,10 +55,11 @@ public interface LibLabelResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibLabelDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibLabelDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibLabelDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/label",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<LibLabelDTO> createLabelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                      @ApiParam(value = "libraryDTO", required = true) @Valid @RequestPart("libraryDTO") LibLabelDTO libraryDTO
     ) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException;
 
@@ -67,10 +70,11 @@ public interface LibLabelResource {
             @ApiResponse(code = 204, message = "No Content", response = Void.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/label/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteLabelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                 @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -80,10 +84,11 @@ public interface LibLabelResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibLabelDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibLabelDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibLabelDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/label/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<LibLabelDTO> getLabelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 

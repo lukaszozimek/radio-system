@@ -23,11 +23,12 @@ public interface CrmOpportunityConverterResource {
             @ApiResponse(code = 204, message = "No Content", response = CrmOpportunityDTO.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmOpportunityDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmOpportunityDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/convert/opportunity",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}/convert/opportunity",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<CrmOpportunityDTO> convertContactToOpportunityPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                                   @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) throws URISyntaxException;
+                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                      @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) throws URISyntaxException;
 
     @ApiOperation(value = "convertLeadToOpportunity", notes = "", response = Void.class, tags = {"CRM"})
     @ApiResponses(value = {
@@ -35,10 +36,11 @@ public interface CrmOpportunityConverterResource {
             @ApiResponse(code = 204, message = "No Content", response = CrmOpportunityDTO.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmOpportunityDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmOpportunityDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}/convert/opportunity",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/lead/{shortName}/convert/opportunity",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<CrmOpportunityDTO> convertLeadToOpportunity(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) throws URISyntaxException;
 
     @ApiOperation(value = "convertCustomerToOpportunity", notes = "", response = CrmOpportunityThinDTO.class, tags = {"CRM"})
@@ -48,10 +50,11 @@ public interface CrmOpportunityConverterResource {
             @ApiResponse(code = 204, message = "No Content", response = CrmOpportunityDTO.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmOpportunityDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmOpportunityDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/convert/opportunity",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/convert/opportunity",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<CrmOpportunityDTO> convertCustomerToOpportunityPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                        @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) throws URISyntaxException;
 
 

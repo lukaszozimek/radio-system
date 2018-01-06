@@ -45,9 +45,6 @@ public class SchGridConfigurationResourceImpl implements SchGridConfigurationRes
     private SchGridMapper schGridMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
-
-    @Inject
     private CorChannelService corChannelService;
 
 
@@ -122,12 +119,10 @@ public class SchGridConfigurationResourceImpl implements SchGridConfigurationRes
         if (schGridDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SchGrid", "idexists", "A new SchGrid cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        SchGrid traOrder = schGridMapper.DTO2DB(schGridDTO, corNetwork, corChannel);
+        SchGrid traOrder = schGridMapper.DTO2DB(schGridDTO,  corChannel);
         SchGridDTO response = schGridService.saveGrid(traOrder);
-        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/grid/" + response.getShortName()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/organization/" + channelShortcut + "/scheduler/grid/" + response.getShortName()))
                 .body(response);
     }
 
@@ -148,10 +143,8 @@ public class SchGridConfigurationResourceImpl implements SchGridConfigurationRes
         if (schGridDTO.getId() == null) {
             return creatSchedulerPlaylistForChannelUsingPOST(organizationShortcut, channelShortcut, schGridDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        SchGrid traOrder = schGridMapper.DTO2DB(schGridDTO, corNetwork, corChannel);
+        SchGrid traOrder = schGridMapper.DTO2DB(schGridDTO,  corChannel);
         SchGridDTO response = schGridService.saveGrid(traOrder);
         return ResponseEntity.ok().body(response);
     }

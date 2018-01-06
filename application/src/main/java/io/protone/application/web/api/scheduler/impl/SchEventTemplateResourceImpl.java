@@ -43,8 +43,6 @@ public class SchEventTemplateResourceImpl implements SchEventTemplateResource {
 
     @Inject
     private SchEventTemplateMapper schEventTemplateMapper;
-    @Inject
-    private CorNetworkService corNetworkService;
 
     @Inject
     private CorChannelService corChannelService;
@@ -92,13 +90,12 @@ public class SchEventTemplateResourceImpl implements SchEventTemplateResource {
         if (schEventDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SchEventTemplate", "idexists", "A new SchEventTemplate cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        SchEventTemplate traOrder = schEventTemplateMapper.DTO2DB(schEventDTO, corNetwork, corChannel);
+        SchEventTemplate traOrder = schEventTemplateMapper.DTO2DB(schEventDTO, corChannel);
         SchEventTemplate entity = schEventTemplateService.saveEventConfiguration(traOrder);
         SchEventTemplateDTO response = schEventTemplateMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/event/" + response.getShortName()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/organization/" + channelShortcut + "/scheduler/event/" + response.getShortName()))
                 .body(response);
     }
 
@@ -133,10 +130,9 @@ public class SchEventTemplateResourceImpl implements SchEventTemplateResource {
         if (schEventDTO.getId() == null) {
             return creatSchedulerTemplatesForChannelUsingPOST(organizationShortcut, channelShortcut, schEventDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        SchEventTemplate schEventConfiguration = schEventTemplateMapper.DTO2DB(schEventDTO, corNetwork, corChannel);
+        SchEventTemplate schEventConfiguration = schEventTemplateMapper.DTO2DB(schEventDTO, corChannel);
         SchEventTemplate entity = schEventTemplateService.saveEventConfiguration(schEventConfiguration);
         SchEventTemplateDTO response = schEventTemplateMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);

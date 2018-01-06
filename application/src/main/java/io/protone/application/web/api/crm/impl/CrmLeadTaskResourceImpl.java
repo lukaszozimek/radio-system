@@ -4,8 +4,9 @@ package io.protone.application.web.api.crm.impl;
 import io.protone.application.web.api.crm.CrmLeadTaskResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import io.protone.crm.api.dto.CrmTaskDTO;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.mapper.CrmTaskMapper;
@@ -36,7 +37,7 @@ public class CrmLeadTaskResourceImpl implements CrmLeadTaskResource {
     private CrmLeadService crmLeadService;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Inject
     private CrmTaskMapper crmTaskMapper;
@@ -44,10 +45,11 @@ public class CrmLeadTaskResourceImpl implements CrmLeadTaskResource {
 
     @Override
     public ResponseEntity<List<CrmTaskDTO>> getAllLeadActivitiesUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all  CrmLead CrmTask, for CrmLead: {} and Network: {}");
-        Slice<CrmTask> crmTasks = crmLeadService.getTasksAssociatedWithLead(shortName, organizationShortcut, pagable);
+        Slice<CrmTask> crmTasks = crmLeadService.getTasksAssociatedWithLead(shortName, organizationShortcut, channelShortcut, pagable);
         List<CrmTaskDTO> response = crmTaskMapper.DBs2DTOs(crmTasks.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -59,43 +61,47 @@ public class CrmLeadTaskResourceImpl implements CrmLeadTaskResource {
     }
 
     @Override
-    public ResponseEntity<CrmTaskDTO> updateLeadActivityUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
+    public ResponseEntity<CrmTaskDTO> updateLeadActivityUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                 @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
         log.debug("REST request to update CrmLead CrmTask : {}, for CrmLead: {} and Network: {}", crmTaskDTO, shortName, organizationShortcut);
         if (crmTaskDTO.getId() == null) {
-            return createLeadActivityUsingPOST(organizationShortcut, shortName, crmTaskDTO);
+            return createLeadActivityUsingPOST(organizationShortcut, channelShortcut, shortName, crmTaskDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CrmTask requestEnitity = crmTaskMapper.DTO2DB(crmTaskDTO, corNetwork);
-        CrmTask entity = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(requestEnitity, shortName, organizationShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CrmTask requestEnitity = crmTaskMapper.DTO2DB(crmTaskDTO, corChannel);
+        CrmTask entity = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(requestEnitity, shortName, organizationShortcut, channelShortcut);
         CrmTaskDTO response = crmTaskMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
     }
 
     @Override
-    public ResponseEntity<CrmTaskDTO> createLeadActivityUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
+    public ResponseEntity<CrmTaskDTO> createLeadActivityUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                  @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
         log.debug("REST request to saveCorContact CrmLead CrmTask : {}, for CrmLead: {} and Network: {}", crmTaskDTO, shortName, organizationShortcut);
         if (crmTaskDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmTask", "idexists", "A new CrmTask cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CrmTask requestEnitity = crmTaskMapper.DTO2DB(crmTaskDTO, corNetwork);
-        CrmTask entity = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(requestEnitity, shortName, organizationShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CrmTask requestEnitity = crmTaskMapper.DTO2DB(crmTaskDTO, corChannel);
+        CrmTask entity = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(requestEnitity, shortName, organizationShortcut, channelShortcut);
         CrmTaskDTO response = crmTaskMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/crm/lead/" + shortName + "/task/" + response.getId()))
                 .body(response);
     }
 
     @Override
-    public ResponseEntity<Void> deleteLeadActivityUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteLeadActivityUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete CrmLead CrmTask : {}, for CrmLead: {} and Network: {}", organizationShortcut, shortName, organizationShortcut);
-        crmLeadService.deleteLeadTask(shortName, id, organizationShortcut);
+        crmLeadService.deleteLeadTask(shortName, id, organizationShortcut, channelShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmTask", id.toString())).build();
     }
 
     @Override
-    public ResponseEntity<CrmTaskDTO> getLeadActivityUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    public ResponseEntity<CrmTaskDTO> getLeadActivityUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get CrmLead CrmTask : {}, for CrmLead: {} and Network: {}", organizationShortcut, shortName, organizationShortcut);
-        CrmTask entity = crmLeadService.getTaskAssociatedWithLead(id, organizationShortcut);
+        CrmTask entity = crmLeadService.getTaskAssociatedWithLead(id, organizationShortcut, channelShortcut);
         CrmTaskDTO response = crmTaskMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(

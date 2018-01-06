@@ -71,16 +71,10 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
     private TraMediaPlanMapper traMediaPlanMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
-
-    @Inject
     private CorChannelService corChannelService;
 
     @Inject
     private TraMediaPlanDescriptorMapper traMediaPlanDescriptorMapper;
-
-    @Inject
-    private ObjectMapper objectMapper;
 
     @Override
     public ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
@@ -92,9 +86,8 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
         if (traMediaPlanDescriptor == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraMediaPlanDTO", "wrongSchema", "Can't add Element if TraMediaPlanDescriptorDTO doesn't exist")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        TraMediaPlan entity = traMediaPlanService.saveMediaPlan(file, traMediaPlanDescriptor, corNetwork, corChannel);
+        TraMediaPlan entity = traMediaPlanService.saveMediaPlan(file, traMediaPlanDescriptor, corChannel);
         TraMediaPlanDTO response = traMediaPlanMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -152,23 +145,11 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
         if (traMediaPlanDTO.getId() == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraMediaPlan", "missingID", "Can't edit Element if File doesn't exist")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        TraMediaPlan requestEntity = traMediaPlanMapper.DTO2DB(traMediaPlanDTO, corNetwork, corChannel);
+        TraMediaPlan requestEntity = traMediaPlanMapper.DTO2DB(traMediaPlanDTO, corChannel);
         TraMediaPlan entity = traMediaPlanService.updateMediaPlan(requestEntity);
         TraMediaPlanDTO response = traMediaPlanMapper.DB2DTO(entity);
         return ResponseEntity.ok()
                 .body(response);
-    }
-
-    private TraMediaPlanDescriptorDTO validate(TraMediaPlanDescriptorDTO traMediaPlanDescriptorDTO) throws IOException {
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        Set<ConstraintViolation<TraMediaPlanDescriptorDTO>> constraintViolations = validator.validate(traMediaPlanDescriptorDTO);
-        if (constraintViolations.isEmpty()) {
-            return traMediaPlanDescriptorDTO;
-        } else {
-            throw new ValidationException();
-        }
-
     }
 }

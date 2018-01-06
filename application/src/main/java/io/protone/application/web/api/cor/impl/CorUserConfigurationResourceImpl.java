@@ -10,11 +10,13 @@ import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.api.dto.CorUserDTO;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.CorUser;
 import io.protone.core.mapper.CorUserMapper;
 import io.protone.core.repository.CorUserRepository;
 import io.protone.core.service.CorMailService;
 import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorOrganizationService;
 import io.protone.core.service.CorUserService;
 import io.swagger.annotations.ApiParam;
 import org.apache.tika.exception.TikaException;
@@ -72,17 +74,14 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
     private final CorUserService userService;
 
-    private final CorNetworkService corNetworkService;
-
     private final CorUserMapper corUserMapper;
 
     public CorUserConfigurationResourceImpl(CorUserRepository userRepository, CorMailService mailService,
-                                            CorUserService userService, CorNetworkService corNetworkService, CorUserMapper corUserMapper) {
+                                            CorUserService userService, CorUserMapper corUserMapper) {
 
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.userService = userService;
-        this.corNetworkService = corNetworkService;
         this.corUserMapper = corUserMapper;
     }
 
@@ -183,8 +182,7 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
     @Override
     public ResponseEntity<List<CorUserDTO>> getAllUsersUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        CorNetwork network = corNetworkService.findNetwork(organizationShortcut);
-        Slice<CorUser> corUserList = userService.getAllManagedUsers(network, pagable);
+        Slice<CorUser> corUserList = userService.getAllManagedUsers(organizationShortcut, pagable);
         List<CorUserDTO> corUserDTOList = corUserMapper.DBs2DTOs(corUserList.getContent());
         return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(corUserList)).body(corUserDTOList);
     }
@@ -199,9 +197,8 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
     public ResponseEntity<CorUserDTO> getUserUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                       @ApiParam(value = "login", required = true) @PathVariable("login") String login) {
         log.debug("REST request to get User : {}", login);
-        CorNetwork network = corNetworkService.findNetwork(organizationShortcut);
         return ResponseUtil.wrapOrNotFound(
-                userService.getUserWithAuthoritiesByLoginAndNetwork(login, network)
+                userService.getUserWithAuthoritiesByLoginAndNetwork(login, organizationShortcut)
                         .map(CorUserDTO::new));
     }
 

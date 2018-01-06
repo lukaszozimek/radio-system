@@ -22,10 +22,11 @@ public interface CorTaxResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorTaxDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorTaxDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorTaxDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic/dictionary/tax",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CorTaxDTO>> getAllTaxesUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                         @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -35,10 +36,11 @@ public interface CorTaxResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorTaxDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorTaxDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorTaxDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic/dictionary/tax/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CorTaxDTO> getTaxUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                              @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -49,11 +51,12 @@ public interface CorTaxResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorTaxDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorTaxDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorTaxDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic/dictionary/tax",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CorTaxDTO> updateTaxUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                 @ApiParam(value = "taxDTO", required = true) @RequestBody CorTaxDTO taxDTO) throws URISyntaxException;
 
 
@@ -64,24 +67,26 @@ public interface CorTaxResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorTaxDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorTaxDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorTaxDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic/dictionary/tax",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CorTaxDTO> createTaxUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                  @ApiParam(value = "taxDTO", required = true) @RequestBody CorTaxDTO taxDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "deleteTax", notes = "", response = Void.class, tags = {"CORE"})
+    @ApiOperation(value = "deleteTax", notes = "", tags = {"CORE"})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = Void.class),
-        @ApiResponse(code = 204, message = "No Content", response = Void.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/dictionary/tax/{id}",
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 204, message = "No Content"),
+        @ApiResponse(code = 401, message = "Unauthorized"),
+        @ApiResponse(code = 403, message = "Forbidden")})
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic/dictionary/tax/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteTaxUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 

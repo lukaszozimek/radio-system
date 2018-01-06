@@ -24,10 +24,11 @@ public interface LaPQLResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
             @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/language/pql/filter",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/language/pql/filter",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.GET)
     List queryElements(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                       @ApiParam(value = "corFilterDTO", required = true) @RequestBody @Valid CorFilterThinDTO corFilterDTO) throws IOException;
+                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                       @ApiParam(value = "corFilterDTO", required = true) @RequestBody @Valid CorFilterThinDTO corFilterDTO) throws IOException;
 }

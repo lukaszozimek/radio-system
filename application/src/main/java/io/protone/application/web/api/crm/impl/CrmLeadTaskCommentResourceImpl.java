@@ -4,8 +4,9 @@ package io.protone.application.web.api.crm.impl;
 import io.protone.application.web.api.crm.CrmLeadTaskCommentResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import io.protone.crm.api.dto.CrmTaskCommentDTO;
 import io.protone.crm.domain.CrmTaskComment;
 import io.protone.crm.mapper.CrmTaskCommentMapper;
@@ -36,18 +37,19 @@ public class CrmLeadTaskCommentResourceImpl implements CrmLeadTaskCommentResourc
     private CrmLeadService crmLeadService;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Inject
     private CrmTaskCommentMapper crmTaskCommentMapper;
 
     @Override
     public ResponseEntity<List<CrmTaskCommentDTO>> getLeadTaskCommentsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                                @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                                @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all  CrmLead CrmTaskComment, for CrmLead: {} and Network: {}");
-        Slice<CrmTaskComment> crmTasks = crmLeadService.getTaskCommentsAssociatedWithTask(taskId, organizationShortcut, pagable);
+        Slice<CrmTaskComment> crmTasks = crmLeadService.getTaskCommentsAssociatedWithTask(taskId, organizationShortcut, channelShortcut, pagable);
         List<CrmTaskCommentDTO> response = crmTaskCommentMapper.DBs2DTOs(crmTasks.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -60,6 +62,7 @@ public class CrmLeadTaskCommentResourceImpl implements CrmLeadTaskCommentResourc
 
     @Override
     public ResponseEntity<CrmTaskCommentDTO> createLeadActivtyCommentUsigPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                               @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                               @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                               @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException {
@@ -67,9 +70,9 @@ public class CrmLeadTaskCommentResourceImpl implements CrmLeadTaskCommentResourc
         if (taskCommentDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmTask", "idexists", "A new CrmTask cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CrmTaskComment requestEnitity = crmTaskCommentMapper.DTO2DB(taskCommentDTO, corNetwork);
-        CrmTaskComment entity = crmLeadService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, organizationShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CrmTaskComment requestEnitity = crmTaskCommentMapper.DTO2DB(taskCommentDTO, corChannel);
+        CrmTaskComment entity = crmLeadService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, organizationShortcut, channelShortcut);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/ap«i/v1/organization/" + organizationShortcut + "/crm/lead/" + shortName + "/task/" + taskId + "/" + "comment/" + response.getId()))
                 .body(response);
@@ -77,27 +80,29 @@ public class CrmLeadTaskCommentResourceImpl implements CrmLeadTaskCommentResourc
 
     @Override
     public ResponseEntity<CrmTaskCommentDTO> editLeadActivtyCommentUsigPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                            @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                            @ApiParam(value = "taskCommentDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException {
         log.debug("REST request to update CrmLead CrmTaskComment : {}, for CrmLead: {} and Network: {}", taskCommentDTO, shortName, organizationShortcut);
         if (taskCommentDTO.getId() == null) {
-            return createLeadActivtyCommentUsigPOST(organizationShortcut, shortName, taskId, taskCommentDTO);
+            return createLeadActivtyCommentUsigPOST(organizationShortcut, channelShortcut, shortName, taskId, taskCommentDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CrmTaskComment requestEnitity = crmTaskCommentMapper.DTO2DB(taskCommentDTO, corNetwork);
-        CrmTaskComment entity = crmLeadService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, organizationShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CrmTaskComment requestEnitity = crmTaskCommentMapper.DTO2DB(taskCommentDTO, corChannel);
+        CrmTaskComment entity = crmLeadService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, organizationShortcut, channelShortcut);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
     }
 
     @Override
     public ResponseEntity<CrmTaskCommentDTO> getLeadTaskCommentUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                         @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get CrmLead CrmTaskComment : {}, for CrmLead: {} and Network: {}", organizationShortcut, shortName, organizationShortcut);
-        CrmTaskComment entity = crmLeadService.getTaskCommentAssociatedWithTask(organizationShortcut, taskId, id);
+        CrmTaskComment entity = crmLeadService.getTaskCommentAssociatedWithTask(organizationShortcut, channelShortcut, taskId, id);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -108,11 +113,12 @@ public class CrmLeadTaskCommentResourceImpl implements CrmLeadTaskCommentResourc
 
     @Override
     public ResponseEntity<Void> deleteLeadTaskCommentUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                  @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                  @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete CrmLead CrmTaskComment : {}, for CrmLead: {} and Network: {}", organizationShortcut, shortName, organizationShortcut);
-        crmLeadService.deleteLeadTaskComment(taskId, id, organizationShortcut);
+        crmLeadService.deleteLeadTaskComment(taskId, id, organizationShortcut, channelShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmTaskComment", id.toString())).build();
 
     }

@@ -4,8 +4,9 @@ package io.protone.application.web.api.traffic.impl;
 import io.protone.application.web.api.traffic.TraCampaignResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import io.protone.traffic.api.dto.TraCampaignDTO;
 import io.protone.traffic.domain.TraCampaign;
 import io.protone.traffic.mapper.TraCampaignMapper;
@@ -37,16 +38,17 @@ public class TraCampaignResourceImpl implements TraCampaignResource {
     private TraCampaignService traCampaignService;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Inject
     private TraCampaignMapper traCampaignMapper;
 
     @Override
     public ResponseEntity<List<TraCampaignDTO>> getAllCampaignsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraCampaign, for Network: {}", organizationShortcut);
-        Slice<TraCampaign> entity = traCampaignService.getAllCampaign(organizationShortcut, pagable);
+        Slice<TraCampaign> entity = traCampaignService.getAllCampaign(organizationShortcut, channelShortcut, pagable);
         List<TraCampaignDTO> response = traCampaignMapper.DBs2DTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -58,14 +60,14 @@ public class TraCampaignResourceImpl implements TraCampaignResource {
     }
 
     @Override
-    public ResponseEntity<TraCampaignDTO> updateCampaignUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "traCampaignDTO", required = true) @Valid @RequestBody TraCampaignDTO traCampaignDTO) throws URISyntaxException {
+    public ResponseEntity<TraCampaignDTO> updateCampaignUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                 @ApiParam(value = "traCampaignDTO", required = true) @Valid @RequestBody TraCampaignDTO traCampaignDTO) throws URISyntaxException {
         log.debug("REST request to update TraCampaign : {}, for Network: {}", traCampaignDTO, organizationShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         if (traCampaignDTO.getId() == null) {
-            return createCampaignUsingPOST(organizationShortcut, traCampaignDTO);
+            return createCampaignUsingPOST(organizationShortcut, channelShortcut, traCampaignDTO);
         }
-
-        TraCampaign crmAccount = traCampaignMapper.DTO2DB(traCampaignDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        TraCampaign crmAccount = traCampaignMapper.DTO2DB(traCampaignDTO, corChannel);
         TraCampaign entity = traCampaignService.saveCampaign(crmAccount);
         TraCampaignDTO response = traCampaignMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
@@ -76,13 +78,14 @@ public class TraCampaignResourceImpl implements TraCampaignResource {
     }
 
     @Override
-    public ResponseEntity<TraCampaignDTO> createCampaignUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "traCampaignDTO", required = true) @Valid @RequestBody TraCampaignDTO traCampaignDTO) throws URISyntaxException {
+    public ResponseEntity<TraCampaignDTO> createCampaignUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                  @ApiParam(value = "traCampaignDTO", required = true) @Valid @RequestBody TraCampaignDTO traCampaignDTO) throws URISyntaxException {
         log.debug("REST request to saveCorContact TraCampaign : {}, for Network: {}", traCampaignDTO, organizationShortcut);
         if (traCampaignDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraCampaign", "idexists", "A new TraCampaign cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        TraCampaign crmAccount = traCampaignMapper.DTO2DB(traCampaignDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        TraCampaign crmAccount = traCampaignMapper.DTO2DB(traCampaignDTO, corChannel);
         TraCampaign entity = traCampaignService.saveCampaign(crmAccount);
         TraCampaignDTO response = traCampaignMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/traffic/campaign/" + response.getName()))
@@ -91,16 +94,18 @@ public class TraCampaignResourceImpl implements TraCampaignResource {
     }
 
     @Override
-    public ResponseEntity<Void> deleteCampaignUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<Void> deleteCampaignUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete TraCampaign : {}, for Network: {}", shortName, organizationShortcut);
-        traCampaignService.deleteCampaign(shortName, organizationShortcut);
+        traCampaignService.deleteCampaign(shortName, organizationShortcut, channelShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traOrder", shortName.toString())).build();
     }
 
     @Override
-    public ResponseEntity<TraCampaignDTO> getCampaignUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<TraCampaignDTO> getCampaignUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get TraCampaign : {}, for Network: {}", shortName, organizationShortcut);
-        TraCampaign entity = traCampaignService.getCampaign(shortName, organizationShortcut);
+        TraCampaign entity = traCampaignService.getCampaign(shortName, organizationShortcut, channelShortcut);
         TraCampaignDTO response = traCampaignMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -111,10 +116,11 @@ public class TraCampaignResourceImpl implements TraCampaignResource {
 
     @Override
     public ResponseEntity<List<TraCampaignDTO>> getAllCustomerCampaignsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                 @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
                                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraCampaign, for TraCustomer: {} and Network: {}", customerShortcut, organizationShortcut);
-        Slice<TraCampaign> entity = traCampaignService.getCustomerCampaing(customerShortcut, organizationShortcut, pagable);
+        Slice<TraCampaign> entity = traCampaignService.getCustomerCampaing(customerShortcut, organizationShortcut, channelShortcut, pagable);
         List<TraCampaignDTO> response = traCampaignMapper.DBs2DTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(

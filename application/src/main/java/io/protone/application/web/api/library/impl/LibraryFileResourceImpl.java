@@ -4,9 +4,10 @@ package io.protone.application.web.api.library.impl;
 import io.protone.application.web.api.library.LibraryFileResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.s3.exceptions.CreateBucketException;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import io.protone.library.api.dto.LibFileLibraryDTO;
 import io.protone.library.domain.LibFileLibrary;
 import io.protone.library.mapper.LibFileLibraryMapper;
@@ -44,75 +45,8 @@ public class LibraryFileResourceImpl implements LibraryFileResource {
     private LibFileLibraryService libFileLibraryService;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
-
-    @Override
-    public ResponseEntity<LibFileLibraryDTO> updateLibraryUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                                   @ApiParam(value = "libraryDTO", required = true)
-                                                                   @Valid @RequestBody LibFileLibraryDTO libraryDTO) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException {
-
-        log.debug("REST request to update library: {}", libraryDTO);
-        if (libraryDTO.getId() == null) {
-            return createLibraryUsingPOST(organizationShortcut, libraryDTO);
-        }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        LibFileLibrary entity = libFileLibraryMapper.DTO2DB(libraryDTO, corNetwork);
-        LibFileLibrary resultDB = libFileLibraryService.createOrUpdateLibrary(entity);
-        LibFileLibraryDTO libraryDAO = libFileLibraryMapper.DB2DTO(resultDB);
-        return ResponseEntity.ok()
-                .body(libraryDAO);
-    }
-
-
-    @Override
-    public ResponseEntity<List<LibFileLibraryDTO>> getAllLibrariesUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                                           @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get all LibMediaLibraryDTO");
-        Slice<LibFileLibrary> libraries = libFileLibraryService.findLibraries(organizationShortcut, pagable);
-        return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(libraries))
-                .body(libFileLibraryMapper.DBs2DTOs(libraries.getContent()));
-    }
-
-    @Override
-    public ResponseEntity<LibFileLibraryDTO> createLibraryUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                                    @ApiParam(value = "libraryDTO", required = true) @Valid @RequestBody LibFileLibraryDTO libraryDTO
-    ) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException {
-
-        log.debug("REST request to create library: {}", libraryDTO);
-        if (libraryDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("libLibrary", "idexists", "A new libLibrary cannot already have an ID")).body(null);
-        }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        LibFileLibrary entity = libFileLibraryMapper.DTO2DB(libraryDTO, corNetwork);
-        LibFileLibrary resultDB = libFileLibraryService.createOrUpdateLibrary(entity);
-        LibFileLibraryDTO libraryDAO = libFileLibraryMapper.DB2DTO(resultDB);
-        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/library/file/" + libraryDAO.getShortcut()))
-                .body(libraryDAO);
-    }
-
-
-    @Override
-    public ResponseEntity<Void> deleteLibraryUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                         @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix) {
-        log.debug("REST request to delete LIBLibrary : {}", libraryPrefix);
-        libFileLibraryService.deleteLibrary(libraryPrefix, organizationShortcut);
-        return ResponseEntity.ok().build();
-    }
-
-    @Override
-    public ResponseEntity<LibFileLibraryDTO> getLibraryUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                                @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix) {
-
-        log.debug("REST request to get library: {}", libraryPrefix);
-        LibFileLibrary library = libFileLibraryService.findLibrary(organizationShortcut, libraryPrefix);
-        LibFileLibraryDTO dto = libFileLibraryMapper.DB2DTO(library);
-        return Optional.ofNullable(dto)
-                .map(result -> new ResponseEntity<>(
-                        result,
-                        HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
 
     @Override
     public ResponseEntity<List<LibFileLibraryDTO>> getAllLibrariesForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
@@ -134,8 +68,8 @@ public class LibraryFileResourceImpl implements LibraryFileResource {
         if (libraryDTO.getId() == null) {
             return createLibraryForChannelUsingPOST(organizationShortcut, channelShortcut, libraryDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        LibFileLibrary entity = libFileLibraryMapper.DTO2DB(libraryDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        LibFileLibrary entity = libFileLibraryMapper.DTO2DB(libraryDTO, corChannel);
         LibFileLibrary resultDB = libFileLibraryService.createOrUpdateLibrary(entity);
         LibFileLibraryDTO libraryDAO = libFileLibraryMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
@@ -150,11 +84,11 @@ public class LibraryFileResourceImpl implements LibraryFileResource {
         if (libraryDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("libLibrary", "idexists", "A new libLibrary cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        LibFileLibrary entity = libFileLibraryMapper.DTO2DB(libraryDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        LibFileLibrary entity = libFileLibraryMapper.DTO2DB(libraryDTO, corChannel);
         LibFileLibrary resultDB = libFileLibraryService.createOrUpdateLibrary(entity);
         LibFileLibraryDTO libraryDAO = libFileLibraryMapper.DB2DTO(resultDB);
-        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/library/" + libraryDAO.getShortcut()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/organization/" + channelShortcut + "/library/" + libraryDAO.getShortcut()))
                 .body(libraryDAO);
     }
 

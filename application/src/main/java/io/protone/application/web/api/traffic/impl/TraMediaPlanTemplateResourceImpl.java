@@ -4,8 +4,9 @@ package io.protone.application.web.api.traffic.impl;
 import io.protone.application.web.api.traffic.TraMediaPlanTemplateResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import io.protone.traffic.api.dto.TraMediaPlanTemplateDTO;
 import io.protone.traffic.domain.TraMediaPlanTemplate;
 import io.protone.traffic.mapper.TraMediaPlanTemplateMapper;
@@ -37,7 +38,7 @@ public class TraMediaPlanTemplateResourceImpl implements TraMediaPlanTemplateRes
     private TraMediaPlanTemplateMapper traMediaPlanTemplateMapper;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Autowired
     private TraMediaPlanTemplateService traMediaPlanTemplateService;
@@ -45,10 +46,11 @@ public class TraMediaPlanTemplateResourceImpl implements TraMediaPlanTemplateRes
 
     @Override
     public ResponseEntity<List<TraMediaPlanTemplateDTO>> getAllTraMediaPlanTemplateUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                             @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraMediaPlanTemplate");
 
-        Slice<TraMediaPlanTemplate> traMediaPlan = traMediaPlanTemplateService.findAllMediaPlanTemplates(organizationShortcut, pagable);
+        Slice<TraMediaPlanTemplate> traMediaPlan = traMediaPlanTemplateService.findAllMediaPlanTemplates(organizationShortcut, channelShortcut, pagable);
         List<TraMediaPlanTemplateDTO> traMediaPlanPT = traMediaPlanTemplateMapper.DBs2DTOs(traMediaPlan.getContent());
         return Optional.ofNullable(traMediaPlanPT)
                 .map(result -> new ResponseEntity<>(
@@ -61,10 +63,11 @@ public class TraMediaPlanTemplateResourceImpl implements TraMediaPlanTemplateRes
 
     @Override
     public ResponseEntity<TraMediaPlanTemplateDTO> getTraMediaPlanTemplateUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get TraMediaPlanTemplate : {}", organizationShortcut);
 
-        TraMediaPlanTemplate traMediaPlan = traMediaPlanTemplateService.findMediaPlanTemplate(id, organizationShortcut);
+        TraMediaPlanTemplate traMediaPlan = traMediaPlanTemplateService.findMediaPlanTemplate(id, organizationShortcut, channelShortcut);
         TraMediaPlanTemplateDTO traMediaPlanPt = traMediaPlanTemplateMapper.DB2DTO(traMediaPlan);
         return Optional.ofNullable(traMediaPlanPt)
                 .map(result -> new ResponseEntity<>(
@@ -75,13 +78,14 @@ public class TraMediaPlanTemplateResourceImpl implements TraMediaPlanTemplateRes
 
     @Override
     public ResponseEntity<TraMediaPlanTemplateDTO> updateTraMediaPlanTemplateUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                       @ApiParam(value = "traMediaPlanTemplateDTO", required = true) @RequestBody TraMediaPlanTemplateDTO traMediaPlanTemplateDTO) throws URISyntaxException {
         log.debug("REST request to update TraMediaPlanTemplate : {}", traMediaPlanTemplateDTO);
         if (traMediaPlanTemplateDTO.getId() == null) {
-            return createTraMediaPlanTemplateUsingPOST(organizationShortcut, traMediaPlanTemplateDTO);
+            return createTraMediaPlanTemplateUsingPOST(organizationShortcut, channelShortcut, traMediaPlanTemplateDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        TraMediaPlanTemplate traMediaPlan = traMediaPlanTemplateMapper.DTO2DB(traMediaPlanTemplateDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        TraMediaPlanTemplate traMediaPlan = traMediaPlanTemplateMapper.DTO2DB(traMediaPlanTemplateDTO, corChannel);
         traMediaPlan = traMediaPlanTemplateService.saveMediaPlanTemplate(traMediaPlan);
         TraMediaPlanTemplateDTO result = traMediaPlanTemplateMapper.DB2DTO(traMediaPlan);
         return ResponseEntity.ok()
@@ -91,13 +95,14 @@ public class TraMediaPlanTemplateResourceImpl implements TraMediaPlanTemplateRes
 
     @Override
     public ResponseEntity<TraMediaPlanTemplateDTO> createTraMediaPlanTemplateUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                        @ApiParam(value = "traMediaPlanTemplateDTO", required = true) @RequestBody TraMediaPlanTemplateDTO traMediaPlanTemplateDTO) throws URISyntaxException {
         log.debug("REST request to saveCorContact TraMediaPlanTemplate : {}", traMediaPlanTemplateDTO);
         if (traMediaPlanTemplateDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraMediaPlanTemplate", "idexists", "A new TraMediaPlanTemplate cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        TraMediaPlanTemplate traMediaPlan = traMediaPlanTemplateMapper.DTO2DB(traMediaPlanTemplateDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        TraMediaPlanTemplate traMediaPlan = traMediaPlanTemplateMapper.DTO2DB(traMediaPlanTemplateDTO, corChannel);
         traMediaPlan = traMediaPlanTemplateService.saveMediaPlanTemplate(traMediaPlan);
         TraMediaPlanTemplateDTO result = traMediaPlanTemplateMapper.DB2DTO(traMediaPlan);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/traffic/dictionary/discount/" + result.getId()))
@@ -106,9 +111,10 @@ public class TraMediaPlanTemplateResourceImpl implements TraMediaPlanTemplateRes
 
     @Override
     public ResponseEntity<Void> deleteTraMediaPlanTemplateUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                       @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete TraMediaPlanTemplate : {}", id);
-        traMediaPlanTemplateService.deleteMediaPlanTemplate(id, organizationShortcut);
+        traMediaPlanTemplateService.deleteMediaPlanTemplate(id, organizationShortcut, channelShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("TraMediaPlanTemplate", id.toString())).build();
     }
 }

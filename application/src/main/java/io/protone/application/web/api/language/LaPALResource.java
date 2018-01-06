@@ -22,11 +22,12 @@ public interface LaPALResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
             @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/language/pal/execute",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/language/pal/execute",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
     public void executCommand(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                               @ApiParam(value = "corCommandDTO", required = true) @RequestBody @Valid CorCommandThinDTO corCommandDTO);
 
 

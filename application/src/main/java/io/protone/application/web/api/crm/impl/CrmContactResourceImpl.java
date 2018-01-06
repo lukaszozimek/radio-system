@@ -4,8 +4,9 @@ package io.protone.application.web.api.crm.impl;
 import io.protone.application.web.api.crm.CrmContactResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import io.protone.crm.api.dto.CrmContactDTO;
 import io.protone.crm.api.dto.thin.CrmContactThinDTO;
 import io.protone.crm.domain.CrmContact;
@@ -42,20 +43,21 @@ public class CrmContactResourceImpl implements CrmContactResource {
     private CrmContactService crmContactService;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Inject
     private CrmContactMapper crmContactMapper;
 
 
     @Override
-    public ResponseEntity<CrmContactDTO> updateContactWithoutAvatarUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestBody CrmContactDTO crmContactDTO) throws URISyntaxException, TikaException, IOException, SAXException {
+    public ResponseEntity<CrmContactDTO> updateContactWithoutAvatarUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                            @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestBody CrmContactDTO crmContactDTO) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to update CrmContact : {}, for Network: {}", crmContactDTO, organizationShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         if (crmContactDTO.getId() == null) {
-            return createContactUsingPOST(organizationShortcut, crmContactDTO, null);
+            return createContactUsingPOST(organizationShortcut, channelShortcut, crmContactDTO, null);
         }
-        CrmContact contact = crmContactMapper.DTO2DB(crmContactDTO, corNetwork);
+        CrmContact contact = crmContactMapper.DTO2DB(crmContactDTO, corChannel);
         CrmContact crmContact = crmContactService.saveContact(contact);
         CrmContactDTO response = crmContactMapper.DB2DTO(crmContact);
         return ResponseEntity.ok().body(response);
@@ -63,15 +65,16 @@ public class CrmContactResourceImpl implements CrmContactResource {
 
     @Override
     public ResponseEntity<CrmContactDTO> updateContactWithAvatarUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                           @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestPart("crmContactDTO") CrmContactDTO crmContactDTO,
                                                                           @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to saveCorContact CrmContact : {}, for Network: {}", crmContactDTO, organizationShortcut);
         if (crmContactDTO.getId() == null) {
-            return createContactUsingPOST(organizationShortcut, crmContactDTO, null);
+            return createContactUsingPOST(organizationShortcut, channelShortcut, crmContactDTO, null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CrmContact contact = crmContactMapper.DTO2DB(crmContactDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CrmContact contact = crmContactMapper.DTO2DB(crmContactDTO, corChannel);
         contact = crmContactService.saveContactWithImage(contact, avatar);
         CrmContactDTO response = crmContactMapper.DB2DTO(contact);
         return ResponseEntity.ok().body(response);
@@ -80,14 +83,15 @@ public class CrmContactResourceImpl implements CrmContactResource {
 
     @Override
     public ResponseEntity<CrmContactDTO> createContactUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                 @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestPart("crmContactDTO") CrmContactDTO crmContactDTO,
                                                                 @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to saveCorContact CrmContact : {}, for Network: {}", crmContactDTO, organizationShortcut);
         if (crmContactDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmContact", "idexists", "A new CrmContact cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CrmContact contact = crmContactMapper.DTO2DB(crmContactDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CrmContact contact = crmContactMapper.DTO2DB(crmContactDTO, corChannel);
         contact = crmContactService.saveContactWithImage(contact, avatar);
         CrmContactDTO response = crmContactMapper.DB2DTO(contact);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/crm/contact/" + crmContactDTO.getShortName()))
@@ -97,9 +101,10 @@ public class CrmContactResourceImpl implements CrmContactResource {
 
     @Override
     public ResponseEntity<List<CrmContactThinDTO>> getAllContactUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmContact, for Network: {}", organizationShortcut);
-        Slice<CrmContact> crmContactSlice = crmContactService.getAllContact(organizationShortcut, pagable);
+        Slice<CrmContact> crmContactSlice = crmContactService.getAllContact(organizationShortcut, channelShortcut, pagable);
         List<CrmContactThinDTO> response = crmContactMapper.DBs2ThinDTOs(crmContactSlice.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -111,9 +116,10 @@ public class CrmContactResourceImpl implements CrmContactResource {
     }
 
     @Override
-    public ResponseEntity<CrmContactDTO> getContactUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<CrmContactDTO> getContactUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get CrmContact : {}, for Network: {}", shortName, organizationShortcut);
-        CrmContactDTO response = crmContactMapper.DB2DTO(crmContactService.getContact(shortName, organizationShortcut));
+        CrmContactDTO response = crmContactMapper.DB2DTO(crmContactService.getContact(shortName, organizationShortcut, channelShortcut));
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
@@ -122,9 +128,10 @@ public class CrmContactResourceImpl implements CrmContactResource {
     }
 
     @Override
-    public ResponseEntity<Void> deleteContactUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<Void> deleteContactUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete CrmContact : {}, for Network: {}", shortName, organizationShortcut);
-        crmContactService.deleteContact(shortName, organizationShortcut);
+        crmContactService.deleteContact(shortName, organizationShortcut, channelShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmContact", shortName.toString())).build();
     }
 }

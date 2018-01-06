@@ -4,11 +4,11 @@ import io.protone.application.web.api.cor.CorTaxResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.api.dto.CorTaxDTO;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorTax;
 import io.protone.core.mapper.CorTaxMapper;
 import io.protone.core.repository.CorTaxRepository;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,17 +36,18 @@ public class CorTaxResourceImpl implements CorTaxResource {
     private CorTaxRepository corTaxRepository;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Inject
     private CorTaxMapper corTaxMapper;
 
     @Override
     public ResponseEntity<List<CorTaxDTO>> getAllTaxesUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CorTax");
 
-        Slice<CorTax> corTaxSlice = corTaxRepository.findSliceByNetwork_Shortcut(organizationShortcut, pagable);
+        Slice<CorTax> corTaxSlice = corTaxRepository.findSliceByChannel_Organization_Shortcut(organizationShortcut, pagable);
         List<CorTaxDTO> corTaxDTOS = corTaxMapper.DBs2DTOs(corTaxSlice.getContent());
         return Optional.ofNullable(corTaxDTOS)
                 .map(result -> new ResponseEntity<>(
@@ -57,10 +58,12 @@ public class CorTaxResourceImpl implements CorTaxResource {
     }
 
     @Override
-    public ResponseEntity<CorTaxDTO> getTaxUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    public ResponseEntity<CorTaxDTO> getTaxUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                    @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get CorTax : {}", organizationShortcut);
 
-        CorTax corTax = corTaxRepository.findOneByIdAndNetwork_Shortcut(id, organizationShortcut);
+        CorTax corTax = corTaxRepository.findOneByIdAndChannel_Organization_Shortcut(id, organizationShortcut);
         CorTaxDTO corTaxPTS = corTaxMapper.DB2DTO(corTax);
         return Optional.ofNullable(corTaxPTS)
                 .map(result -> new ResponseEntity<>(
@@ -70,13 +73,15 @@ public class CorTaxResourceImpl implements CorTaxResource {
     }
 
     @Override
-    public ResponseEntity<CorTaxDTO> updateTaxUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "taxDTO", required = true) @RequestBody CorTaxDTO taxDTO) throws URISyntaxException {
+    public ResponseEntity<CorTaxDTO> updateTaxUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                       @ApiParam(value = "taxDTO", required = true) @RequestBody CorTaxDTO taxDTO) throws URISyntaxException {
         log.debug("REST request to update CorTax : {}", taxDTO);
         if (taxDTO.getId() == null) {
-            return createTaxUsingPOST(organizationShortcut, taxDTO);
+            return createTaxUsingPOST(organizationShortcut, channelShortcut, taxDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CorTax corTax = corTaxMapper.DTO2DB(taxDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CorTax corTax = corTaxMapper.DTO2DB(taxDTO, corChannel);
         corTax = corTaxRepository.save(corTax);
         CorTaxDTO result = corTaxMapper.DB2DTO(corTax);
         return ResponseEntity.ok()
@@ -85,13 +90,15 @@ public class CorTaxResourceImpl implements CorTaxResource {
     }
 
     @Override
-    public ResponseEntity<CorTaxDTO> createTaxUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "taxDTO", required = true) @RequestBody CorTaxDTO taxDTO) throws URISyntaxException {
+    public ResponseEntity<CorTaxDTO> createTaxUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                        @ApiParam(value = "taxDTO", required = true) @RequestBody CorTaxDTO taxDTO) throws URISyntaxException {
         log.debug("REST request to saveCorContact CorTax : {}", taxDTO);
         if (taxDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorTax", "idexists", "A new CorTax cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CorTax corTax = corTaxMapper.DTO2DB(taxDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CorTax corTax = corTaxMapper.DTO2DB(taxDTO, corChannel);
         corTax = corTaxRepository.save(corTax);
         CorTaxDTO result = corTaxMapper.DB2DTO(corTax);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/traffic/dictionary/tax/" + result.getId()))
@@ -100,9 +107,11 @@ public class CorTaxResourceImpl implements CorTaxResource {
     }
 
     @Override
-    public ResponseEntity<Void> deleteTaxUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteTaxUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                     @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete CorTax : {}", id);
-        corTaxRepository.deleteByIdAndNetwork_Shortcut(id, organizationShortcut);
+        corTaxRepository.deleteByIdAndChannel_Organization_Shortcut(id, organizationShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CorTax", id.toString())).build();
     }
 }

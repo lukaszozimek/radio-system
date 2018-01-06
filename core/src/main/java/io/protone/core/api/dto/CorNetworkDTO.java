@@ -22,6 +22,11 @@ public class CorNetworkDTO implements Serializable {
 
     private String description = null;
 
+
+    @NotNull
+    private CorOrganizationDTO corOrganizationDTO;
+
+
     @Override
     public String toString() {
         return "CorNetworkDTO{" +
@@ -124,6 +129,14 @@ public class CorNetworkDTO implements Serializable {
         return this;
     }
 
+    public CorOrganizationDTO getCorOrganizationDTO() {
+        return corOrganizationDTO;
+    }
+
+    public void setCorOrganizationDTO(CorOrganizationDTO corOrganizationDTO) {
+        this.corOrganizationDTO = corOrganizationDTO;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -133,9 +146,9 @@ public class CorNetworkDTO implements Serializable {
             return false;
         }
 
-        CorNetworkDTO corNetworkDTO = (CorNetworkDTO) o;
+        CorNetworkDTO corChannelDTO = (CorNetworkDTO) o;
 
-        return Objects.equals(id, corNetworkDTO.id);
+        return Objects.equals(id, corChannelDTO.id);
     }
 
 

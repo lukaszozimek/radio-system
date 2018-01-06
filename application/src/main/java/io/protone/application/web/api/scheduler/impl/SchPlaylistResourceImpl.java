@@ -48,9 +48,6 @@ public class SchPlaylistResourceImpl implements SchPlaylistResource {
     private SchPlaylistMapper schPlaylistMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
-
-    @Inject
     private CorChannelService corChannelService;
 
     @Override
@@ -77,13 +74,11 @@ public class SchPlaylistResourceImpl implements SchPlaylistResource {
         if (schPlaylistDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SchPlaylist", "idexists", "A new SchPlaylist cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        SchPlaylist schPlaylist = schPlaylistMapper.DTO2DB(schPlaylistDTO, corNetwork, corChannel);
+        SchPlaylist schPlaylist = schPlaylistMapper.DTO2DB(schPlaylistDTO, corChannel);
         SchPlaylist entity = schPlaylistService.saveSchPlaylist(schPlaylist);
         SchPlaylistDTO response = schPlaylistMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/event/" + response.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/organization/" + channelShortcut + "/scheduler/event/" + response.getId()))
                 .body(response);
     }
 
@@ -135,10 +130,8 @@ public class SchPlaylistResourceImpl implements SchPlaylistResource {
         if (schPlaylistDTO.getId() == null) {
             return creatSchedulerPlaylistForChannelUsingPOST(organizationShortcut, channelShortcut, schPlaylistDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        SchPlaylist schPlaylist = schPlaylistMapper.DTO2DB(schPlaylistDTO, corNetwork, corChannel);
+        SchPlaylist schPlaylist = schPlaylistMapper.DTO2DB(schPlaylistDTO, corChannel);
         SchPlaylist entity = schPlaylistService.saveSchPlaylist(schPlaylist);
         SchPlaylistDTO response = schPlaylistMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
@@ -156,10 +149,10 @@ public class SchPlaylistResourceImpl implements SchPlaylistResource {
 
 
     @Override
-    public   ResponseEntity<SchBlockChainDTO> getPlaylistBlock(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                      @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-                                                      @PathVariable("id") Long id) {
+    public ResponseEntity<SchBlockChainDTO> getPlaylistBlock(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                             @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                                                             @PathVariable("id") Long id) {
         return null;
     }
 

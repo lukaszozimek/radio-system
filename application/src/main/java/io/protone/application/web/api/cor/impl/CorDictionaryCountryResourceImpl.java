@@ -5,10 +5,10 @@ import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.api.dto.CorCountryDTO;
 import io.protone.core.domain.CorCountry;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.mapper.CorCountryMapper;
 import io.protone.core.repository.CorCountryRepository;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorOrganizationService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
     private CorCountryRepository corCountryRepository;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorOrganizationService corOrganizationService;
 
     @Inject
     private CorCountryMapper corCountryMapper;
@@ -47,8 +47,8 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
         if (countryPt.getId() == null) {
             return createCountryUsingPOST(organizationShortcut, countryPt);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CorCountry corCountry = corCountryMapper.DTO2DB(countryPt, corNetwork);
+        CorOrganization corOrganization = corOrganizationService.findOrganization(organizationShortcut);
+        CorCountry corCountry = corCountryMapper.DTO2DB(countryPt, corOrganization);
         corCountry = corCountryRepository.save(corCountry);
         CorCountryDTO result = corCountryMapper.DB2DTO(corCountry);
         return ResponseEntity.ok()
@@ -62,8 +62,8 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
         if (countryPt.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorCountry", "idexists", "A new CorCountry cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CorCountry corCountry = corCountryMapper.DTO2DB(countryPt, corNetwork);
+        CorOrganization corOrganization = corOrganizationService.findOrganization(organizationShortcut);
+        CorCountry corCountry = corCountryMapper.DTO2DB(countryPt, corOrganization);
         corCountry = corCountryRepository.save(corCountry);
         CorCountryDTO result = corCountryMapper.DB2DTO(corCountry);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/organization/dictionary/country/" + result.getId()))
@@ -81,9 +81,7 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
     public ResponseEntity<List<CorCountryDTO>> getAllCountriesUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get CorCountry : {}", organizationShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
-        Slice<CorCountry> corCurrencies = corCountryRepository.findSliceByNetwork(corNetwork, pagable);
+        Slice<CorCountry> corCurrencies = corCountryRepository.findSliceByOrganization_Shortcut(organizationShortcut, pagable);
         List<CorCountryDTO> confCurrencyPTS = corCountryMapper.DBs2DTOs(corCurrencies.getContent());
         return Optional.ofNullable(confCurrencyPTS)
                 .map(result -> new ResponseEntity<>(
@@ -96,9 +94,9 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
     @Override
     public ResponseEntity<CorCountryDTO> getCountryUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get CorCountry : {}", organizationShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
+        CorOrganization CorOrganization = corOrganizationService.findOrganization(organizationShortcut);
 
-        CorCountry corTax = corCountryRepository.findOneByIdAndNetwork(id, corNetwork);
+        CorCountry corTax = corCountryRepository.findOneByIdAndOrganization_Shortcut(id, organizationShortcut);
         CorCountryDTO confTaxPTS = corCountryMapper.DB2DTO(corTax);
         return Optional.ofNullable(confTaxPTS)
                 .map(result -> new ResponseEntity<>(

@@ -26,11 +26,12 @@ public interface LibArtistResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibArtistDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibArtistDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibArtistDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/artist",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/artist",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
     ResponseEntity<LibArtistDTO> updateArtistWithOutImageUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                   @ApiParam(value = "libraryDTO", required = true) @Valid @RequestBody LibArtistDTO libraryDTO) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException;
 
 
@@ -41,10 +42,11 @@ public interface LibArtistResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibArtistDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibArtistDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibArtistDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/artist/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/artist/{id}",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<LibArtistDTO> updateArtistWithImageUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                 @ApiParam(value = "id", required = true) @PathVariable("id") Long id,
                                                                 @ApiParam(value = "libArtistDTO", required = true) @Valid @RequestPart("libArtistDTO") LibArtistDTO libArtistDTO,
                                                                 @ApiParam(value = "cover") @RequestPart("cover") MultipartFile cover
@@ -58,10 +60,11 @@ public interface LibArtistResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibArtistDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibArtistDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibArtistDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/artist",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/artist",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<LibArtistDTO>> getAllArtistsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                              @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -72,25 +75,27 @@ public interface LibArtistResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibArtistDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibArtistDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibArtistDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/artist",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/artist",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<LibArtistDTO> createArtistUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                        @ApiParam(value = "libArtistDTO", required = true) @Valid @RequestPart("libArtistDTO") LibArtistDTO libArtistDTO,
                                                        @ApiParam(value = "cover") @RequestPart("cover") MultipartFile cover
     ) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException;
 
 
-    @ApiOperation(value = "deleteArtist", notes = "", response = Void.class, tags = {"LIBRARY",})
+    @ApiOperation(value = "deleteArtist", notes = "", tags = {"LIBRARY",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Void.class),
-            @ApiResponse(code = 204, message = "No Content", response = Void.class),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/artist/{id}",
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 204, message = "No Content"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden")})
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/artist/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteArtistUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -100,10 +105,11 @@ public interface LibArtistResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibArtistDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibArtistDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibArtistDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/library/artist/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/artist/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<LibArtistDTO> getArtistUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                    @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 }

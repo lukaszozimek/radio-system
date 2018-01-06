@@ -4,8 +4,9 @@ package io.protone.application.web.api.crm.impl;
 import io.protone.application.web.api.crm.CrmCustomerResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import io.protone.crm.api.dto.CrmAccountDTO;
 import io.protone.crm.api.dto.thin.CrmAccountThinDTO;
 import io.protone.crm.domain.CrmAccount;
@@ -42,21 +43,22 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
     private CrmCustomerService crmCustomerService;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Inject
     private CrmAccountMapper crmAccountMapper;
 
     @Override
     public ResponseEntity<CrmAccountDTO> updateCustomerWithoutAvatarUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                              @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to update CrmAccount : {}, for Network: {}", crmAccountDTO, organizationShortcut);
 
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         if (crmAccountDTO.getId() == null) {
-            return createCustomerUsingPOST(organizationShortcut, crmAccountDTO, null);
+            return createCustomerUsingPOST(organizationShortcut, channelShortcut, crmAccountDTO, null);
         }
-        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountDTO, corChannel);
         CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
         CrmAccountDTO response = crmAccountMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
@@ -64,16 +66,17 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
 
     @Override
     public ResponseEntity<CrmAccountDTO> updateCustomerWithAvatarUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                            @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestPart("crmAccountDTO") CrmAccountDTO crmAccountDTO,
                                                                            @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to update CrmAccount : {}, for Network: {}", crmAccountDTO, organizationShortcut);
 
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         if (crmAccountDTO.getId() == null) {
-            return createCustomerUsingPOST(organizationShortcut, crmAccountDTO, null);
+            return createCustomerUsingPOST(organizationShortcut, channelShortcut, crmAccountDTO, null);
         }
-        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountDTO, corChannel);
         CrmAccount entity = crmCustomerService.saveCustomerWithImage(crmAccount, avatar);
         CrmAccountDTO response = crmAccountMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
@@ -81,14 +84,15 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
 
     @Override
     public ResponseEntity<CrmAccountDTO> createCustomerUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                  @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestPart("crmAccountDTO") CrmAccountDTO crmAccountDTO,
                                                                  @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to saveCorContact CrmAccount : {}, for Network: {}", crmAccountDTO, organizationShortcut);
         if (crmAccountDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmAccount", "idexists", "A new CrmAccount cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountDTO, corChannel);
         CrmAccount entity = crmCustomerService.saveCustomerWithImage(crmAccount, avatar);
         CrmAccountDTO response = crmAccountMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/crm/customer/" + crmAccount.getShortName()))
@@ -97,9 +101,10 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
 
     @Override
     public ResponseEntity<List<CrmAccountThinDTO>> getAllCustomersUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                            @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmAccount, for Network: {}", organizationShortcut);
-        Slice<CrmAccount> entity = crmCustomerService.getAllCustomers(organizationShortcut, pagable);
+        Slice<CrmAccount> entity = crmCustomerService.getAllCustomers(organizationShortcut, channelShortcut, pagable);
         List<CrmAccountThinDTO> response = crmAccountMapper.DBs2ThinDTOs(entity.getContent());
 
         return Optional.ofNullable(response)
@@ -112,9 +117,10 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
     }
 
     @Override
-    public ResponseEntity<CrmAccountDTO> getCustomerUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<CrmAccountDTO> getCustomerUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get CrmAccount : {}, for Network: {}", shortName, organizationShortcut);
-        CrmAccount entity = crmCustomerService.getCustomer(shortName, organizationShortcut);
+        CrmAccount entity = crmCustomerService.getCustomer(shortName, organizationShortcut, channelShortcut);
         CrmAccountDTO response = crmAccountMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -124,9 +130,10 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
     }
 
     @Override
-    public ResponseEntity<Void> deleteCustomeryUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<Void> deleteCustomeryUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete CrmAccount : {}, for Network: {}", shortName, organizationShortcut);
-        crmCustomerService.deleteCustomer(shortName, organizationShortcut);
+        crmCustomerService.deleteCustomer(shortName, organizationShortcut, channelShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmAccount", shortName.toString())).build();
     }
 }

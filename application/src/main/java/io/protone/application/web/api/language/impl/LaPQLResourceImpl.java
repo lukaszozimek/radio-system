@@ -37,6 +37,7 @@ public class LaPQLResourceImpl implements LaPQLResource {
 
     @Override
     public List queryElements(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                               @ApiParam(value = "corFilterDTO", required = true) @RequestBody @Valid CorFilterThinDTO corFilterDTO) throws IOException {
         log.debug("REST request Query for {}", corFilterDTO, organizationShortcut);
         CorFilter corFilter = corFilterMapper.DTO2DB(corFilterDTO);

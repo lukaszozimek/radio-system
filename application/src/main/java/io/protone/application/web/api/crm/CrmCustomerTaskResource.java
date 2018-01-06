@@ -26,10 +26,11 @@ public interface CrmCustomerTaskResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CrmTaskThinDTO>> getAllCustomerActivitiesUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                           @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -41,11 +42,12 @@ public interface CrmCustomerTaskResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CrmTaskDTO> updateCustomerActivityUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                               @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                               @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
 
@@ -57,11 +59,12 @@ public interface CrmCustomerTaskResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CrmTaskDTO> createCustomerActivityUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
 
@@ -72,10 +75,11 @@ public interface CrmCustomerTaskResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteCustomerActivityUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
@@ -86,10 +90,11 @@ public interface CrmCustomerTaskResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CrmTaskDTO> getCustomerActivityUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 

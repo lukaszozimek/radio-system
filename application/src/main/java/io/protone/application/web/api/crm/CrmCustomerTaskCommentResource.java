@@ -24,10 +24,11 @@ public interface CrmCustomerTaskCommentResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskCommentDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskCommentDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskCommentDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CrmTaskCommentDTO>> getCustomerTaskCommentsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                             @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                             @ApiParam(value = "pagable", required = true) Pageable pagable);
@@ -38,11 +39,12 @@ public interface CrmCustomerTaskCommentResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskCommentDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskCommentDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskCommentDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CrmTaskCommentDTO> createCustomerActivtyCommentUsigPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                            @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                            @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException;
@@ -53,11 +55,12 @@ public interface CrmCustomerTaskCommentResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskCommentDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskCommentDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskCommentDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CrmTaskCommentDTO> editCustomerActivtyCommentUsigPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                         @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                         @ApiParam(value = "taskCommentDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException;
@@ -68,10 +71,11 @@ public interface CrmCustomerTaskCommentResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskCommentDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskCommentDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskCommentDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CrmTaskCommentDTO> getCustomerTaskCommentUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                      @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                      @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                      @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
@@ -82,10 +86,11 @@ public interface CrmCustomerTaskCommentResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskCommentDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskCommentDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskCommentDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteCustomerTaskCommentUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                               @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                               @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id);

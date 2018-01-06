@@ -24,10 +24,11 @@ public interface TraCampaignResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCampaignDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/campaign",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraCampaignDTO>> getAllCampaignsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -38,11 +39,12 @@ public interface TraCampaignResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCampaignDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/campaign",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<TraCampaignDTO> updateCampaignUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                           @ApiParam(value = "traCampaignDTO", required = true) @Valid @RequestBody TraCampaignDTO traCampaignDTO) throws URISyntaxException;
 
     @ApiOperation(value = "createCampaign", notes = "", response = TraCampaignDTO.class, tags = {"TRAFFIC",})
@@ -52,11 +54,12 @@ public interface TraCampaignResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCampaignDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/campaign",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraCampaignDTO> createCampaignUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                            @ApiParam(value = "traCampaignDTO", required = true) @Valid @RequestBody TraCampaignDTO traCampaignDTO) throws URISyntaxException;
 
 
@@ -66,10 +69,11 @@ public interface TraCampaignResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/campaign/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteCampaignUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                    @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
@@ -79,10 +83,11 @@ public interface TraCampaignResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCampaignDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/campaign/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraCampaignDTO> getCampaignUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                        @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
     @ApiOperation(value = "getAllCustomerCampaigns", notes = "", response = TraCampaignDTO.class, responseContainer = "List", tags = {"TRAFFIC",})
@@ -91,10 +96,11 @@ public interface TraCampaignResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCampaignDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/campaign/customer/{customerShortcut}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign/customer/{customerShortcut}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraCampaignDTO>> getAllCustomerCampaignsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                          @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable);
 

@@ -4,8 +4,9 @@ package io.protone.application.web.api.traffic.impl;
 import io.protone.application.web.api.traffic.TraInvoiceResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import io.protone.traffic.api.dto.TraInvoiceDTO;
 import io.protone.traffic.api.dto.thin.TraInvoiceThinDTO;
 import io.protone.traffic.domain.TraInvoice;
@@ -41,13 +42,14 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
     private TraInvoiceMapper traInvoiceMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Override
     public ResponseEntity<List<TraInvoiceThinDTO>> getAllInvoicesUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                           @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraInvoice, for Network: {}", organizationShortcut);
-        Slice<TraInvoice> entity = traInvoiceService.getAllInvoice(organizationShortcut, pagable);
+        Slice<TraInvoice> entity = traInvoiceService.getAllInvoice(organizationShortcut, channelShortcut, pagable);
         List<TraInvoiceThinDTO> response = traInvoiceMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -59,13 +61,14 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
     }
 
     @Override
-    public ResponseEntity<TraInvoiceDTO> updateInvoiceUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "traInvoiceDTO", required = true) @Valid @RequestBody TraInvoiceDTO traInvoiceDTO) throws URISyntaxException {
+    public ResponseEntity<TraInvoiceDTO> updateInvoiceUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                               @ApiParam(value = "traInvoiceDTO", required = true) @Valid @RequestBody TraInvoiceDTO traInvoiceDTO) throws URISyntaxException {
         log.debug("REST request to update TraInvoice : {}, for Network: {}", traInvoiceDTO, organizationShortcut);
         if (traInvoiceDTO.getId() == null) {
-            return createInvoiceUsingPOST(organizationShortcut, traInvoiceDTO);
+            return createInvoiceUsingPOST(organizationShortcut, channelShortcut, traInvoiceDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        TraInvoice traInvoice = traInvoiceMapper.DTO2DB(traInvoiceDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        TraInvoice traInvoice = traInvoiceMapper.DTO2DB(traInvoiceDTO, corChannel);
         TraInvoice entity = traInvoiceService.saveInvoice(traInvoice);
         TraInvoiceDTO response = traInvoiceMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
@@ -78,13 +81,14 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
     }
 
     @Override
-    public ResponseEntity<TraInvoiceDTO> createInvoiceUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "traInvoiceDTO", required = true) @Valid @RequestBody TraInvoiceDTO traInvoiceDTO) throws URISyntaxException {
+    public ResponseEntity<TraInvoiceDTO> createInvoiceUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                @ApiParam(value = "traInvoiceDTO", required = true) @Valid @RequestBody TraInvoiceDTO traInvoiceDTO) throws URISyntaxException {
         log.debug("REST request to saveCorContact TraInvoice : {}, for Network: {}", traInvoiceDTO, organizationShortcut);
         if (traInvoiceDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraInvoice", "idexists", "A new TraInvoice cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        TraInvoice traInvoice = traInvoiceMapper.DTO2DB(traInvoiceDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        TraInvoice traInvoice = traInvoiceMapper.DTO2DB(traInvoiceDTO, corChannel);
         TraInvoice entity = traInvoiceService.saveInvoice(traInvoice);
         TraInvoiceDTO response = traInvoiceMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/traffic/invoice/" + response.getId()))
@@ -92,16 +96,18 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
     }
 
     @Override
-    public ResponseEntity<Void> deleteInvoiceUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteInvoiceUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete TraInvoice : {}, for Network: {}", id, organizationShortcut);
-        traInvoiceService.deleteInvoice(id, organizationShortcut);
+        traInvoiceService.deleteInvoice(id, organizationShortcut, channelShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traOrder", id.toString())).build();
     }
 
     @Override
-    public ResponseEntity<TraInvoiceDTO> getInvoiceUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    public ResponseEntity<TraInvoiceDTO> getInvoiceUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get TraInvoice : {}, for Network: {}", id, organizationShortcut);
-        TraInvoice entity = traInvoiceService.getInvoice(id, organizationShortcut);
+        TraInvoice entity = traInvoiceService.getInvoice(id, organizationShortcut, channelShortcut);
         TraInvoiceDTO response = traInvoiceMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -112,10 +118,11 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
 
     @Override
     public ResponseEntity<List<TraInvoiceThinDTO>> getAllTrafficInvoicesForCustomerGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                        @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
                                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraInvoice, for TraCustomer: {} and Network: {}", customerShortcut, organizationShortcut);
-        Slice<TraInvoice> entity = traInvoiceService.getCustomerInvoice(customerShortcut, organizationShortcut, pagable);
+        Slice<TraInvoice> entity = traInvoiceService.getCustomerInvoice(customerShortcut, organizationShortcut, channelShortcut, pagable);
         List<TraInvoiceThinDTO> response = traInvoiceMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -127,7 +134,8 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
     }
 
     @Override
-    public ResponseEntity<Void> notifyAboutUnpaidInvoiceUsingGET(@ApiParam(value = "cutomerId", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    public ResponseEntity<Void> notifyAboutUnpaidInvoiceUsingGET(@ApiParam(value = "cutomerId", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                 @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         return null;
     }
 }

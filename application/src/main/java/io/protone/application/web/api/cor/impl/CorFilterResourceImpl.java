@@ -4,12 +4,12 @@ import io.protone.application.web.api.cor.CorFilterResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.api.dto.CorFilterDTO;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorFilter;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.enumeration.CorEntityTypeEnum;
 import io.protone.core.mapper.CorFilterMapper;
+import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorFilterService;
-import io.protone.core.service.CorNetworkService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class CorFilterResourceImpl implements CorFilterResource {
     private CorFilterService corFilterService;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Inject
     private CorFilterMapper corFilterMapper;
@@ -45,10 +45,11 @@ public class CorFilterResourceImpl implements CorFilterResource {
 
     @Override
     public ResponseEntity<List<CorFilterDTO>> getAllFilterForTypeUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                           @ApiParam(value = "type", required = true) @PathVariable("type") CorEntityTypeEnum typeEnum,
                                                                           @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CorFilter");
-        Slice<CorFilter> corFilters = corFilterService.findAll(organizationShortcut, typeEnum, pagable);
+        Slice<CorFilter> corFilters = corFilterService.findAll(organizationShortcut, channelShortcut, typeEnum, pagable);
         List<CorFilterDTO> CorFilterDTOS = corFilterMapper.DBs2DTOs(corFilters.getContent());
         return Optional.ofNullable(CorFilterDTOS)
                 .map(result -> new ResponseEntity<>(
@@ -60,11 +61,12 @@ public class CorFilterResourceImpl implements CorFilterResource {
 
     @Override
     public ResponseEntity<CorFilterDTO> getFilterForTypeUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                  @ApiParam(value = "type", required = true) @PathVariable("type") CorEntityTypeEnum typeEnum,
                                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get CorFilter : {}", organizationShortcut);
 
-        CorFilter CorFilter = corFilterService.findOne(id, typeEnum, organizationShortcut);
+        CorFilter CorFilter = corFilterService.findOne(id, typeEnum, organizationShortcut, channelShortcut);
         CorFilterDTO CorFilterDTO = corFilterMapper.DB2DTO(CorFilter);
         return Optional.ofNullable(CorFilterDTO)
                 .map(result -> new ResponseEntity<>(
@@ -75,13 +77,14 @@ public class CorFilterResourceImpl implements CorFilterResource {
 
     @Override
     public ResponseEntity<CorFilterDTO> updateFilterUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                              @ApiParam(value = "corFilterDTO", required = true) @Valid @RequestBody CorFilterDTO corFilterDTO) throws URISyntaxException {
         log.debug("REST request to update CorFilter : {}", corFilterDTO);
         if (corFilterDTO.getId() == null) {
-            return createFilterUsingPOST(organizationShortcut, corFilterDTO);
+            return createFilterUsingPOST(organizationShortcut, channelShortcut, corFilterDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CorFilter CorFilter = corFilterMapper.DTO2DB(corFilterDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CorFilter CorFilter = corFilterMapper.DTO2DB(corFilterDTO, corChannel);
         CorFilter = corFilterService.save(CorFilter);
         CorFilterDTO result = corFilterMapper.DB2DTO(CorFilter);
         return ResponseEntity.ok()
@@ -90,14 +93,15 @@ public class CorFilterResourceImpl implements CorFilterResource {
     }
 
     @Override
-    public ResponseEntity<CorFilterDTO> createFilterUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "corFilterDTO", required = true)
-    @Valid @RequestBody CorFilterDTO corFilterDTO) throws URISyntaxException {
+    public ResponseEntity<CorFilterDTO> createFilterUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                              @ApiParam(value = "corFilterDTO", required = true)
+                                                              @Valid @RequestBody CorFilterDTO corFilterDTO) throws URISyntaxException {
         log.debug("REST request to saveCorContact CorFilter : {}", corFilterDTO);
         if (corFilterDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorFilter", "idexists", "A new CorFilter cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CorFilter corFilter = corFilterMapper.DTO2DB(corFilterDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CorFilter corFilter = corFilterMapper.DTO2DB(corFilterDTO, corChannel);
         corFilter = corFilterService.save(corFilter);
         CorFilterDTO result = corFilterMapper.DB2DTO(corFilter);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/traffic/dictionary/currency/" + result.getId()))
@@ -106,10 +110,11 @@ public class CorFilterResourceImpl implements CorFilterResource {
 
     @Override
     public ResponseEntity<Void> deleteFilterUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                         @ApiParam(value = "type", required = true) @PathVariable("type") CorEntityTypeEnum typeEnum,
                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete CorFilter : {}", id);
-        corFilterService.delete(id, organizationShortcut);
+        corFilterService.delete(id, organizationShortcut, channelShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CorTax", id.toString())).build();
     }
 }

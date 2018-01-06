@@ -18,16 +18,17 @@ import java.util.List;
 public interface CorDictionaryResource {
     @ApiOperation(value = "updateDictionaryValue", notes = "", response = CorDictionaryDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 201, message = "Created", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CorDictionaryDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}",
-        produces = {"application/json"},
-        consumes = {"application/json"},
-        method = RequestMethod.PUT)
+            @ApiResponse(code = 200, message = "OK", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = CorDictionaryDTO.class)})
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/organization/dictionary/{module}/{type}",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.PUT)
     ResponseEntity<CorDictionaryDTO> updateDictionaryValueUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                    @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                    @ApiParam(value = "type", required = true) @PathVariable("type") String type,
                                                                    @ApiParam(value = "corDictionaryDTO", required = true) @Valid @RequestBody CorDictionaryDTO corDictionaryDTO) throws URISyntaxException;
@@ -35,16 +36,17 @@ public interface CorDictionaryResource {
 
     @ApiOperation(value = "createDictionaryValue", notes = "", response = CorDictionaryDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 201, message = "Created", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CorDictionaryDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}",
-        produces = {"application/json"},
-        consumes = {"application/json"},
-        method = RequestMethod.POST)
+            @ApiResponse(code = 200, message = "OK", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = CorDictionaryDTO.class)})
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/organization/dictionary/{module}/{type}",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
     ResponseEntity<CorDictionaryDTO> createDictionaryValueUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                     @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                     @ApiParam(value = "type", required = true) @PathVariable("type") String type,
                                                                     @ApiParam(value = "corDictionaryDTO", required = true) @Valid @RequestBody CorDictionaryDTO corDictionaryDTO) throws URISyntaxException;
@@ -52,14 +54,15 @@ public interface CorDictionaryResource {
 
     @ApiOperation(value = "deleteDictionaryValue", notes = "", response = Void.class, tags = {"CORE"})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = Void.class),
-        @ApiResponse(code = 204, message = "No Content", response = Void.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}/{id}",
-        produces = {"application/json"},
-        method = RequestMethod.DELETE)
+            @ApiResponse(code = 200, message = "OK", response = Void.class),
+            @ApiResponse(code = 204, message = "No Content", response = Void.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/organization/dictionary/{module}/{type}/{id}",
+            produces = {"application/json"},
+            method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteDictionaryValueUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                           @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                           @ApiParam(value = "type", required = true) @PathVariable("type") String type,
                                                           @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
@@ -67,14 +70,15 @@ public interface CorDictionaryResource {
 
     @ApiOperation(value = "getAllDictionaryValue", notes = "", response = CorDictionaryDTO.class, responseContainer = "List", tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CorDictionaryDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}",
-        produces = {"application/json"},
-        method = RequestMethod.GET)
+            @ApiResponse(code = 200, message = "OK", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = CorDictionaryDTO.class)})
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/organization/dictionary/{module}/{type}",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
     ResponseEntity<List<CorDictionaryDTO>> getAllDictionaryValueUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                          @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                          @ApiParam(value = "type", required = true) @PathVariable("type") String type,
                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable);
@@ -82,14 +86,15 @@ public interface CorDictionaryResource {
 
     @ApiOperation(value = "getDictionaryValue", notes = "", response = CorDictionaryDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CorDictionaryDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CorDictionaryDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}/{id}",
-        produces = {"application/json"},
-        method = RequestMethod.GET)
+            @ApiResponse(code = 200, message = "OK", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = CorDictionaryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = CorDictionaryDTO.class)})
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/organization/dictionary/{module}/{type}/{id}",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
     ResponseEntity<CorDictionaryDTO> getDictionaryValueGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                            @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                            @ApiParam(value = "type", required = true) @PathVariable("type") String type,
                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id);

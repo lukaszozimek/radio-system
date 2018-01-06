@@ -4,8 +4,8 @@ package io.protone.application.web.api.crm.impl;
 import io.protone.application.web.api.crm.CrmDiscountResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.service.CorChannelService;
 import io.protone.crm.api.dto.CrmDiscountDTO;
 import io.protone.crm.domain.CrmDiscount;
 import io.protone.crm.mapper.CrmDiscountMapper;
@@ -40,19 +40,18 @@ public class CrmDiscountResourceImpl implements CrmDiscountResource {
     private CrmDiscountMapper crmDiscountMapper;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Autowired
     private CrmDiscountRepository traDiscountRepository;
 
     @Override
     public ResponseEntity<List<CrmDiscountDTO>> getAllDiscountUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable) {
 
         log.debug("REST request to get all TraDiscount");
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
-        Slice<CrmDiscount> traDiscount = traDiscountRepository.findSliceByNetwork(corNetwork, pagable);
+        Slice<CrmDiscount> traDiscount = traDiscountRepository.findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pagable);
         List<CrmDiscountDTO> traDiscountPT = crmDiscountMapper.DBs2DTOs(traDiscount.getContent());
         return Optional.ofNullable(traDiscountPT)
                 .map(result -> new ResponseEntity<>(
@@ -65,12 +64,12 @@ public class CrmDiscountResourceImpl implements CrmDiscountResource {
 
     @Override
     public ResponseEntity<CrmDiscountDTO> getDiscountUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
 
         log.debug("REST request to get TraDiscount : {}", organizationShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
-        CrmDiscount traDiscount = traDiscountRepository.findOneByIdAndNetwork(id, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CrmDiscount traDiscount = traDiscountRepository.findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
         CrmDiscountDTO traDiscountPt = crmDiscountMapper.DB2DTO(traDiscount);
         return Optional.ofNullable(traDiscountPt)
                 .map(result -> new ResponseEntity<>(
@@ -81,14 +80,15 @@ public class CrmDiscountResourceImpl implements CrmDiscountResource {
 
     @Override
     public ResponseEntity<CrmDiscountDTO> updateDiscountUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                  @ApiParam(value = "discountPT", required = true) @RequestBody CrmDiscountDTO discountPT) throws URISyntaxException {
 
         log.debug("REST request to update TraDiscount : {}", discountPT);
         if (discountPT.getId() == null) {
-            return createDiscountUsingPOST(organizationShortcut, discountPT);
+            return createDiscountUsingPOST(organizationShortcut, channelShortcut, discountPT);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CrmDiscount traDiscount = crmDiscountMapper.DTO2DB(discountPT, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CrmDiscount traDiscount = crmDiscountMapper.DTO2DB(discountPT, corChannel);
         traDiscount = traDiscountRepository.save(traDiscount);
         CrmDiscountDTO result = crmDiscountMapper.DB2DTO(traDiscount);
         return ResponseEntity.ok()
@@ -98,13 +98,14 @@ public class CrmDiscountResourceImpl implements CrmDiscountResource {
 
     @Override
     public ResponseEntity<CrmDiscountDTO> createDiscountUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                   @ApiParam(value = "discountPT", required = true) @RequestBody CrmDiscountDTO discountPT) throws URISyntaxException {
         log.debug("REST request to saveCorContact TraDiscount : {}", discountPT);
         if (discountPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraDiscount", "idexists", "A new TraDiscount cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        CrmDiscount traDiscount = crmDiscountMapper.DTO2DB(discountPT, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        CrmDiscount traDiscount = crmDiscountMapper.DTO2DB(discountPT, corChannel);
         traDiscount = traDiscountRepository.save(traDiscount);
         CrmDiscountDTO result = crmDiscountMapper.DB2DTO(traDiscount);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/configuration/traffic/dictionary/discount/" + result.getId()))
@@ -113,6 +114,7 @@ public class CrmDiscountResourceImpl implements CrmDiscountResource {
 
     @Override
     public ResponseEntity<Void> deleteDiscountUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                           @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete TraDiscount : {}", id);
         traDiscountRepository.delete(id);

@@ -5,9 +5,7 @@ import io.protone.application.web.api.scheduler.SchClockTemplateResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorChannelService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.scheduler.api.dto.SchClockTemplateDTO;
 import io.protone.scheduler.api.dto.thin.SchClockTemplateThinDTO;
 import io.protone.scheduler.domain.SchClockTemplate;
@@ -46,9 +44,6 @@ public class SchClockTemplateResourceImpl implements SchClockTemplateResource {
     private SchClockTemplateMapper schClockTemplateMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
-
-    @Inject
     private CorChannelService corChannelService;
 
     @Override
@@ -59,12 +54,11 @@ public class SchClockTemplateResourceImpl implements SchClockTemplateResource {
         if (clockDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SchClockTemplate", "idexists", "A new SchClockTemplate cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        SchClockTemplate schClock = schClockTemplateMapper.DTO2DB(clockDTO, corNetwork, corChannel);
+        SchClockTemplate schClock = schClockTemplateMapper.DTO2DB(clockDTO, corChannel);
         SchClockTemplateDTO response = schClockTemplateService.saveClockConfiguration(schClock);
-        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/clock/" + response.getShortName()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/organization/" + channelShortcut + "/scheduler/clock/" + response.getShortName()))
                 .body(response);
     }
 
@@ -124,10 +118,9 @@ public class SchClockTemplateResourceImpl implements SchClockTemplateResource {
         if (clockDTO.getId() == null) {
             return creatSchedulerClockForChannelUsingPOST(organizationShortcut, channelShortcut, clockDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
 
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        SchClockTemplate schClock = schClockTemplateMapper.DTO2DB(clockDTO, corNetwork, corChannel);
+        SchClockTemplate schClock = schClockTemplateMapper.DTO2DB(clockDTO, corChannel);
         SchClockTemplateDTO response = schClockTemplateService.saveClockConfiguration(schClock);
         return ResponseEntity.ok().body(response);
     }

@@ -27,11 +27,12 @@ public interface CrmCustomerResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmAccountDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmAccountDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CrmAccountDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
     ResponseEntity<CrmAccountDTO> updateCustomerWithoutAvatarUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                       @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException, TikaException, IOException, SAXException;
 
 
@@ -42,10 +43,11 @@ public interface CrmCustomerResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmAccountDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmAccountDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CrmAccountDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<CrmAccountDTO> updateCustomerWithAvatarUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                     @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                     @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestPart("crmAccountDTO") CrmAccountDTO crmAccountDTO,
                                                                     @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException;
@@ -58,10 +60,11 @@ public interface CrmCustomerResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmAccountDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmAccountDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CrmAccountDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<CrmAccountDTO> createCustomerUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                           @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestPart("crmAccountDTO") CrmAccountDTO crmAccountDTO,
                                                           @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException;
 
@@ -72,10 +75,11 @@ public interface CrmCustomerResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmAccountDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmAccountDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CrmAccountDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<CrmAccountThinDTO>> getAllCustomersUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                     @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -85,23 +89,25 @@ public interface CrmCustomerResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmAccountDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmAccountDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CrmAccountDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<CrmAccountDTO> getCustomerUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                       @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
-    @ApiOperation(value = "deleteCustomer", notes = "", response = Void.class, tags = {"CRM"})
+    @ApiOperation(value = "deleteCustomer", notes = "", tags = {"CRM"})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Void.class),
-            @ApiResponse(code = 204, message = "No Content", response = Void.class),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}",
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 204, message = "No Content"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden")})
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteCustomeryUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                     @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 

@@ -22,10 +22,11 @@ public interface TraCompanyResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraCompanyDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraCompanyDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraCompanyDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/company",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic/company",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<TraCompanyDTO>> getAllCompanyUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                               @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -35,10 +36,11 @@ public interface TraCompanyResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraCompanyDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraCompanyDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraCompanyDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/company/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic/company/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<TraCompanyDTO> getCompanyUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                      @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -49,11 +51,12 @@ public interface TraCompanyResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraCompanyDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraCompanyDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraCompanyDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/company",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic/company",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
     ResponseEntity<TraCompanyDTO> updateCompanyUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                         @ApiParam(value = "traCompanyDTO", required = true) @RequestBody TraCompanyDTO traCompanyDTO) throws URISyntaxException;
 
 
@@ -64,11 +67,12 @@ public interface TraCompanyResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = TraCompanyDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = TraCompanyDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = TraCompanyDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/company",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic/company",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<TraCompanyDTO> createCompanyUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                          @ApiParam(value = "traCompanyDTO", required = true) @RequestBody TraCompanyDTO traCompanyDTO) throws URISyntaxException;
 
 
@@ -78,10 +82,11 @@ public interface TraCompanyResource {
             @ApiResponse(code = 204, message = "No Content", response = Void.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/traffic/company/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/traffic/company/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteCompanyUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                   @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 

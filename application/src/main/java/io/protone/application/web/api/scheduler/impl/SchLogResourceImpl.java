@@ -47,9 +47,6 @@ public class SchLogResourceImpl implements SchLogResource {
     private SchLogMapper schLogMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
-
-    @Inject
     private CorChannelService corChannelService;
 
     public ResponseEntity<List<SchLogThinDTO>> getAllLogsForChannelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
@@ -76,10 +73,8 @@ public class SchLogResourceImpl implements SchLogResource {
                                                                         @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile[] files) throws URISyntaxException {
         log.debug("REST request to saveSchLogDTO SchLogDTO : {}, for Channel {} Network: {}", channelShortcut, organizationShortcut);
 
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        List<SchLog> entity = schLogService.saveSchLog(files, corNetwork, corChannel);
+        List<SchLog> entity = schLogService.saveSchLog(files, corChannel.getOrganization().getShortcut(), corChannel);
         List<SchLogDTO> response = schLogMapper.DBs2DTOs(entity);
         return ResponseEntity.created(URI.create(""))
                 .body(response);

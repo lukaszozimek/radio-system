@@ -4,8 +4,9 @@ package io.protone.application.web.api.library.impl;
 import io.protone.application.web.api.library.LibLabelResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import io.protone.library.api.dto.LibLabelDTO;
 import io.protone.library.domain.LibLabel;
 import io.protone.library.mapper.LibLabelMapper;
@@ -42,17 +43,18 @@ public class LibLabelResourceImpl implements LibLabelResource {
     private LibLabelMapper libLabelMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Override
     public ResponseEntity<LibLabelDTO> updateLabelUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                            @ApiParam(value = "libLabelDTO", required = true) @Valid @RequestBody LibLabelDTO libLabelDTO) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to update label: {}", libLabelDTO);
         if (libLabelDTO.getId() == null) {
-            return createLabelUsingPOST(organizationShortcut, libLabelDTO);
+            return createLabelUsingPOST(organizationShortcut, channelShortcut, libLabelDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        LibLabel entity = libLabelMapper.DTO2DB(libLabelDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        LibLabel entity = libLabelMapper.DTO2DB(libLabelDTO, corChannel);
         LibLabel resultDB = libLabelService.createOrUpdateLabel(entity);
         LibLabelDTO labelDAO = libLabelMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
@@ -62,9 +64,10 @@ public class LibLabelResourceImpl implements LibLabelResource {
 
     @Override
     public ResponseEntity<List<LibLabelDTO>> getAllLabelsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all LibLabelDTO");
-        Slice<LibLabel> libraries = libLabelService.findLabels(organizationShortcut, pagable);
+        Slice<LibLabel> libraries = libLabelService.findLabels(organizationShortcut, channelShortcut, pagable);
         return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(libraries))
                 .body(libLabelMapper.DBs2DTOs(libraries.getContent()));
     }
@@ -72,13 +75,14 @@ public class LibLabelResourceImpl implements LibLabelResource {
 
     @Override
     public ResponseEntity<LibLabelDTO> createLabelUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                             @ApiParam(value = "labelDTO", required = true) @Valid @RequestBody LibLabelDTO labelDTO) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to create label: {}", labelDTO);
         if (labelDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("libLabel", "idexists", "A new libLabel cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        LibLabel entity = libLabelMapper.DTO2DB(labelDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        LibLabel entity = libLabelMapper.DTO2DB(labelDTO, corChannel);
         LibLabel resultDB = libLabelService.createOrUpdateLabel(entity);
         LibLabelDTO labelDAO = libLabelMapper.DB2DTO(resultDB);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/label/label/" + labelDAO.getId()))
@@ -87,18 +91,20 @@ public class LibLabelResourceImpl implements LibLabelResource {
 
     @Override
     public ResponseEntity<Void> deleteLabelUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete LIBLabel : {}", id);
-        libLabelService.deleteLabel(id, organizationShortcut);
+        libLabelService.deleteLabel(id, organizationShortcut, channelShortcut);
         return ResponseEntity.ok().build();
     }
 
 
     @Override
     public ResponseEntity<LibLabelDTO> getLabelUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get label: {}", id);
-        LibLabel label = libLabelService.findLabel(organizationShortcut, id);
+        LibLabel label = libLabelService.findLabel(organizationShortcut, channelShortcut, id);
         LibLabelDTO dto = libLabelMapper.DB2DTO(label);
         return Optional.ofNullable(dto)
                 .map(result -> new ResponseEntity<>(

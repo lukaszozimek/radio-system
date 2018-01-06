@@ -47,9 +47,10 @@ public class CrmOpportunityConverterResourceImpl implements CrmOpportunityConver
 
     @Override
     public ResponseEntity<CrmOpportunityDTO> convertContactToOpportunityPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) throws URISyntaxException {
         log.debug("REST request to convert CrmContact : {}, for Network: {} to CrmOpportunity", shortName, organizationShortcut);
-        CrmContact contact = crmContactService.getContact(shortName, organizationShortcut);
+        CrmContact contact = crmContactService.getContact(shortName, organizationShortcut, channelShortcut);
         CrmOpportunity crmOpportunity = crmOpportunityService.convertContactToOpportunity(contact);
         CrmOpportunityDTO response = crmOpportunityMapper.DB2DTO(crmOpportunity);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/crm/opportunity/" + response.getName()))
@@ -58,9 +59,10 @@ public class CrmOpportunityConverterResourceImpl implements CrmOpportunityConver
 
     @Override
     public ResponseEntity<CrmOpportunityDTO> convertLeadToOpportunity(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                       @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) throws URISyntaxException {
         log.debug("REST request to convert Lead : {}, for Network: {} to CrmOpportunity", shortName, organizationShortcut);
-        CrmLead lead = crmLeadService.getLead(shortName, organizationShortcut);
+        CrmLead lead = crmLeadService.getLead(shortName, organizationShortcut, channelShortcut);
         CrmOpportunity crmOpportunity = crmOpportunityService.convertLeadToOpportunity(lead);
         CrmOpportunityDTO response = crmOpportunityMapper.DB2DTO(crmOpportunity);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/crm/opportunity/" + response.getName()))
@@ -69,10 +71,11 @@ public class CrmOpportunityConverterResourceImpl implements CrmOpportunityConver
 
     @Override
     public ResponseEntity<CrmOpportunityDTO> convertCustomerToOpportunityPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                               @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) throws URISyntaxException {
         log.debug("REST request to convert Customer : {}, for Network: {} to CrmOpportunity", shortName, organizationShortcut);
 
-        CrmAccount customer = crmCustomerService.getCustomer(shortName, organizationShortcut);
+        CrmAccount customer = crmCustomerService.getCustomer(shortName, organizationShortcut, channelShortcut);
         CrmOpportunity crmOpportunity = crmOpportunityService.convertAccountToOpportunity(customer);
         CrmOpportunityDTO response = crmOpportunityMapper.DB2DTO(crmOpportunity);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/crm/opportunity/" + response.getName()))

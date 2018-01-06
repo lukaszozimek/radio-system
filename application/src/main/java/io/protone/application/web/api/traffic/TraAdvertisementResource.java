@@ -24,11 +24,12 @@ public interface TraAdvertisementResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/advertisement",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/advertisement",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<TraAdvertisementDTO> updateAdvertisementUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                     @ApiParam(value = "traAdvertisementDTO", required = true) @RequestBody TraAdvertisementDTO traAdvertisementDTO
     ) throws URISyntaxException, IOException;
 
@@ -43,10 +44,11 @@ public interface TraAdvertisementResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/advertisement",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/advertisement",
         produces = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraAdvertisementDTO> createAdvertisementUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                      @ApiParam(value = "traAdvertisementDTO", required = true) @RequestPart("traAdvertisementDTO") @Valid TraAdvertisementDTO traAdvertisementDTO,
                                                                      @ApiParam(value = "commercial") @RequestPart("commercial") MultipartFile commercial) throws URISyntaxException, IOException;
 
@@ -57,10 +59,11 @@ public interface TraAdvertisementResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/advertisement",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/advertisement",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraAdvertisementDTO>> getAllAdvertisementsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                            @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -70,10 +73,11 @@ public interface TraAdvertisementResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/advertisement/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/advertisement/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteAdvertisementUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -83,10 +87,11 @@ public interface TraAdvertisementResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/advertisement/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/advertisement/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraAdvertisementDTO> getAdvertisementUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
     @ApiOperation(value = "getAllCustomersAdvertismentsUsingGET", notes = "", response = TraAdvertisementDTO.class, responseContainer = "List", tags = {"TRAFFIC",})
@@ -95,10 +100,11 @@ public interface TraAdvertisementResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/traffic/advertisement/customer/{customerShortcut}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/advertisement/customer/{customerShortcut}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraAdvertisementDTO>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
                                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable);
 

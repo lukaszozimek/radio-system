@@ -1,13 +1,12 @@
 package io.protone.application.web.api.traffic.impl;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.protone.application.web.api.traffic.TraAdvertisementResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
-import io.protone.core.util.ProtoneObjectMapper;
+import io.protone.core.service.CorChannelService;
 import io.protone.traffic.api.dto.TraAdvertisementDTO;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.mapper.TraAdvertisementMapper;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -45,25 +43,18 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
     private TraAdvertisementMapper traAdvertisementMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
-
-    @Inject
-    private ObjectMapper objectMapper;
-
-    @PostConstruct
-    public void initialize() {
-        objectMapper = new ProtoneObjectMapper();
-    }
+    private CorChannelService corChannelService;
 
     @Override
     public ResponseEntity<TraAdvertisementDTO> updateAdvertisementUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                            @ApiParam(value = "traAdvertisementDTO", required = true) @RequestBody @Valid TraAdvertisementDTO traAdvertisementDTO) throws URISyntaxException, IOException {
         log.debug("REST request to update TraAdvertisement : {}, for Network: {}", traAdvertisementDTO, organizationShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         if (traAdvertisementDTO.getId() == null) {
-            return createAdvertisementUsingPOST(organizationShortcut, traAdvertisementDTO, null);
+            return createAdvertisementUsingPOST(organizationShortcut, channelShortcut, traAdvertisementDTO, null);
         }
-        TraAdvertisement traAdvertisement = traAdvertisementMapper.DTO2DB(traAdvertisementDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        TraAdvertisement traAdvertisement = traAdvertisementMapper.DTO2DB(traAdvertisementDTO, corChannel);
         TraAdvertisement entity = traAdvertisementService.saveAdvertisement(traAdvertisement);
         TraAdvertisementDTO response = traAdvertisementMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
@@ -75,6 +66,7 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
 
     @Override
     public ResponseEntity<TraAdvertisementDTO> createAdvertisementUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                             @ApiParam(value = "traAdvertisementDTO", required = true) @RequestPart("traAdvertisementDTO") @Valid TraAdvertisementDTO traAdvertisementDTO,
                                                                             @ApiParam(value = "commercial") @RequestPart("commercial") MultipartFile commercial) throws URISyntaxException, IOException {
 
@@ -83,8 +75,8 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
         if (traAdvertisementDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraAdvertisement", "idexists", "A new TraAdvertisement cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-        TraAdvertisement traAdvertisement = traAdvertisementMapper.DTO2DB(traAdvertisementDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        TraAdvertisement traAdvertisement = traAdvertisementMapper.DTO2DB(traAdvertisementDTO, corChannel);
         TraAdvertisement entity = traAdvertisementService.saveAdvertisement(traAdvertisement);
         TraAdvertisementDTO response = traAdvertisementMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/traffic/advertisement/" + response.getId()))
@@ -93,9 +85,10 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
 
     @Override
     public ResponseEntity<List<TraAdvertisementDTO>> getAllAdvertisementsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraAdvertisement, for Network: {}", organizationShortcut);
-        Slice<TraAdvertisement> entity = traAdvertisementService.getAllAdvertisement(organizationShortcut, pagable);
+        Slice<TraAdvertisement> entity = traAdvertisementService.getAllAdvertisement(organizationShortcut, channelShortcut, pagable);
         List<TraAdvertisementDTO> response = traAdvertisementMapper.DBs2DTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -107,16 +100,18 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
     }
 
     @Override
-    public ResponseEntity<Void> deleteAdvertisementUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long idx) {
+    public ResponseEntity<Void> deleteAdvertisementUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long idx) {
         log.debug("REST request to delete TraAdvertisement : {}, for Network: {}", idx, organizationShortcut);
-        traAdvertisementService.deleteAdvertisement(idx, organizationShortcut);
+        traAdvertisementService.deleteAdvertisement(idx, organizationShortcut, channelShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("TraAdvertisement", idx.toString())).build();
     }
 
     @Override
-    public ResponseEntity<TraAdvertisementDTO> getAdvertisementUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long idx) {
+    public ResponseEntity<TraAdvertisementDTO> getAdvertisementUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long idx) {
         log.debug("REST request to get TraAdvertisement : {}, for Network: {}", idx, organizationShortcut);
-        TraAdvertisement entity = traAdvertisementService.getAdvertisement(idx, organizationShortcut);
+        TraAdvertisement entity = traAdvertisementService.getAdvertisement(idx, organizationShortcut, channelShortcut);
         TraAdvertisementDTO response = traAdvertisementMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -127,10 +122,11 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
 
     @Override
     public ResponseEntity<List<TraAdvertisementDTO>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                           @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
                                                                                           @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraAdvertisement, for TraCustomer: {} and Network: {}", customerShortcut, organizationShortcut);
-        List<TraAdvertisement> entity = traAdvertisementService.getCustomerAdvertisements(customerShortcut, organizationShortcut, pagable);
+        List<TraAdvertisement> entity = traAdvertisementService.getCustomerAdvertisements(customerShortcut, organizationShortcut, channelShortcut, pagable);
         List<TraAdvertisementDTO> response = traAdvertisementMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(

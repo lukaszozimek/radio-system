@@ -22,11 +22,12 @@ public interface CrmContactConverterResource {
             @ApiResponse(code = 204, message = "No Content", response = CrmContactDTO.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = CrmContactDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CrmContactDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}/convert/contact",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/lead/{shortName}/convert/contact",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<CrmContactDTO> convertLeadToContact(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) throws URISyntaxException;
+                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                       @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) throws URISyntaxException;
 
 
 }

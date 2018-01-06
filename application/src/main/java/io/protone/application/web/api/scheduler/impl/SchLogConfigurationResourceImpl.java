@@ -47,9 +47,6 @@ public class SchLogConfigurationResourceImpl implements SchLogConfigurationResou
     private SchLogConfigurationMapper schLogConfigurationMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
-
-    @Inject
     private CorChannelService corChannelService;
 
     @Override
@@ -79,13 +76,11 @@ public class SchLogConfigurationResourceImpl implements SchLogConfigurationResou
         if (schLogConfigurationDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SchLogConfiguration", "idexists", "A new SchLogConfiguration cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        SchLogConfiguration schLogConfiguration = schLogConfigurationMapper.DTO2DB(schLogConfigurationDTO, corNetwork, corChannel);
+        SchLogConfiguration schLogConfiguration = schLogConfigurationMapper.DTO2DB(schLogConfigurationDTO, corChannel);
         SchLogConfiguration entity = schLogConfigurationService.saveSchLogConfiguration(schLogConfiguration);
         SchLogConfigurationDTO response = schLogConfigurationMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/channel/" + channelShortcut + "/scheduler/event/" + response.getId()))
+        return ResponseEntity.created(new URI("/api/v1/organization/" + organizationShortcut + "/organization/" + channelShortcut + "/scheduler/event/" + response.getId()))
                 .body(response);
     }
 
@@ -124,10 +119,8 @@ public class SchLogConfigurationResourceImpl implements SchLogConfigurationResou
         if (schLogConfigurationDTO.getId() == null) {
             return creatLogsConfigurationsForChannelUsingPOST(organizationShortcut, channelShortcut, schLogConfigurationDTO);
         }
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
-
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        SchLogConfiguration schEventConfiguration = schLogConfigurationMapper.DTO2DB(schLogConfigurationDTO, corNetwork, corChannel);
+        SchLogConfiguration schEventConfiguration = schLogConfigurationMapper.DTO2DB(schLogConfigurationDTO, corChannel);
         SchLogConfiguration entity = schLogConfigurationService.saveSchLogConfiguration(schEventConfiguration);
         SchLogConfigurationDTO response = schLogConfigurationMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);

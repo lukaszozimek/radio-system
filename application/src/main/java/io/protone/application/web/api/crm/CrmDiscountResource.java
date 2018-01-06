@@ -22,10 +22,11 @@ public interface CrmDiscountResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmDiscountDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmDiscountDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmDiscountDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/crm/discount",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CrmDiscountDTO>> getAllDiscountUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
@@ -35,10 +36,11 @@ public interface CrmDiscountResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmDiscountDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmDiscountDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmDiscountDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/crm/discount/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CrmDiscountDTO> getDiscountUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -49,11 +51,12 @@ public interface CrmDiscountResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmDiscountDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmDiscountDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmDiscountDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/crm/discount",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CrmDiscountDTO> updateDiscountUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                           @ApiParam(value = "discountPT", required = true) @RequestBody CrmDiscountDTO discountPT) throws URISyntaxException;
 
 
@@ -64,11 +67,12 @@ public interface CrmDiscountResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmDiscountDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmDiscountDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmDiscountDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/crm/discount",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CrmDiscountDTO> createDiscountUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                            @ApiParam(value = "discountPT", required = true) @RequestBody CrmDiscountDTO discountPT) throws URISyntaxException;
 
 
@@ -78,10 +82,11 @@ public interface CrmDiscountResource {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/configuration/crm/discount/{id}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteDiscountUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
+                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                    @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 

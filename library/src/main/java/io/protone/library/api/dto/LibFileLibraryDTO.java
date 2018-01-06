@@ -30,7 +30,11 @@ public class LibFileLibraryDTO implements Serializable {
     @NotNull
     private String prefix = null;
 
-    private List<CorChannelDTO> channels = new ArrayList();
+    @NotNull
+    private CorChannelDTO channel = null;
+
+
+    private List<CorChannelDTO> sharedChannels = new ArrayList();
 
     private String description = null;
 
@@ -129,12 +133,12 @@ public class LibFileLibraryDTO implements Serializable {
         this.shortcut = shortcut;
     }
 
-    public List<CorChannelDTO> getChannels() {
-        return channels;
+    public List<CorChannelDTO> getSharedChannels() {
+        return sharedChannels;
     }
 
-    public void setChannels(List<CorChannelDTO> channels) {
-        this.channels = channels;
+    public void setSharedChannels(List<CorChannelDTO> sharedChannels) {
+        this.sharedChannels = sharedChannels;
     }
 
 
@@ -146,7 +150,7 @@ public class LibFileLibraryDTO implements Serializable {
                 ", counter=" + counter +
                 ", shortcut='" + shortcut + '\'' +
                 ", prefix='" + prefix + '\'' +
-                ", channels=" + channels +
+                ", sharedChannels=" + sharedChannels +
                 ", description='" + description + '\'' +
                 '}';
     }
@@ -184,6 +188,14 @@ public class LibFileLibraryDTO implements Serializable {
 
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return result;
+    }
+
+    public CorChannelDTO getChannel() {
+        return channel;
+    }
+
+    public void setChannel(CorChannelDTO channel) {
+        this.channel = channel;
     }
 
 
