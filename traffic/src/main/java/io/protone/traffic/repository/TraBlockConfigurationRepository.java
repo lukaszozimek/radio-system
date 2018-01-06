@@ -13,11 +13,11 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface TraBlockConfigurationRepository extends JpaRepository<TraBlockConfiguration, Long> {
-    List<TraBlockConfiguration> findAllByNetwork_ShortcutAndChannel_Shortcut(@Param("network") String shortcut, @Param("channel") String channelShortcut);
+    List<TraBlockConfiguration> findAllByChannel_Organization_ShortcutAndChannel_Shortcut(String organization, String channelShortcut);
 
-    List<TraBlockConfiguration> findAllByNetwork_ShortcutAndDay(String shortcut, CorDayOfWeekEnum dayOfWeekEnum);
+    List<TraBlockConfiguration> findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndDay(String organization, String channelShortcut, CorDayOfWeekEnum dayOfWeekEnum);
 
-    TraBlockConfiguration findOneByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String shortcut);
+    TraBlockConfiguration findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String shortcut);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 }

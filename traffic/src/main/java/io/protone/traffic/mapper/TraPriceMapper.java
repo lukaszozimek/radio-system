@@ -1,12 +1,7 @@
 package io.protone.traffic.mapper;
 
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.domain.CorPerson;
-import io.protone.core.mapper.CorContactMapper;
-import io.protone.traffic.api.dto.TraCustomerPersonDTO;
-import io.protone.traffic.api.dto.TraOrderDTO;
+import io.protone.core.domain.CorChannel;
 import io.protone.traffic.api.dto.TraPriceDTO;
-import io.protone.traffic.domain.TraOrder;
 import io.protone.traffic.domain.TraPrice;
 import org.mapstruct.*;
 
@@ -23,9 +18,9 @@ public interface TraPriceMapper {
 
     List<TraPriceDTO> DBs2DTOs(List<TraPrice> traOrders);
 
-    TraPrice DTO2DB(TraPriceDTO traPriceDTO, @Context CorNetwork network);
+    TraPrice DTO2DB(TraPriceDTO traPriceDTO, @Context CorChannel network);
 
-    default List<TraPrice> DTOs2DBs(List<TraPriceDTO> dtos, @Context CorNetwork networkId) {
+    default List<TraPrice> DTOs2DBs(List<TraPriceDTO> dtos, @Context CorChannel networkId) {
         List<TraPrice> corPeople = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {
             return null;
@@ -38,7 +33,7 @@ public interface TraPriceMapper {
 
 
     @AfterMapping
-    default void traPriceDTOToTraPriceAfterMapping(TraPriceDTO dto, @MappingTarget TraPrice entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void traPriceDTOToTraPriceAfterMapping(TraPriceDTO dto, @MappingTarget TraPrice entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 }

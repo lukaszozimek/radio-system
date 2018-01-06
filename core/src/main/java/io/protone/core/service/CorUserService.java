@@ -1,11 +1,12 @@
 package io.protone.core.service;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
-import io.protone.core.api.dto.CorNetworkDTO;
+import io.protone.core.api.dto.CorOrganizationDTO;
 import io.protone.core.api.dto.CorUserDTO;
 import io.protone.core.domain.*;
 import io.protone.core.mapper.CorChannelMapper;
 import io.protone.core.mapper.CorNetworkMapper;
+import io.protone.core.mapper.CorOrganizationMapper;
 import io.protone.core.repository.CorAuthorityRepository;
 import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorUserRepository;
@@ -57,11 +58,11 @@ public class CorUserService {
     private CorChannelRepository corChannelRepository;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorOrganizationService corOrganizationService;
 
 
     @Autowired
-    private CorNetworkMapper corNetworkMapper;
+    private CorOrganizationMapper corNetworkMapper;
 
     @Autowired
     private CorChannelMapper corChannelMapper;
@@ -80,8 +81,8 @@ public class CorUserService {
                     return user;
                 });
         if (corUser.isPresent()) {
-            CorNetwork network = corNetworkService.save(corUser.get().getNetworks().stream().findFirst().get().active(true));
-            corNetworkService.createPublicBucketForThisNetwork(network);
+            CorOrganization corOrganization = corOrganizationService.save(corUser.get().getOrganization().active(true));
+
         }
         return corUser;
     }
@@ -115,10 +116,10 @@ public class CorUserService {
     }
 
     public CorUser createUser(String login, String password, String firstName, String lastName, String email,
-                              String langKey, CorNetworkDTO networkPt) {
+                              String langKey, CorOrganizationDTO organizationDTO) {
 
         CorUser newUser = new CorUser();
-        CorNetwork network = corNetworkService.save(corNetworkMapper.DTO2DB(networkPt));
+        CorOrganization organization = corOrganizationService.save(corNetworkMapper.DTO2DB(organizationDTO));
         CorAuthority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<CorAuthority> authorities = new HashSet<>();
 
@@ -142,16 +143,14 @@ public class CorUserService {
         newUser.setActivationkey(RandomUtil.generateActivationKey());
         authorities.add(authority);
         newUser.setAuthorities(authorities);
-        newUser.setNetworks(newHashSet(network));
+        newUser.setOrganization(organization);
         userRepository.save(newUser);
-        network.addNetworkUsers(newUser);
-        corNetworkService.save(network);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
 
     public CorUser createUser(CorUserDTO userDTO, MultipartFile avatar) throws IOException, TikaException, SAXException {
-        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
+        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar, this.corOrganizationService.findOrganization(userDTO.getOrganizationDTO().getShortcut()));
         CorUser user = new CorUser();
         CorUser userCreator = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
 
@@ -163,7 +162,7 @@ public class CorUserService {
         user.addNetwork(userCreator.getNetworks().stream().findFirst().get());
         if (userDTO.getChannel() != null && !userDTO.getChannel().isEmpty()) {
             userDTO.getChannel().stream().forEach(coreChannelPT -> {
-                user.addChannel(corChannelMapper.DTO2DB(coreChannelPT, userCreator.getNetworks().stream().findFirst().get()));
+                user.addChannel(corChannelMapper.DTO2DB(coreChannelPT, userCreator.getOrganization()));
 
             });
         }
@@ -236,7 +235,7 @@ public class CorUserService {
     }
 
     public CorUser updateUser(CorUserDTO userDTO, MultipartFile avatar) throws IOException, TikaException, SAXException {
-        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
+        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar, corOrganizationService.findOrganization(userDTO.getOrganizationDTO().getShortcut()));
         CorUser corUser = Optional.of(userRepository
                 .findOne(userDTO.getId()))
                 .map(user -> {
@@ -281,8 +280,8 @@ public class CorUserService {
         });
     }
 
-    public Slice<CorUser> getAllManagedUsers(CorNetwork corNetwork, Pageable pageable) {
-        return userRepository.findSliceByNetworks(newHashSet(corNetwork), pageable);
+    public Slice<CorUser> getAllManagedUsers(String corOrganizationShortcut, Pageable pageable) {
+        return userRepository.findSliceByOrganization_Shortcut(corOrganizationShortcut, pageable);
 
     }
 
@@ -316,7 +315,7 @@ public class CorUserService {
         }
     }
 
-    public Optional<CorUser> getUserWithAuthoritiesByLoginAndNetwork(String login, CorNetwork corNetwork) {
-        return userRepository.findOneWithAuthoritiesByLoginAndNetworks(login, newHashSet(corNetwork));
+    public Optional<CorUser> getUserWithAuthoritiesByLoginAndNetwork(String login, String corOrganizationShortcut) {
+        return userRepository.findOneWithAuthoritiesByLoginAndOrganization_Shortcut(login, corOrganizationShortcut);
     }
 }

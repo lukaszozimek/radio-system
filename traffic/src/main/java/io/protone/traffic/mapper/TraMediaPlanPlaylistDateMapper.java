@@ -24,22 +24,21 @@ public interface TraMediaPlanPlaylistDateMapper {
 
     List<TraMediaPlanPlaylistDateDTO> DBs2DTOs(List<TraMediaPlanPlaylistDate> traMediaPlanPlaylistDates);
 
-    TraMediaPlanPlaylistDate DTO2DB(TraMediaPlanPlaylistDateDTO traMediaPlanPlaylistDateDTO, @Context CorNetwork network, @Context CorChannel corChannel);
+    TraMediaPlanPlaylistDate DTO2DB(TraMediaPlanPlaylistDateDTO traMediaPlanPlaylistDateDTO, @Context CorChannel corChannel);
 
-    default List<TraMediaPlanPlaylistDate> DTOs2DBs(List<TraMediaPlanPlaylistDateDTO> traMediaPlanPlaylistDateDTOS, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<TraMediaPlanPlaylistDate> DTOs2DBs(List<TraMediaPlanPlaylistDateDTO> traMediaPlanPlaylistDateDTOS, @Context CorChannel corChannel) {
         List<TraMediaPlanPlaylistDate> traOrders = new ArrayList<>();
         if (traMediaPlanPlaylistDateDTOS.isEmpty() || traMediaPlanPlaylistDateDTOS == null) {
             return null;
         }
         for (TraMediaPlanPlaylistDateDTO dto : traMediaPlanPlaylistDateDTOS) {
-            traOrders.add(DTO2DB(dto, network, corChannel));
+            traOrders.add(DTO2DB(dto, corChannel));
         }
         return traOrders;
     }
 
     @AfterMapping
-    default void traInvoicePTToTraMediaPlanPlaylistDateAfterMapping(TraMediaPlanPlaylistDateDTO dto, @MappingTarget TraMediaPlanPlaylistDate entity, @Context CorNetwork network, @Context CorChannel corChannel) {
-        entity.setNetwork(network);
+    default void traInvoicePTToTraMediaPlanPlaylistDateAfterMapping(TraMediaPlanPlaylistDateDTO dto, @MappingTarget TraMediaPlanPlaylistDate entity, @Context CorChannel corChannel) {
         entity.setChannel(corChannel);
     }
 

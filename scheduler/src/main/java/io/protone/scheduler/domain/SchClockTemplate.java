@@ -82,11 +82,6 @@ public class SchClockTemplate extends SchEventTemplate implements Serializable {
     }
 
 
-    public SchClockTemplate network(CorNetwork network) {
-        super.network(network);
-        return this;
-    }
-
     public SchClockTemplate channel(CorChannel channel) {
         super.channel(channel);
         return this;
@@ -116,7 +111,6 @@ public class SchClockTemplate extends SchEventTemplate implements Serializable {
                 com.google.common.base.Objects.equal(getEmissions(), that.getEmissions()) &&
                 getEventType() == that.getEventType() &&
                 com.google.common.base.Objects.equal(getSchLogConfiguration(), that.getSchLogConfiguration()) &&
-                com.google.common.base.Objects.equal(getNetwork(), that.getNetwork()) &&
                 com.google.common.base.Objects.equal(getChannel(), that.getChannel()) &&
                 com.google.common.base.Objects.equal(getSequence(), that.getSequence());
 
@@ -124,7 +118,7 @@ public class SchClockTemplate extends SchEventTemplate implements Serializable {
 
     @Override
     public int hashCode() {
-        return com.google.common.base.Objects.hashCode(getId(), getName(), getSequence(), getInstance(), getShortName(), getEventCategory(), getSchEventTemplates(), getEmissionsLog(), getEmissions(), getEventType(), getSchLogConfiguration(), getNetwork(), getChannel());
+        return com.google.common.base.Objects.hashCode(getId(), getName(), getSequence(), getInstance(), getShortName(), getEventCategory(), getSchEventTemplates(), getEmissionsLog(), getEmissions(), getEventType(), getSchLogConfiguration(), getChannel());
     }
 
 

@@ -1,6 +1,7 @@
 package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.library.domain.LibFileLibrary;
 import io.protone.library.service.LibFileLibraryService;
@@ -35,7 +36,6 @@ public class SchLogConfigurationService {
             if (schLogConfiguration.getId() == null) {
                 this.libFileLibraryService.createOrUpdateLibrary(new LibFileLibrary()
                         .addChannel(schLogConfiguration.getChannel())
-                        .network(schLogConfiguration.getNetwork())
                         .shortcut(schLogConfiguration.getExtension().toLowerCase())
                         .name(schLogConfiguration.getExtension()).prefix(schLogConfiguration.getExtension().substring(1)));
             }
@@ -47,27 +47,27 @@ public class SchLogConfigurationService {
 
     @Transactional(readOnly = true)
     public Slice<SchLogConfiguration> findSchLogConfigurationForNetworkAndChannel(String organizationShortcut, String channelShortcut, Pageable pageable) {
-        return schLogConfigurationRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
+        return schLogConfigurationRepository.findAllByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
     public SchLogConfiguration findOneSchlogConfigurationByNetworkAndChannelAndExtension(String organizationShortcut, String channelShortcut, String extension) {
-        return this.schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndExtension(organizationShortcut, channelShortcut, extension);
+        return this.schLogConfigurationRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndExtension(organizationShortcut, channelShortcut, extension);
     }
 
     @Transactional(readOnly = true)
     public SchLogConfiguration findSchLogConfigurationForNetworkAndChannelAndId(String organizationShortcut, String channelShortcut, Long id) {
-        return schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndId(organizationShortcut, channelShortcut, id);
+        return schLogConfigurationRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndId(organizationShortcut, channelShortcut, id);
     }
 
     @Transactional
     public void deleteSchLogConfigurationByNetworkAndChannelAndId(String organizationShortcut, String channelShortcut, Long id) {
-        SchLogConfiguration schLogConfiguration = schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndId(organizationShortcut, channelShortcut, id);
+        SchLogConfiguration schLogConfiguration = schLogConfigurationRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndId(organizationShortcut, channelShortcut, id);
         delete(schLogConfiguration);
     }
 
     @Transactional
     public void deleteSchLogConfigurationByNetworkAndChannelAndId(String organizationShortcut, String channelShortcut, String extension) {
-        SchLogConfiguration schLogConfiguration = schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndExtension(organizationShortcut, channelShortcut, extension);
+        SchLogConfiguration schLogConfiguration = schLogConfigurationRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndExtension(organizationShortcut, channelShortcut, extension);
         delete(schLogConfiguration);
     }
 

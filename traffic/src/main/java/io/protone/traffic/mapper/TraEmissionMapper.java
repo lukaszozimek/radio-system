@@ -22,15 +22,15 @@ public interface TraEmissionMapper {
     List<TraEmissionDTO> DBs2DTOs(List<TraEmission> traEmissions);
 
     @Mapping(source = "orderId", target = "order")
-    TraEmission DTO2DB(TraEmissionDTO traEmissionDTO, @Context CorNetwork network, @Context CorChannel corChannel);
+    TraEmission DTO2DB(TraEmissionDTO traEmissionDTO, @Context CorChannel corChannel);
 
-    default List<TraEmission> DTOs2DBs(List<TraEmissionDTO> traEmissionDTOS, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<TraEmission> DTOs2DBs(List<TraEmissionDTO> traEmissionDTOS, @Context CorChannel corChannel) {
         List<TraEmission> traEmissions = new ArrayList<>();
         if (traEmissionDTOS.isEmpty() || traEmissionDTOS == null) {
             return null;
         }
         for (TraEmissionDTO dto : traEmissionDTOS) {
-            traEmissions.add(DTO2DB(dto, network, corChannel));
+            traEmissions.add(DTO2DB(dto, corChannel));
         }
         return traEmissions;
     }
@@ -50,8 +50,7 @@ public interface TraEmissionMapper {
     }
 
     @AfterMapping
-    default void traEmissionDTOToTraEmissionAfterMapping(TraEmissionDTO dto, @MappingTarget TraEmission entity, @Context CorNetwork corNetwork, @Context CorChannel corChannel) {
-        entity.setNetwork(corNetwork);
+    default void traEmissionDTOToTraEmissionAfterMapping(TraEmissionDTO dto, @MappingTarget TraEmission entity, @Context CorChannel corChannel) {
         entity.setChannel(corChannel);
     }
 }

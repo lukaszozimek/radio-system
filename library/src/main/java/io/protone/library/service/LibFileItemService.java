@@ -1,11 +1,13 @@
 package io.protone.library.service;
 
 import io.protone.core.constans.ServiceConstants;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.s3.S3Client;
 import io.protone.core.s3.exceptions.DeleteException;
 import io.protone.core.s3.exceptions.DownloadException;
 import io.protone.core.s3.exceptions.S3Exception;
 import io.protone.core.s3.exceptions.UploadException;
+import io.protone.core.service.CorChannelService;
 import io.protone.library.domain.LibCloudObject;
 import io.protone.library.domain.LibFileItem;
 import io.protone.library.domain.LibFileLibrary;
@@ -36,6 +38,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import static io.protone.core.constans.MinioFoldersConstants.FILE;
+import static io.protone.library.service.LibLibraryMediaService.LIBRARY_SEPARATOR;
 
 @Service
 public class LibFileItemService {
@@ -53,19 +56,20 @@ public class LibFileItemService {
     private LibCloudObjectRepository cloudObjectRepository;
     @Inject
     private MediaUtils mediaUtils;
+    @Inject
+    private CorChannelService corChannelService;
 
-
-    public Slice<LibFileItem> findAllLibFileItems(String organizationShortcut, String libraryShortcut, Pageable pageable) {
-        return libFileItemRepository.findSliceByNetwork_ShortcutAndLibrary_Shortcut(organizationShortcut, libraryShortcut, pageable);
+    public Slice<LibFileItem> findAllLibFileItems(String organizationShortcut, String channelShortcut, String libraryShortcut, Pageable pageable) {
+        return libFileItemRepository.findSliceByChannel_Organization_ShortcutAndChannel_ShortcutAndLibrary_Shortcut(organizationShortcut, channelShortcut, libraryShortcut, pageable);
     }
 
-    public LibFileItem findLibFileItem(String organizationShortcut, String libraryShortcut, String idx) {
-        return libFileItemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(organizationShortcut, libraryShortcut, idx);
+    public LibFileItem findLibFileItem(String organizationShortcut, String channelShortcut, String libraryShortcut, String idx) {
+        return libFileItemRepository.findByChannel_Organization_ShortcutAndChannel_ShortcutAndLibrary_ShortcutAndIdx(organizationShortcut, channelShortcut, libraryShortcut, idx);
     }
 
-    public LibFileItem uploadFileItem(String organizationShortcut, String libraryShortcut, MultipartFile file) throws IOException {
+    public LibFileItem uploadFileItem(String organizationShortcut, String channelShortcut, String libraryShortcut, MultipartFile file) throws IOException {
         LibFileItem libFileItem = new LibFileItem();
-        LibFileLibrary libFileLibrary = libraryService.findLibrary(organizationShortcut, libraryShortcut);
+        LibFileLibrary libFileLibrary = libraryService.findLibraryByChannel(organizationShortcut, channelShortcut, libraryShortcut);
         ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
         byte[] inputStream = new byte[bais.available()];
         Supplier<ByteArrayInputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
@@ -77,23 +81,22 @@ public class LibFileItemService {
         try {
             parser.parse(inputStreamSupplier.get(), handler, metadata, pcontext);
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(libFileLibrary.getNetwork().getShortcut(), FILE + libFileLibrary.getShortcut(), fileUUID, inputStreamSupplier.get(), metadata.get(HttpHeaders.CONTENT_TYPE));
+            s3Client.upload(organizationShortcut + LIBRARY_SEPARATOR + channelShortcut, FILE + libFileLibrary.getShortcut(), fileUUID, inputStreamSupplier.get(), metadata.get(HttpHeaders.CONTENT_TYPE));
             LibCloudObject cloudObject = new LibCloudObject()
                     .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                     .originalName(file.getOriginalFilename())
                     .original(Boolean.TRUE)
                     .size(file.getSize())
-                    .network(libFileLibrary.getNetwork())
                     .hash(ServiceConstants.NO_HASH)
                     .objectType(LibObjectTypeEnum.OT_AUDIO);
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
-
+            CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
             libFileItem.setCloudObject(cloudObject);
             libFileItem.setLibrary(libFileLibrary);
             log.debug("Persisting LibDocumentObject: {}", libFileItem);
             libFileItem.setIdx(mediaUtils.generateIdx(libFileLibrary));
-            libFileItem.network(libFileLibrary.getNetwork());
+            libFileItem.channel(corChannel);
             libFileItem.name(file.getOriginalFilename().split("\\.")[0]);
             libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
         } catch (UploadException e) {
@@ -107,30 +110,29 @@ public class LibFileItemService {
         }
     }
 
-    public LibFileItem uploadFileItemWithPredefinedContentType(String organizationShortcut, String libraryShortcut, MultipartFile file, String contentType) throws IOException {
+    public LibFileItem uploadFileItemWithPredefinedContentType(String organizationShortcut, String channelShortcut, String libraryShortcut, MultipartFile file, String contentType) throws IOException {
         LibFileItem libFileItem = new LibFileItem();
-        LibFileLibrary libFileLibrary = libraryService.findLibrary(organizationShortcut, libraryShortcut);
+        LibFileLibrary libFileLibrary = libraryService.findLibraryByChannel(organizationShortcut, channelShortcut, libraryShortcut);
         ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
         String fileUUID = UUID.randomUUID().toString();
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(libFileLibrary.getNetwork().getShortcut(), FILE + libFileLibrary.getShortcut(), fileUUID, bais, contentType);
+            s3Client.upload(organizationShortcut + LIBRARY_SEPARATOR + channelShortcut, FILE + libFileLibrary.getShortcut(), fileUUID, bais, contentType);
             LibCloudObject cloudObject = new LibCloudObject()
                     .uuid(fileUUID).contentType(contentType)
                     .originalName(file.getOriginalFilename())
                     .original(Boolean.TRUE)
                     .size(file.getSize())
-                    .network(libFileLibrary.getNetwork())
                     .hash(ServiceConstants.NO_HASH)
                     .objectType(LibObjectTypeEnum.OT_AUDIO);
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
-
+            CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
             libFileItem.setCloudObject(cloudObject);
             libFileItem.setLibrary(libFileLibrary);
             log.debug("Persisting LibDocumentObject: {}", libFileItem);
             libFileItem.setIdx(mediaUtils.generateIdx(libFileLibrary));
-            libFileItem.network(libFileLibrary.getNetwork());
+            libFileItem.channel(corChannel);
             libFileItem.name(file.getOriginalFilename().split("\\.")[0]);
             libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
         } catch (UploadException e) {
@@ -144,8 +146,8 @@ public class LibFileItemService {
         }
     }
 
-    public byte[] download(String organizationShortcut, String libraryShortcut, String idx) throws IOException {
-        LibFileItem libFileItem = this.findLibFileItem(organizationShortcut, libraryShortcut, idx);
+    public byte[] download(String organizationShortcut, String channelShortcut, String libraryShortcut, String idx) throws IOException {
+        LibFileItem libFileItem = this.findLibFileItem(organizationShortcut, channelShortcut, libraryShortcut, idx);
         return download(libFileItem);
     }
 
@@ -159,7 +161,7 @@ public class LibFileItemService {
         LibCloudObject cloudObject = itemDB.getCloudObject();
         InputStream stream = null;
         try {
-            stream = s3Client.download(itemDB.getNetwork().getShortcut(), FILE + itemDB.getLibrary().getShortcut(), cloudObject.getUuid());
+            stream = s3Client.download(itemDB.getChannel().getOrganization().getShortcut() + LIBRARY_SEPARATOR + itemDB.getChannel().getShortcut(), FILE + itemDB.getLibrary().getShortcut(), cloudObject.getUuid());
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add("content-disposition", "filename=" + cloudObject.getOriginalName());
             responseHeaders.add("Content-Length", String.format("%d", cloudObject.getSize()));
@@ -176,8 +178,8 @@ public class LibFileItemService {
     }
 
     @Transactional
-    public void deleteFile(String organizationShortcut, String libraryShortcut, String idx) {
-        LibFileItem libFileItem = this.findLibFileItem(organizationShortcut, libraryShortcut, idx);
+    public void deleteFile(String organizationShortcut, String channelShortcut, String libraryShortcut, String idx) {
+        LibFileItem libFileItem = this.findLibFileItem(organizationShortcut, channelShortcut, libraryShortcut, idx);
         if (libFileItem != null) {
             deleteFile(libFileItem);
         }
@@ -188,7 +190,7 @@ public class LibFileItemService {
         if (libFileItem != null) {
             LibCloudObject cloudObject = libFileItem.getCloudObject();
             try {
-                s3Client.delete(libFileItem.getNetwork().getShortcut(), FILE + libFileItem.getLibrary().getShortcut(), cloudObject.getUuid());
+                s3Client.delete(libFileItem.getChannel().getOrganization().getShortcut() + LIBRARY_SEPARATOR + libFileItem.getChannel().getShortcut(), FILE + libFileItem.getLibrary().getShortcut(), cloudObject.getUuid());
                 libFileItemRepository.delete(libFileItem);
                 libFileItemRepository.flush();
                 cloudObjectRepository.delete(cloudObject);
@@ -203,10 +205,10 @@ public class LibFileItemService {
         }
     }
 
-    public void moveFileItem(String organizationShortcut, String libraryPrefix, String idx, String libraryShortcut) {
-        LibFileLibrary dstLibarary = this.libraryService.findLibrary(organizationShortcut, libraryShortcut);
+    public void moveFileItem(String organizationShortcut, String channelShortcut, String libraryPrefix, String idx, String libraryShortcut) {
+        LibFileLibrary dstLibarary = this.libraryService.findLibraryByChannel(organizationShortcut, channelShortcut, libraryShortcut);
         if (dstLibarary != null) {
-            LibFileItem optionalItemDB = libFileItemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(organizationShortcut, libraryShortcut, idx);
+            LibFileItem optionalItemDB = libFileItemRepository.findByChannel_Organization_ShortcutAndChannel_ShortcutAndLibrary_ShortcutAndIdx(organizationShortcut, channelShortcut, libraryPrefix, idx);
             if (optionalItemDB != null) {
                 optionalItemDB.setLibrary(dstLibarary);
                 libFileItemRepository.saveAndFlush(optionalItemDB);

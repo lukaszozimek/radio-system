@@ -5,10 +5,10 @@ import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorChannelDTO;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.domain.enumeration.CorEntityTypeEnum;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.repository.CorOrganizationRepository;
 import io.protone.language.service.pql.LaPQLMappingService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,14 +40,14 @@ public class LaPQLMappingServiceTest {
     private CorChannelRepository corChannelRepository;
 
     @Autowired
-    private CorNetworkRepository corNetworkRepository;
+    private CorOrganizationRepository corOrganizationRepository;
 
     @Test
     public void shouldReturnCorChannelWithPredicateName() throws Exception {
         //when
-        CorNetwork corNetwork = new CorNetwork().shortcut(SAMPLE_NET).name(SAMPLE_NET);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
-        CorChannel corChannel = new CorChannel().shortcut(SAMPLE_SHORTCUT).name(SAMPLE).network(corNetwork);
+        CorOrganization corNetwork = new CorOrganization().shortcut(SAMPLE_NET).name(SAMPLE_NET);
+        corNetwork = corOrganizationRepository.saveAndFlush(corNetwork);
+        CorChannel corChannel = new CorChannel().shortcut(SAMPLE_SHORTCUT).name(SAMPLE).organization(corNetwork);
         corChannelRepository.saveAndFlush(corChannel);
 
         List corChannels = Lists.newArrayList(corChannel);

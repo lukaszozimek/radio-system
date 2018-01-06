@@ -19,19 +19,19 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {LibMediaItemThinMapper.class, SchAttachmentTemplateMapper.class})
 public interface SchEmissionTemplateMapper {
-    SchEmissionTemplate DTO2DB(SchEmissionTemplateDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
+    SchEmissionTemplate DTO2DB(SchEmissionTemplateDTO dto, @Context CorChannel corChannel);
 
     SchEmissionTemplateDTO DB2DTO(SchEmissionTemplate entity);
 
     List<SchEmissionTemplateDTO> DBs2DTOs(List<SchEmissionTemplate> entityList);
 
-    default List<SchEmissionTemplate> DTOs2DBs(List<SchEmissionTemplateDTO> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<SchEmissionTemplate> DTOs2DBs(List<SchEmissionTemplateDTO> dList, @Context CorChannel corChannel) {
         List<SchEmissionTemplate> eList = new ArrayList<>();
         if (dList.isEmpty() || dList == null) {
             return null;
         }
         for (SchEmissionTemplateDTO dto : dList) {
-            eList.add(DTO2DB(dto, network, corChannel));
+            eList.add(DTO2DB(dto, corChannel));
         }
         return eList;
     }
@@ -41,8 +41,7 @@ public interface SchEmissionTemplateMapper {
     }
 
     @AfterMapping
-    default void schEmissionConfigurationDTOToSchEmissionConfigurationAfterMapping(SchEmissionTemplateDTO dto, @MappingTarget SchEmissionTemplate entity, @Context CorNetwork network, @Context CorChannel corChannel) {
-        entity.setNetwork(network);
+    default void schEmissionConfigurationDTOToSchEmissionConfigurationAfterMapping(SchEmissionTemplateDTO dto, @MappingTarget SchEmissionTemplate entity, @Context CorChannel corChannel) {
         entity.setChannel(corChannel);
     }
 }

@@ -18,7 +18,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "cor_channel", uniqueConstraints =
-@UniqueConstraint(columnNames = {"shortcut", "network_id"}))
+@UniqueConstraint(columnNames = {"shortcut", "network_id", "organization_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CorChannel extends AbstractAuditingEntity implements Serializable {
 
@@ -52,10 +52,10 @@ public class CorChannel extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     private CorNetwork network;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @PodamExclude
     @JsonIgnore
-    private CorOrganization corOrganization;
+    private CorOrganization organization;
 
     @ManyToMany(mappedBy = "channels")
     @JsonIgnore
@@ -183,15 +183,31 @@ public class CorChannel extends AbstractAuditingEntity implements Serializable {
         return Objects.hashCode(id);
     }
 
+
+    public CorOrganization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(CorOrganization organization) {
+        this.organization = organization;
+    }
+
+    public CorChannel organization(CorOrganization organization) {
+        this.organization = organization;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "CorChannel{" +
                 "id=" + id +
-                ", shortcut='" + shortcut + "'" +
-                ", name='" + name + "'" +
-                ", description='" + description + "'" +
+                ", shortcut='" + shortcut + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", corImageItem=" + corImageItem +
+                ", network=" + network +
+                ", organization=" + organization +
+                ", channelUsers=" + channelUsers +
                 '}';
     }
-
-
 }

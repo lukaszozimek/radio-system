@@ -1,6 +1,6 @@
 package io.protone.crm.mapper;
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.mapper.CorUserMapper;
 import io.protone.crm.api.dto.CrmTaskCommentDTO;
 import io.protone.crm.domain.CrmTaskComment;
@@ -24,22 +24,22 @@ public interface CrmTaskCommentMapper {
     List<CrmTaskCommentDTO> DBs2DTOs(List<CrmTaskComment> crmTaskComments);
 
     @Mapping(source = "createdBy", target = "createdBy")
-    CrmTaskComment DTO2DB(CrmTaskCommentDTO crmTaskCommentDTO, @Context CorNetwork corNetwork);
+    CrmTaskComment DTO2DB(CrmTaskCommentDTO crmTaskCommentDTO, @Context CorChannel corChannel);
 
-    default Set<CrmTaskComment> DTOs2DBs(List<CrmTaskCommentDTO> crmTaskDTOS, CorNetwork corNetwork) {
+    default Set<CrmTaskComment> DTOs2DBs(List<CrmTaskCommentDTO> crmTaskDTOS, CorChannel corChannel) {
         Set<CrmTaskComment> crmTasks = new HashSet<>();
         if (crmTaskDTOS.isEmpty() || crmTaskDTOS == null) {
             return null;
         }
         for (CrmTaskCommentDTO dto : crmTaskDTOS) {
-            crmTasks.add(DTO2DB(dto, corNetwork));
+            crmTasks.add(DTO2DB(dto, corChannel));
         }
         return crmTasks;
     }
 
     @AfterMapping
-    default void crmTaskCommentDTOToCrmTaskCommentAfterMapping(CrmTaskCommentDTO dto, @MappingTarget CrmTaskComment entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void crmTaskCommentDTOToCrmTaskCommentAfterMapping(CrmTaskCommentDTO dto, @MappingTarget CrmTaskComment entity, @Context CorChannel corChannel) {
+        entity.setChannel(corChannel);
     }
 }
 

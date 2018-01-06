@@ -556,8 +556,8 @@ relationship ManyToOne {
 
     SchEmission{mediaItem} to LibMediaItem,
 
-    LibLibrary{network} to CorNetwork,
- 	CorChannel{network} to CorNetwork,
+    LibLibrary{channel} to CorNetwork,
+ 	CorChannel{channel} to CorNetwork,
 
     SchBlock{playlist} to SchPlaylist,
     SchBlock{template} to SchTemplate,
@@ -569,30 +569,30 @@ relationship ManyToOne {
     LibMediaItem{artist} to LibArtist,
     LibMediaItem{album} to LibAlbum,
     LibMediaItem{Track} to LibTrack,
-    LibMediaItem{network} to CorNetwork,
+    LibMediaItem{channel} to CorNetwork,
 
     LibAlbum{label} to LibLabel,
     LibTrack{album} to LibAlbum,
     LibTrack{artist} to LibArtist,
     LibAlbum{artist} to LibArtist,
-    LibLabel{network} to CorNetwork,
-    LibArtist{network} to CorNetwork,
-    LibAlbum{network} to CorNetwork,
-    LibTrack{network} to CorNetwork,
+    LibLabel{channel} to CorNetwork,
+    LibArtist{channel} to CorNetwork,
+    LibAlbum{channel} to CorNetwork,
+    LibTrack{channel} to CorNetwork,
 
-    CorPropertyKey{network} to CorNetwork,
+    CorPropertyKey{channel} to CorNetwork,
     CorPropertyValue{propertyKey} to CorPropertyKey,
-	CfgExternalSystemLog{network} to CorNetwork,
+	CfgExternalSystemLog{channel} to CorNetwork,
     CfgExternalSystemLog{channel} to CorChannel,
-    CorTag{network} to CorNetwork,
-    CorContact{network} to CorNetwork,
+    CorTag{channel} to CorNetwork,
+    CorContact{channel} to CorNetwork,
     CorContact {person} to CorPerson{contacts},
-    CorPerson{network} to CorNetwork,
-    CorAddress{network} to CorNetwork,
+    CorPerson{channel} to CorNetwork,
+    CorAddress{channel} to CorNetwork,
 
     LibMediaItem{Library} to LibLibrary,
     LibImageItem{Library} to LibLibrary,
-    LibImageItem{network} to CorNetwork,
+    LibImageItem{channel} to CorNetwork,
     LibFileItem{Library} to LibLibrary,
 
     CorPerson{author} to LibMediaItem {author},
@@ -607,28 +607,28 @@ relationship ManyToOne {
     LibDocumentObject{mediaItem} to LibMediaItem,
 
     LibImageObject{mediaItem} to LibMediaItem,
-    LibAudioObject{network} to CorNetwork,
-    LibVideoObject{network} to CorNetwork,
-    LibDocumentObject{network} to CorNetwork,
+    LibAudioObject{channel} to CorNetwork,
+    LibVideoObject{channel} to CorNetwork,
+    LibDocumentObject{channel} to CorNetwork,
 
-    LibImageObject{network} to CorNetwork,
-    LibImageItem{network}    to CorNetwork,
+    LibImageObject{channel} to CorNetwork,
+    LibImageItem{channel}    to CorNetwork,
     LibImageObject{imageItem} to LibImageItem,
     LibFileItem{parentFile} to LibFileItem,
 
-    CfgMarkerConfiguration{network} to CorNetwork,
+    CfgMarkerConfiguration{channel} to CorNetwork,
 
-    LibCloudObject{network} to CorNetwork,
+    LibCloudObject{channel} to CorNetwork,
     LibCloudObject{createdBy} to CorUser,
 
 
-    CorDictionary{network} to CorNetwork,
-    CorCurrency {network} to CorNetwork,
+    CorDictionary{channel} to CorNetwork,
+    CorCurrency {channel} to CorNetwork,
 
-    CrmContact {network} to CorNetwork,
+    CrmContact {channel} to CorNetwork,
 
-    CorCountry {network} to CorNetwork,
-    CorTax{network} to CorNetwork,
+    CorCountry {channel} to CorNetwork,
+    CorTax{channel} to CorNetwork,
 
     CrmContact{range} to CorDictionary,
     CrmContact{size} to CorDictionary,
@@ -639,30 +639,30 @@ relationship ManyToOne {
     CrmContact{status} to CorDictionary,
 
 
-    TraDiscount {network} to CorNetwork,
-    TraPrice {network} to CorNetwork,
+    TraDiscount {channel} to CorNetwork,
+    TraPrice {channel} to CorNetwork,
     TraAdvertisement{customer} to CrmAccount,
-    TraAdvertisement{network} to CorNetwork,
+    TraAdvertisement{channel} to CorNetwork,
 
     TraAdvertisement{industry} to CorDictionary,
     TraAdvertisement {type} to CorDictionary,
     TraAdvertisement{customer} to CrmAccount,
 
     TraCampaign{customer} to CrmAccount,
-    TraCampaign{network} to CorNetwork,
+    TraCampaign{channel} to CorNetwork,
     TraCampaign{status} to CorDictionary,
     TraCampaign{price} to TraPrice,
 
     TraInvoice {customer} to CrmAccount,
-    TraInvoice{network} to CorNetwork,
+    TraInvoice{channel} to CorNetwork,
     TraInvoice{status} to CorDictionary,
 
     TraOrder{customer} to CrmAccount,
     TraOrder{price} to TraPrice,
-    TraOrder{network} to CorNetwork,
+    TraOrder{channel} to CorNetwork,
     TraOrder{status} to CorDictionary,
 
-    CrmAccount{network} to CorNetwork,
+    CrmAccount{channel} to CorNetwork,
     CrmAccount{discount} to TraDiscount,
     CrmAccount {keeper} to CorUser,
     CrmAccount{country} to CorCountry,
@@ -676,19 +676,19 @@ relationship ManyToOne {
     CrmLead {keeper} to CorUser,
     CrmLead{industry} to CorDictionary,
     CrmLead{area} to CorDictionary,
-    CrmLead{network} to CorNetwork,
+    CrmLead{channel} to CorNetwork,
 
     CrmOpportunity {stage} to CorDictionary,
     CrmOpportunity {keeper} to CorUser,
     CrmOpportunity {contact} to CrmContact,
     CrmOpportunity {account} to CrmAccount,
     CrmOpportunity {lead} to CrmLead,
-    CrmOpportunity {network} to CorNetwork,
+    CrmOpportunity {channel} to CorNetwork,
 
     CrmTask{createdBy} to CorUser,
     CrmTask{assignedTo} to CorUser,
     CrmTask{status} to CorDictionary,
-    CrmTask{network} to CorNetwork,
+    CrmTask{channel} to CorNetwork,
     TraOrder{advertisment}to TraAdvertisement,
     TraEmission {order} to TraOrder {emissions},
     TraOrder {campaign} to TraCampaign {orders} ,
@@ -700,20 +700,20 @@ relationship ManyToOne {
     CrmTask {account} to CrmAccount {tasks},
     CrmTask {lead} to CrmLead {tasks},
     CrmTask {tasks} to CrmTask,
-    CrmTaskComment{network} to CorNetwork,
+    CrmTaskComment{channel} to CorNetwork,
     CrmTaskComment{taskComment} to CrmTask {comments},
     CrmTaskComment{createdBy} to CorUser,
-    CorChannel{network} to CorNetwork,
+    CorChannel{channel} to CorNetwork,
     CorNotification{user} to CorUser,
 
-    TraBlockConfiguration {network} to CorNetwork,
+    TraBlockConfiguration {channel} to CorNetwork,
     TraBlockConfiguration {blockStartSound} to LibMediaItem,
     TraBlockConfiguration {blockEndSound} to LibMediaItem,
-    TraEmission {network} to CorNetwork,
-    TraBlock {network} to CorNetwork,
+    TraEmission {channel} to CorNetwork,
+    TraBlock {channel} to CorNetwork,
     TraBlock {blockStartSound} to LibMediaItem,
     TraBlock {blockEndSound} to LibMediaItem,
-    TraPlaylist {network} to CorNetwork,
+    TraPlaylist {channel} to CorNetwork,
     TraBlockConfiguration {channel} to CorChannel,
     TraEmission {channel} to CorChannel,
     TraBlock {channel} to CorChannel,
@@ -726,13 +726,13 @@ relationship ManyToOne {
     TraMediaPlan {channel} to CorChannel,
     TraMediaPlan {account} to CrmAccount,
     TraMediaPlanPlaylist {channel} to CorChannel,
-    TraMediaPlan {network} to CorNetwork,
-    TraMediaPlanPlaylist {network} to CorNetwork
+    TraMediaPlan {channel} to CorNetwork,
+    TraMediaPlanPlaylist {channel} to CorNetwork
 }
 relationship ManyToMany {
 
      CorUser{channel} to CorChannel{channelUsers},
-     CorUser{network} to CorNetwork{networkUsers}
+     CorUser{channel} to CorNetwork{networkUsers}
 }
 dto * with mapstruct except LibCloudObject
 microservice * with protones

@@ -28,10 +28,12 @@ public class TraMediaPlanEmissionService {
     public TraMediaPlanEmission saveTraMediaPlanEmission(TraMediaPlanEmission traEmission) {
         return traEmissionRepository.saveAndFlush(traEmission);
     }
+
     @Transactional
-    public List<TraMediaPlanEmission> findEmissionsByorganizationShortcutAndChannelShortcutAndMediaplanId(String netwrokShorcut, String corChannel, Long mediaItemId) {
-        return traEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(netwrokShorcut, corChannel, mediaItemId);
+    public List<TraMediaPlanEmission> findEmissionsByorganizationShortcutAndChannelShortcutAndMediaplanId(String organizationShortcut, String channelShortcut, Long mediaItemId) {
+        return traEmissionRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(organizationShortcut, channelShortcut, mediaItemId);
     }
+
     @Transactional
     public void deleteTraMediaPlanEmissions(Set<TraMediaPlanEmission> traEmissions) {
         traEmissionRepository.deleteInBatch(traEmissions);

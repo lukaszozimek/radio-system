@@ -30,25 +30,25 @@ public class TraCompanyService {
     private CorAddressService corAddressService;
 
 
-    public Slice<TraCompany> getAllCompany(String corNetwork, Pageable pageable) {
-        return traCompanyRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<TraCompany> getAllCompany(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return traCompanyRepository.findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
-    public TraCompany getCompany(Long id, String corNetwork) {
-        return traCompanyRepository.findOneByIdAndNetwork_Shortcut(id, corNetwork);
+    public TraCompany getCompany(Long id, String organizationShortcut, String channelShortcut) {
+        return traCompanyRepository.findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 
 
     public TraCompany saveCompany(TraCompany traCompany) {
         log.debug("Persisting TraCompany: {}", traCompany);
-        if(traCompany.getAddres() !=null){
+        if (traCompany.getAddres() != null) {
             traCompany.setAddres(corAddressService.saveCoreAdress(traCompany.getAddres()));
         }
         return traCompanyRepository.save(traCompany);
     }
 
-    public void deleteCompany(Long id, String corNetwork) {
-        traCompanyRepository.deleteByIdAndNetwork_Shortcut(id, corNetwork);
+    public void deleteCompany(Long id, String organizationShortcut, String channelShortcut) {
+        traCompanyRepository.deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 
 

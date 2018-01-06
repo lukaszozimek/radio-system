@@ -45,10 +45,10 @@ public class TraAdverstimentShuffleFistInBlock implements TraAdvertismentShuffle
     public List<TraPlaylist> shuffleCommercials(TraShuffleAdvertisementDTO tarShuffleAdvertisementPT, String organizationShortcut, String channelShortcut) throws InterruptedException {
         log.debug("Start shuffling commercial");
         log.debug("Commercial to shuffle {}", tarShuffleAdvertisementPT.getNumber());
-        LibMediaItem mediaItem = libMediaItemService.getMediaItem(organizationShortcut, "com", tarShuffleAdvertisementPT.getLibMediaItemThinDTO().getIdx());
+        LibMediaItem mediaItem = libMediaItemService.getMediaItem(organizationShortcut, channelShortcut, "com", tarShuffleAdvertisementPT.getLibMediaItemThinDTO().getIdx());
         log.debug("Found advertisment {}", mediaItem.getId());
 
-        TraOrder traOrder = traOrderService.getOrder(tarShuffleAdvertisementPT.getTraOrderThinDTO().getId(), organizationShortcut);
+        TraOrder traOrder = traOrderService.getOrder(tarShuffleAdvertisementPT.getTraOrderThinDTO().getId(), organizationShortcut, channelShortcut);
         log.debug("Found Order {}", traOrder.getId());
         List<TraPlaylist> traPlaylistListInRange = traPlaylistService.getTraPlaylistListInRange(tarShuffleAdvertisementPT.getFrom(), tarShuffleAdvertisementPT.getTo(), organizationShortcut, channelShortcut);
         log.debug("Found number of Playlist in range : {}", traPlaylistListInRange.size());
@@ -70,14 +70,14 @@ public class TraAdverstimentShuffleFistInBlock implements TraAdvertismentShuffle
                             Integer lastSequence = traBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
                             if (canAddEmissionToBlock(lastTimeStop, traBlock.getLength(), mediaItem.getLength()) && hasNotFixedFirstPostion(traBlock)) {
                                 traBlock = reindexEmissions(traBlock);
-                                TraEmission emisssion = new TraEmission().order(traOrder).block(traBlock).sequence(0).timeStart(lastTimeStop).timeStop(lastTimeStop + mediaItem.getLength().longValue()).advertiment(mediaItem).channel(traBlock.getChannel()).firstPosition(true).fixedPosition(true).network(traBlock.getNetwork());
+                                TraEmission emisssion = new TraEmission().order(traOrder).block(traBlock).sequence(0).timeStart(lastTimeStop).timeStop(lastTimeStop + mediaItem.getLength().longValue()).advertiment(mediaItem).channel(traBlock.getChannel()).firstPosition(true).fixedPosition(true);
                                 traBlock.addEmissions(emisssion);
                                 numberOfCommercialsShuffled++;
                             }
                         } else {
                             log.debug("Block is empty");
                             Long lastTimeStop = 0L;
-                            TraEmission emisssion = new TraEmission().order(traOrder).block(traBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + mediaItem.getLength().longValue()).advertiment(mediaItem).sequence(0).firstPosition(true).fixedPosition(true).channel(traBlock.getChannel()).network(traBlock.getNetwork());
+                            TraEmission emisssion = new TraEmission().order(traOrder).block(traBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + mediaItem.getLength().longValue()).advertiment(mediaItem).sequence(0).firstPosition(true).fixedPosition(true).channel(traBlock.getChannel());
                             traBlock.addEmissions(emisssion);
                             numberOfCommercialsShuffled++;
                         }

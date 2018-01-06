@@ -28,7 +28,7 @@ public class CrmTaskService {
     @Transactional
     public CrmTask saveOrUpdateTaskAssociatiedWithContact(CrmContact contact, CrmTask crmTask) {
         crmTask.setContact(contact);
-        crmTask.setNetwork(contact.getNetwork());
+        crmTask.setChannel(contact.getChannel());
         CrmTask task = crmTaskRepository.saveAndFlush(crmTask);
         log.debug("Persisting CrmTask: {}, for CrmContact: ", task);
         return task;
@@ -36,7 +36,7 @@ public class CrmTaskService {
 
     @Transactional
     public CrmTask saveOrUpdateTaskAssociatiedWithCustomer(CrmAccount crmAccount, CrmTask crmTask) {
-        crmTask.setNetwork(crmAccount.getNetwork());
+        crmTask.setChannel(crmAccount.getChannel());
         CrmTask task = crmTaskRepository.saveAndFlush(crmTask);
         log.debug("Persisting CrmTask: {}, for CrmAccount: ", task);
         return task;
@@ -44,7 +44,7 @@ public class CrmTaskService {
 
     @Transactional
     public CrmTask saveOrUpdateTaskAssociatiedWithLead(CrmLead crmLead, CrmTask crmTask) {
-        crmTask.setNetwork(crmLead.getNetwork());
+        crmTask.setChannel(crmLead.getChannel());
         CrmTask task = crmTaskRepository.saveAndFlush(crmTask);
         log.debug("Persisting CrmTask: {}, for CrmLead: ", task);
         return crmTask;
@@ -52,111 +52,111 @@ public class CrmTaskService {
 
     @Transactional
     public CrmTask saveOrUpdateTaskAssociatiedWithOpportunity(CrmOpportunity crmOpportunity, CrmTask crmTask) {
-        crmTask.setNetwork(crmOpportunity.getNetwork());
+        crmTask.setChannel(crmOpportunity.getChannel());
         CrmTask task = crmTaskRepository.saveAndFlush(crmTask);
         log.debug("Persisting CrmTask: {}, for CrmOpportunity: ", task);
         return task;
     }
 
     @Transactional
-    public void deleteCrmTask(Long taskId, String corNetwork) {
-        crmTaskRepository.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+    public void deleteCrmTask(Long taskId, String organizationShortcut, String channelShortcut) {
+        crmTaskRepository.deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(taskId, organizationShortcut, channelShortcut);
     }
 
     @Transactional
-    public void deleteByContactByShortNameAndNetworkByShortcut(String shortcut, String corNetwork) {
-        List<CrmTask> crmTasks = crmTaskRepository.findAllByContact_ShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+    public void deleteByContactByShortNameAndNetworkByShortcut(String shortcut, String organizationShortcut, String channelShortcut) {
+        List<CrmTask> crmTasks = crmTaskRepository.findAllByContact_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
         if (crmTasks != null && !crmTasks.isEmpty()) {
             crmTasks.stream().forEach(crmTask -> {
-                this.crmTaskCommentService.deleteByCrmTaskId(crmTask.getId(), corNetwork);
+                this.crmTaskCommentService.deleteByCrmTaskId(crmTask.getId(), organizationShortcut, channelShortcut);
 
             });
             crmTaskRepository.delete(crmTasks);
         }
-        crmTaskRepository.deleteByContact_ShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+        crmTaskRepository.deleteByContact_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
     }
 
     @Transactional
-    public Slice<CrmTask> findAllByContactByShortNameAndNetworkByShortcut(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findSliceByContact_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<CrmTask> findAllByContactByShortNameAndNetworkByShortcut(String shortcut, String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return crmTaskRepository.findSliceByContact_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut, pageable);
     }
 
-    public CrmTask findOneByIdAndNetwork_Shortcut(Long taskId, String corNetwork) {
-        return crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+    public CrmTask findOneByIdAndChannel_Organization_Shortcut(Long taskId, String organizationShortcut, String channelShortcut) {
+        return crmTaskRepository.findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(taskId, organizationShortcut, channelShortcut);
     }
 
-    public Slice<CrmTask> findAllByAccount_ShortNameAndNetwork_Shortcut(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findSliceByAccount_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<CrmTask> findAllByAccount_ShortNameAndChannel_Organization_Shortcut(String shortcut, String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return crmTaskRepository.findSliceByAccount_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut, pageable);
     }
 
     @Transactional
-    public void deleteByAccount_ShortNameAndNetwork_Shortcut(String shortName, String corNetwork) {
-        List<CrmTask> crmTasks = crmTaskRepository.findAllByAccount_ShortNameAndNetwork_Shortcut(shortName, corNetwork);
+    public void deleteByAccount_ShortNameAndChannel_Organization_Shortcut(String shortName, String organizationShortcut, String channelShortcut) {
+        List<CrmTask> crmTasks = crmTaskRepository.findAllByAccount_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortName, organizationShortcut, channelShortcut);
         if (crmTasks != null && !crmTasks.isEmpty()) {
             crmTasks.stream().forEach(crmTask -> {
-                this.crmTaskCommentService.deleteByCrmTaskId(crmTask.getId(), corNetwork);
+                this.crmTaskCommentService.deleteByCrmTaskId(crmTask.getId(), organizationShortcut, channelShortcut);
 
             });
             crmTaskRepository.delete(crmTasks);
         }
-        crmTaskRepository.deleteByAccount_ShortNameAndNetwork_Shortcut(shortName, corNetwork);
+        crmTaskRepository.deleteByAccount_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortName, organizationShortcut, channelShortcut);
 
     }
 
 
     @Transactional
-    public void deleteByIdAndNetwork_Shortcut(Long taskId, String corNetwork) {
-        crmTaskRepository.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+    public void deleteByIdAndChannel_Organization_Shortcut(Long taskId, String organizationShortcut, String channelShortcut) {
+        crmTaskRepository.deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(taskId, organizationShortcut, channelShortcut);
     }
 
     @Transactional
-    public void deleteByLead_ShortnameAndNetwork_Shortcut(String shortcut, String corNetwork) {
-        List<CrmTask> crmTasks = crmTaskRepository.findAllByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork);
+    public void deleteByLead_ShortnameAndChannel_Organization_Shortcut(String shortcut, String organizationShortcut, String channelShortcut) {
+        List<CrmTask> crmTasks = crmTaskRepository.findAllByLead_ShortnameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
         if (crmTasks != null && !crmTasks.isEmpty()) {
             crmTasks.stream().forEach(crmTask -> {
-                this.crmTaskCommentService.deleteByCrmTaskId(crmTask.getId(), corNetwork);
+                this.crmTaskCommentService.deleteByCrmTaskId(crmTask.getId(), organizationShortcut, channelShortcut);
 
             });
             crmTaskRepository.delete(crmTasks);
         }
-        crmTaskRepository.deleteByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork);
+        crmTaskRepository.deleteByLead_ShortnameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
     }
 
     @Transactional
-    public void deleteByOpportunity_ShortnameAndNetwork_Shortcut(String shortcut, String corNetwork) {
-        List<CrmTask> crmTasks = crmTaskRepository.findAllByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+    public void deleteByOpportunity_ShortnameAndChannel_Organization_Shortcut(String shortcut, String organizationShortcut, String channelShortcut) {
+        List<CrmTask> crmTasks = crmTaskRepository.findAllByOpportunity_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
         if (crmTasks != null && !crmTasks.isEmpty()) {
             crmTasks.stream().forEach(crmTask -> {
-                this.crmTaskCommentService.deleteByCrmTaskId(crmTask.getId(), corNetwork);
+                this.crmTaskCommentService.deleteByCrmTaskId(crmTask.getId(), organizationShortcut, channelShortcut);
 
             });
             crmTaskRepository.delete(crmTasks);
         }
-        crmTaskRepository.deleteByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork);
+        crmTaskRepository.deleteByLead_ShortnameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
     }
 
-    public Slice<CrmTask> findAllByLead_ShortnameAndNetwork_Shortcut(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findSliceByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<CrmTask> findAllByLead_ShortnameAndChannel_Organization_Shortcut(String shortcut, String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return crmTaskRepository.findSliceByLead_ShortnameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut, pageable);
     }
 
-    public Slice<CrmTask> findAllByOpportunity_ShortNameAndNetwork_Shortcut(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findSliceByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<CrmTask> findAllByOpportunity_ShortNameAndChannel_Organization_Shortcut(String shortcut, String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return crmTaskRepository.findSliceByOpportunity_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut, pageable);
     }
 
-    public void deleteCustomerTaskComment(Long taskId, Long id, String organizationShortcut) {
-        CrmTask crmTask = crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, organizationShortcut);
+    public void deleteCustomerTaskComment(Long taskId, Long id, String organizationShortcut, String channelShortcut) {
+        CrmTask crmTask = crmTaskRepository.findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(taskId, organizationShortcut, channelShortcut);
         crmTask.getComments().removeIf(crmTaskComment -> crmTaskComment.getId() == id);
         crmTaskRepository.save(crmTask);
-        crmTaskCommentService.deleteByCrmTaskIdAndCommentId(taskId, id, organizationShortcut);
+        crmTaskCommentService.deleteByCrmTaskIdAndCommentId(taskId, id, organizationShortcut, channelShortcut);
 
     }
 
-    public CrmTaskComment getTaskCommentAssociatedWithTask(String organizationShortcut, Long taskId, Long id) {
-        return crmTaskCommentService.findByCrmTaskId(id, taskId, organizationShortcut);
+    public CrmTaskComment getTaskCommentAssociatedWithTask(String organizationShortcut, String channelShortcut, Long taskId, Long id) {
+        return crmTaskCommentService.findByCrmTaskId(id, taskId, organizationShortcut, channelShortcut);
     }
 
-    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String organizationShortcut) {
-        CrmTask crmTask = crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, organizationShortcut);
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String organizationShortcut, String channelShortcut) {
+        CrmTask crmTask = crmTaskRepository.findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(taskId, organizationShortcut, channelShortcut);
         if (requestEnitity != null) {
             CrmTaskComment crmTaskComment = crmTaskCommentService.saveCrmTaskComment(requestEnitity);
             crmTask.addComments(crmTaskComment);
@@ -167,8 +167,8 @@ public class CrmTaskService {
 
     }
 
-    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String organizationShortcut, Pageable pagable) {
-        return crmTaskCommentService.findByCrmTaskId(taskId, organizationShortcut, pagable);
+    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String organizationShortcut, String channelShortcut, Pageable pagable) {
+        return crmTaskCommentService.findByCrmTaskId(taskId, organizationShortcut, channelShortcut, pagable);
     }
 
 }

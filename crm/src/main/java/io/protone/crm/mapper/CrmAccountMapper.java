@@ -1,9 +1,7 @@
 package io.protone.crm.mapper;
 
 import io.protone.core.api.dto.CoreContactDTO;
-import io.protone.core.domain.CorContact;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.domain.CorPerson;
+import io.protone.core.domain.*;
 import io.protone.core.mapper.CorAddressMapper;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.core.mapper.CorPersonMapper;
@@ -19,7 +17,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class, CorPersonMapper.class,CrmDiscountMapper.class})
+@Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class, CorPersonMapper.class, CrmDiscountMapper.class})
 public interface CrmAccountMapper {
     @Mapping(source = "person", target = "person")
     @Mapping(source = "addres", target = "addres")
@@ -53,9 +51,9 @@ public interface CrmAccountMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
-    CrmAccount DTO2DB(CrmAccountDTO crmAccountDTO, @Context CorNetwork networkId);
+    CrmAccount DTO2DB(CrmAccountDTO crmAccountDTO, @Context CorChannel networkId);
 
-    default List<CrmAccount> DTOs2DBs(List<CrmAccountDTO> crmAccountDTOs, CorNetwork networkId) {
+    default List<CrmAccount> DTOs2DBs(List<CrmAccountDTO> crmAccountDTOs, CorChannel networkId) {
         List<CrmAccount> crmAccounts = new ArrayList<>();
         if (crmAccountDTOs.isEmpty() || crmAccountDTOs == null) {
             return null;
@@ -67,17 +65,17 @@ public interface CrmAccountMapper {
     }
 
     @AfterMapping
-    default void crmAccountPTToCrmAccountAfterMapping(CrmAccountDTO dto, @MappingTarget CrmAccount entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void crmAccountPTToCrmAccountAfterMapping(CrmAccountDTO dto, @MappingTarget CrmAccount entity, @Context CorChannel corChannel) {
+        entity.setChannel(corChannel);
     }
 
     @AfterMapping
-    default void crmCustomerPersonDTOToCorPersonAfterMapping(CrmCustomerPersonDTO dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void crmCustomerPersonDTOToCorPersonAfterMapping(CrmCustomerPersonDTO dto, @MappingTarget CorPerson entity, @Context CorChannel corChannel) {
+        entity.setChannel(corChannel);
     }
 
     @AfterMapping
-    default void coreContactDTOToCorContactAfterMapping(CoreContactDTO dto, @MappingTarget CorContact entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void coreContactDTOToCorContactAfterMapping(CoreContactDTO dto, @MappingTarget CorContact entity, @Context CorChannel corChannel) {
+        entity.setChannel(corChannel);
     }
 }

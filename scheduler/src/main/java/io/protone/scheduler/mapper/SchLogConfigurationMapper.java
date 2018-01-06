@@ -20,19 +20,19 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {SchLogColumnConfigurationMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
 public interface SchLogConfigurationMapper {
-    SchLogConfiguration DTO2DB(SchLogConfigurationDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
+    SchLogConfiguration DTO2DB(SchLogConfigurationDTO dto, @Context CorChannel corChannel);
 
     SchLogConfigurationDTO DB2DTO(SchLogConfiguration entity);
 
     List<SchLogConfigurationDTO> DBs2DTOs(List<SchLogConfiguration> entityList);
 
-    default List<SchLogConfiguration> DTOs2DBs(List<SchLogConfigurationDTO> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<SchLogConfiguration> DTOs2DBs(List<SchLogConfigurationDTO> dList, @Context CorChannel corChannel) {
         List<SchLogConfiguration> eList = new ArrayList<>();
         if (dList.isEmpty() || dList == null) {
             return null;
         }
         for (SchLogConfigurationDTO dto : dList) {
-            eList.add(DTO2DB(dto, network, corChannel));
+            eList.add(DTO2DB(dto, corChannel));
         }
         return eList;
     }
@@ -40,8 +40,7 @@ public interface SchLogConfigurationMapper {
     List<SchLogConfigurationThinDTO> DBs2ThinDTOs(List<SchLogConfiguration> schClockList);
 
     @AfterMapping
-    default void schLogConfigurationDTOToSchLogConfigurationAfterMapping(SchLogConfigurationDTO dto, @MappingTarget SchLogConfiguration entity, @Context CorNetwork network, @Context CorChannel corChannel) {
-        entity.setNetwork(network);
+    default void schLogConfigurationDTOToSchLogConfigurationAfterMapping(SchLogConfigurationDTO dto, @MappingTarget SchLogConfiguration entity, @Context CorChannel corChannel) {
         entity.setChannel(corChannel);
     }
 }

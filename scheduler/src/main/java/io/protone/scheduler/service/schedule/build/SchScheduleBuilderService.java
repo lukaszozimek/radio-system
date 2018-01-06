@@ -91,23 +91,23 @@ public class SchScheduleBuilderService {
         if (schGrid != null) {
             if (schGrid.getChilds() != null || !schGrid.getChilds().isEmpty()) {
                 schGrid.setInternalClockcs(schGridTimeFillerService.cloneClockStructureFromHibernate(schGrid));
-                SchPlaylist schPlaylist = schPlaylistService.saveSchPlaylist(new SchPlaylist().channel(schGrid.getChannel()).network(schGrid.getNetwork()).date(localDate));
+                SchPlaylist schPlaylist = schPlaylistService.saveSchPlaylist(new SchPlaylist().channel(schGrid.getChannel()).date(localDate));
                 return buildScheduleFromGrid(schGrid, schPlaylist);
             }
-            return new SchSchedule().date(localDate).network(schGrid.getNetwork()).channel(schGrid.getChannel());
+            return new SchSchedule().date(localDate).channel(schGrid.getChannel());
         }
         throw new BadRequestException("There is no grid for this");
     }
 
 
     @Transactional(noRollbackFor = Exception.class)
-    private SchSchedule buildScheduleFromGrid(SchGrid schGrid, SchPlaylist schPlaylist) {
+    SchSchedule buildScheduleFromGrid(SchGrid schGrid, SchPlaylist schPlaylist) {
         schGrid.setInternalClockcs(schGridTimeFillerService.fillPredictedStartTimes(schGrid.getInternalClockcs(), LocalDateTime.of(schPlaylist.getDate(), LocalTime.of(0, 0, 0))));
 
         List<SchEventTemplate> importEvents = getImportLogEventFlatList(schGrid.getInternalClockcs());
         if (importEvents != null) {
             Set<SchLogConfiguration> uniqLogsConfigurations = importEvents.stream().map(SchEventTemplate::getSchLogConfiguration).distinct().collect(Collectors.toSet());
-            Set<SchLog> scheduleLogs = uniqLogsConfigurations.stream().map(logConfiguration -> this.schLogService.findSchLogForNetworkAndChannelAndDateAndExtension(schGrid.getNetwork().getShortcut(), schGrid.getChannel().getShortcut(), schPlaylist.getDate(), logConfiguration.getExtension())).collect(toSet());
+            Set<SchLog> scheduleLogs = uniqLogsConfigurations.stream().map(logConfiguration -> this.schLogService.findSchLogForNetworkAndChannelAndDateAndExtension(schGrid.getChannel().getOrganization().getShortcut(), schGrid.getChannel().getShortcut(), schPlaylist.getDate(), logConfiguration.getExtension())).collect(toSet());
             scheduleLogs.stream().forEach((SchLog schLog) -> {
                 if (schLog != null) {
                     List<SchEmission> schEmissionSet = Lists.newArrayList();
@@ -124,7 +124,7 @@ public class SchScheduleBuilderService {
                 }
             });
         }
-        SchSchedule schSchedule = new SchSchedule().date(schPlaylist.getDate()).network(schGrid.getNetwork()).channel(schGrid.getChannel());
+        SchSchedule schSchedule = new SchSchedule().date(schPlaylist.getDate()).channel(schGrid.getChannel());
         List<SchClock> schClocks = schClockBuilder.buildClocks(schGrid.getInternalClockcs(), LocalDateTime.of(schPlaylist.getDate(), LocalTime.of(0, 0, 0)), schPlaylist);
 
         for (int i = 0; i < schClocks.size(); i++) {

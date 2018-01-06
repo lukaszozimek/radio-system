@@ -1,7 +1,8 @@
 package io.protone.library.mapper;
 
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
 import io.protone.library.api.dto.LibMarkerConfigurationDTO;
 import io.protone.library.domain.LibMarkerConfiguration;
 import org.mapstruct.AfterMapping;
@@ -23,22 +24,22 @@ public interface LibMarkerConfigurationMapper {
 
     List<LibMarkerConfigurationDTO> DBs2DTOs(List<LibMarkerConfiguration> cFGMarkerConfigurations);
 
-    LibMarkerConfiguration DTO2DB(LibMarkerConfigurationDTO cFGMarkerConfigurationDTO, @Context CorNetwork corNetwork);
+    LibMarkerConfiguration DTO2DB(LibMarkerConfigurationDTO cFGMarkerConfigurationDTO, @Context CorChannel channel);
 
-    default List<LibMarkerConfiguration> DTOs2DBs(List<LibMarkerConfigurationDTO> libMarkerConfigurationDTOS, CorNetwork networkId) {
+    default List<LibMarkerConfiguration> DTOs2DBs(List<LibMarkerConfigurationDTO> libMarkerConfigurationDTOS, CorChannel channel) {
         List<LibMarkerConfiguration> crmLeads = new ArrayList<>();
         if (libMarkerConfigurationDTOS.isEmpty() || libMarkerConfigurationDTOS == null) {
             return null;
         }
         for (LibMarkerConfigurationDTO dto : libMarkerConfigurationDTOS) {
-            crmLeads.add(DTO2DB(dto, networkId));
+            crmLeads.add(DTO2DB(dto, channel));
         }
         return crmLeads;
     }
 
     @AfterMapping
-    default void confMarkerConfigurationPTToCfgMarkerConfigurationAfterMapping(LibMarkerConfigurationDTO dto, @MappingTarget LibMarkerConfiguration entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void confMarkerConfigurationPTToCfgMarkerConfigurationAfterMapping(LibMarkerConfigurationDTO dto, @MappingTarget LibMarkerConfiguration entity, @Context CorChannel channel) {
+        entity.setChannel(channel);
     }
 
 }

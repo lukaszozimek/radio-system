@@ -1,6 +1,6 @@
 package io.protone.crm.mapper;
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.mapper.CorAddressMapper;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.crm.api.dto.CrmOpportunityDTO;
@@ -46,20 +46,20 @@ public interface CrmOpportunityMapper {
     @Mapping(source = "contactId", target = "contact", ignore = true)
     @Mapping(source = "accountId", target = "account", ignore = true)
     @Mapping(source = "leadId", target = "lead", ignore = true)
-    CrmOpportunity DTO2DB(CrmOpportunityDTO crmOpportunityDTO, @Context CorNetwork corNetwork);
+    CrmOpportunity DTO2DB(CrmOpportunityDTO crmOpportunityDTO, @Context CorChannel corChannel);
 
     @AfterMapping
-    default void crmOpportunityPTToCrmOpportunityAfterMapping(CrmOpportunityDTO dto, @MappingTarget CrmOpportunity entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void crmOpportunityPTToCrmOpportunityAfterMapping(CrmOpportunityDTO dto, @MappingTarget CrmOpportunity entity, @Context CorChannel corChannel) {
+        entity.setChannel(corChannel);
     }
 
-    default List<CrmOpportunity> DTOs2DBs(List<CrmOpportunityDTO> crmOpportunityDTO, CorNetwork corNetwork) {
+    default List<CrmOpportunity> DTOs2DBs(List<CrmOpportunityDTO> crmOpportunityDTO, CorChannel corChannel) {
         List<CrmOpportunity> crmOpportunities = new ArrayList<>();
         if (crmOpportunityDTO.isEmpty() || crmOpportunityDTO == null) {
             return null;
         }
         for (CrmOpportunityDTO dto : crmOpportunityDTO) {
-            crmOpportunities.add(DTO2DB(dto, corNetwork));
+            crmOpportunities.add(DTO2DB(dto, corChannel));
         }
         return crmOpportunities;
     }

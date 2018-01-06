@@ -20,13 +20,13 @@ public class TraBlockConfigurationService {
     private TraBlockConfigurationRepository traBlockConfigurationRepository;
 
 
-    public TraBlockConfiguration findConfigurationBlock(Long id, String organizationShortcut) {
-        return traBlockConfigurationRepository.findOneByIdAndNetwork_Shortcut(id, organizationShortcut);
+    public TraBlockConfiguration findConfigurationBlock(Long id, String organizationShortcut, String channelShortcut) {
+        return traBlockConfigurationRepository.findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 
     @Transactional
-    public void deleteBlockConfiguration(Long id, String organizationShortcut) {
-        traBlockConfigurationRepository.deleteByIdAndNetwork_Shortcut(id, organizationShortcut);
+    public void deleteBlockConfiguration(Long id, String organizationShortcut, String channelShortcut) {
+        traBlockConfigurationRepository.deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 
     @Transactional
@@ -35,11 +35,11 @@ public class TraBlockConfigurationService {
     }
 
     public List<TraBlockConfiguration> getAllBlockConfigurations(String organizationShortcut, String channelShortcut) {
-        return traBlockConfigurationRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut);
+        return traBlockConfigurationRepository.findAllByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut);
     }
 
-    public List<TraBlockConfiguration> getAllBlockConfigurationsByDay(String organizationShortcut, CorDayOfWeekEnum day) {
-        return traBlockConfigurationRepository.findAllByNetwork_ShortcutAndDay(organizationShortcut, day);
+    public List<TraBlockConfiguration> getAllBlockConfigurationsByDay(String organizationShortcut, String channelShortcut, CorDayOfWeekEnum day) {
+        return traBlockConfigurationRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndDay(organizationShortcut, channelShortcut, day);
 
     }
 }

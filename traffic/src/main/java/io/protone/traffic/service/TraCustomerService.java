@@ -37,14 +37,14 @@ public class TraCustomerService {
     private CrmCustomerService crmCustomerService;
 
     @Transactional
-    public void deleteCustomerByShortNameAndNetworkShortName(String customerShortName, String corNetwork) {
-        CrmAccount crmAccount = crmCustomerService.getCustomer(customerShortName, corNetwork);
-        traOrderService.deleteCustomerOrders(crmAccount, corNetwork);
-        traAdvertisementService.deleteCustomerAdvertisement(crmAccount, corNetwork);
-        traMediaPlanService.deleteCustomerMediaPlan(crmAccount, corNetwork);
-        traCampaignService.deleteCampaignByCustomer(crmAccount, corNetwork);
-        traInvoiceService.deleteByCustomerInvoice(crmAccount, corNetwork);
-        crmCustomerService.deleteCustomer(customerShortName, corNetwork);
+    public void deleteCustomerByShortNameAndNetworkShortName(String customerShortName, String organizationShortcut, String channelShortcut) {
+        CrmAccount crmAccount = crmCustomerService.getCustomer(customerShortName, organizationShortcut, channelShortcut);
+        traOrderService.deleteCustomerOrders(crmAccount, organizationShortcut, channelShortcut);
+        traAdvertisementService.deleteCustomerAdvertisement(crmAccount, organizationShortcut, channelShortcut);
+        traMediaPlanService.deleteCustomerMediaPlan(crmAccount, organizationShortcut, channelShortcut);
+        traCampaignService.deleteCampaignByCustomer(crmAccount, organizationShortcut, channelShortcut);
+        traInvoiceService.deleteByCustomerInvoice(crmAccount, organizationShortcut, channelShortcut);
+        crmCustomerService.deleteCustomer(customerShortName, organizationShortcut, channelShortcut);
     }
 
 

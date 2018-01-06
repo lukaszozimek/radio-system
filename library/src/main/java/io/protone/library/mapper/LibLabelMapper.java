@@ -1,7 +1,7 @@
 package io.protone.library.mapper;
 
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.library.api.dto.LibLabelDTO;
 import io.protone.library.domain.LibLabel;
 import org.mapstruct.AfterMapping;
@@ -22,9 +22,9 @@ public interface LibLabelMapper {
 
     List<LibLabelDTO> DBs2DTOs(List<LibLabel> lIBLabels);
 
-    LibLabel DTO2DB(LibLabelDTO dto, @Context CorNetwork network);
+    LibLabel DTO2DB(LibLabelDTO dto, @Context CorChannel network);
 
-    default List<LibLabel> DTOs2DBs(List<LibLabelDTO> dtos, @Context CorNetwork network) {
+    default List<LibLabel> DTOs2DBs(List<LibLabelDTO> dtos, @Context CorChannel network) {
         List<LibLabel> corPeople = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {
             return null;
@@ -36,8 +36,8 @@ public interface LibLabelMapper {
     }
 
     @AfterMapping
-    default void libLabelPTToLibLabelAfterMapping(LibLabelDTO dto, @MappingTarget LibLabel entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void libLabelPTToLibLabelAfterMapping(LibLabelDTO dto, @MappingTarget LibLabel entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 
 }

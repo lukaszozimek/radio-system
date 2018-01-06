@@ -1,8 +1,8 @@
 package io.protone.library.mapper;
 
 
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorImageItem;
-import io.protone.core.domain.CorNetwork;
 import io.protone.library.api.dto.LibAlbumDTO;
 import io.protone.library.domain.LibAlbum;
 import io.protone.library.domain.LibArtist;
@@ -28,9 +28,9 @@ public interface LibAlbumMapper {
 
     @Mapping(source = "labelId", target = "label")
     @Mapping(source = "artistId", target = "artist")
-    LibAlbum DTO2DB(LibAlbumDTO dto, @Context CorNetwork network);
+    LibAlbum DTO2DB(LibAlbumDTO dto, @Context CorChannel network);
 
-    default List<LibAlbum> DTOs2DBs(List<LibAlbumDTO> dtos, @Context CorNetwork network) {
+    default List<LibAlbum> DTOs2DBs(List<LibAlbumDTO> dtos, @Context CorChannel network) {
         List<LibAlbum> libAlbums = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {
             return null;
@@ -42,8 +42,8 @@ public interface LibAlbumMapper {
     }
 
     @AfterMapping
-    default void libAlbumPTToLibAlbumAfterMapping(LibAlbumDTO dto, @MappingTarget LibAlbum entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void libAlbumPTToLibAlbumAfterMapping(LibAlbumDTO dto, @MappingTarget LibAlbum entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 
     default CorImageItem mapCorImageItem(Long id) {

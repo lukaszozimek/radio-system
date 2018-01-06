@@ -15,15 +15,17 @@ import org.springframework.data.repository.query.Param;
 public interface TraPriceRepository extends JpaRepository<TraPrice, Long> {
     @Query("select p from TraPrice as p " +
             "left join fetch p.lenghtMultiplier as lM " +
-            "left join fetch p.network as n " +
-            " where n.shortcut = :network and p.id =:id")
-    TraPrice findOneByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String corNetwork);
+            "left join fetch p.channel as ch " +
+            "left join fetch ch.organization as org " +
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization and p.id =:id")
+    TraPrice findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(@Param("id") Long id, @Param("organization") String organization, @Param("channelShortcut") String channelShortcut);
 
     @Query("select p from TraPrice as p " +
             "left join fetch p.lenghtMultiplier as lM " +
-            "left join fetch p.network as n " +
-            " where n.shortcut = :network")
-    Slice<TraPrice> findSliceByNetwork_Shortcut(@Param("network") String corNetwork, Pageable pageable);
+            "left join fetch p.channel as ch " +
+            "left join fetch ch.organization as org " +
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization")
+    Slice<TraPrice> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(@Param("organization") String organization, @Param("channelShortcut") String channelShortcut, Pageable pageable);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String corNetwork);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 }

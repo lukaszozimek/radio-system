@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the CrmAccount entity.
  */
-@SuppressWarnings("unused")
 public interface CrmAccountRepository extends JpaRepository<CrmAccount, Long> {
 
     @Query("select a from CrmAccount as a " +
-            "left join fetch a.network as n " +
+            "left join fetch a.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch a.addres as adr " +
             "left join fetch a.area as ar " +
             "left join fetch a.size as s " +
@@ -27,13 +27,14 @@ public interface CrmAccountRepository extends JpaRepository<CrmAccount, Long> {
             "left join fetch a.corImageItem as image " +
             "left join fetch a.keeper as kep  " +
             "left join fetch a.tasks as tasks " +
-            "left join fetch a.person as p where n.shortcut = :network and a.shortName =:shortName")
-    CrmAccount findOneByShortNameAndNetwork_Shortcut(@Param("shortName") String shortName, @Param("network") String network);
+            "left join fetch a.person as p where ch.shortcut = :channelShortcut and org.shortcut =:organization  and a.shortName =:shortName")
+    CrmAccount findOneByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(@Param("shortName") String shortName, @Param("organization") String organization, @Param("channelShortcut") String channelShortcut);
 
-    List<CrmAccount> findByNetwork_Shortcut(String network);
+    List<CrmAccount> findByChannel_Organization_ShortcutAndChannel_Shortcut(String organization, String channelShortcut);
 
     @Query("select a from CrmAccount as a " +
-            "left join fetch a.network as n " +
+            "left join fetch a.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch a.addres as adr " +
             "left join fetch a.area as ar " +
             "left join fetch a.size as s " +
@@ -42,8 +43,8 @@ public interface CrmAccountRepository extends JpaRepository<CrmAccount, Long> {
             "left join fetch a.industry as ind " +
             "left join fetch a.corImageItem as image " +
             "left join fetch a.keeper as kep  " +
-            "left join fetch a.person as p where n.shortcut = :network")
-    Slice<CrmAccount> findSliceByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
+            "left join fetch a.person as p where ch.shortcut = :channelShortcut and org.shortcut =:organization")
+    Slice<CrmAccount> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(@Param("organization") String organization, @Param("channelShortcut") String channelShortcut, Pageable pageable);
 
-    void deleteByShortNameAndNetwork_Shortcut(String shortName, String network);
+    void deleteByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String shortName, String organization, String channelShortcut);
 }

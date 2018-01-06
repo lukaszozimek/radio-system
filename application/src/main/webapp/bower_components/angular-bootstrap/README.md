@@ -99,7 +99,7 @@ Modern mobile browsers should work without problems.
 ## Need help?
 Need help using UI Bootstrap?
 
-* Live help in the IRC (`#angularjs` channel at the `freenode` network). Use this [webchat](https://webchat.freenode.net/) or your own IRC client.
+* Live help in the IRC (`#angularjs` channel at the `freenode` channel). Use this [webchat](https://webchat.freenode.net/) or your own IRC client.
 * Ask a question in [StackOverflow](http://stackoverflow.com/) under the [angular-ui-bootstrap](http://stackoverflow.com/questions/tagged/angular-ui-bootstrap) tag.
 
 **Please do not create new issues in this repository to ask questions about using UI Bootstrap**

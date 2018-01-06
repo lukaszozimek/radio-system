@@ -59,7 +59,7 @@ public class TraDefaultPlnMapping implements TraPlnMapping {
                                         log.error("Reindexing problem");
                                     }
                                     log.debug("Put commercial into block");
-                                    TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(playlistBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                                    TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(playlistBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(playlistBlock.getChannel());
                                     playlistBlock.addEmissions(emisssion);
                                     excelEmissions.remove(traMediaPlanEmission);
                                     break;
@@ -68,7 +68,7 @@ public class TraDefaultPlnMapping implements TraPlnMapping {
                                 } else if (canAddEmissionToBlock(lastTimeStop, playlistBlock.getLength(), libMediaItem.getLength()) && !hasFixedLastPostion(playlistBlock)) {
 
                                     log.debug("Put commercial into block");
-                                    TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(playlistBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                                    TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(playlistBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(playlistBlock.getChannel());
                                     playlistBlock.addEmissions(emisssion);
                                     excelEmissions.remove(traMediaPlanEmission);
                                     break;
@@ -81,7 +81,7 @@ public class TraDefaultPlnMapping implements TraPlnMapping {
                             log.debug("Block is empty");
                             log.debug("Put commercial into block");
                             Long lastTimeStop = 0L;
-                            TraEmission emisssion = new TraEmission().block(playlistBlock).timeStart(playlistBlock.getStartBlock()).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                            TraEmission emisssion = new TraEmission().block(playlistBlock).timeStart(playlistBlock.getStartBlock()).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel());
                             playlistBlock.addEmissions(emisssion);
                             excelEmissions.remove(traMediaPlanEmission);
                             break;

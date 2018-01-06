@@ -32,18 +32,18 @@ public class TraAdvertisementService {
     private LibMediaItemService libMediaItemService;
 
 
-    public Slice<TraAdvertisement> getAllAdvertisement(String corNetwork, Pageable pageable) {
-        return traAdvertisementRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<TraAdvertisement> getAllAdvertisement(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return traAdvertisementRepository.findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
     public TraAdvertisement saveAdvertisement(TraAdvertisement traAdvertisement) {
         log.debug("Persisting TraAdvertisement: {}", traAdvertisement);
         TraAdvertisement traAdvertisement1 = traAdvertisementRepository.saveAndFlush(traAdvertisement);
-        return traAdvertisementRepository.findByIdAndNetwork_Shortcut(traAdvertisement1.getId(), traAdvertisement1.getNetwork().getShortcut());
+        return traAdvertisementRepository.findByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(traAdvertisement1.getId(), traAdvertisement1.getChannel().getOrganization().getShortcut(), traAdvertisement.getChannel().getShortcut());
     }
 
-    public void deleteAdvertisement(Long id, String corNetwork) {
-        TraAdvertisement traAdvertisement = traAdvertisementRepository.findByIdAndNetwork_Shortcut(id, corNetwork);
+    public void deleteAdvertisement(Long id, String organizationShortcut, String channelShortcut) {
+        TraAdvertisement traAdvertisement = traAdvertisementRepository.findByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
         traAdvertisementRepository.delete(traAdvertisement);
         if (traAdvertisement.getMediaItem() != null) {
             traAdvertisement.getMediaItem().stream().forEach(libMediaItem -> {
@@ -53,8 +53,8 @@ public class TraAdvertisementService {
         }
     }
 
-    public void deleteCustomerAdvertisement(CrmAccount customer, String corNetwork) {
-        List<TraAdvertisement> traAdvertisements = traAdvertisementRepository.findByCustomer_ShortNameAndNetwork_Shortcut(customer.getShortName(), corNetwork);
+    public void deleteCustomerAdvertisement(CrmAccount customer, String organizationShortcut, String channelShortcut) {
+        List<TraAdvertisement> traAdvertisements = traAdvertisementRepository.findByCustomer_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(customer.getShortName(), organizationShortcut, channelShortcut);
         if (traAdvertisements != null) {
             traAdvertisements.stream().forEach(traAdvertisement -> {
                 traAdvertisementRepository.delete(traAdvertisement);
@@ -68,13 +68,13 @@ public class TraAdvertisementService {
         }
     }
 
-    public TraAdvertisement getAdvertisement(Long id, String corNetwork) {
-        return traAdvertisementRepository.findByIdAndNetwork_Shortcut(id, corNetwork);
+    public TraAdvertisement getAdvertisement(Long id, String organizationShortcut, String channelShortcut) {
+        return traAdvertisementRepository.findByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 
 
-    public List<TraAdvertisement> getCustomerAdvertisements(String shortcut, String corNetwork, Pageable pageable) {
-        return traAdvertisementRepository.findByCustomer_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public List<TraAdvertisement> getCustomerAdvertisements(String shortcut, String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return traAdvertisementRepository.findByCustomer_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut, pageable);
     }
 
 

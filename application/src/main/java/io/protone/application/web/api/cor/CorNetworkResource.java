@@ -37,7 +37,7 @@ public interface CorNetworkResource {
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<CorNetworkDTO> createNetworkUsingPOST(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
-                                                         @ApiParam(value = "network", required = true) @Valid @RequestPart("network") CorNetworkDTO network,
+                                                         @ApiParam(value = "organization", required = true) @Valid @RequestPart("organization") CorNetworkDTO network,
                                                          @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException;
 
     @ApiOperation(value = "updateNetwork", notes = "", response = CorNetworkDTO.class, tags = {"CORE"})
@@ -47,11 +47,11 @@ public interface CorNetworkResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = CorNetworkDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = CorNetworkDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = CorNetworkDTO.class)})
-    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}",
+    @RequestMapping(value = "/api/v1/organization/{organizationShortcut}/network",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<CorNetworkDTO> updateNetworkUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "network", required = true) @Valid @RequestBody CorNetworkDTO network) throws URISyntaxException;
+    ResponseEntity<CorNetworkDTO> updateNetworkUsingPUT(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut, @ApiParam(value = "organization", required = true) @Valid @RequestBody CorNetworkDTO network) throws URISyntaxException;
 
     @ApiOperation(value = "updateNetworkWithLogo", notes = "", response = CorNetworkDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
@@ -66,7 +66,7 @@ public interface CorNetworkResource {
     ResponseEntity<CorNetworkDTO> updateNetworkWithLogoUsingPOST(
             @ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
             @ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-            @ApiParam(value = "network", required = true) @Valid @RequestPart("network") CorNetworkDTO network,
+            @ApiParam(value = "organization", required = true) @Valid @RequestPart("organization") CorNetworkDTO network,
             @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException;
 
     @ApiOperation(value = "deleteNetwork", notes = "", response = Void.class, tags = {"CORE"})
@@ -81,7 +81,7 @@ public interface CorNetworkResource {
     ResponseEntity<Void> deleteNetworkUsingDELETE(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut,
                                                   @ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
-    @ApiOperation(value = "getNetwork", notes = "", response = CorNetworkDTO.class, tags = {"CORE"})
+    @ApiOperation(value = "getChannel", notes = "", response = CorNetworkDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = CorNetworkDTO.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = CorNetworkDTO.class),

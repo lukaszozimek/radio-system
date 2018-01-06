@@ -25,7 +25,7 @@ public class SchAttachmentTemplateService {
     @Transactional
     public Set<SchAttachmentTemplate> saveAttachmenst(Set<SchAttachmentTemplate> schAttachmentSet, SchEmissionTemplate schEmissionTemplate) {
         if (schAttachmentSet != null && !schAttachmentSet.isEmpty()) {
-            return schAttachmentSet.stream().map(schAttachmentTemplate -> schAttachmentTemplate.network(schEmissionTemplate.getNetwork()).channel(schAttachmentTemplate.getChannel())).collect(Collectors.toSet());
+            return schAttachmentSet.stream().map(schAttachmentTemplate -> schAttachmentTemplate.channel(schAttachmentTemplate.getChannel())).collect(Collectors.toSet());
         }
         return Sets.newHashSet();
     }

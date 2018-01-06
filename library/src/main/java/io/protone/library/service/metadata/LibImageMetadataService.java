@@ -1,6 +1,7 @@
 package io.protone.library.service.metadata;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorPropertyService;
 import io.protone.library.domain.LibImageObject;
@@ -39,19 +40,13 @@ public class LibImageMetadataService {
     private MediaUtils mediaUtils;
 
     @Inject
-    private LibArtistService libArtistService;
-
-    @Inject
-    private LibAlbumService libAlbumService;
-
-    @Inject
     private CorPropertyService corPropertyService;
 
     @Inject
     private LibMediaItemRepository mediaItemRepository;
 
 
-    public LibMediaItem resolveMetadata(Metadata metadata, LibMediaLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibImageObject libImageObject, String orginalFileName) throws TikaException, SAXException, IOException {
+    public LibMediaItem resolveMetadata(Metadata metadata, LibMediaLibrary libraryDB, CorChannel channel, LibMediaItem mediaItem, LibImageObject libImageObject, String orginalFileName) throws TikaException, SAXException, IOException {
         log.debug("Start processing Image :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
 
 
@@ -79,12 +74,12 @@ public class LibImageMetadataService {
 
         mediaItem.setState(LibItemStateEnum.IS_NEW);
         mediaItem.setLibrary(libraryDB);
-        mediaItem.network(corNetwork);
+        mediaItem.channel(channel);
         log.debug("Persisting LibMediaItem: {}", mediaItem);
         mediaItem = mediaItemRepository.saveAndFlush(mediaItem);
         LibMediaItem finalMediaItem = mediaItem;
         Arrays.stream(metadata.names()).forEach(metadataName -> {
-            finalMediaItem.addProperites(corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, corNetwork));
+            finalMediaItem.addProperites(corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, channel));
         });
 
         log.debug("Resolved LibMediaItem with Metadata: {}", mediaItem);

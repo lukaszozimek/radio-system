@@ -29,7 +29,7 @@ public class CorPropertyKey implements Serializable {
     private String key;
 
     @ManyToOne
-    private CorNetwork network;
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -52,17 +52,17 @@ public class CorPropertyKey implements Serializable {
         this.key = key;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public CorChannel getChannel() {
+        return channel;
     }
 
-    public CorPropertyKey network(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CorPropertyKey channel(CorChannel corNetwork) {
+        this.channel = corNetwork;
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     @Override
@@ -88,8 +88,8 @@ public class CorPropertyKey implements Serializable {
     @Override
     public String toString() {
         return "CorPropertyKey{" +
-            "id=" + id +
-            ", key='" + key + "'" +
-            '}';
+                "id=" + id +
+                ", key='" + key + "'" +
+                '}';
     }
 }

@@ -31,8 +31,8 @@ public class TraInvoiceService {
     private TraOrderService traOrderService;
 
 
-    public Slice<TraInvoice> getAllInvoice(String corNetwork, Pageable pageable) {
-        return traInvoiceRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<TraInvoice> getAllInvoice(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return traInvoiceRepository.findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
     public TraInvoice saveInvoice(TraInvoice traInvoice) {
@@ -41,11 +41,11 @@ public class TraInvoiceService {
         if (traInvoice.getOrders() != null && !traInvoice.getOrders().isEmpty()) {
             savedInvoice.setOrders(traInvoice.getOrders().stream().map(traOrder -> traOrderService.saveOrder(traOrder.invoice(savedInvoice))).collect(toSet()));
         }
-        return getInvoice(savedInvoice.getId(), savedInvoice.getNetwork().getShortcut());
+        return getInvoice(savedInvoice.getId(), savedInvoice.getChannel().getOrganization().getShortcut(), savedInvoice.getChannel().getShortcut());
     }
 
-    public void deleteInvoice(Long id, String corNetwork) {
-        TraInvoice traInvoice = getInvoice(id, corNetwork);
+    public void deleteInvoice(Long id, String organizationShortcut, String channelShortcut) {
+        TraInvoice traInvoice = getInvoice(id, organizationShortcut, channelShortcut);
         if (traInvoice != null) {
             if (traInvoice.getOrders() != null && !traInvoice.getOrders().isEmpty()) {
                 traInvoice.setOrders(traInvoice.getOrders().stream().map(traOrder -> traOrderService.saveOrder(traOrder.invoice(null).calculatedPrize(null))).collect(toSet()));
@@ -54,16 +54,16 @@ public class TraInvoiceService {
         }
     }
 
-    public void deleteByCustomerInvoice(CrmAccount crmAccount, String corNetwork) {
-        traInvoiceRepository.deleteByCustomerAndNetwork_Shortcut(crmAccount, corNetwork);
+    public void deleteByCustomerInvoice(CrmAccount crmAccount, String organizationShortcut, String channelShortcut) {
+        traInvoiceRepository.deleteByCustomerAndChannel_Organization_ShortcutAndChannel_Shortcut(crmAccount, organizationShortcut, channelShortcut);
     }
 
-    public TraInvoice getInvoice(Long id, String corNetwork) {
-        return traInvoiceRepository.findByIdAndNetwork_Shortcut(id, corNetwork);
+    public TraInvoice getInvoice(Long id, String organizationShortcut, String channelShortcut) {
+        return traInvoiceRepository.findByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 
-    public Slice<TraInvoice> getCustomerInvoice(String customerShortcut, String corNetwork, Pageable pageable) {
-        return traInvoiceRepository.findSliceByCustomer_ShortNameAndNetwork_Shortcut(customerShortcut, corNetwork, pageable);
+    public Slice<TraInvoice> getCustomerInvoice(String customerShortcut, String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return traInvoiceRepository.findSliceByCustomer_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(customerShortcut, organizationShortcut, channelShortcut, pageable);
     }
 
 }

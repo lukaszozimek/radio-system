@@ -35,17 +35,17 @@ public class LibLabelService {
     }
 
     @Transactional
-    public Slice<LibLabel> findLabels(String organizationShortcut, Pageable pagable) {
-        return libLabelRepository.findSliceByNetwork_Shortcut(organizationShortcut, pagable);
+    public Slice<LibLabel> findLabels(String organizationShortcut, String channelShortcut, Pageable pagable) {
+        return libLabelRepository.findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pagable);
     }
 
     @Transactional
-    public void deleteLabel(Long id, String organizationShortcut) {
-        libLabelRepository.deleteByIdAndNetwork_Shortcut(id, organizationShortcut);
+    public void deleteLabel(Long id, String organizationShortcut, String channelShortcut) {
+        libLabelRepository.deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 
     @Transactional
-    public LibLabel findLabel(String organizationShortcut, Long id) {
-        return libLabelRepository.findOneByIdAndNetwork_Shortcut(id, organizationShortcut);
+    public LibLabel findLabel(String organizationShortcut, String channelShortcut, Long id) {
+        return libLabelRepository.findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 }

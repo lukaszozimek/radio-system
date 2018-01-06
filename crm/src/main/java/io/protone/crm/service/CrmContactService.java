@@ -53,8 +53,8 @@ public class CrmContactService {
     @Inject
     private CrmContactMapper crmContactMapper;
 
-    public Slice<CrmContact> getAllContact(String corNetwork, Pageable pageable) {
-        return crmContactRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<CrmContact> getAllContact(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return crmContactRepository.findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
     public CrmContact saveContact(CrmContact contact) {
@@ -74,43 +74,43 @@ public class CrmContactService {
     }
 
     public CrmContact saveContactWithImage(CrmContact contact, MultipartFile avatar) throws IOException, TikaException, SAXException {
-        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
+        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar, contact.getChannel().getOrganization());
         contact.setCorImageItem(corImageItem);
         return this.saveContact(contact);
     }
 
-    public void deleteContact(String shortcut, String corNetwork) {
-        crmTaskService.deleteByContactByShortNameAndNetworkByShortcut(shortcut, corNetwork);
-        crmContactRepository.deleteByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+    public void deleteContact(String shortcut, String organizationShortcut, String channelShortcut) {
+        crmTaskService.deleteByContactByShortNameAndNetworkByShortcut(shortcut, organizationShortcut, channelShortcut);
+        crmContactRepository.deleteByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
     }
 
-    public CrmContact getContact(String shortcut, String corNetwork) {
-        return crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+    public CrmContact getContact(String shortcut, String organizationShortcut, String channelShortcut) {
+        return crmContactRepository.findOneByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
 
     }
 
-    public Slice<CrmTask> getTasksAssociatedWithContact(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskService.findAllByContactByShortNameAndNetworkByShortcut(shortcut, corNetwork, pageable);
+    public Slice<CrmTask> getTasksAssociatedWithContact(String shortcut, String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return crmTaskService.findAllByContactByShortNameAndNetworkByShortcut(shortcut, organizationShortcut, channelShortcut, pageable);
     }
 
-    public CrmTask getTaskAssociatedWithContact(Long taskId, String corNetwork) {
-        return crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+    public CrmTask getTaskAssociatedWithContact(Long taskId, String organizationShortcut, String channelShortcut) {
+        return crmTaskService.findOneByIdAndChannel_Organization_Shortcut(taskId, organizationShortcut, channelShortcut);
     }
 
 
-    public void deleteContactTask(String shortcut, Long taskId, String corNetwork) {
-        CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
-        CrmTask crmTask = crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+    public void deleteContactTask(String shortcut, Long taskId, String organizationShortcut, String channelShortcut) {
+        CrmContact crmContact = crmContactRepository.findOneByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
+        CrmTask crmTask = crmTaskService.findOneByIdAndChannel_Organization_Shortcut(taskId, organizationShortcut, channelShortcut);
         if (crmTask != null) {
             crmContact.removeTasks(crmTask);
             crmTaskService.saveOrUpdateTaskAssociatiedWithContact(crmContact, crmTask);
             crmContactRepository.saveAndFlush(crmContact);
-            crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+            crmTaskService.deleteByIdAndChannel_Organization_Shortcut(taskId, organizationShortcut, channelShortcut);
         }
     }
 
-    public CrmTask saveOrUpdateTaskAssociatiedWithAccount(CrmTask crmTask, String shortcut, String corNetwork) {
-        CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+    public CrmTask saveOrUpdateTaskAssociatiedWithAccount(CrmTask crmTask, String shortcut, String organizationShortcut, String channelShortcut) {
+        CrmContact crmContact = crmContactRepository.findOneByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
         if (crmContact != null) {
             CrmTask crmTask1 = crmTaskService.saveOrUpdateTaskAssociatiedWithContact(crmContact, crmTask);
             crmContact.addTasks(crmTask1);
@@ -120,20 +120,20 @@ public class CrmContactService {
         return null;
     }
 
-    public void deleteCustomerTaskComment(Long taskId, Long id, String organizationShortcut) {
-        crmTaskService.deleteCustomerTaskComment(taskId, id, organizationShortcut);
+    public void deleteCustomerTaskComment(Long taskId, Long id, String organizationShortcut, String channelShortcut) {
+        crmTaskService.deleteCustomerTaskComment(taskId, id, organizationShortcut, channelShortcut);
     }
 
-    public CrmTaskComment getTaskCommentAssociatedWithTask(String organizationShortcut, Long taskId, Long id) {
-        return crmTaskService.getTaskCommentAssociatedWithTask(organizationShortcut, taskId, id);
+    public CrmTaskComment getTaskCommentAssociatedWithTask(String organizationShortcut, String channelShortcut, Long taskId, Long id) {
+        return crmTaskService.getTaskCommentAssociatedWithTask(organizationShortcut, channelShortcut, taskId, id);
     }
 
-    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String organizationShortcut) {
-        return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, organizationShortcut);
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String organizationShortcut, String channelShortcut) {
+        return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, organizationShortcut, channelShortcut);
     }
 
-    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String organizationShortcut, Pageable pagable) {
-        return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, organizationShortcut, pagable);
+    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String organizationShortcut, String channelShortcut, Pageable pagable) {
+        return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, organizationShortcut, channelShortcut, pagable);
     }
 
     public CrmContact convertCrmLeadToContact(CrmLead crmLead) {

@@ -2,7 +2,6 @@ package io.protone.crm.service;
 
 
 import io.protone.crm.domain.*;
-import io.protone.crm.mapper.CrmOpportunityMapper;
 import io.protone.crm.repostiory.CrmOpportunityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +29,9 @@ public class CrmOpportunityService {
     @Inject
     private CrmTaskService crmTaskService;
 
-    @Inject
-    private CrmOpportunityMapper crmOpportunityMapper;
 
-    public Slice<CrmOpportunity> getAllOpportunity(String corNetwork, Pageable pageable) {
-        return opportunityRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<CrmOpportunity> getAllOpportunity(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return opportunityRepository.findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
     public CrmOpportunity saveOpportunity(CrmOpportunity crmOpportunity) {
@@ -42,18 +39,18 @@ public class CrmOpportunityService {
         return opportunityRepository.saveAndFlush(crmOpportunity);
     }
 
-    public void deleteOpportunity(String shortcut, String corNetwork) {
-        crmTaskService.deleteByOpportunity_ShortnameAndNetwork_Shortcut(shortcut, corNetwork);
-        opportunityRepository.deleteByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+    public void deleteOpportunity(String shortcut, String organizationShortcut, String channelShortcut) {
+        crmTaskService.deleteByOpportunity_ShortnameAndChannel_Organization_Shortcut(shortcut, organizationShortcut, channelShortcut);
+        opportunityRepository.deleteByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
     }
 
-    public CrmOpportunity getOpportunity(String shortcut, String corNetwork) {
-        return opportunityRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+    public CrmOpportunity getOpportunity(String shortcut, String organizationShortcut, String channelShortcut) {
+        return opportunityRepository.findOneByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
     }
 
 
-    public CrmTask saveOrUpdateTaskAssociatiedWithOpportunity(CrmTask crmTask, String shortcut, String corNetwork) {
-        CrmOpportunity crmOpportunity = opportunityRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+    public CrmTask saveOrUpdateTaskAssociatiedWithOpportunity(CrmTask crmTask, String shortcut, String organizationShortcut, String channelShortcut) {
+        CrmOpportunity crmOpportunity = opportunityRepository.findOneByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
         if (crmOpportunity != null) {
             CrmTask task = crmTaskService.saveOrUpdateTaskAssociatiedWithOpportunity(crmOpportunity, crmTask);
             crmOpportunity.addTasks(task);
@@ -63,41 +60,41 @@ public class CrmOpportunityService {
         return null;
     }
 
-    public Slice<CrmTask> getTasksAssociatedWithOpportunity(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskService.findAllByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<CrmTask> getTasksAssociatedWithOpportunity(String shortcut, String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return crmTaskService.findAllByOpportunity_ShortNameAndChannel_Organization_Shortcut(shortcut, organizationShortcut, channelShortcut, pageable);
     }
 
-    public CrmTask getTaskAssociatedWithOpportunity(Long taskId, String corNetwork) {
-        return crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+    public CrmTask getTaskAssociatedWithOpportunity(Long taskId, String organizationShortcut, String channelShortcut) {
+        return crmTaskService.findOneByIdAndChannel_Organization_Shortcut(taskId, organizationShortcut, channelShortcut);
     }
 
 
-    public void deleteOpportunityTask(String shortcut, Long taskId, String corNetwork) {
-        CrmOpportunity crmOpportunity = opportunityRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
-        CrmTask crmTask = crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+    public void deleteOpportunityTask(String shortcut, Long taskId, String organizationShortcut, String channelShortcut) {
+        CrmOpportunity crmOpportunity = opportunityRepository.findOneByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
+        CrmTask crmTask = crmTaskService.findOneByIdAndChannel_Organization_Shortcut(taskId, organizationShortcut, channelShortcut);
         if (crmTask != null) {
             crmOpportunity.removeTasks(crmTask);
             crmTaskService.saveOrUpdateTaskAssociatiedWithOpportunity(crmOpportunity, crmTask);
             opportunityRepository.saveAndFlush(crmOpportunity);
-            crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+            crmTaskService.deleteByIdAndChannel_Organization_Shortcut(taskId, organizationShortcut, channelShortcut);
         }
     }
 
 
-    public void deleteOpportunityTaskComment(Long taskId, Long id, String organizationShortcut) {
-        crmTaskService.deleteCustomerTaskComment(taskId, id, organizationShortcut);
+    public void deleteOpportunityTaskComment(Long taskId, Long id, String organizationShortcut, String channelShortcut) {
+        crmTaskService.deleteCustomerTaskComment(taskId, id, organizationShortcut, channelShortcut);
     }
 
-    public CrmTaskComment getTaskCommentAssociatedWithTask(String organizationShortcut, Long taskId, Long id) {
-        return crmTaskService.getTaskCommentAssociatedWithTask(organizationShortcut, taskId, id);
+    public CrmTaskComment getTaskCommentAssociatedWithTask(String organizationShortcut, String channelShortcut, Long taskId, Long id) {
+        return crmTaskService.getTaskCommentAssociatedWithTask(organizationShortcut, channelShortcut, taskId, id);
     }
 
-    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String organizationShortcut) {
-        return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, organizationShortcut);
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String organizationShortcut, String channelShortcut) {
+        return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, organizationShortcut, channelShortcut);
     }
 
-    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String organizationShortcut, Pageable pagable) {
-        return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, organizationShortcut, pagable);
+    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String organizationShortcut, String channelShortcut, Pageable pagable) {
+        return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, organizationShortcut, channelShortcut, pagable);
     }
 
     public CrmOpportunity convertLeadToOpportunity(CrmLead lead) {
@@ -105,7 +102,7 @@ public class CrmOpportunityService {
         opportunity.setShortName(CONVERTED + lead.getShortname());
         opportunity.setLead(lead);
         opportunity.setKeeper(lead.getKeeper());
-        opportunity.setNetwork(lead.getNetwork());
+        opportunity.setChannel(lead.getChannel());
 
         return saveOpportunity(opportunity);
     }
@@ -116,7 +113,7 @@ public class CrmOpportunityService {
         opportunity.setShortName(CONVERTED + crmContact.getShortName());
         opportunity.contact(crmContact);
         opportunity.setKeeper(crmContact.getKeeper());
-        opportunity.setNetwork(crmContact.getNetwork());
+        opportunity.setChannel(crmContact.getChannel());
 
         return saveOpportunity(opportunity);
     }
@@ -126,7 +123,7 @@ public class CrmOpportunityService {
         opportunity.setAccount(crmAccount);
         opportunity.setShortName(CONVERTED + crmAccount.getShortName());
         opportunity.setKeeper(crmAccount.getKeeper());
-        opportunity.setNetwork(crmAccount.getNetwork());
+        opportunity.setChannel(crmAccount.getChannel());
 
         return saveOpportunity(opportunity);
     }

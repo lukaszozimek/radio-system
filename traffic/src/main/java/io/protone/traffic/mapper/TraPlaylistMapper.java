@@ -31,22 +31,21 @@ public interface TraPlaylistMapper {
 
     @Mapping(source = "playlistDate", target = "playlistDate")
     @Mapping(source = "blocks", target = "playlists")
-    TraPlaylist DTO2DB(TraPlaylistDTO traPlaylistDTO, @Context CorNetwork network, @Context CorChannel corChannel);
+    TraPlaylist DTO2DB(TraPlaylistDTO traPlaylistDTO, @Context CorChannel corChannel);
 
-    default List<TraPlaylist> DTOs2DBs(List<TraPlaylistDTO> traPlaylistDTOS, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<TraPlaylist> DTOs2DBs(List<TraPlaylistDTO> traPlaylistDTOS, @Context CorChannel corChannel) {
         List<TraPlaylist> traPlaylists = new ArrayList<>();
         if (traPlaylistDTOS.isEmpty() || traPlaylistDTOS == null) {
             return null;
         }
         for (TraPlaylistDTO dto : traPlaylistDTOS) {
-            traPlaylists.add(DTO2DB(dto, network, corChannel));
+            traPlaylists.add(DTO2DB(dto, corChannel));
         }
         return traPlaylists;
     }
 
     @AfterMapping
-    default void traPlaylistDTOToTraPlaylistMapperAfterMapping(TraPlaylistDTO dto, @MappingTarget TraPlaylist entity, @Context CorNetwork corNetwork, @Context CorChannel corChannel) {
-        entity.setNetwork(corNetwork);
+    default void traPlaylistDTOToTraPlaylistMapperAfterMapping(TraPlaylistDTO dto, @MappingTarget TraPlaylist entity, @Context CorChannel corChannel) {
         entity.setChannel(corChannel);
     }
 }

@@ -1,6 +1,6 @@
 package io.protone.traffic.mapper;
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorPerson;
 import io.protone.core.mapper.CorContactMapper;
 import io.protone.traffic.api.dto.TraCustomerPersonDTO;
@@ -19,9 +19,9 @@ import java.util.List;
 public interface TraPersonMapper {
     TraCustomerPersonDTO corPerson2TraCustomerPersonPT(CorPerson person);
 
-    CorPerson traCustomerPersonPT2CorPerson(TraCustomerPersonDTO personPT, @Context CorNetwork network);
+    CorPerson traCustomerPersonPT2CorPerson(TraCustomerPersonDTO personPT, @Context CorChannel network);
 
-    default List<CorPerson> traCustomerPersonPTs2CorPersons(List<TraCustomerPersonDTO> dtos, @Context CorNetwork networkId) {
+    default List<CorPerson> traCustomerPersonPTs2CorPersons(List<TraCustomerPersonDTO> dtos, @Context CorChannel networkId) {
         List<CorPerson> corPeople = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {
             return null;
@@ -34,7 +34,7 @@ public interface TraPersonMapper {
 
 
     @AfterMapping
-    default void traCustomerPersonPTToCorPersonAfterMapping(TraCustomerPersonDTO dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void traCustomerPersonPTToCorPersonAfterMapping(TraCustomerPersonDTO dto, @MappingTarget CorPerson entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 }

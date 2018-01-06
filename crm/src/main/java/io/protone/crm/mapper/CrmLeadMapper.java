@@ -1,6 +1,7 @@
 package io.protone.crm.mapper;
 
 import io.protone.core.api.dto.CoreContactDTO;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorContact;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorPerson;
@@ -53,9 +54,9 @@ public interface CrmLeadMapper {
     @Mapping(source = "owner", target = "keeper")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
-    CrmLead DTO2DB(CrmLeadDTO crmLeadDTO, @Context CorNetwork networkId);
+    CrmLead DTO2DB(CrmLeadDTO crmLeadDTO, @Context CorChannel networkId);
 
-    default List<CrmLead> DTOs2DBs(List<CrmLeadDTO> crmLeadDTOs, CorNetwork networkId) {
+    default List<CrmLead> DTOs2DBs(List<CrmLeadDTO> crmLeadDTOs, CorChannel networkId) {
         List<CrmLead> crmLeads = new ArrayList<>();
         if (crmLeadDTOs.isEmpty() || crmLeadDTOs == null) {
             return null;
@@ -67,17 +68,17 @@ public interface CrmLeadMapper {
     }
 
     @AfterMapping
-    default void crmLeadPTToCrmLeadAfterMapping(CrmLeadDTO dto, @MappingTarget CrmLead entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void crmLeadPTToCrmLeadAfterMapping(CrmLeadDTO dto, @MappingTarget CrmLead entity, @Context CorChannel corChannel) {
+        entity.setChannel(corChannel);
     }
     @AfterMapping
-    default void crmCustomerPersonDTOToCorPersonAfterMapping(CrmCustomerPersonDTO dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void crmCustomerPersonDTOToCorPersonAfterMapping(CrmCustomerPersonDTO dto, @MappingTarget CorPerson entity, @Context CorChannel corChannel) {
+        entity.setChannel(corChannel);
     }
 
     @AfterMapping
-    default void coreContactDTOToCorContactAfterMapping(CoreContactDTO dto, @MappingTarget CorContact entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void coreContactDTOToCorContactAfterMapping(CoreContactDTO dto, @MappingTarget CorContact entity, @Context CorChannel corChannel) {
+        entity.setChannel(corChannel);
     }
 }
 

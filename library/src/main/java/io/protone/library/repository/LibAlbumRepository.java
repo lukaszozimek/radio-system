@@ -1,6 +1,7 @@
 package io.protone.library.repository;
 
 
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibAlbum;
 import io.protone.library.domain.LibArtist;
@@ -14,11 +15,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @SuppressWarnings("unused")
 public interface LibAlbumRepository extends JpaRepository<LibAlbum, Long> {
 
-    LibAlbum findOneByNameAndArtistAndNetwork(String name, LibArtist artist, CorNetwork network);
+    LibAlbum findOneByNameAndArtistAndChannel(String name, LibArtist artist, CorChannel channel);
 
-    Slice<LibAlbum> findSliceByNetwork_Shortcut(String organizationShortcut, Pageable pagable);
+    Slice<LibAlbum> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut, Pageable pagable);
 
-    LibAlbum findOneByIdAndNetwork_Shortcut(Long id, String organizationShortcut);
+    LibAlbum findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organizationShortcut, String channelShortcut);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String organizationShortcut);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organizationShortcut, String channelShortcut);
 }

@@ -17,8 +17,8 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long> {
     @Query("select m  from TraMediaPlan as m " +
-            "left join fetch m.network as n " +
-            "left join fetch m.channel as cha " +
+            "left join fetch m.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch m.libFileItem as media " +
             "left join fetch m.account as c " +
             "left join fetch c.area as car " +
@@ -26,12 +26,12 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
             "left join fetch c.range as cr " +
             "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
-            " where n.shortcut = :network and m.channel.shortcut = :corChannel")
-    Slice<TraMediaPlan> findSliceByNetwork_ShortcutAndChannel_Shortcut(@Param("network") String shortcut, @Param("corChannel") String channelShortcut, Pageable pageable);
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization")
+    Slice<TraMediaPlan> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(@Param("organization") String organization, @Param("channelShortcut") String channelShortcut, Pageable pageable);
 
     @Query("select m from TraMediaPlan as m " +
-            "left join fetch m.network as n " +
-            "left join fetch m.channel as cha " +
+            "left join fetch m.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch m.libFileItem as media " +
             "left join fetch m.account as c " +
             "left join fetch c.area as car " +
@@ -39,12 +39,12 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
             "left join fetch c.range as cr " +
             "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
-            " where n.shortcut = :network and m.channel.shortcut = :corChannel and c.shortName = :customerShortcut ")
-    Slice<TraMediaPlan> findSliceByAccount_ShortNameAndNetwork_ShortcutAndChannel_Shortcut(@Param("customerShortcut") String customerShortcut, @Param("network") String corNetwork, @Param("corChannel") String corChannel, Pageable pageable);
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization and c.shortName = :customerShortcut ")
+    Slice<TraMediaPlan> findSliceByAccount_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(@Param("customerShortcut") String customerShortcut, @Param("organization") String organization, @Param("channelShortcut") String channelShortcut, Pageable pageable);
 
     @Query("select m  from TraMediaPlan as m " +
-            "left join fetch m.network as n " +
-            "left join fetch m.channel as cha " +
+            "left join fetch m.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch m.libFileItem as media " +
             "left join fetch m.account as c " +
             "left join fetch c.area as car " +
@@ -52,10 +52,10 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
             "left join fetch c.discount as disc " +
             "left join fetch c.range as cr " +
             "left join fetch c.industry as ind " +
-            " where n.shortcut = :network and m.channel.shortcut = :corChannel and m.id = :id ")
-    TraMediaPlan findByIdAndNetwork_ShortcutAndChannel_Shortcut(@Param("id") Long id, @Param("network") String corNetwork, @Param("corChannel") String corChannel);
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization and m.id = :id ")
+    TraMediaPlan findByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(@Param("id") Long id, @Param("organization") String organization, @Param("channelShortcut") String channelShortcut);
 
-    List<TraMediaPlan> findAllByNetwork_ShortcutAndAccount(String corNetwork, CrmAccount crmAccount);
+    List<TraMediaPlan> findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndAccount(String organization, String channelShortcut, CrmAccount crmAccount);
 
-    void deleteByIdAndNetwork_ShortcutAndChannel_Shortcut(Long id, String corNetwork, String corChannel);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 }

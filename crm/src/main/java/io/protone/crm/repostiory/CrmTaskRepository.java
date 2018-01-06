@@ -14,44 +14,37 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the CrmTask entity.
  */
-@SuppressWarnings("unused")
 public interface CrmTaskRepository extends JpaRepository<CrmTask, Long> {
-    CrmTask findOneByIdAndNetwork(Long id, CorNetwork network);
 
     @Query("select t from CrmTask as t " +
-            "left join fetch t.network as n " +
+            "left join fetch t.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch t.comments as c " +
-            "where n.shortcut = :network and t.id =:id")
-    CrmTask findOneByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String network);
+            "where t.id =:id and org.shortcut =:organization and ch.shortcut =:channelShortcut")
+    CrmTask findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(@Param("id") Long id, @Param("organization") String organization, @Param("channelShortcut") String channelShortcut);
 
-    Slice<CrmTask> findSliceByContact_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork, Pageable pageable);
+    Slice<CrmTask> findSliceByContact_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String crmContact, String organization, String channelShortcut, Pageable pageable);
 
-    List<CrmTask> findAllByContact_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork);
+    List<CrmTask> findAllByContact_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String crmContact, String organization, String channelShortcut);
 
-    Slice<CrmTask> findSliceByLead_ShortnameAndNetwork_Shortcut(String leadShortName, String corNetwork, Pageable pageable);
+    Slice<CrmTask> findSliceByLead_ShortnameAndChannel_Organization_ShortcutAndChannel_Shortcut(String leadShortName, String organization, String channelShortcut, Pageable pageable);
 
-    List<CrmTask> findAllByLead_ShortnameAndNetwork_Shortcut(String leadShortName, String corNetworkm);
+    List<CrmTask> findAllByLead_ShortnameAndChannel_Organization_ShortcutAndChannel_Shortcut(String leadShortName, String organization, String channelShortcut);
 
-    Slice<CrmTask> findSliceByOpportunity_ShortNameAndNetwork_Shortcut(String opportunityShortcut, String corNetwork, Pageable pageable);
+    Slice<CrmTask> findSliceByOpportunity_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String opportunityShortcut, String organization, String channelShortcut, Pageable pageable);
 
-    Slice<CrmTask> findSliceByAccount_ShortNameAndNetwork_Shortcut(String accountShortName, String corNetwork, Pageable pageable);
+    Slice<CrmTask> findSliceByAccount_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String accountShortName, String organization, String channelShortcut, Pageable pageable);
 
-    List<CrmTask> findAllByAccount_ShortNameAndNetwork_Shortcut(String accountShortName, String corNetwork);
+    List<CrmTask> findAllByAccount_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String accountShortName, String organization, String channelShortcut);
 
-    List<CrmTask> findAllByOpportunity_ShortNameAndNetwork_Shortcut(String accountShortName, String corNetwork);
+    List<CrmTask> findAllByOpportunity_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String accountShortName, String organization, String channelShortcut);
 
-    List<CrmTask> findAllByNetwork(CorNetwork network, Pageable pageable);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 
-    List<CrmTask> findByNetwork(CorNetwork network);
+    void deleteByContact_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String crmContact, String organization, String channelShortcut);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String network);
+    void deleteByAccount_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String account, String organization, String channelShortcut);
 
-    void deleteByContact_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork);
-
-    void deleteByAccount_ShortNameAndNetwork_Shortcut(String account, String corNetwork);
-
-    void deleteByLead_ShortnameAndNetwork_Shortcut(String lead, String corNetwork);
-
-    void deleteByOpportunity_ShortNameAndNetwork_Shortcut(String opportunity, String corNetwork);
+    void deleteByLead_ShortnameAndChannel_Organization_ShortcutAndChannel_Shortcut(String lead, String organization, String channelShortcut);
 
 }

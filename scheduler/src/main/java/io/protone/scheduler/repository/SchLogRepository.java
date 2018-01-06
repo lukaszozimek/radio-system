@@ -16,20 +16,20 @@ public interface SchLogRepository extends JpaRepository<SchLog, Long> {
 
 
     @Query("select log from SchLog as log " +
-            "left join fetch log.network as n " +
             "left join fetch log.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch log.schLogConfiguration as logConf " +
             "left join fetch logConf.logColumns as logColumns " +
-            "where n.shortcut = :network  and ch.shortcut= :channelShortcut and logConf.extension=:extension")
-    Slice<SchLog> findAllByNetwork_ShortcutAndChannel_ShortcutAndSchLogConfiguration_Extension(@Param("network") String organizationShortcut, @Param("channelShortcut") String channelShortcut, @Param("extension") String extension, Pageable pageable);
+            "where org.shortcut = :organization  and ch.shortcut= :channelShortcut and logConf.extension=:extension")
+    Slice<SchLog> findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndSchLogConfiguration_Extension(@Param("organization") String organizationShortcut, @Param("channelShortcut") String channelShortcut, @Param("extension") String extension, Pageable pageable);
 
     @Query("select log from SchLog as log " +
-            "left join fetch log.network as n " +
             "left join fetch log.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch log.schLogConfiguration as logConf " +
             "left join fetch logConf.logColumns as logColumns " +
-            "where n.shortcut = :network  and ch.shortcut= :channelShortcut and log.date= :date and logConf.extension=:extension")
-    SchLog findOneByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(@Param("network") String organizationShortcut, @Param("channelShortcut") String channelShortcut, @Param("date") LocalDate date, @Param("extension") String configurationExtension);
+            "where org.shortcut = :organization  and ch.shortcut= :channelShortcut and log.date= :date and logConf.extension=:extension")
+    SchLog findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(@Param("organization") String organizationShortcut, @Param("channelShortcut") String channelShortcut, @Param("date") LocalDate date, @Param("extension") String configurationExtension);
 
-    void deleteByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(String organizationShortcut, String channelShortcut, LocalDate date, String configurationExtension);
+    void deleteByChannel_Organization_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(String organizationShortcut, String channelShortcut, LocalDate date, String configurationExtension);
 }

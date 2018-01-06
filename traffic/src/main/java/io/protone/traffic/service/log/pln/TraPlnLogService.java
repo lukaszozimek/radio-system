@@ -53,7 +53,7 @@ public class TraPlnLogService implements TraEmissionLogService {
         List<TraLogEmission> traLogEmissionList = traPlnLogParserService.parse(emissionLogDescriptorDTO, multipartFile);
         TraOrder traOrder = traOrderService.getOrder(emissionLogDescriptorDTO.getOrder().getId());
         List<TraPlaylist> traPlaylist = traPlaylistService.getTraPlaylistListInRange(traOrder.getStartDate(), traOrder.getEndDate(), organizationShortcut, channelShortcut);
-        LibMediaItem libMediaItem = libMediaItemService.getMediaItem(organizationShortcut, emissionLogDescriptorDTO.getLibMediaItemThinDTO().getLibrary(), emissionLogDescriptorDTO.getLibMediaItemThinDTO().getIdx());
+        LibMediaItem libMediaItem = libMediaItemService.getMediaItem(organizationShortcut, channelShortcut, emissionLogDescriptorDTO.getLibMediaItemThinDTO().getLibrary(), emissionLogDescriptorDTO.getLibMediaItemThinDTO().getIdx());
         if (emissionLogDescriptorDTO.isFirstPostion()) {
             return positionFirstMapping.mapToEntityPlaylist(traPlaylist, traLogEmissionList, libMediaItem);
         } else if (emissionLogDescriptorDTO.isLasPosition()) {

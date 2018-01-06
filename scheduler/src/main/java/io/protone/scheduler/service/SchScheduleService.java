@@ -56,12 +56,12 @@ public class SchScheduleService {
 
     @Transactional(readOnly = true)
     public Slice<SchSchedule> findSchSchedulesForNetworkAndChannel(String organizationShortcut, String channelShortcut, Pageable pageable) {
-        return schScheduleRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
+        return schScheduleRepository.findAllByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
     @Transactional(readOnly = true)
     public SchScheduleDTO findSchScheduleForNetworkAndChannelAndDate(String organizationShortcut, String channelShortcut, LocalDate date) {
-        SchSchedule schSchedule = schScheduleRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(organizationShortcut, channelShortcut, date);
+        SchSchedule schSchedule = schScheduleRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndDate(organizationShortcut, channelShortcut, date);
 
         if (schSchedule != null) {
             return schScheduleDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schScheduleMapper.DB2DTO(schSchedule));
@@ -71,7 +71,7 @@ public class SchScheduleService {
 
     @Transactional(readOnly = true)
     public SchSchedule findSchScheduleEntityForNetworkAndChannelAndDate(String organizationShortcut, String channelShortcut, LocalDate date) {
-        return schScheduleRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(organizationShortcut, channelShortcut, date);
+        return schScheduleRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndDate(organizationShortcut, channelShortcut, date);
 
     }
 
@@ -90,6 +90,6 @@ public class SchScheduleService {
     }
 
     public List<SchSchedule> findSchSchedulesForNetworkAndChannelBetweenDates(String organizationShortcut, String channelShortcut, LocalDate from, LocalDate to) {
-        return schScheduleRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndDateBetween(organizationShortcut, channelShortcut, from, to);
+        return schScheduleRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndDateBetween(organizationShortcut, channelShortcut, from, to);
     }
 }

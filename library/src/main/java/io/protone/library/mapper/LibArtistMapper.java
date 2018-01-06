@@ -1,7 +1,7 @@
 package io.protone.library.mapper;
 
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.library.api.dto.LibArtistDTO;
 import io.protone.library.domain.LibArtist;
 import io.protone.library.domain.enumeration.LibArtistTypeEnum;
@@ -21,9 +21,9 @@ public interface LibArtistMapper {
 
     List<LibArtistDTO> DBs2DTOs(List<LibArtist> dbs);
 
-    LibArtist DTO2DB(LibArtistDTO dto, @Context CorNetwork network);
+    LibArtist DTO2DB(LibArtistDTO dto, @Context CorChannel network);
 
-    default List<LibArtist> DTOs2DBs(List<LibArtistDTO> dtos, @Context CorNetwork network) {
+    default List<LibArtist> DTOs2DBs(List<LibArtistDTO> dtos, @Context CorChannel network) {
         List<LibArtist> corPeople = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {
             return null;
@@ -35,8 +35,8 @@ public interface LibArtistMapper {
     }
 
     @AfterMapping
-    default void libArtistPTToLibArtistAfterMapping(LibArtistDTO dto, @MappingTarget LibArtist entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void libArtistPTToLibArtistAfterMapping(LibArtistDTO dto, @MappingTarget LibArtist entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 
 

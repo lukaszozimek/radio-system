@@ -23,7 +23,6 @@ public class SchEmissionConfigurationSchEmissionMapper {
                 .sequence(schEmissionTemplate.getSequence())
                 .endTime(schEmissionTemplate.getStartTime().plusSeconds(schEmissionTemplate.getMediaItem().getLength().longValue() / 1000))
                 .attachments(schEmissionConfigurationAttachmentSchEmissionAttachmentMapper.mapAttachmentConfiguration(schEmissionTemplate.getAttachments()))
-                .network(schEmissionTemplate.getNetwork())
                 .channel(schEmissionTemplate.getChannel())
                 .mediaItem(schEmissionTemplate.getMediaItem());
 

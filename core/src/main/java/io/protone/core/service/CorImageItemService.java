@@ -1,7 +1,7 @@
 package io.protone.core.service;
 
 import io.protone.core.domain.CorImageItem;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.CorUser;
 import io.protone.core.repository.CorImageItemRepository;
 import io.protone.core.s3.S3Client;
@@ -54,25 +54,25 @@ public class CorImageItemService {
     public CorImageItem getDefualtImageItem() {
         CorImageItem corImageItem = new CorImageItem();
         CorUser currentUser = corUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
-        CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
+        CorOrganization corOrganization = currentUser.getOrganization();
         corImageItem.setName(DEFAULT);
-        corImageItem.network(corNetwork);
+        corImageItem.organization(corOrganization);
         return corImageItemRepository.saveAndFlush(corImageItem);
     }
 
-    public Set<CorImageItem> saveImageItems(MultipartFile[] images) throws TikaException, SAXException, IOException {
+    public Set<CorImageItem> saveImageItems(MultipartFile[] images, CorOrganization corOrganization) throws TikaException, SAXException, IOException {
         if (images == null || images.length == 0) {
             return new HashSet<>();
         }
         Set<CorImageItem> corImageItemSet = new HashSet<>();
         for (MultipartFile image : images) {
-            corImageItemSet.add(saveImageItem(image));
+            corImageItemSet.add(saveImageItem(image, corOrganization));
         }
         return corImageItemSet;
     }
 
 
-    public CorImageItem saveImageItem(MultipartFile image) throws TikaException, SAXException, IOException {
+    public CorImageItem saveImageItem(MultipartFile image, CorOrganization corOrganization) throws TikaException, SAXException, IOException {
         if (image == null || image.isEmpty()) {
             return null;
         }
@@ -83,15 +83,13 @@ public class CorImageItemService {
         Metadata metadata = new Metadata();
         ParseContext pcontext = new ParseContext();
         parser.parse(bais, handler, metadata, pcontext);
-        CorUser currentUser = corUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
-        CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
         String fileUUID = UUID.randomUUID().toString();
 
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(corNetwork.getShortcut(), FILE + PUBLIC_CONTENT, fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
+            s3Client.upload(corOrganization.getShortcut(), FILE + PUBLIC_CONTENT, fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             corImageItem = new CorImageItem();
-            corImageItem.name(fileUUID).network(corNetwork);
+            corImageItem.name(fileUUID).organization(corOrganization);
             corImageItem = getObjectUrl(corImageItem);
             corImageItem = corImageItemRepository.saveAndFlush(corImageItem);
 
@@ -112,7 +110,7 @@ public class CorImageItemService {
         }
         String publicUrl = null;
         try {
-            publicUrl = s3Client.getCover(corImageItem.getNetwork().getShortcut(), FILE + PUBLIC_CONTENT, corImageItem.getName());
+            publicUrl = s3Client.getCover(corImageItem.getOrganization().getShortcut(), FILE + PUBLIC_CONTENT, corImageItem.getName());
         } catch (S3Exception e) {
             log.error(e.getLocalizedMessage());
         } catch (UrlGenerationResourceException e) {
@@ -127,7 +125,7 @@ public class CorImageItemService {
         }
         String publicUrl = null;
         try {
-            publicUrl = s3Client.getObjectUrl(corImageItem.getNetwork().getShortcut(), FILE + PUBLIC_CONTENT, corImageItem.getName());
+            publicUrl = s3Client.getObjectUrl(corImageItem.getOrganization().getShortcut(), FILE + PUBLIC_CONTENT, corImageItem.getName());
         } catch (S3Exception e) {
             log.error(e.getLocalizedMessage());
         } catch (UrlGenerationResourceException e) {

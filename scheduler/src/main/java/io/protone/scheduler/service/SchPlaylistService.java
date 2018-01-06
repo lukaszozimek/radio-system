@@ -35,12 +35,12 @@ public class SchPlaylistService {
 
     @Transactional(readOnly = true)
     public Slice<SchPlaylist> findSchPlaylistForNetworkAndChannel(String organizationShortcut, String channelShortcut, Pageable pageable) {
-        return schPlaylistRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
+        return schPlaylistRepository.findAllByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
     @Transactional(readOnly = true)
     public SchPlaylistDTO findSchPlaylistForNetworkAndChannelAndDate(String organizationShortcut, String channelShortcut, LocalDate date) {
-        SchPlaylist schPlaylist = schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(organizationShortcut, channelShortcut, date);
+        SchPlaylist schPlaylist = schPlaylistRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndDate(organizationShortcut, channelShortcut, date);
         if (schPlaylist != null) {
             return schPlaylistDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schPlaylist);
         }
@@ -55,12 +55,12 @@ public class SchPlaylistService {
 
     @Transactional
     public void deleteSchPlaylistByNetworkAndChannelAndDate(String organizationShortcut, String channelShortcut, LocalDate date) {
-        SchPlaylist schPlaylist = schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(organizationShortcut, channelShortcut, date);
+        SchPlaylist schPlaylist = schPlaylistRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndDate(organizationShortcut, channelShortcut, date);
         if (schPlaylist != null) {
             if (schPlaylist.getEmissions() != null && !schPlaylist.getEmissions().isEmpty()) {
                 this.schEmissionService.deleteEmissions(schPlaylist.getEmissions());
             }
-            schPlaylistRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(organizationShortcut, channelShortcut, date);
+            schPlaylistRepository.deleteByChannel_Organization_ShortcutAndChannel_ShortcutAndDate(organizationShortcut, channelShortcut, date);
             schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(organizationShortcut, channelShortcut, date);
         }
     }

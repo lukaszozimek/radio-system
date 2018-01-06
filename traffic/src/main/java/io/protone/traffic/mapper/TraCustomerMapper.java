@@ -1,6 +1,7 @@
 package io.protone.traffic.mapper;
 
 import io.protone.core.api.dto.CoreContactDTO;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorContact;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorPerson;
@@ -42,9 +43,9 @@ public interface TraCustomerMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
-    CrmAccount traDTO2DB(TraCustomerDTO crmAccountDTO, @Context CorNetwork networkId);
+    CrmAccount traDTO2DB(TraCustomerDTO crmAccountDTO, @Context CorChannel networkId);
 
-    default List<CrmAccount> traDTOs2DBs(List<TraCustomerDTO> crmAccountDTOs, CorNetwork networkId) {
+    default List<CrmAccount> traDTOs2DBs(List<TraCustomerDTO> crmAccountDTOs, CorChannel networkId) {
         List<CrmAccount> crmAccounts = new ArrayList<>();
         if (crmAccountDTOs.isEmpty() || crmAccountDTOs == null) {
             return null;
@@ -56,18 +57,18 @@ public interface TraCustomerMapper {
     }
 
     @AfterMapping
-    default void traCustomerPTToCrmAccountAfterMapping(TraCustomerDTO dto, @MappingTarget CrmAccount entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void traCustomerPTToCrmAccountAfterMapping(TraCustomerDTO dto, @MappingTarget CrmAccount entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 
     @AfterMapping
-    default void traCustomerPersonDTOToCorPersonAfterMapping(TraCustomerPersonDTO dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void traCustomerPersonDTOToCorPersonAfterMapping(TraCustomerPersonDTO dto, @MappingTarget CorPerson entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 
     @AfterMapping
-    default void coreContactDTOToCorContactAfterMapping(CoreContactDTO dto, @MappingTarget CorContact entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void coreContactDTOToCorContactAfterMapping(CoreContactDTO dto, @MappingTarget CorContact entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 
     CrmAccount crmAccountFromTraCustomerThinPT(TraCustomerThinDTO id);

@@ -3,10 +3,15 @@ package io.protone.application.security.jwt;
 import com.google.common.base.Strings;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwsHeader;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorUser;
+import io.protone.core.service.CorSearchUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -17,14 +22,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
-import static io.protone.application.security.jwt.TokenProvider.CHANNEL;
-import static io.protone.application.security.jwt.TokenProvider.NETWORK;
+import static io.protone.application.security.jwt.TokenProvider.ORGANIZATION;
 
 /**
  * Filters incoming requests and installs a Spring Security principal if a header corresponding to a valid user is
@@ -36,15 +37,18 @@ public class JWTFilter extends GenericFilterBean {
     private static String CHANNEL_SHORTCUT_KEY = "shortcut";
     private final Logger log = LoggerFactory.getLogger(JWTFilter.class);
 
+    private CorSearchUserService corUserService;
+
     private TokenProvider tokenProvider;
 
-    public JWTFilter(TokenProvider tokenProvider) {
+    public JWTFilter(TokenProvider tokenProvider, CorSearchUserService corUserService) {
         this.tokenProvider = tokenProvider;
+        this.corUserService = corUserService;
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
         try {
             HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
             String jwt = resolveToken(httpServletRequest);
@@ -87,11 +91,13 @@ public class JWTFilter extends GenericFilterBean {
         if (Strings.isNullOrEmpty(newtworkShortcut)) {
             return false;
         }
+        UsernamePasswordAuthenticationToken userAuth = (UsernamePasswordAuthenticationToken) tokenProvider.getAuthentication(jwt);
+        User user = (User) userAuth.getPrincipal();
         JwsHeader jwsHeader = tokenProvider.getUserAuthorizationAccess(jwt);
-        LinkedHashMap<String, String> corNetworkMap = (LinkedHashMap<String, String>) jwsHeader.get(NETWORK);
-        List<LinkedHashMap<String, String>> corChannelSet = (ArrayList<LinkedHashMap<String, String>>) jwsHeader.get(CHANNEL);
+        LinkedHashMap<String, String> corNetworkMap = (LinkedHashMap<String, String>) jwsHeader.get(ORGANIZATION);
+        Optional<CorUser> corUser = corUserService.getUserWithAuthoritiesByLoginAndOrganizationShortcut(user.getUsername(), newtworkShortcut);
 
-        if (checkNetworkAcces(corNetworkMap, newtworkShortcut) && checkChannelAccess(corChannelSet, corChannelShortcut)) {
+        if (corUser.isPresent() && checkChannelAccess(corUser.get().getChannels(), corChannelShortcut)) {
             return true;
         }
         return false;
@@ -114,22 +120,14 @@ public class JWTFilter extends GenericFilterBean {
         return EMPTY;
     }
 
-    private boolean checkNetworkAcces(LinkedHashMap<String, String> corNetwork, String organizationShortcut) {
-        if (corNetwork.get(NETWORK_SHORTCUT_KEY).equals(organizationShortcut)) {
-            return true;
-        }
-        return false;
-
-    }
-
-    private boolean checkChannelAccess(List<LinkedHashMap<String, String>> corChannels, String channelShortcut) {
+    private boolean checkChannelAccess(Set<CorChannel> corChannels, String channelShortcut) {
         if (Strings.isNullOrEmpty(channelShortcut)) {
             return true;
         }
         if (corChannels.isEmpty()) {
             return false;
         }
-        if (corChannels.stream().anyMatch(corChannel -> corChannel.get(CHANNEL_SHORTCUT_KEY).equals(channelShortcut))) {
+        if (corChannels.stream().anyMatch(corChannel -> corChannel.getShortcut().equals(channelShortcut))) {
             return true;
         }
         return false;

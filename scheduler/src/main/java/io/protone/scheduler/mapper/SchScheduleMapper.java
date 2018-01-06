@@ -28,30 +28,30 @@ import static java.util.stream.Collectors.toList;
  */
 @Mapper(componentModel = "spring", uses = {SchEmissionMapper.class, CorDictionaryMapper.class})
 public interface SchScheduleMapper {
-    SchSchedule DTO2DB(SchScheduleDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
+    SchSchedule DTO2DB(SchScheduleDTO dto, @Context CorChannel corChannel);
 
     SchScheduleDTO DB2DTO(SchSchedule entity);
 
     List<SchScheduleDTO> DBs2DTOs(List<SchSchedule> entityList);
 
-    default List<SchSchedule> DTOs2DBs(List<SchScheduleDTO> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<SchSchedule> DTOs2DBs(List<SchScheduleDTO> dList, @Context CorChannel corChannel) {
         List<SchSchedule> eList = new ArrayList<>();
         if (dList.isEmpty() || dList == null) {
             return null;
         }
         for (SchScheduleDTO dto : dList) {
-            eList.add(DTO2DB(dto, network, corChannel));
+            eList.add(DTO2DB(dto, corChannel));
         }
         return eList;
     }
 
     SchClockDTO DB2DTO(SchClock entity);
 
-    SchClock DTO2DB(SchClockDTO entity, @Context CorNetwork network, @Context CorChannel corChannel);
+    SchClock DTO2DB(SchClockDTO entity, @Context CorChannel corChannel);
 
     List<SchScheduleThinDTO> DBs2ThinDTOs(List<SchSchedule> schClockList);
 
-    SchBlock DTO2DB(SchBlockDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
+    SchBlock DTO2DB(SchBlockDTO dto, @Context CorChannel corChannel);
 
     SchBlockDTO DB2DTO(SchBlock entity);
 
@@ -60,11 +60,10 @@ public interface SchScheduleMapper {
     }
 
     @AfterMapping
-    default void schScheduleDTOToSchSchedulenAfterMapping(SchScheduleDTO dto, @MappingTarget SchSchedule entity, @Context CorNetwork network, @Context CorChannel corChannel) {
-        entity.setNetwork(network);
+    default void schScheduleDTOToSchSchedulenAfterMapping(SchScheduleDTO dto, @MappingTarget SchSchedule entity, @Context CorChannel corChannel) {
         entity.setChannel(corChannel);
         if (dto.getSchClockDTOS() != null && !dto.getSchClockDTOS().isEmpty()) {
-            entity.setBlocks(dto.getSchClockDTOS().stream().map(schClockDTO -> new SchBlockSchBlock().parent(entity).child(this.DTO2DB(schClockDTO, network, corChannel)).sequence(schClockDTO.getSequence())).collect(toList()));
+            entity.setBlocks(dto.getSchClockDTOS().stream().map(schClockDTO -> new SchBlockSchBlock().parent(entity).child(this.DTO2DB(schClockDTO, corChannel)).sequence(schClockDTO.getSequence())).collect(toList()));
         }
     }
 
@@ -80,26 +79,24 @@ public interface SchScheduleMapper {
     }
 
     @AfterMapping
-    default void schClockDTOToSchClockAfterMapping(SchClockDTO dto, @MappingTarget SchClock entity, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default void schClockDTOToSchClockAfterMapping(SchClockDTO dto, @MappingTarget SchClock entity, @Context CorChannel corChannel) {
 
         if (dto.getBlocks() != null && !dto.getBlocks().isEmpty()) {
-            entity.setBlocks(dto.getBlocks().stream().map(schBlockDTO -> new SchBlockSchBlock().child(this.DTO2DB(schBlockDTO, network, corChannel)).parent(entity).sequence(schBlockDTO.getSequence())).collect(toList()));
+            entity.setBlocks(dto.getBlocks().stream().map(schBlockDTO -> new SchBlockSchBlock().child(this.DTO2DB(schBlockDTO, corChannel)).parent(entity).sequence(schBlockDTO.getSequence())).collect(toList()));
         }
-        entity.getEmissions().stream().forEach(schEmissionTemplate -> schEmissionTemplate.block(entity).network(network).channel(corChannel).getAttachments().stream().forEach(schAttachmentTemplate -> schAttachmentTemplate.channel(corChannel).network(network).emission(schEmissionTemplate)));
-        entity.setNetwork(network);
+        entity.getEmissions().stream().forEach(schEmissionTemplate -> schEmissionTemplate.block(entity).channel(corChannel).getAttachments().stream().forEach(schAttachmentTemplate -> schAttachmentTemplate.channel(corChannel).emission(schEmissionTemplate)));
         entity.setChannel(corChannel);
     }
 
     @AfterMapping
-    default void schBlockDTOToSchBlockAfterMapping(SchBlockDTO dto, @MappingTarget SchBlock entity, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default void schBlockDTOToSchBlockAfterMapping(SchBlockDTO dto, @MappingTarget SchBlock entity, @Context CorChannel corChannel) {
         List<SchBlockSchBlock> schEventTemplateEvnetTemplates = Lists.newArrayList();
         if (dto.getBlocks() != null && !dto.getBlocks().isEmpty()) {
-            schEventTemplateEvnetTemplates = dto.getBlocks().stream().map(schEventTemplateDTO -> new SchBlockSchBlock().child(this.DTO2DB(schEventTemplateDTO, network, corChannel)).parent(entity).sequence(schEventTemplateDTO.getSequence())).collect(toList());
+            schEventTemplateEvnetTemplates = dto.getBlocks().stream().map(schEventTemplateDTO -> new SchBlockSchBlock().child(this.DTO2DB(schEventTemplateDTO, corChannel)).parent(entity).sequence(schEventTemplateDTO.getSequence())).collect(toList());
         }
-        entity.getEmissions().stream().forEach(schEmissionTemplate -> schEmissionTemplate.block(entity).network(network).channel(corChannel).getAttachments().stream().forEach(schAttachmentTemplate -> schAttachmentTemplate.channel(corChannel).network(network).emission(schEmissionTemplate)));
+        entity.getEmissions().stream().forEach(schEmissionTemplate -> schEmissionTemplate.block(entity).channel(corChannel).getAttachments().stream().forEach(schAttachmentTemplate -> schAttachmentTemplate.channel(corChannel).emission(schEmissionTemplate)));
 
         entity.setBlocks(schEventTemplateEvnetTemplates);
-        entity.setNetwork(network);
         entity.setChannel(corChannel);
     }
 

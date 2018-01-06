@@ -29,22 +29,21 @@ public interface TraMediaPlanEmissionMapper {
 
     List<TraMediaPlanEmissionDTO> DBTraLogEmissions2DTOs(List<TraLogEmission> traLogEmissions);
 
-    TraMediaPlanEmission DTO2DB(TraMediaPlanEmissionDTO traMediaPlanEmissionDTO, @Context CorNetwork network, @Context CorChannel corChannel);
+    TraMediaPlanEmission DTO2DB(TraMediaPlanEmissionDTO traMediaPlanEmissionDTO, @Context CorChannel corChannel);
 
-    default List<TraMediaPlanEmission> DTOs2DBs(List<TraMediaPlanEmissionDTO> mediaPlanEmissionDTOS, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<TraMediaPlanEmission> DTOs2DBs(List<TraMediaPlanEmissionDTO> mediaPlanEmissionDTOS,  @Context CorChannel corChannel) {
         List<TraMediaPlanEmission> traOrders = new ArrayList<>();
         if (mediaPlanEmissionDTOS.isEmpty() || mediaPlanEmissionDTOS == null) {
             return null;
         }
         for (TraMediaPlanEmissionDTO dto : mediaPlanEmissionDTOS) {
-            traOrders.add(DTO2DB(dto, network, corChannel));
+            traOrders.add(DTO2DB(dto, corChannel));
         }
         return traOrders;
     }
 
     @AfterMapping
-    default void traInvoicePTToTraMediaPlanEmissionAfterMapping(TraMediaPlanEmissionDTO dto, @MappingTarget TraMediaPlanEmission entity, @Context CorNetwork network, @Context CorChannel corChannel) {
-        entity.setNetwork(network);
+    default void traInvoicePTToTraMediaPlanEmissionAfterMapping(TraMediaPlanEmissionDTO dto, @MappingTarget TraMediaPlanEmission entity,  @Context CorChannel corChannel) {
         entity.setChannel(corChannel);
     }
 

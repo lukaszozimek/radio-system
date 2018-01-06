@@ -22,18 +22,19 @@ public class CrmTaskCommentService {
         return crmTaskCommentRepository.saveAndFlush(crmTaskComment);
     }
 
-    public Slice<CrmTaskComment> findByCrmTaskId(Long taskId, String networkShortuct, Pageable pageable) {
-        return crmTaskCommentRepository.findSliceByTaskComment_IdAndNetwork_Shortcut(taskId, networkShortuct,pageable);
+    public Slice<CrmTaskComment> findByCrmTaskId(Long taskId, String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return crmTaskCommentRepository.findSliceByTaskComment_IdAndChannel_Organization_ShortcutAndChannel_Shortcut(taskId, organizationShortcut, channelShortcut, pageable);
     }
 
-    public CrmTaskComment findByCrmTaskId(Long commentId, Long taskId, String networkShortuct) {
-        return crmTaskCommentRepository.findOneByIdAndTaskComment_IdAndNetwork_Shortcut(commentId, taskId, networkShortuct);
+    public CrmTaskComment findByCrmTaskId(Long commentId, Long taskId, String organizationShortcut, String channelShortcut) {
+        return crmTaskCommentRepository.findOneByIdAndTaskComment_IdAndChannel_Organization_ShortcutAndChannel_Shortcut(commentId, taskId, organizationShortcut, channelShortcut);
     }
 
-    public void deleteByCrmTaskId(Long taskId, String networkShortuct) {
-        crmTaskCommentRepository.deleteAllByTaskComment_IdAndNetwork_Shortcut(taskId, networkShortuct);
+    public void deleteByCrmTaskId(Long taskId, String organizationShortcut, String channelShortcut) {
+        crmTaskCommentRepository.deleteAllByTaskComment_IdAndChannel_Organization_ShortcutAndChannel_Shortcut(taskId, organizationShortcut, channelShortcut);
     }
-    public void deleteByCrmTaskIdAndCommentId(Long taskId,Long id, String networkShortuct) {
-        crmTaskCommentRepository.deleteAllByIdAndTaskComment_IdAndNetwork_Shortcut(id,taskId, networkShortuct);
+
+    public void deleteByCrmTaskIdAndCommentId(Long taskId, Long id, String organizationShortcut, String channelShortcut) {
+        crmTaskCommentRepository.deleteAllByIdAndTaskComment_IdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, taskId, organizationShortcut, channelShortcut);
     }
 }

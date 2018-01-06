@@ -4,6 +4,7 @@ import io.github.jhipster.security.Http401UnauthorizedEntryPoint;
 import io.protone.application.security.jwt.JWTConfigurer;
 import io.protone.application.security.jwt.TokenProvider;
 import io.protone.core.security.AuthoritiesConstants;
+import io.protone.core.service.CorSearchUserService;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,22 +41,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final CorsFilter corsFilter;
 
+    private final CorSearchUserService corSearchService;
+
     public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, UserDetailsService userDetailsService,
-            TokenProvider tokenProvider, SessionRegistry sessionRegistry,
-        CorsFilter corsFilter) {
+                                 TokenProvider tokenProvider, SessionRegistry sessionRegistry,
+                                 CorsFilter corsFilter, CorSearchUserService corSearchService) {
 
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userDetailsService = userDetailsService;
         this.tokenProvider = tokenProvider;
         this.sessionRegistry = sessionRegistry;
         this.corsFilter = corsFilter;
+        this.corSearchService = corSearchService;
     }
 
     @PostConstruct
     public void init() {
         try {
             authenticationManagerBuilder
-                .userDetailsService(userDetailsService)
+                    .userDetailsService(userDetailsService)
                     .passwordEncoder(passwordEncoder());
         } catch (Exception e) {
             throw new BeanInitializationException("Security configuration failed", e);
@@ -75,54 +79,54 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-            .antMatchers(HttpMethod.OPTIONS, "/**")
-            .antMatchers("/app/**/*.{js,html}")
-            .antMatchers("/bower_components/**")
-            .antMatchers("/i18n/**")
-            .antMatchers("/content/**")
-            .antMatchers("/swagger-ui/index.html")
-            .antMatchers("/test/**");
+                .antMatchers(HttpMethod.OPTIONS, "/**")
+                .antMatchers("/app/**/*.{js,html}")
+                .antMatchers("/bower_components/**")
+                .antMatchers("/i18n/**")
+                .antMatchers("/content/**")
+                .antMatchers("/swagger-ui/index.html")
+                .antMatchers("/test/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .sessionManagement()
-            .maximumSessions(32) // maximum number of concurrent sessions for one user
-            .sessionRegistry(sessionRegistry)
-            .and().and()
-            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling()
-            .authenticationEntryPoint(http401UnauthorizedEntryPoint())
-        .and()
-            .csrf()
-            .disable()
-            .headers()
-            .frameOptions()
-            .disable()
-        .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-            .authorizeRequests()
-            .antMatchers("/api/v1/user/register").permitAll()
-            .antMatchers("/api/v1/user/activate").permitAll()
-            .antMatchers("/api/v1/user/authenticate").permitAll()
-            .antMatchers("/api/v1/user/account/reset_password/init").permitAll()
-            .antMatchers("/api/v1/user/account/reset_password/finish").permitAll()
-            .antMatchers("/profile-info").permitAll()
-            .antMatchers("/api/**").authenticated()
-            .antMatchers("/mangement/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/v2/api-docs/**").permitAll()
-            .antMatchers("/swagger-resources/configuration/ui").permitAll()
-            .antMatchers("/swagger-ui/index.html").permitAll()
-        .and()
-            .apply(securityConfigurerAdapter());
+                .sessionManagement()
+                .maximumSessions(32) // maximum number of concurrent sessions for one user
+                .sessionRegistry(sessionRegistry)
+                .and().and()
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(http401UnauthorizedEntryPoint())
+                .and()
+                .csrf()
+                .disable()
+                .headers()
+                .frameOptions()
+                .disable()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/v1/user/register").permitAll()
+                .antMatchers("/api/v1/user/activate").permitAll()
+                .antMatchers("/api/v1/user/authenticate").permitAll()
+                .antMatchers("/api/v1/user/account/reset_password/init").permitAll()
+                .antMatchers("/api/v1/user/account/reset_password/finish").permitAll()
+                .antMatchers("/profile-info").permitAll()
+                .antMatchers("/api/**").authenticated()
+                .antMatchers("/mangement/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/v2/api-docs/**").permitAll()
+                .antMatchers("/swagger-resources/configuration/ui").permitAll()
+                .antMatchers("/swagger-ui/index.html").permitAll()
+                .and()
+                .apply(securityConfigurerAdapter());
 
     }
 
     private JWTConfigurer securityConfigurerAdapter() {
-        return new JWTConfigurer(tokenProvider);
+        return new JWTConfigurer(tokenProvider, corSearchService);
     }
 
     @Bean

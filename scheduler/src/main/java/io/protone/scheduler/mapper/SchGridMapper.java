@@ -27,20 +27,20 @@ import static java.util.stream.Collectors.toList;
 @Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, SchEmissionTemplateMapper.class, CorUserMapper.class})
 public interface SchGridMapper {
     @Mapping(source = "defaultGrid", target = "defaultGrid")
-    SchGrid DTO2DB(SchGridDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
+    SchGrid DTO2DB(SchGridDTO dto, @Context CorChannel corChannel);
 
     @Mapping(source = "defaultGrid", target = "defaultGrid")
     SchGridDTO DB2DTO(SchGrid entity);
 
     List<SchGridDTO> DBs2DTOs(List<SchGrid> entityList);
 
-    default List<SchGrid> DTOs2DBs(List<SchGridDTO> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<SchGrid> DTOs2DBs(List<SchGridDTO> dList, @Context CorChannel corChannel) {
         List<SchGrid> eList = new ArrayList<>();
         if (dList.isEmpty() || dList == null) {
             return null;
         }
         for (SchGridDTO dto : dList) {
-            eList.add(DTO2DB(dto, network, corChannel));
+            eList.add(DTO2DB(dto, corChannel));
         }
         return eList;
     }
@@ -59,13 +59,12 @@ public interface SchGridMapper {
     }
 
     @AfterMapping
-    default void schGridDTOToSchGridnAfterMapping(SchGridDTO dto, @MappingTarget SchGrid entity, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default void schGridDTOToSchGridnAfterMapping(SchGridDTO dto, @MappingTarget SchGrid entity, @Context CorChannel corChannel) {
         if (dto.getClocks() != null && !dto.getClocks().isEmpty()) {
             entity.schEventTemplates(dto.getClocks().stream().map(schClockTemplateDTO -> {
                 return new SchEventTemplateEvnetTemplate().parent(entity).sequence(schClockTemplateDTO.getSequence()).child(new SchClockTemplate().id(schClockTemplateDTO.getId()));
             }).collect(toList()));
         }
-        entity.setNetwork(network);
         entity.setChannel(corChannel);
     }
 

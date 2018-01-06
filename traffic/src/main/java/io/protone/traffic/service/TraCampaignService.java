@@ -30,8 +30,8 @@ public class TraCampaignService {
     @Inject
     private TraOrderService traOrderService;
 
-    public Slice<TraCampaign> getAllCampaign(String corNetwork, Pageable pageable) {
-        return traCampaignRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<TraCampaign> getAllCampaign(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return traCampaignRepository.findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
     public TraCampaign saveCampaign(TraCampaign campaign) {
@@ -44,20 +44,20 @@ public class TraCampaignService {
         return campaign;
     }
 
-    public void deleteCampaign(String shortcut, String corNetwork) {
-        traCampaignRepository.deleteByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+    public void deleteCampaign(String shortcut, String organizationShortcut, String channelShortcut) {
+        traCampaignRepository.deleteByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
     }
 
-    public void deleteCampaignByCustomer(CrmAccount crmAccount, String corNetwork) {
-        traCampaignRepository.deleteByCustomerAndNetwork_Shortcut(crmAccount, corNetwork);
+    public void deleteCampaignByCustomer(CrmAccount crmAccount, String organizationShortcut, String channelShortcut) {
+        traCampaignRepository.deleteByCustomerAndChannel_Organization_ShortcutAndChannel_Shortcut(crmAccount, organizationShortcut, channelShortcut);
     }
 
-    public TraCampaign getCampaign(String shortcut, String corNetwork) {
-        return traCampaignRepository.findByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+    public TraCampaign getCampaign(String shortcut, String organizationShortcut, String channelShortcut) {
+        return traCampaignRepository.findByShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut);
     }
 
-    public Slice<TraCampaign> getCustomerCampaing(String shortcut, String corNetwork, Pageable pageable) {
-        return traCampaignRepository.findSliceByCustomer_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<TraCampaign> getCustomerCampaing(String shortcut, String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return traCampaignRepository.findSliceByCustomer_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut, pageable);
     }
 
 }

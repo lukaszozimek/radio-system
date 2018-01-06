@@ -1,6 +1,6 @@
 package io.protone.traffic.mapper;
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.mapper.CorAddressMapper;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.traffic.api.dto.TraInvoiceDTO;
@@ -36,9 +36,9 @@ public interface TraInvoiceMapper {
     @Mapping(source = "statusId", target = "status")
     @Mapping(source = "orders", target = "orders")
     @Mapping(source = "traCompany", target = "company")
-    TraInvoice DTO2DB(TraInvoiceDTO traInvoiceDTO, @Context CorNetwork corNetwork);
+    TraInvoice DTO2DB(TraInvoiceDTO traInvoiceDTO, @Context CorChannel corNetwork);
 
-    default List<TraInvoice> DTOs2DBs(List<TraInvoiceDTO> traInvoiceDTOs, CorNetwork networkId) {
+    default List<TraInvoice> DTOs2DBs(List<TraInvoiceDTO> traInvoiceDTOs, CorChannel networkId) {
         List<TraInvoice> traOrders = new ArrayList<>();
         if (traInvoiceDTOs.isEmpty() || traInvoiceDTOs == null) {
             return null;
@@ -50,8 +50,8 @@ public interface TraInvoiceMapper {
     }
 
     @AfterMapping
-    default void traInvoicePTToTraInvoiceAfterMapping(TraInvoiceDTO dto, @MappingTarget TraInvoice entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void traInvoicePTToTraInvoiceAfterMapping(TraInvoiceDTO dto, @MappingTarget TraInvoice entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 
 }

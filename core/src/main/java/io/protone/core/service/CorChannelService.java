@@ -32,17 +32,17 @@ public class CorChannelService {
     private CorImageItemService corImageItemService;
 
     public Slice<CorChannel> findAllChannel(String network, Pageable pageable) {
-        return channelRepository.findSliceByNetwork_Shortcut(network, pageable);
+        return channelRepository.findSliceByOrganization_Shortcut(network, pageable);
     }
 
     public CorChannel findChannel(String organizationShortcut, String channelShortcut) {
-        CorChannel channel = channelRepository.findOneByNetwork_ShortcutAndShortcut(organizationShortcut, channelShortcut);
+        CorChannel channel = channelRepository.findOneByOrganization_ShortcutAndShortcut(organizationShortcut, channelShortcut);
         return channel;
     }
 
 
     public void deleteChannel(String organizationShortcut, String channelShortcut) {
-        channelRepository.deleteByShortcutAndNetwork_Shortcut(channelShortcut, organizationShortcut);
+        channelRepository.deleteByShortcutAndOrganization_Shortcut(channelShortcut, organizationShortcut);
     }
 
     public CorChannel save(CorChannel channel) {
@@ -52,7 +52,7 @@ public class CorChannelService {
 
     public CorChannel save(CorChannel channel, MultipartFile logo) throws IOException, TikaException, SAXException {
         log.debug("Persisting CorChannel: {}", channel);
-        CorImageItem corImageItem = corImageItemService.saveImageItem(logo);
+        CorImageItem corImageItem = corImageItemService.saveImageItem(logo, channel.getOrganization());
         return channelRepository.saveAndFlush(channel.logo(corImageItem));
     }
 

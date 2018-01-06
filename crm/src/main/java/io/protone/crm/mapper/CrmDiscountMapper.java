@@ -1,6 +1,7 @@
 package io.protone.crm.mapper;
 
 
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmDiscount;
 import io.protone.crm.api.dto.CrmDiscountDTO;
@@ -22,9 +23,9 @@ public interface CrmDiscountMapper {
 
     List<CrmDiscountDTO> DBs2DTOs(List<CrmDiscount> traDiscounts);
 
-    CrmDiscount DTO2DB(CrmDiscountDTO crmDiscountDTO, @Context CorNetwork network);
+    CrmDiscount DTO2DB(CrmDiscountDTO crmDiscountDTO, @Context CorChannel network);
 
-    default List<CrmDiscount> DTOs2DBs(List<CrmDiscountDTO> crmDiscountDTOS, @Context CorNetwork network) {
+    default List<CrmDiscount> DTOs2DBs(List<CrmDiscountDTO> crmDiscountDTOS, @Context CorChannel network) {
         List<CrmDiscount> traDiscounts = new ArrayList<>();
         if (crmDiscountDTOS.isEmpty() || crmDiscountDTOS == null) {
             return null;
@@ -36,7 +37,7 @@ public interface CrmDiscountMapper {
     }
 
     @AfterMapping
-    default void confDiscountPTToTraDiscountAfterMapping(CrmDiscountDTO dto, @MappingTarget CrmDiscount entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void confDiscountPTToTraDiscountAfterMapping(CrmDiscountDTO dto, @MappingTarget CrmDiscount entity, @Context CorChannel corChannel) {
+        entity.setChannel(corChannel);
     }
 }

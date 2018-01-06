@@ -28,7 +28,7 @@ import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpt
 /**
  * Aby badac działanie algorytmu nalezy operowac w klasie TraPlaylistBaseTest metoda buildBlockConfiguration najwazniejsze jest liczba blokow ora z odstepy czasu pomiedzy nimi narazie ustawiony jest
  * czas 10 blokow w godzinie co 5 min
-**/
+ **/
 @Service("traDefaultMediaPlanMapping")
 @Qualifier("traDefaultMediaPlanMapping")
 public class TraDefaultMediaPlanMapping implements TraMediaPlanMapping {
@@ -58,7 +58,7 @@ public class TraDefaultMediaPlanMapping implements TraMediaPlanMapping {
                                         log.error("Reindexing problem");
                                     }
                                     log.debug("Put commercial into block");
-                                    TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(playlistBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                                    TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(playlistBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(playlistBlock.getChannel());
                                     playlistBlock.addEmissions(emisssion);
                                     excelEmissions.remove(traMediaPlanEmission);
                                     break;
@@ -67,7 +67,7 @@ public class TraDefaultMediaPlanMapping implements TraMediaPlanMapping {
                                 } else if (canAddEmissionToBlock(lastTimeStop, playlistBlock.getLength(), libMediaItem.getLength()) && !hasFixedLastPostion(playlistBlock)) {
 
                                     log.debug("Put commercial into block");
-                                    TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(playlistBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                                    TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(playlistBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(playlistBlock.getChannel());
                                     playlistBlock.addEmissions(emisssion);
                                     excelEmissions.remove(traMediaPlanEmission);
                                     break;
@@ -80,7 +80,7 @@ public class TraDefaultMediaPlanMapping implements TraMediaPlanMapping {
                             log.debug("Block is empty");
                             log.debug("Put commercial into block");
                             Long lastTimeStop = 0L;
-                            TraEmission emisssion = new TraEmission().block(playlistBlock).timeStart(playlistBlock.getStartBlock()).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                            TraEmission emisssion = new TraEmission().block(playlistBlock).timeStart(playlistBlock.getStartBlock()).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel());
                             playlistBlock.addEmissions(emisssion);
                             excelEmissions.remove(traMediaPlanEmission);
                             break;

@@ -1,6 +1,7 @@
 package io.protone.library.service.metadata;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorPropertyService;
 import io.protone.library.constans.MarkerConstans;
@@ -69,7 +70,7 @@ public class LibAudioMetadataService {
         metadataMap.put(MarkerConstans.INT, MarkerConstans.INT);
     }
 
-    public LibMediaItem resolveMetadata(Metadata metadata, LibMediaLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject, String orginalFileName) throws TikaException, SAXException, IOException {
+    public LibMediaItem resolveMetadata(Metadata metadata, LibMediaLibrary libraryDB, CorChannel corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject, String orginalFileName) throws TikaException, SAXException, IOException {
         log.debug("Start processing Audio :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
 
 
@@ -109,7 +110,7 @@ public class LibAudioMetadataService {
         metadata.remove(ProtoneMetadataProperty.ARTIST.getName());
         mediaItem.setState(LibItemStateEnum.IS_NEW);
         mediaItem.setLibrary(libraryDB);
-        mediaItem.network(corNetwork);
+        mediaItem.channel(corNetwork);
         log.debug("Persisting LibMediaItem: {}", mediaItem);
         mediaItem = mediaItemRepository.saveAndFlush(mediaItem);
         LibMediaItem finalMediaItem = mediaItem;

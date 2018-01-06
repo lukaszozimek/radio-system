@@ -53,17 +53,17 @@ public class SchClockBlockMapper {
 
                 if (schTimeParams.get(i) instanceof SchEmission) {
                     schTimeParams.get(i).setStartTime(schBlock.getStartTime());
-                    SchEmission schEmission =((SchEmission) schTimeParams.get(i)).sequence(schTimeParams.get(i).getSequence()).startTime(schBlock.getStartTime()).endTime(schBlock.getStartTime().plusSeconds(((SchEmission) schTimeParams.get(i)).getMediaItem().getLength().longValue() / 1000));
+                    SchEmission schEmission = ((SchEmission) schTimeParams.get(i)).sequence(schTimeParams.get(i).getSequence()).startTime(schBlock.getStartTime()).endTime(schBlock.getStartTime().plusSeconds(((SchEmission) schTimeParams.get(i)).getMediaItem().getLength().longValue() / 1000));
                     schTimeParams.get(i).setEndTime(schEmission.getEndTime());
                     schBlock.endTime(schEmission.getEndTime());
                     schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano());
-                    LibMediaLibrary libMediaLibrary = libraryMediaService.findLibrary(schEmission.getNetwork().getShortcut(), schEmission.getLibraryElementShortCut());
+                    LibMediaLibrary libMediaLibrary = libraryMediaService.findLibrary(schEmission.getChannel().getOrganization().getShortcut(), schEmission.getChannel().getShortcut(), schEmission.getLibraryElementShortCut());
                     if (libMediaLibrary != null) {
-                        LibMediaItem libMediaItem = libMediaItemService.getMediaItem(schEmission.getNetwork().getShortcut(), schEmission.getLibraryElementShortCut(), schEmission.getMediaItem().getIdx());
+                        LibMediaItem libMediaItem = libMediaItemService.getMediaItem(schEmission.getChannel().getOrganization().getShortcut(), schEmission.getChannel().getShortcut(), schEmission.getLibraryElementShortCut(), schEmission.getMediaItem().getIdx());
                         if (libMediaItem != null) {
                             schEmission.mediaItem(libMediaItem);
                         } else {
-                            schEmission.network(schEmission.getNetwork()).getMediaItem().library(libMediaLibrary).network(schEmission.getNetwork());
+                            schEmission.getMediaItem().library(libMediaLibrary);
                         }
                         schBlock.addEmission(schEmission.sequence((long) i));
                     }
@@ -86,18 +86,18 @@ public class SchClockBlockMapper {
                 }
                 if (schTimeParams.get(i) instanceof SchEmission) {
                     schTimeParams.get(i).setStartTime(schTimeParams.get(i - 1).getEndTime());
-                    SchEmission schEmission =  ((SchEmission) schTimeParams.get(i)).sequence(schTimeParams.get(i).getSequence()).startTime(schTimeParams.get(i).getStartTime()).endTime(schTimeParams.get(i).getStartTime().plusSeconds(((SchEmission) schTimeParams.get(i)).getMediaItem().getLength().longValue() / 1000));
+                    SchEmission schEmission = ((SchEmission) schTimeParams.get(i)).sequence(schTimeParams.get(i).getSequence()).startTime(schTimeParams.get(i).getStartTime()).endTime(schTimeParams.get(i).getStartTime().plusSeconds(((SchEmission) schTimeParams.get(i)).getMediaItem().getLength().longValue() / 1000));
                     schTimeParams.get(i).setEndTime(schEmission.getEndTime());
                     schBlock.endTime(schEmission.getEndTime());
                     schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano());
 
-                    LibMediaLibrary libMediaLibrary = libraryMediaService.findLibrary(schEmission.getNetwork().getShortcut(), schEmission.getLibraryElementShortCut());
+                    LibMediaLibrary libMediaLibrary = libraryMediaService.findLibrary(schEmission.getChannel().getOrganization().getShortcut(), schEmission.getChannel().getShortcut(), schEmission.getLibraryElementShortCut());
                     if (libMediaLibrary != null) {
-                        LibMediaItem libMediaItem = libMediaItemService.getMediaItem(schEmission.getNetwork().getShortcut(), schEmission.getLibraryElementShortCut(), schEmission.getMediaItem().getIdx());
+                        LibMediaItem libMediaItem = libMediaItemService.getMediaItem(schEmission.getChannel().getOrganization().getShortcut(), schEmission.getChannel().getShortcut(), schEmission.getLibraryElementShortCut(), schEmission.getMediaItem().getIdx());
                         if (libMediaItem != null) {
                             schEmission.mediaItem(libMediaItem);
                         } else {
-                            schEmission.network(schEmission.getNetwork()).getMediaItem().library(libMediaLibrary).network(schEmission.getNetwork());
+                            schEmission.getMediaItem().library(libMediaLibrary);
                         }
                         schBlock.addEmission(schEmission.sequence((long) i));
                     }
@@ -105,9 +105,9 @@ public class SchClockBlockMapper {
             }
         }
         if (schBlock.getEndTime() != null) {
-            return schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano()).network(schEventTemplate.getNetwork()).channel(schEventTemplate.getChannel());
+            return schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano()).channel(schEventTemplate.getChannel());
         } else {
-            return schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getStartTime()).getNano()).network(schEventTemplate.getNetwork()).channel(schEventTemplate.getChannel());
+            return schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getStartTime()).getNano()).channel(schEventTemplate.getChannel());
         }
     }
 

@@ -40,7 +40,7 @@ public class CorUserDTO implements Serializable {
     @NotNull
     private String login = null;
 
-    private CorNetworkDTO network;
+    private CorOrganizationDTO organizationDTO;
 
     private List<CorChannelDTO> channel = null;
 
@@ -218,16 +218,16 @@ public class CorUserDTO implements Serializable {
     }
 
     @ApiModelProperty(value = "")
-    public CorNetworkDTO getNetwork() {
-        return this.network;
+    public CorOrganizationDTO getOrganizationDTO() {
+        return this.organizationDTO;
     }
 
-    public void setNetwork(CorNetworkDTO networkPt) {
-        this.network = networkPt;
+    public void setOrganizationDTO(CorOrganizationDTO organizationDTO) {
+        this.organizationDTO = organizationDTO;
     }
 
-    public CorUserDTO network(CorNetworkDTO networkPt) {
-        this.network = networkPt;
+    public CorUserDTO network(CorOrganizationDTO organizationDTO) {
+        this.organizationDTO = organizationDTO;
         return this;
     }
 
@@ -304,7 +304,7 @@ public class CorUserDTO implements Serializable {
         result = 31 * result + (getLogin() != null ? getLogin().hashCode() : 0);
         result = 31 * result + (getImageurl() != null ? getImageurl().hashCode() : 0);
         result = 31 * result + (getChannel() != null ? getChannel().hashCode() : 0);
-        result = 31 * result + (getNetwork() != null ? getNetwork().hashCode() : 0);
+        result = 31 * result + (getOrganizationDTO() != null ? getOrganizationDTO().hashCode() : 0);
 
         return result;
     }
@@ -321,8 +321,8 @@ public class CorUserDTO implements Serializable {
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", login='").append(login).append('\'');
         sb.append(", imageurl='").append(imageurl).append('\'');
-        sb.append(", network='").append(network).append('\'');
-        sb.append(", channel='").append(channel).append('\'');
+        sb.append(", organization='").append(organizationDTO).append('\'');
+        sb.append(", organization='").append(channel).append('\'');
         sb.append('}');
         return sb.toString();
 

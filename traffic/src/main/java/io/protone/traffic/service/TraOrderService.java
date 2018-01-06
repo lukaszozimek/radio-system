@@ -31,15 +31,15 @@ public class TraOrderService {
     private TraEmissionService traEmissionService;
 
 
-    public Slice<TraOrder> getAllOrders(String corNetwork, Pageable pageable) {
-        return traOrderRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<TraOrder> getAllOrders(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return traOrderRepository.findSliceByChannel_Organization_ShortcutAndChannel_ShortName(organizationShortcut, channelShortcut, pageable);
     }
 
     public TraOrder saveOrder(TraOrder traOrder) {
         log.debug("Persisting TraOrder: {}", traOrder);
 
         TraOrder traOrder1 = traOrderRepository.saveAndFlush(traOrder);
-        return traOrderRepository.findByIdAndNetwork_Shortcut(traOrder1.getId(), traOrder1.getNetwork().getShortcut());
+        return traOrderRepository.findByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(traOrder1.getId(), traOrder1.getChannel().getOrganization().getShortcut(), traOrder.getChannel().getShortcut());
     }
 
 
@@ -48,15 +48,15 @@ public class TraOrderService {
         return traOrderRepository.save(traOrder);
     }
 
-    public void deleteOrder(Long id, String corNetwork) {
-        TraOrder traOrder = traOrderRepository.findByIdAndNetwork_Shortcut(id, corNetwork);
+    public void deleteOrder(Long id, String organizationShortcut, String channelShortcut) {
+        TraOrder traOrder = traOrderRepository.findByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
         traEmissionService.deleteTraEmissions(traOrder.getEmissions());
         traOrderRepository.delete(traOrder);
 
     }
 
-    public void deleteCustomerOrders(CrmAccount crmAccount, String corNetwork) {
-        List<TraOrder> traOrder = traOrderRepository.findByCustomer_ShortNameAndNetwork_Shortcut(crmAccount.getShortName(), corNetwork);
+    public void deleteCustomerOrders(CrmAccount crmAccount, String organizationShortcut, String channelShortcut) {
+        List<TraOrder> traOrder = traOrderRepository.findByCustomer_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(crmAccount.getShortName(), organizationShortcut, channelShortcut);
         if (traOrder != null) {
             traOrder.stream().forEach(order -> {
                 traEmissionService.deleteTraEmissions(order.getEmissions());
@@ -67,16 +67,16 @@ public class TraOrderService {
 
     }
 
-    public TraOrder getOrder(Long id, String corNetwork) {
-        return traOrderRepository.findByIdAndNetwork_Shortcut(id, corNetwork);
+    public TraOrder getOrder(Long id, String organizationShortcut, String channelShortcut) {
+        return traOrderRepository.findByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 
     public TraOrder getOrder(Long id) {
         return traOrderRepository.findOne(id);
     }
 
-    public Slice<TraOrder> getCustomerOrders(String shortcut, String corNetwork, Pageable pageable) {
-        return traOrderRepository.findSliceByCustomer_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<TraOrder> getCustomerOrders(String shortcut, String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return traOrderRepository.findSliceByCustomer_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(shortcut, organizationShortcut, channelShortcut, pageable);
     }
 
 }

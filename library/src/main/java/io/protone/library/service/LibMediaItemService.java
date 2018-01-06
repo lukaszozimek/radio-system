@@ -2,7 +2,8 @@ package io.protone.library.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorPropertyService;
 import io.protone.library.domain.LibArtist;
@@ -53,6 +54,8 @@ public class LibMediaItemService {
     private final Logger log = LoggerFactory.getLogger(LibMediaItemService.class);
     @Inject
     private LibLibraryMediaService libraryService;
+    @Inject
+    private CorChannelService corChannelService;
 
     @Inject
     private LibMediaItemRepository itemRepository;
@@ -113,16 +116,16 @@ public class LibMediaItemService {
     }
 
     @Transactional(readOnly = true)
-    public LibMediaItem getMediaItem(String organizationShortcut, String libraryShortcut, String idx) {
-        Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(organizationShortcut, libraryShortcut, idx);
+    public LibMediaItem getMediaItem(String organizationShortcut, String channelShortcut, String libraryShortcut, String idx) {
+        Optional<LibMediaItem> optionalItemDB = itemRepository.findByChannel_Organization_ShortcutAndChannel_ShortcutAndLibrary_ShortcutAndIdx(organizationShortcut, channelShortcut, libraryShortcut, idx);
         return optionalItemDB.orElse(null);
     }
 
     @Transactional
-    public void moveMediaItem(String organizationShortcut, String libraryShortcut, String idx, String dstLibararyShortcut) {
-        LibMediaLibrary dstLibarary = this.libraryService.findLibrary(organizationShortcut, dstLibararyShortcut);
+    public void moveMediaItem(String organizationShortcut, String channelShortcut, String libraryShortcut, String idx, String dstLibararyShortcut) {
+        LibMediaLibrary dstLibarary = this.libraryService.findLibrary(organizationShortcut, channelShortcut, dstLibararyShortcut);
         if (dstLibarary != null) {
-            Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(organizationShortcut, libraryShortcut, idx);
+            Optional<LibMediaItem> optionalItemDB = itemRepository.findByChannel_Organization_ShortcutAndChannel_ShortcutAndLibrary_ShortcutAndIdx(organizationShortcut, channelShortcut, libraryShortcut, idx);
             if (optionalItemDB.isPresent()) {
                 optionalItemDB.get().setLibrary(dstLibarary);
                 itemRepository.saveAndFlush(optionalItemDB.get());
@@ -132,8 +135,8 @@ public class LibMediaItemService {
 
 
     @Transactional
-    public Slice<LibMediaItem> getMediaItems(String organizationShortcut, String libraryShortcut, Pageable pagable) {
-        return itemRepository.findSliceByNetwork_ShortcutAndLibrary_Shortcut(organizationShortcut, libraryShortcut, pagable);
+    public Slice<LibMediaItem> getMediaItems(String organizationShortcut, String channelShortcut, String libraryShortcut, Pageable pagable) {
+        return itemRepository.findSliceByChannel_Organization_ShortcutAndChannel_ShortcutAndLibrary_Shortcut(organizationShortcut, channelShortcut, libraryShortcut, pagable);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -143,19 +146,19 @@ public class LibMediaItemService {
 
 
     @Transactional
-    public LibMediaItem update(MultipartFile[] covers, LibMediaItem libMediaItem, CorNetwork corNetwork) {
-        return update(libMediaItem, corNetwork);
+    public LibMediaItem update(MultipartFile[] covers, LibMediaItem libMediaItem, CorChannel channel) {
+        return update(libMediaItem, channel);
     }
 
     @Transactional
-    public LibMediaItem update(LibMediaItem libMediaItem, CorNetwork corNetwork) {
+    public LibMediaItem update(LibMediaItem libMediaItem, CorChannel channel) {
         LibArtist artist = new LibArtist();
         if (libMediaItem.getArtist() != null) {
-            artist = libArtistService.findOrSaveOne(libMediaItem.getArtist().getName(), corNetwork);
+            artist = libArtistService.findOrSaveOne(libMediaItem.getArtist().getName(), channel);
             libMediaItem.setArtist(artist);
         }
         if (libMediaItem.getAlbum() != null) {
-            libMediaItem.setAlbum(libAlbumService.findOrSaveOne(libMediaItem.getAlbum().getName(), artist.getName(), corNetwork));
+            libMediaItem.setAlbum(libAlbumService.findOrSaveOne(libMediaItem.getAlbum().getName(), artist.getName(), channel));
         }
         if (libMediaItem.getProperites() != null) {
             libMediaItem.setProperites(libMediaItem.getProperites().stream().map(corPropertyValue -> corPropertyService.saveCorProperty(corPropertyValue)).collect(Collectors.toSet()));
@@ -168,14 +171,14 @@ public class LibMediaItemService {
     }
 
     @Transactional
-    public List<LibMediaItem> upload(String organizationShortcut, String libraryShortcut, MultipartFile[] files) throws IOException, TikaException, SAXException {
-
+    public List<LibMediaItem> upload(String organizationShortcut, String channelShortcut, String libraryShortcut, MultipartFile[] files) throws IOException, TikaException, SAXException {
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
         List<LibMediaItem> result = new ArrayList<>();
 
         if (files == null || files.length == 0) {
             return result;
         }
-        LibMediaLibrary libraryDB = libraryService.findLibrary(organizationShortcut, libraryShortcut);
+        LibMediaLibrary libraryDB = libraryService.findLibrary(organizationShortcut, channelShortcut, libraryShortcut);
         if (libraryDB == null) {
             return result;
         }
@@ -194,7 +197,7 @@ public class LibMediaItemService {
             String libItemType = contentTypeLibItemTypeMap.get(resolveType(metadata));
             if (!Strings.isNullOrEmpty(libItemType)) {
                 log.debug("Saving file with CONTENT_TYPE: {}", metadata.get(HttpHeaders.CONTENT_TYPE));
-                LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).saveFile(inputStreamSupplier.get(), metadata, fileName, file.getSize(), libraryDB);
+                LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).saveFile(inputStreamSupplier.get(), metadata, fileName, file.getSize(), libraryDB, corChannel);
                 result.add(libMediaItem);
             } else {
                 log.warn("File with name :{} cann't be added into Library because it contect type is not supported yet. CONTENT_TYPE :{}", fileName, metadata.get(HttpHeaders.CONTENT_TYPE));
@@ -206,8 +209,9 @@ public class LibMediaItemService {
     }
 
     @Transactional
-    public LibMediaItem upload(String organizationShortcut, String libraryShortcut, MultipartFile file) throws IOException, TikaException, SAXException {
-        LibMediaLibrary libraryDB = libraryService.findLibrary(organizationShortcut, libraryShortcut);
+    public LibMediaItem upload(String organizationShortcut, String channelShortcut, String libraryShortcut, MultipartFile file) throws IOException, TikaException, SAXException {
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        LibMediaLibrary libraryDB = libraryService.findLibrary(organizationShortcut, channelShortcut, libraryShortcut);
         if (libraryDB == null) {
             return null;
         }
@@ -225,7 +229,7 @@ public class LibMediaItemService {
         String libItemType = contentTypeLibItemTypeMap.get(resolveType(metadata));
         if (!Strings.isNullOrEmpty(libItemType)) {
             log.debug("Saving file with CONTENT_TYPE: {}", metadata.get(HttpHeaders.CONTENT_TYPE));
-            LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).saveFile(inputStreamSupplier.get(), metadata, fileName, file.getSize(), libraryDB);
+            LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).saveFile(inputStreamSupplier.get(), metadata, fileName, file.getSize(), libraryDB, corChannel);
             return libMediaItem;
         } else {
             log.warn("File with name :{} cann't be added into Library because it contect type is not supported yet. CONTENT_TYPE :{}", fileName, metadata.get(HttpHeaders.CONTENT_TYPE));
@@ -234,12 +238,13 @@ public class LibMediaItemService {
     }
 
     @Transactional
-    public LibMediaItem updateItemContent(String organizationShortcut, String libraryShortcut, String idx, MultipartFile file) throws IOException, TikaException, SAXException {
-        LibMediaLibrary libraryDB = libraryService.findLibrary(organizationShortcut, libraryShortcut);
+    public LibMediaItem updateItemContent(String organizationShortcut, String channelShortcut, String libraryShortcut, String idx, MultipartFile file) throws IOException, TikaException, SAXException {
+        CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
+        LibMediaLibrary libraryDB = libraryService.findLibrary(organizationShortcut, channelShortcut, libraryShortcut);
         if (libraryDB == null) {
             return null;
         }
-        LibMediaItem mediaItem = getMediaItem(organizationShortcut, libraryShortcut, idx);
+        LibMediaItem mediaItem = getMediaItem(organizationShortcut, channelShortcut, libraryShortcut, idx);
         if (mediaItem == null) {
             return null;
         }
@@ -255,7 +260,7 @@ public class LibMediaItemService {
         String libItemType = contentTypeLibItemTypeMap.get(resolveType(metadata));
         if (!Strings.isNullOrEmpty(libItemType)) {
             log.debug("Saving file with CONTENT_TYPE: {}", metadata.get(HttpHeaders.CONTENT_TYPE));
-            LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).updateContent(inputStreamSupplier.get(), metadata, mediaItem.contentAvailable(true), file.getSize(), libraryDB);
+            LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).updateContent(inputStreamSupplier.get(), metadata, mediaItem.contentAvailable(true), file.getSize(), libraryDB, corChannel);
             return libMediaItem;
         } else {
             log.warn("File with name :{} cann't be added into Library because it contect type is not supported yet. CONTENT_TYPE :{}", mediaItem.getName(), metadata.get(HttpHeaders.CONTENT_TYPE));
@@ -264,14 +269,14 @@ public class LibMediaItemService {
     }
 
     @Transactional
-    public byte[] download(String organizationShortcut, String libraryShortcut, String idx) throws IOException {
-        LibMediaItem itemDB = getMediaItem(organizationShortcut, libraryShortcut, idx);
+    public byte[] download(String organizationShortcut, String channelShortcut, String libraryShortcut, String idx) throws IOException {
+        LibMediaItem itemDB = getMediaItem(organizationShortcut, channelShortcut, libraryShortcut, idx);
         return libItemTypeFileServiceMap.get(itemDB.getItemType().name()).download(itemDB);
     }
 
 
-    public void deleteItem(String organizationShortcut, String libraryShortcut, String idx) {
-        LibMediaItem itemToDelete = getMediaItem(organizationShortcut, libraryShortcut, idx);
+    public void deleteItem(String organizationShortcut, String channelShortcut, String libraryShortcut, String idx) {
+        LibMediaItem itemToDelete = getMediaItem(organizationShortcut, channelShortcut, libraryShortcut, idx);
         libMarkerService.detachLibMarkers(itemToDelete.getMarkers());
         corPropertyService.detachProperties(itemToDelete.getProperites());
         itemToDelete.setProperites(Sets.newHashSet());

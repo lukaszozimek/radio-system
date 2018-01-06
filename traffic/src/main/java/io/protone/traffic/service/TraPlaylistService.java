@@ -55,7 +55,7 @@ public class TraPlaylistService {
     public List<TraPlaylist> getTraPlaylistListInRange(LocalDate from, LocalDate to, String organizationShortcut, String channelShortcut) {
         long difference = ChronoUnit.DAYS.between(from, to);
         List<TraPlaylist> traPlaylists = Lists.newArrayList();
-        if(difference ==0){
+        if (difference == 0) {
             TraPlaylist traPlaylist = getTraPlaylistList(from.plusDays(difference), organizationShortcut, channelShortcut);
             if (traPlaylist == null) {
                 TraPlaylist createdPlaylist = createPlaylistIfWasNotCreatedEarlier(from.plusDays(difference), organizationShortcut, channelShortcut);
@@ -86,7 +86,7 @@ public class TraPlaylistService {
 
     @Transactional
     public TraPlaylist getTraPlaylistList(LocalDate date, String organizationShortcut, String channelShortcut) {
-        TraPlaylist traPlaylist = traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, organizationShortcut, channelShortcut);
+        TraPlaylist traPlaylist = traPlaylistRepository.findOneByPlaylistDateAndChannel_Organization_ShortcutAndChannel_Shortcut(date, organizationShortcut, channelShortcut);
         if (traPlaylist == null) {
             TraPlaylist createdPlaylist = createIfNotExist(date, organizationShortcut, channelShortcut);
             createdPlaylist = savePlaylist(createdPlaylist);
@@ -100,13 +100,13 @@ public class TraPlaylistService {
 
     @Transactional
     public Slice<TraPlaylist> getAllPlaylistList(String organizationShortcut, String channelShortcut, Pageable pageable) {
-        return traPlaylistRepository.findSliceByNetwork_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
+        return traPlaylistRepository.findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
 
     @Transactional
     public void deleteOneTraPlaylistList(LocalDate date, String organizationShortcut, String channelShortcut) {
-        TraPlaylist traPlaylist = traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, organizationShortcut, channelShortcut);
+        TraPlaylist traPlaylist = traPlaylistRepository.findOneByPlaylistDateAndChannel_Organization_ShortcutAndChannel_Shortcut(date, organizationShortcut, channelShortcut);
         if (traPlaylist == null) {
             throw new EntityNotFoundException();
         }
@@ -125,24 +125,15 @@ public class TraPlaylistService {
     }
 
     private TraPlaylist createIfNotExist(LocalDate localDate, String organizationShortcut, String channelShortcut) {
-        CorNetwork corNetwork = corNetworkService.findNetwork(organizationShortcut);
         CorChannel corChannel = corChannelService.findChannel(organizationShortcut, channelShortcut);
-        return new TraPlaylist().network(corNetwork).channel(corChannel).playlistDate(localDate).playlists(traBlockService.buildBlocks(localDate, organizationShortcut));
+        return new TraPlaylist().channel(corChannel).playlistDate(localDate).playlists(traBlockService.buildBlocks(localDate, organizationShortcut, channelShortcut));
     }
 
     private TraPlaylist createBlocksIfConfigurationWasNotProvided(LocalDate localDate, TraPlaylist traPlaylistWithoutBlocks) {
 
-        TraPlaylist traPlaylist = new TraPlaylist().network(traPlaylistWithoutBlocks.getNetwork()).channel((traPlaylistWithoutBlocks.getChannel())).playlistDate((traPlaylistWithoutBlocks.getPlaylistDate())).playlists(traBlockService.buildBlocks(localDate, traPlaylistWithoutBlocks.getNetwork().getShortcut()));
+        TraPlaylist traPlaylist = new TraPlaylist().channel((traPlaylistWithoutBlocks.getChannel())).playlistDate((traPlaylistWithoutBlocks.getPlaylistDate())).playlists(traBlockService.buildBlocks(localDate, traPlaylistWithoutBlocks.getChannel().getOrganization().getShortcut(), traPlaylistWithoutBlocks.getChannel().getShortcut()));
         traPlaylist.setId(traPlaylistWithoutBlocks.getId());
         return traPlaylist;
-    }
-
-    @VisibleForTesting
-    public void deleteAllPlaylist() {
-        List<TraPlaylist> list = traPlaylistRepository.findAll();
-        list.stream().forEach(traPlaylist -> {
-            this.deleteOneTraPlaylistList(traPlaylist.getPlaylistDate(), traPlaylist.getNetwork().getShortcut(), traPlaylist.getChannel().getShortcut());
-        });
     }
 
 }

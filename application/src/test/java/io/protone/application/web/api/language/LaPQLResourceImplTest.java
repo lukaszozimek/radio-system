@@ -8,6 +8,7 @@ import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.api.dto.thin.CorFilterThinDTO;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.enumeration.CorEntityTypeEnum;
 import io.protone.core.mapper.CorFilterMapper;
 import io.protone.core.repository.CorChannelRepository;
@@ -31,6 +32,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import static io.protone.application.util.TestConstans.TEST_ORGANIZATION_ID;
+import static io.protone.application.util.TestConstans.TEST_ORGANIZATION_SHORTCUT;
 import static io.protone.application.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -65,10 +68,8 @@ public class LaPQLResourceImplTest {
 
     private MockMvc restCorFilterMockMvc;
 
-    private CorNetwork corNetwork;
-    private String SAMPLE_NET = "random";
-    @Autowired
-    private CorNetworkRepository corNetworkRepository;
+    CorOrganization corOrganization;
+
     @Autowired
     private CorChannelRepository corChannelRepository;
     private String SAMPLE_SHORTCUT = "ran";
@@ -89,8 +90,6 @@ public class LaPQLResourceImplTest {
 
         ReflectionTestUtils.setField(laPQLResource, "pqlMappingService", pqlMappingService);
 
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
 
         this.restCorFilterMockMvc = MockMvcBuilders.standaloneSetup(laPQLResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -100,14 +99,15 @@ public class LaPQLResourceImplTest {
 
     @Test
     public void shouldReturnCorChannels() throws Exception {
-        CorNetwork corNetwork = new CorNetwork().shortcut(SAMPLE_NET).name(SAMPLE_NET);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
-        CorChannel corChannel = new CorChannel().shortcut(SAMPLE_SHORTCUT).name(SAMPLE).network(corNetwork);
+
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        CorChannel corChannel = new CorChannel().shortcut(SAMPLE_SHORTCUT).name(SAMPLE).organization(corOrganization);
         corChannelRepository.saveAndFlush(corChannel);
         CorFilterThinDTO corFilterThinDTO = new CorFilterThinDTO().type(CorEntityTypeEnum.Channel).value("Core Channel AND name='randomRadnomistinc'");
 
         // Get the crmTaskComment
-        restCorFilterMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/language/pql/filter", corNetwork.getShortcut())
+        restCorFilterMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/language/pql/filter", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corFilterThinDTO)))
                 .andExpect(status().isOk())

@@ -48,27 +48,28 @@ public class SchClockTemplateService {
             return schEventTemplateEvnetTemplateRepostiory.saveAndFlush(schEventTemplateEvnetTemplate);
         }).collect(toList()));
         schClockTemplateRepository.save(schClockTemplate);
-        return findDTOSchClockConfigurationForNetworkAndChannelAndShortName(schClockTemplate.getNetwork().getShortcut(), schClockTemplate.getChannel().getShortcut(), schClockTemplate.getShortName());
+        return findDTOSchClockConfigurationForNetworkAndChannelAndShortName(schClockTemplate.getChannel().getOrganization().getShortcut(),
+                schClockTemplate.getChannel().getShortcut(), schClockTemplate.getShortName());
     }
 
     @Transactional(readOnly = true)
     public Slice<SchClockTemplate> findSchClockConfigurationsForNetworkAndChannel(String organizationShortcut, String channelShortcut, Pageable pagable) {
-        return schClockTemplateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndType(organizationShortcut, channelShortcut, SchDiscriminators.CLOCK_TEMPLATE, pagable);
+        return schClockTemplateRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndType(organizationShortcut, channelShortcut, SchDiscriminators.CLOCK_TEMPLATE, pagable);
     }
 
     @Transactional(readOnly = true)
     public Slice<SchClockTemplate> findAllClocksByCategoryName(String organizationShortcut, String channelShortcut, String categoryName, Pageable pageable) {
-        return schClockTemplateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndClockCategory_Name(organizationShortcut, channelShortcut, categoryName, pageable);
+        return schClockTemplateRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndClockCategory_Name(organizationShortcut, channelShortcut, categoryName, pageable);
     }
 
     @Transactional(readOnly = true)
     public SchClockTemplate findSchClockConfigurationForNetworkAndChannelAndShortName(String organizationShortcut, String channelShortcut, String shortName) {
-        return schClockTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(organizationShortcut, channelShortcut, shortName);
+        return schClockTemplateRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndShortName(organizationShortcut, channelShortcut, shortName);
     }
 
     @Transactional(readOnly = true)
     public SchClockTemplateDTO findDTOSchClockConfigurationForNetworkAndChannelAndShortName(String organizationShortcut, String channelShortcut, String shortName) {
-        return schClockTemplateMapper.DB2DTO(schClockTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(organizationShortcut, channelShortcut, shortName));
+        return schClockTemplateMapper.DB2DTO(schClockTemplateRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndShortName(organizationShortcut, channelShortcut, shortName));
     }
 
     @Transactional

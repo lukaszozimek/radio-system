@@ -42,22 +42,21 @@ public interface TraMediaPlanMapper {
 
     @Mapping(source = "traCustomerThinDTO", target = "account")
     @Mapping(source = "libFileItemDTO", target = "libFileItem")
-    TraMediaPlan DTO2DB(TraMediaPlanDTO traMediaPlanDTO, @Context CorNetwork network, @Context CorChannel corChannel);
+    TraMediaPlan DTO2DB(TraMediaPlanDTO traMediaPlanDTO, @Context CorChannel corChannel);
 
-    default List<TraMediaPlan> DTOs2DBs(List<TraMediaPlanDTO> traMediaPlanDTOS, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<TraMediaPlan> DTOs2DBs(List<TraMediaPlanDTO> traMediaPlanDTOS, @Context CorChannel corChannel) {
         List<TraMediaPlan> traMediaPlans = new ArrayList<>();
         if (traMediaPlanDTOS.isEmpty() || traMediaPlanDTOS == null) {
             return null;
         }
         for (TraMediaPlanDTO dto : traMediaPlanDTOS) {
-            traMediaPlans.add(DTO2DB(dto, network, corChannel));
+            traMediaPlans.add(DTO2DB(dto, corChannel));
         }
         return traMediaPlans;
     }
 
     @AfterMapping
-    default void traMediaPlanDTOToTraMediaPlanAfterMapping(TraMediaPlanDTO dto, @MappingTarget TraMediaPlan entity, @Context CorNetwork corNetwork, @Context CorChannel corChannel) {
-        entity.setNetwork(corNetwork);
+    default void traMediaPlanDTOToTraMediaPlanAfterMapping(TraMediaPlanDTO dto, @MappingTarget TraMediaPlan entity, @Context CorChannel corChannel) {
         entity.setChannel(corChannel);
     }
 }

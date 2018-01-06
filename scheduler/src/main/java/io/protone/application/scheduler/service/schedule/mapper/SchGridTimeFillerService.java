@@ -109,7 +109,7 @@ public class SchGridTimeFillerService {
                 if (logEmissionsLenght < schEventTemplates.get(i).getLength()) {
                     if (schEventTemplates.get(i).getEmissionsLog().isEmpty()) {
                         if (isMatchingToThisBlock(schEmissions.get(y), schEventTemplates.get(i))) {
-                            schEventTemplates.get(i).addEmission(schEmissions.get(y).sequence(0L).playlist(schPlaylist).network(schEventTemplates.get(i).getNetwork()).channel(schEventTemplates.get(i).getChannel()));
+                            schEventTemplates.get(i).addEmission(schEmissions.get(y).sequence(0L).playlist(schPlaylist).channel(schEventTemplates.get(i).getChannel()));
                         }
 
                     } else {
@@ -122,7 +122,6 @@ public class SchGridTimeFillerService {
                                                     .max(comparing(SchEmission::getSequence))
                                                     .get().getSequence() + 1)
                                             .playlist(schPlaylist)
-                                            .network(schEventTemplates.get(i).getNetwork())
                                             .channel(schEventTemplates.get(i).getChannel()));
                         }
                     }

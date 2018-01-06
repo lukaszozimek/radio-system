@@ -1,6 +1,7 @@
 package io.protone.library.mapper;
 
 import com.google.common.base.Strings;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorTag;
 import io.protone.library.api.dto.LibFileItemDTO;
@@ -25,30 +26,30 @@ public interface LibFileItemMapper {
 
     List<LibFileItemThinDTO> DBs2ThinDTOs(List<LibFileItem> dbs);
 
-    LibFileItem DTO2DB(LibFileItemDTO dto, @Context CorNetwork networkId);
+    LibFileItem DTO2DB(LibFileItemDTO dto, @Context CorChannel channel);
 
     @AfterMapping
-    default void LibFileItemDTOToLibFileItemAfterMapping(LibFileItemDTO dto, @MappingTarget LibFileItem entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void LibFileItemDTOToLibFileItemAfterMapping(LibFileItemDTO dto, @MappingTarget LibFileItem entity, @Context CorChannel channel) {
+        entity.setChannel(channel);
     }
 
-    default List<LibFileItem> DTOs2DBs(List<LibFileItemDTO> dtos, CorNetwork networkId) {
+    default List<LibFileItem> DTOs2DBs(List<LibFileItemDTO> dtos, CorChannel channel) {
         List<LibFileItem> LibFileItems = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {
             return null;
         }
         for (LibFileItemDTO dto : dtos) {
-            LibFileItems.add(DTO2DB(dto, networkId));
+            LibFileItems.add(DTO2DB(dto, channel));
         }
         return LibFileItems;
     }
 
-    default CorTag corTagFromString(String tag, CorNetwork networkId) {
+    default CorTag corTagFromString(String tag, CorChannel channel) {
 
         if (Strings.isNullOrEmpty(tag)) {
             return null;
         }
-        return new CorTag().tag(tag).network(networkId);
+        return new CorTag().tag(tag).channel(channel);
     }
 
     default String stringFromCorTag(CorTag tag) {

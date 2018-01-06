@@ -19,19 +19,19 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {SchEmissionMapper.class})
 public interface SchPlaylistMapper {
 
-     SchPlaylist DTO2DB(SchPlaylistDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
+    SchPlaylist DTO2DB(SchPlaylistDTO dto, @Context CorChannel corChannel);
 
-     SchPlaylistDTO DB2DTO(SchPlaylist entity);
+    SchPlaylistDTO DB2DTO(SchPlaylist entity);
 
-     List<SchPlaylistDTO> DBs2DTOs(List<SchPlaylist> entityList);
+    List<SchPlaylistDTO> DBs2DTOs(List<SchPlaylist> entityList);
 
-    default List<SchPlaylist> DTOs2DBs(List<SchPlaylistDTO> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<SchPlaylist> DTOs2DBs(List<SchPlaylistDTO> dList, @Context CorChannel corChannel) {
         List<SchPlaylist> eList = new ArrayList<>();
         if (dList.isEmpty() || dList == null) {
             return null;
         }
         for (SchPlaylistDTO dto : dList) {
-            eList.add(DTO2DB(dto, network, corChannel));
+            eList.add(DTO2DB(dto, corChannel));
         }
         return eList;
     }
@@ -39,8 +39,7 @@ public interface SchPlaylistMapper {
     List<SchPlaylistThinDTO> DBs2ThinDTOs(List<SchPlaylist> schClockList);
 
     @AfterMapping
-    default void schPlaylistDTOToSchPlaylistnAfterMapping(SchPlaylistDTO dto, @MappingTarget SchPlaylist entity, @Context CorNetwork network, @Context CorChannel corChannel) {
-        entity.setNetwork(network);
+    default void schPlaylistDTOToSchPlaylistnAfterMapping(SchPlaylistDTO dto, @MappingTarget SchPlaylist entity, @Context CorChannel corChannel) {
         entity.setChannel(corChannel);
     }
 }

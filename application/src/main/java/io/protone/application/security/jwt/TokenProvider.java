@@ -21,14 +21,14 @@ import java.util.stream.Collectors;
 
 @Component
 public class TokenProvider {
-    public static final String NETWORK = "NETWORK";
-    public static final String CHANNEL = "CHANNEL";
+    public static final String ORGANIZATION = "ORGANIZATION";
     private static final String AUTHORITIES_KEY = "auth";
     private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
     private final JHipsterProperties jHipsterProperties;
     private String secretKey;
     private long tokenValidityInMilliseconds;
     private long tokenValidityInMillisecondsForRememberMe;
+
     @Inject
     private CorUserRepository corUserRepository;
 
@@ -62,8 +62,7 @@ public class TokenProvider {
         }
         CorUser corUser = corUserRepository.findOneByLogin(authentication.getName()).orElse(null);
         Map<String, Object> jwtHeader = new HashMap<>();
-        jwtHeader.put(NETWORK, corUser.getNetworks().stream().findFirst().get());
-        jwtHeader.put(CHANNEL, corUser.getChannels());
+        jwtHeader.put(ORGANIZATION, corUser.getOrganization());
         return Jwts.builder()
                 .setHeader(jwtHeader)
                 .setSubject(authentication.getName())

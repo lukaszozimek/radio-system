@@ -16,25 +16,26 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface TraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
-    List<TraInvoice> findByNetwork(CorNetwork network);
 
     @Query("select i  from TraInvoice as i " +
-            "left join fetch i.network as n " +
+            "left join fetch i.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch i.customer as c " +
             "left join fetch c.addres as ca " +
             "left join fetch c.range as cr " +
             "left join fetch c.discount as disc " +
             "left join fetch c.area as car " +
             "left join fetch c.size as css " +
-            " where n.shortcut = :network")
-    Slice<TraInvoice> findSliceByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization")
+    Slice<TraInvoice> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(@Param("organization") String organization, @Param("channelShortcut") String channelShortcut, Pageable pageable);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String network);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 
-    void deleteByCustomerAndNetwork_Shortcut(CrmAccount crmAccount, String network);
+    void deleteByCustomerAndChannel_Organization_ShortcutAndChannel_Shortcut(CrmAccount crmAccount, String organization, String channelShortcut);
 
     @Query("select i  from TraInvoice as i " +
-            "left join fetch i.network as n " +
+            "left join fetch i.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch i.customer as c " +
             "left join fetch c.addres as ica " +
             "left join fetch c.range as cr " +
@@ -57,18 +58,19 @@ public interface TraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
             "left join fetch castom.range as castomr " +
             "left join fetch castom.area as castomar " +
             "left join fetch castom.size as castomss " +
-            " where n.shortcut = :network and i.id =:id")
-    TraInvoice findByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String network);
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization and i.id =:id")
+    TraInvoice findByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(@Param("id") Long id, @Param("organization") String organization, @Param("channelShortcut") String channelShortcut);
 
     @Query("select i  from TraInvoice as i " +
-            "left join fetch i.network as n " +
+            "left join fetch i.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch i.customer as c " +
             "left join fetch c.addres as ca " +
             "left join fetch c.range as cr " +
             "left join fetch c.area as car " +
             "left join fetch c.discount as disc " +
             "left join fetch c.size as css " +
-            " where n.shortcut = :network and c.shortName =:shortName")
-    Slice<TraInvoice> findSliceByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String customer, @Param("network") String network, Pageable pageable);
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization and c.shortName =:shortName")
+    Slice<TraInvoice> findSliceByCustomer_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(@Param("shortName") String customer, @Param("organization") String organization, @Param("channelShortcut") String channelShortcut, Pageable pageable);
 
 }

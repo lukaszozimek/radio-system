@@ -1,10 +1,7 @@
 package io.protone.core.service;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
-import io.protone.core.domain.CorItem;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.domain.CorPropertyKey;
-import io.protone.core.domain.CorPropertyValue;
+import io.protone.core.domain.*;
 import io.protone.core.repository.CorPropertyKeyRepository;
 import io.protone.core.repository.CorPropertyValueRepository;
 import org.apache.tika.metadata.Metadata;
@@ -33,12 +30,12 @@ public class CorPropertyService {
     private CorPropertyKeyRepository corPropertyKeyRepository;
 
     @Transactional
-    public CorPropertyValue saveCorProperty(String metadataName, CorItem libMediaItem, Metadata metadata, CorNetwork corNetwork) {
+    public CorPropertyValue saveCorProperty(String metadataName, CorItem libMediaItem, Metadata metadata, CorChannel channel) {
         CorPropertyKey corPropertyKey;
         if (Strings.isNullOrEmpty(metadataName)) {
-            corPropertyKey = new CorPropertyKey().key(NO_DATA).network(corNetwork);
+            corPropertyKey = new CorPropertyKey().key(NO_DATA).channel(channel);
         } else {
-            corPropertyKey = new CorPropertyKey().key(metadataName).network(corNetwork);
+            corPropertyKey = new CorPropertyKey().key(metadataName).channel(channel);
         }
 
         log.debug("Persisting CorKey: {}", corPropertyKey);

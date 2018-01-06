@@ -10,7 +10,7 @@ import io.protone.core.api.dto.CorUserDTO;
 import io.protone.core.domain.CorUser;
 import io.protone.core.mapper.CorNetworkMapper;
 import io.protone.core.mapper.CorUserMapper;
-import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.repository.CorOrganizationRepository;
 import io.protone.core.repository.CorUserRepository;
 import io.protone.core.security.SecurityUtils;
 import io.protone.core.service.CorMailService;
@@ -39,7 +39,7 @@ public class CorUserResourceImpl implements CorUserResource {
 
     private final CorUserRepository userRepository;
 
-    private final CorNetworkRepository corNetworkRepository;
+    private final CorOrganizationRepository corOrganizationRepository;
 
     private final CorNetworkMapper customCorNetworkMapper;
 
@@ -50,12 +50,12 @@ public class CorUserResourceImpl implements CorUserResource {
     private final CorUserMapper corUserMapper;
 
     public CorUserResourceImpl(CorUserRepository userRepository, CorUserService userService,
-                               CorMailService mailService, CorNetworkRepository corNetworkRepository, CorNetworkMapper customCorNetworkMapper, CorUserMapper corUserMapper) {
+                               CorMailService mailService, CorOrganizationRepository corOrganizationRepository, CorNetworkMapper customCorNetworkMapper, CorUserMapper corUserMapper) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
-        this.corNetworkRepository = corNetworkRepository;
+        this.corOrganizationRepository = corOrganizationRepository;
         this.customCorNetworkMapper = customCorNetworkMapper;
         this.corUserMapper = corUserMapper;
     }
@@ -79,14 +79,14 @@ public class CorUserResourceImpl implements CorUserResource {
                 .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                 .orElseGet(() -> userRepository.findOneByEmail(managedUserVM.getEmail())
                         .map(user -> new ResponseEntity<>("e-mail address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
-                        .orElseGet(() -> corNetworkRepository.findOneByShortcutOrName(managedUserVM.getNetwork().getShortcut(), managedUserVM.getNetwork().getName())
-                                .map(user -> new ResponseEntity<>("network with this name and shortcut is already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
+                        .orElseGet(() -> corOrganizationRepository.findOneByShortcutOrName(managedUserVM.getOrganizationDTO().getShortcut(), managedUserVM.getOrganizationDTO().getName())
+                                .map(user -> new ResponseEntity<>("Organization with this name and shortcut is already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                                 .orElseGet(() -> {
 
                                     CorUser user = userService
                                             .createUser(managedUserVM.getLogin(), managedUserVM.getPassword(),
                                                     managedUserVM.getFirstName(), managedUserVM.getLastName(),
-                                                    managedUserVM.getEmail().toLowerCase(), managedUserVM.getLangKey(), managedUserVM.getNetwork());
+                                                    managedUserVM.getEmail().toLowerCase(), managedUserVM.getLangKey(), managedUserVM.getOrganizationDTO());
 
 
                                     mailService.sendActivationEmail(user);

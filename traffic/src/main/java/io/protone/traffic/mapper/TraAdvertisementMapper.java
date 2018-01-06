@@ -1,6 +1,6 @@
 package io.protone.traffic.mapper;
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.core.mapper.CorUserMapper;
 import io.protone.crm.domain.CrmAccount;
@@ -31,9 +31,9 @@ public interface TraAdvertisementMapper {
     @Mapping(source = "industryId", target = "industry")
     @Mapping(source = "typeId", target = "type")
     @Mapping(source = "libMediaItemThinDTOList", target = "libMediaItems")
-    TraAdvertisement DTO2DB(TraAdvertisementDTO traAdvertisementDTO, @Context CorNetwork corNetwork);
+    TraAdvertisement DTO2DB(TraAdvertisementDTO traAdvertisementDTO, @Context CorChannel corNetwork);
 
-    default List<TraAdvertisement> DTOs2DBs(List<TraAdvertisementDTO> traAdvertisementDTOs, CorNetwork networkId) {
+    default List<TraAdvertisement> DTOs2DBs(List<TraAdvertisementDTO> traAdvertisementDTOs, CorChannel networkId) {
         List<TraAdvertisement> traCampaigns = new ArrayList<>();
         if (traAdvertisementDTOs.isEmpty() || traAdvertisementDTOs == null) {
             return null;
@@ -45,8 +45,8 @@ public interface TraAdvertisementMapper {
     }
 
     @AfterMapping
-    default void traAdvertisementPTToTraAdvertisementAfterMapping(TraAdvertisementDTO dto, @MappingTarget TraAdvertisement entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void traAdvertisementPTToTraAdvertisementAfterMapping(TraAdvertisementDTO dto, @MappingTarget TraAdvertisement entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 
     @Mapping(source = "customerId", target = "customer")

@@ -4,10 +4,10 @@ import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.s3.S3Client;
-import io.protone.core.s3.exceptions.CreateBucketException;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,9 +16,6 @@ import org.xml.sax.SAXException;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
-
-import static io.protone.core.constans.MinioFoldersConstants.FILE;
-import static io.protone.core.service.CorImageItemService.PUBLIC_CONTENT;
 
 /**
  * Created by lukaszozimek on 16.01.2017.
@@ -36,18 +33,18 @@ public class CorNetworkService {
     @Inject
     private S3Client s3Client;
 
-    public List<CorNetwork> findAllNetworks() {
-        return corNetworkRepository.findAll();
+    public Slice<CorNetwork> findAllNetworks(String organizationShortcut) {
+        return corNetworkRepository.findSliceByCorOrganization_Shortcut(organizationShortcut);
     }
 
-    public CorNetwork findNetwork(String shortcut) {
-        CorNetwork corNetwork = corNetworkRepository.findOneByShortcut(shortcut);
+    public CorNetwork findNetwork(String shortcut, String organizationShortcut) {
+        CorNetwork corNetwork = corNetworkRepository.findOneByShortcutAndCorOrganization_Shortcut(shortcut, organizationShortcut);
         return corNetwork;
     }
 
     @Transactional
-    public void deleteNetwork(String shortcut) {
-        corNetworkRepository.deleteByShortcut(shortcut);
+    public void deleteNetwork(String shortcut, String organizationShortcut) {
+        corNetworkRepository.deleteByShortcutAndCorOrganization_Shortcut(shortcut, organizationShortcut);
     }
 
     public CorNetwork save(CorNetwork network) {
@@ -60,19 +57,9 @@ public class CorNetworkService {
         return corNetworkRepository.saveAndFlush(network);
     }
 
-    public void createPublicBucketForThisNetwork(CorNetwork network) {
-        log.debug("Persisting CorNetwork: {}", network);
-        try {
-            s3Client.makeBucketPublicBucket(network.getShortcut(), FILE + PUBLIC_CONTENT);
-        } catch (CreateBucketException e) {
-            log.error(e.getLocalizedMessage());
-        }
-
-    }
-
     public CorNetwork save(CorNetwork corNetwork, MultipartFile logo) throws IOException, TikaException, SAXException {
         log.debug("Persisting CorNetwork: {}", corNetwork);
-        CorImageItem corImageItem = corImageItemService.saveImageItem(logo);
+        CorImageItem corImageItem = corImageItemService.saveImageItem(logo, corNetwork.getCorOrganization());
         return corNetworkRepository.saveAndFlush(corNetwork.image(corImageItem));
     }
 }

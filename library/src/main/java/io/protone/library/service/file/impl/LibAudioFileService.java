@@ -1,6 +1,7 @@
 package io.protone.library.service.file.impl;
 
 import io.protone.core.constans.ServiceConstants;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorUser;
 import io.protone.core.s3.S3Client;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static io.protone.core.constans.MinioFoldersConstants.MEDIA_ITEM;
+import static io.protone.library.service.LibLibraryMediaService.LIBRARY_SEPARATOR;
 
 /**
  * Created by lukaszozimek on 28/05/2017.
@@ -69,27 +71,24 @@ public class LibAudioFileService implements LibFileService {
 
     @Override
     @Transactional
-    public LibMediaItem saveFile(ByteArrayInputStream bais, Metadata metadata, String originalFileName, Long size, LibMediaLibrary libraryDB) throws IOException, SAXException {
-        CorUser currentUser = corUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
-        CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
+    public LibMediaItem saveFile(ByteArrayInputStream bais, Metadata metadata, String originalFileName, Long size, LibMediaLibrary libraryDB, CorChannel corChannel) throws IOException, SAXException {
         LibMediaItem libMediaItem = new LibMediaItem();
 
         String fileUUID = UUID.randomUUID().toString();
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(libraryDB.getNetwork().getShortcut(), MEDIA_ITEM + libraryDB.getShortcut(), fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
+            s3Client.upload(corChannel.getOrganization().getShortcut() + LIBRARY_SEPARATOR + corChannel.getShortcut(), MEDIA_ITEM + libraryDB.getShortcut(), fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             LibCloudObject cloudObject = new LibCloudObject()
                     .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                     .originalName(originalFileName)
                     .original(Boolean.TRUE)
                     .size(size)
-                    .network(libraryDB.getNetwork())
                     .hash(ServiceConstants.NO_HASH)
                     .objectType(LibObjectTypeEnum.OT_AUDIO);
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
             LibAudioObject audioObject = new LibAudioObject();
-            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem.contentAvailable(true), audioObject, originalFileName);
+            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corChannel, libMediaItem.contentAvailable(true), audioObject, originalFileName);
             audioObject.setCloudObject(cloudObject);
             audioObject.setMediaItem(libMediaItem);
             log.debug("Persisting LibAudioObject: {}", audioObject);
@@ -128,7 +127,7 @@ public class LibAudioFileService implements LibFileService {
 
         InputStream stream = null;
         try {
-            stream = s3Client.download(itemDB.getNetwork().getShortcut(), MEDIA_ITEM + itemDB.getLibrary().getShortcut(), cloudObject.getUuid());
+            stream = s3Client.download(itemDB.getChannel().getOrganization().getShortcut() + LIBRARY_SEPARATOR + itemDB.getChannel().getShortcut(), MEDIA_ITEM + itemDB.getLibrary().getShortcut(), cloudObject.getUuid());
 
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add("content-disposition", "filename=" + cloudObject.getOriginalName());
@@ -157,7 +156,7 @@ public class LibAudioFileService implements LibFileService {
                 for (LibAudioObject audioObject : audioObjects) {
                     LibCloudObject cloudObject = audioObject.getCloudObject();
                     try {
-                        s3Client.delete(libMediaItem.getNetwork().getShortcut(), MEDIA_ITEM + libMediaItem.getLibrary().getShortcut(), cloudObject.getUuid());
+                        s3Client.delete(libMediaItem.getChannel().getOrganization().getShortcut() + LIBRARY_SEPARATOR + libMediaItem.getChannel().getShortcut(), MEDIA_ITEM + libMediaItem.getLibrary().getShortcut(), cloudObject.getUuid());
                         audioObjectRepository.delete(audioObject);
                         audioObjectRepository.flush();
                         cloudObjectRepository.delete(cloudObject);
@@ -173,7 +172,7 @@ public class LibAudioFileService implements LibFileService {
     }
 
     @Override
-    public LibMediaItem updateContent(ByteArrayInputStream bais, Metadata metadata, LibMediaItem libMediaItem, Long size, LibMediaLibrary libraryDB) throws IOException, SAXException {
+    public LibMediaItem updateContent(ByteArrayInputStream bais, Metadata metadata, LibMediaItem libMediaItem, Long size, LibMediaLibrary libraryDB, CorChannel channel) throws IOException, SAXException {
         return null;
     }
 }

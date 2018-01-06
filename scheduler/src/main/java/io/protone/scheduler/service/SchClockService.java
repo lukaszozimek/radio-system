@@ -47,17 +47,17 @@ public class SchClockService {
 
     @Transactional(readOnly = true)
     public Slice<SchClock> findSchClocksForNetworkAndChannel(String organizationShortcut, String channelShortcut, Pageable pageable) {
-        return schClockRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
+        return schClockRepository.findAllByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
     @Transactional(readOnly = true)
     public SchClock findSchClockForNetworkAndChannelAndShortName(String organizationShortcut, String channelShortcut, String shortName) {
-        return schClockRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(organizationShortcut, channelShortcut, shortName);
+        return schClockRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndShortName(organizationShortcut, channelShortcut, shortName);
     }
 
     @Transactional
     public void deleteSchClockByNetworkAndChannelAndShortName(String organizationShortcut, String channelShortcut, String shortName) {
-        SchClock schClock = schClockRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(organizationShortcut, channelShortcut, shortName);
+        SchClock schClock = schClockRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndShortName(organizationShortcut, channelShortcut, shortName);
 
         schClockRepository.delete(schClock);
     }

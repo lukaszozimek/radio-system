@@ -28,8 +28,8 @@ public class TraMediaPlanBlockService {
     }
 
     @Transactional
-    public List<TraMediaPlanBlock> findBlockByorganizationShortcutAndChannelShortcutAndMediaplanId(String netwrokShorcut, String corChannel, Long mediaItemId) {
-        return traBlockRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(netwrokShorcut, corChannel, mediaItemId);
+    public List<TraMediaPlanBlock> findBlockByorganizationShortcutAndChannelShortcutAndMediaplanId(String organizationShortcut, String channelShortcut, Long mediaItemId) {
+        return traBlockRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(organizationShortcut, channelShortcut, mediaItemId);
     }
 
     @Transactional

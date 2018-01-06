@@ -20,7 +20,7 @@ public interface TraBlockConfigurationMapper {
     @Mapping(source = "day", target = "day")
     @Mapping(source = "blockStartSound.id", target = "startBlockSoundId")
     @Mapping(source = "blockEndSound.id", target = "stopBlockSoundId")
-    @Mapping(source = "price",target = "price")
+    @Mapping(source = "price", target = "price")
     TraBlockConfigurationDTO DB2DTO(TraBlockConfiguration traBlockConfiguration);
 
     List<TraBlockConfigurationDTO> DBs2DTOs(List<TraBlockConfiguration> traBlockConfigurations);
@@ -28,16 +28,16 @@ public interface TraBlockConfigurationMapper {
     @Mapping(source = "day", target = "day")
     @Mapping(source = "startBlockSoundId", target = "blockStartSound.id")
     @Mapping(source = "stopBlockSoundId", target = "blockEndSound.id")
-    @Mapping(source = "price",target = "price")
-    TraBlockConfiguration DTO2DB(TraBlockConfigurationDTO traBlockConfigurationDTO, @Context CorNetwork network, @Context CorChannel corChannel);
+    @Mapping(source = "price", target = "price")
+    TraBlockConfiguration DTO2DB(TraBlockConfigurationDTO traBlockConfigurationDTO, @Context CorChannel corChannel);
 
-    default List<TraBlockConfiguration> DTOs2DBs(List<TraBlockConfigurationDTO> traBlockConfigurationDTOS, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<TraBlockConfiguration> DTOs2DBs(List<TraBlockConfigurationDTO> traBlockConfigurationDTOS, @Context CorChannel corChannel) {
         List<TraBlockConfiguration> traBlockConfigurations = new ArrayList<>();
         if (traBlockConfigurationDTOS.isEmpty() || traBlockConfigurationDTOS == null) {
             return null;
         }
         for (TraBlockConfigurationDTO dto : traBlockConfigurationDTOS) {
-            traBlockConfigurations.add(DTO2DB(dto, network, corChannel));
+            traBlockConfigurations.add(DTO2DB(dto, corChannel));
         }
         return traBlockConfigurations;
     }
@@ -58,7 +58,7 @@ public interface TraBlockConfigurationMapper {
 
 
     @AfterMapping
-    default void traBlockConfigurationDTOToTraBlockConfigurationAfterMapping(TraBlockConfigurationDTO dto, @MappingTarget TraBlockConfiguration entity, @Context CorNetwork corNetwork, @Context CorChannel corChannel) {
+    default void traBlockConfigurationDTOToTraBlockConfigurationAfterMapping(TraBlockConfigurationDTO dto, @MappingTarget TraBlockConfiguration entity, @Context CorChannel corChannel) {
         //TODO:Mapstruct doesn't map concret fieldName it couse TransientFiled Exception in hibernate
         if (dto.getStopBlockSoundId() != null) {
             LibMediaItem libMediaItem = new LibMediaItem();
@@ -76,7 +76,6 @@ public interface TraBlockConfigurationMapper {
             entity.setBlockStartSound(null);
         }
 
-        entity.setNetwork(corNetwork);
         entity.setChannel(corChannel);
     }
 }

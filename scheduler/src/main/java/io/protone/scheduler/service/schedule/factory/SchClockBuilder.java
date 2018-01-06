@@ -47,7 +47,7 @@ public class SchClockBuilder {
         return Lists.newArrayList();
     }
     @Transactional
-    private SchClock mapClock(SchClockTemplate schClockTemplate, SchPlaylist schPlaylist) {
+    SchClock mapClock(SchClockTemplate schClockTemplate, SchPlaylist schPlaylist) {
         SchClock clock = new SchClock().sequence(schClockTemplate.getSequence()).startTime(schClockTemplate.getStartTime()).name(schClockTemplate.getName()).clockCategory(schClockTemplate.getClockCategory());
         Map<Long, SchTimeParams> schTimeParamsMap = schClockTemplate.getChildsTimeParams();
         schTimeParamsMap.putAll(schClockTemplate.getEmissionsMap());
@@ -90,9 +90,9 @@ public class SchClockBuilder {
             }
         });
         if (clock.getEndTime() != null) {
-            return clock.length((long) Duration.between(clock.getStartTime(), clock.getEndTime()).getNano()).network(schClockTemplate.getNetwork()).channel(schClockTemplate.getChannel());
+            return clock.length((long) Duration.between(clock.getStartTime(), clock.getEndTime()).getNano()).channel(schClockTemplate.getChannel());
         } else {
-            return clock.length((long) Duration.between(clock.getStartTime(), clock.getStartTime()).getNano()).network(schClockTemplate.getNetwork()).channel(schClockTemplate.getChannel());
+            return clock.length((long) Duration.between(clock.getStartTime(), clock.getStartTime()).getNano()).channel(schClockTemplate.getChannel());
         }
     }
 }

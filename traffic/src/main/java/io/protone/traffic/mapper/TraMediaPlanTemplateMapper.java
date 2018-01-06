@@ -1,7 +1,7 @@
 package io.protone.traffic.mapper;
 
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.traffic.api.dto.TraMediaPlanTemplateDTO;
 import io.protone.traffic.domain.TraMediaPlanTemplate;
 import org.mapstruct.AfterMapping;
@@ -22,9 +22,9 @@ public interface TraMediaPlanTemplateMapper {
 
     List<TraMediaPlanTemplateDTO> DBs2DTOs(List<TraMediaPlanTemplate> traMediaPlanTemplates);
 
-    TraMediaPlanTemplate DTO2DB(TraMediaPlanTemplateDTO traMediaPlanTemplateDTO, @Context CorNetwork network);
+    TraMediaPlanTemplate DTO2DB(TraMediaPlanTemplateDTO traMediaPlanTemplateDTO, @Context CorChannel network);
 
-    default List<TraMediaPlanTemplate> DTOs2DBs(List<TraMediaPlanTemplateDTO> traMediaPlanTemplateDTOS, @Context CorNetwork network) {
+    default List<TraMediaPlanTemplate> DTOs2DBs(List<TraMediaPlanTemplateDTO> traMediaPlanTemplateDTOS, @Context CorChannel network) {
         List<TraMediaPlanTemplate> traMediaPlanTemplates = new ArrayList<>();
         if (traMediaPlanTemplateDTOS.isEmpty() || traMediaPlanTemplateDTOS == null) {
             return null;
@@ -36,8 +36,8 @@ public interface TraMediaPlanTemplateMapper {
     }
 
     @AfterMapping
-    default void traMediaPlanTemplateDTOToTraMediaPlanTemplateAfterMapping(TraMediaPlanTemplateDTO dto, @MappingTarget TraMediaPlanTemplate entity, @Context CorNetwork network) {
-        entity.setNetwork(network);
+    default void traMediaPlanTemplateDTOToTraMediaPlanTemplateAfterMapping(TraMediaPlanTemplateDTO dto, @MappingTarget TraMediaPlanTemplate entity, @Context CorChannel network) {
+        entity.setChannel(network);
 
     }
 }

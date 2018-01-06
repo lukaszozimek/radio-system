@@ -2,7 +2,7 @@ package io.protone.core.mapper;
 
 
 import io.protone.core.api.dto.CorPersonDTO;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorPerson;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
@@ -22,12 +22,12 @@ public interface CorPersonMapper {
 
     List<CorPersonDTO> DBs2DTOs(List<CorPerson> cORPeople);
 
-    CorPerson DTO2DB(CorPersonDTO cORPersonDTO, @Context CorNetwork corNetwork);
+    CorPerson DTO2DB(CorPersonDTO cORPersonDTO, @Context CorChannel corNetwork);
     @AfterMapping
-    default void corPersonDTOToCorPersonAfterMapping(CorPersonDTO dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void corPersonDTOToCorPersonAfterMapping(CorPersonDTO dto, @MappingTarget CorPerson entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
-    default  List<CorPerson> DTOs2DBs(List<CorPersonDTO> cORPersonDTOs, @Context CorNetwork network){
+    default  List<CorPerson> DTOs2DBs(List<CorPersonDTO> cORPersonDTOs, @Context CorChannel network){
         List<CorPerson> corPeople = new ArrayList<>();
         if (cORPersonDTOs.isEmpty() || cORPersonDTOs == null) {
             return null;

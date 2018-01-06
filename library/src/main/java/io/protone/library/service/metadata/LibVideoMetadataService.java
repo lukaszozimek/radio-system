@@ -1,6 +1,7 @@
 package io.protone.library.service.metadata;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorPropertyService;
 import io.protone.library.domain.LibMediaItem;
@@ -42,19 +43,13 @@ public class LibVideoMetadataService {
     private MediaUtils mediaUtils;
 
     @Inject
-    private LibArtistService libArtistService;
-
-    @Inject
-    private LibAlbumService libAlbumService;
-
-    @Inject
     private CorPropertyService corPropertyService;
 
     @Inject
     private LibMediaItemRepository mediaItemRepository;
 
 
-    public LibMediaItem resolveMetadata(Metadata metadata, LibMediaLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibVideoObject libVideoObject, String orginalFileName) throws TikaException, SAXException, IOException {
+    public LibMediaItem resolveMetadata(Metadata metadata, LibMediaLibrary libraryDB, CorChannel corChannel, LibMediaItem mediaItem, LibVideoObject libVideoObject, String orginalFileName) throws TikaException, SAXException, IOException {
         log.debug("Start processing Video :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
 
 
@@ -81,7 +76,7 @@ public class LibVideoMetadataService {
         metadata.remove(ProtoneMetadataProperty.ARTIST.getName());
         mediaItem.setState(LibItemStateEnum.IS_NEW);
         mediaItem.setLibrary(libraryDB);
-        mediaItem.network(corNetwork);
+        mediaItem.channel(corChannel);
         log.debug("Persisting LibMediaItem: {}", mediaItem);
         mediaItem = mediaItemRepository.saveAndFlush(mediaItem);
         LibMediaItem finalMediaItem = mediaItem;
@@ -99,7 +94,7 @@ public class LibVideoMetadataService {
         libVideoObject.setQuality(LibVideoQualityEnum.VQ_OTHER);
 
         Arrays.stream(metadata.names()).forEach(metadataName -> {
-            finalMediaItem.addProperites(corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, corNetwork));
+            finalMediaItem.addProperites(corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, corChannel));
         });
 
         log.debug("Resolved LibMediaItem with Metadata: {}", mediaItem);

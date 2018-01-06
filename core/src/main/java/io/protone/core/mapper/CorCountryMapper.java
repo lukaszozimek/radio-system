@@ -3,7 +3,7 @@ package io.protone.core.mapper;
 
 import io.protone.core.api.dto.CorCountryDTO;
 import io.protone.core.domain.CorCountry;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -18,13 +18,13 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CorCountryMapper {
 
-    CorCountry DTO2DB(CorCountryDTO corCountryDTO, @Context CorNetwork corNetwork);
+    CorCountry DTO2DB(CorCountryDTO corCountryDTO, @Context CorOrganization corNetwork);
 
     CorCountryDTO DB2DTO(CorCountry corCountry);
 
     List<CorCountryDTO> DBs2DTOs(List<CorCountry> corCountries);
 
-    default List<CorCountry> DTOs2DBs(List<CorCountryDTO> corCountryDTOS, CorNetwork networkId) {
+    default List<CorCountry> DTOs2DBs(List<CorCountryDTO> corCountryDTOS, CorOrganization networkId) {
         List<CorCountry> corCountries = new ArrayList<>();
         if (corCountryDTOS.isEmpty() || corCountryDTOS == null) {
             return null;
@@ -36,7 +36,7 @@ public interface CorCountryMapper {
     }
 
     @AfterMapping
-    default void confCountryPtToCorCountryAfterMapping(CorCountryDTO dto, @MappingTarget CorCountry entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void confCountryPtToCorCountryAfterMapping(CorCountryDTO dto, @MappingTarget CorCountry entity, @Context CorOrganization corNetwork) {
+        entity.setOrganization(corNetwork);
     }
 }

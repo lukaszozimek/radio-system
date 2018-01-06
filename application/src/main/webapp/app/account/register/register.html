@@ -113,19 +113,19 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="password" >Network name</label>
-                    <input type="text" class="form-control" id="networkName" name="network" placeholder="{{'global.form.newpassword.placeholder' | translate}}"
-                           ng-model="vm.registerAccount.network.name" ng-minlength=4 ng-maxlength=50 required>
+                    <input type="text" class="form-control" id="networkName" name="channel" placeholder="{{'global.form.newpassword.placeholder' | translate}}"
+                           ng-model="vm.registerAccount.channel.name" ng-minlength=4 ng-maxlength=50 required>
                    </div>
 
                 <div class="form-group">
                 <label class="control-label" for="password" >Description</label>
-                <input type="text" class="form-control" id="organizationShortcut" name="network" placeholder="{{'global.form.newpassword.placeholder' | translate}}"
-                       ng-model="vm.registerAccount.network.description" required>
+                <input type="text" class="form-control" id="organizationShortcut" name="channel" placeholder="{{'global.form.newpassword.placeholder' | translate}}"
+                       ng-model="vm.registerAccount.channel.description" required>
             </div>
                 <div class="form-group">
                     <label class="control-label" for="password" >Shortcut</label>
-                    <input type="text" class="form-control" id="networkDecription" name="network" placeholder="{{'global.form.newpassword.placeholder' | translate}}"
-                           ng-model="vm.registerAccount.network.shortcut"required>
+                    <input type="text" class="form-control" id="networkDecription" name="channel" placeholder="{{'global.form.newpassword.placeholder' | translate}}"
+                           ng-model="vm.registerAccount.channel.shortcut"required>
                 </div>
                 <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" data-translate="register.form.button">Register</button>
             </form>

@@ -491,11 +491,11 @@ relationship ManyToOne {
     LIBMediaItem{library} to LIBLibrary,
 
 
-    LIBLibrary{network} to CORNetwork,
- 	CORChannel{network} to CORNetwork,
-	TRAPrice{network} to CORNetwork,
-    TRACustomer{network} to CORNetwork,
-	TRAIndustry{network} to CORNetwork,
+    LIBLibrary{channel} to CORNetwork,
+ 	CORChannel{channel} to CORNetwork,
+	TRAPrice{channel} to CORNetwork,
+    TRACustomer{channel} to CORNetwork,
+	TRAIndustry{channel} to CORNetwork,
 
 
     LIBMediaItem{label} to LIBLabel,
@@ -508,21 +508,21 @@ relationship ManyToOne {
     LIBTrack{artist} to LIBArtist,
     LIBAlbum{artist} to LIBArtist,
 
-    CORDocument{network} to CORNetwork,
+    CORDocument{channel} to CORNetwork,
 
-    LIBLabel{network} to CORNetwork,
-    LIBArtist{network} to CORNetwork,
-    LIBAlbum{network} to CORNetwork,
-    LIBTrack{network} to CORNetwork,
+    LIBLabel{channel} to CORNetwork,
+    LIBArtist{channel} to CORNetwork,
+    LIBAlbum{channel} to CORNetwork,
+    LIBTrack{channel} to CORNetwork,
 
-    CORPropertyKey{network} to CORNetwork,
+    CORPropertyKey{channel} to CORNetwork,
     CORPropertyValue{propertyKey} to CORPropertyKey,
 
-    CORTag{network} to CORNetwork,
-    CORContact{network} to CORNetwork,
-    CORPerson{network} to CORNetwork,
-    CORAddress{network} to CORNetwork,
-    CORAssociation{network} to CORNetwork,
+    CORTag{channel} to CORNetwork,
+    CORContact{channel} to CORNetwork,
+    CORPerson{channel} to CORNetwork,
+    CORAddress{channel} to CORNetwork,
+    CORAssociation{channel} to CORNetwork,
 
     LIBMediaItem{library} to LIBLibrary,
     LIBImageItem{library} to LIBLibrary,
@@ -535,27 +535,27 @@ relationship ManyToOne {
     LIBImageObject{imageItem} to LIBImageItem,
     LIBFileItem{parentFile} to LIBFileItem,
 
-    CFGMarkerConfiguration{network} to CORNetwork,
+    CFGMarkerConfiguration{channel} to CORNetwork,
 
-    LIBCloudObject{network} to CORNetwork,
+    LIBCloudObject{channel} to CORNetwork,
     LIBCloudObject{createdBy} to User,
 
     TRACustomer{account} to User,
 
-    CORArea{network} to CORNetwork,
-    CORSize{network} to CORNetwork,
-    CORRange{network} to CORNetwork,
+    CORArea{channel} to CORNetwork,
+    CORSize{channel} to CORNetwork,
+    CORRange{channel} to CORNetwork,
 
-    CRMTaskStatus{network} to CORNetwork,
-    CRMStage{network} to CORNetwork,
+    CRMTaskStatus{channel} to CORNetwork,
+    CRMStage{channel} to CORNetwork,
 
-    CRMLead{network} to CORNetwork,
-    CRMLeadSource{network} to CORNetwork,
-    CRMLeadStatus{network} to CORNetwork,
-    CRMTask{network} to CORNetwork,
-    CRMContact{network} to CORNetwork,
-    CRMAccount{network} to CORNetwork,
-    CRMOpportunity{network} to CORNetwork
+    CRMLead{channel} to CORNetwork,
+    CRMLeadSource{channel} to CORNetwork,
+    CRMLeadStatus{channel} to CORNetwork,
+    CRMTask{channel} to CORNetwork,
+    CRMContact{channel} to CORNetwork,
+    CRMAccount{channel} to CORNetwork,
+    CRMOpportunity{channel} to CORNetwork
 }
 
 dto * with mapstruct except LIBCloudObject

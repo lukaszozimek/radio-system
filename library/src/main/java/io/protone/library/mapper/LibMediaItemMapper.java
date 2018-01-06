@@ -1,6 +1,7 @@
 package io.protone.library.mapper;
 
 import com.google.common.base.Strings;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorTag;
 import io.protone.core.mapper.CorPersonMapper;
@@ -29,14 +30,14 @@ public interface LibMediaItemMapper {
     List<LibMediaItemDTO> DBs2DTOs(List<LibMediaItem> dbs);
 
     @Mapping(source = "properties", target = "properites")
-    LibMediaItem DTO2DB(LibMediaItemDTO dto, @Context CorNetwork networkId);
+    LibMediaItem DTO2DB(LibMediaItemDTO dto, @Context CorChannel networkId);
 
     @AfterMapping
-    default void LibMediaItemDTOToLibMediaItemAfterMapping(LibMediaItemDTO dto, @MappingTarget LibMediaItem entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void LibMediaItemDTOToLibMediaItemAfterMapping(LibMediaItemDTO dto, @MappingTarget LibMediaItem entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 
-    default List<LibMediaItem> DTOs2DBs(List<LibMediaItemDTO> dtos, CorNetwork networkId) {
+    default List<LibMediaItem> DTOs2DBs(List<LibMediaItemDTO> dtos, CorChannel networkId) {
         List<LibMediaItem> libMediaItems = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {
             return null;
@@ -47,12 +48,12 @@ public interface LibMediaItemMapper {
         return libMediaItems;
     }
 
-    default CorTag corTagFromString(String tag, CorNetwork networkId) {
+    default CorTag corTagFromString(String tag, CorChannel networkId) {
 
         if (Strings.isNullOrEmpty(tag)) {
             return null;
         }
-        return new CorTag().tag(tag).network(networkId);
+        return new CorTag().tag(tag).channel(networkId);
     }
 
     default String stringFromCorTag(CorTag tag) {

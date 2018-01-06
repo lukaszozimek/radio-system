@@ -31,8 +31,8 @@ public interface LibMediaItemThinMapper {
 
     @AfterMapping
     default void libMediaItemToLibMediaItemThinDTOAfterMapping(@MappingTarget LibMediaItemThinDTO dto, LibMediaItem entity) {
-        if (entity.getNetwork() != null && entity.getLibrary() != null) {
-            dto.setStream("/api/v1/organization/" + entity.getNetwork().getShortcut() + "/library/media/" + entity.getLibrary().getShortcut() + "/item/" + entity.getIdx() + "/stream");
+        if (entity.getChannel() != null && entity.getLibrary() != null) {
+            dto.setStream("/api/v1/organization/" + entity.getChannel().getShortcut() + "/library/media/" + entity.getLibrary().getShortcut() + "/item/" + entity.getIdx() + "/stream");
         }
     }
 

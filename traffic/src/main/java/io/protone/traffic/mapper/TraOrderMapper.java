@@ -1,6 +1,6 @@
 package io.protone.traffic.mapper;
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.core.mapper.CorUserMapper;
 import io.protone.traffic.api.dto.TraOrderDTO;
@@ -43,7 +43,7 @@ public interface TraOrderMapper {
     @Mapping(source = "invoiceId", target = "invoice")
     @Mapping(source = "campaignId", target = "campaign")
     @Mapping(source = "emissions", target = "emissions")
-    TraOrder DTO2DB(TraOrderDTO traOrderDTO, @Context CorNetwork corNetwork);
+    TraOrder DTO2DB(TraOrderDTO traOrderDTO, @Context CorChannel corNetwork);
 
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "statusId", target = "status")
@@ -52,7 +52,7 @@ public interface TraOrderMapper {
     @Mapping(source = "campaignId", target = "campaign")
     TraOrder DTO2DB(TraOrderThinDTO traOrderDTO);
 
-    default List<TraOrder> DTOs2DBs(List<TraOrderDTO> traOrderDTOS, CorNetwork networkId) {
+    default List<TraOrder> DTOs2DBs(List<TraOrderDTO> traOrderDTOS, CorChannel networkId) {
         List<TraOrder> crmLeads = new ArrayList<>();
         if (traOrderDTOS.isEmpty() || traOrderDTOS == null) {
             return null;
@@ -64,8 +64,8 @@ public interface TraOrderMapper {
     }
 
     @AfterMapping
-    default void traOrderPTToTraOrderAfterMapping(TraOrderDTO dto, @MappingTarget TraOrder entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void traOrderPTToTraOrderAfterMapping(TraOrderDTO dto, @MappingTarget TraOrder entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 
     default TraCampaign traCampaignFromId(Long id) {

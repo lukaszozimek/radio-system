@@ -73,20 +73,26 @@ public class CorUser extends AbstractAuditingEntity implements Serializable {
     @BatchSize(size = 20)
     private Set<CorAuthority> authorities = new HashSet<>();
 
-
-    @ManyToMany(fetch= FetchType.EAGER)
+    @PodamExclude
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "cor_user_channel",
             joinColumns = @JoinColumn(name = "cor_users_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "channels_id", referencedColumnName = "id"))
     private Set<CorChannel> channels = new HashSet<>();
 
+    @PodamExclude
     @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "cor_user_network",
             joinColumns = @JoinColumn(name = "cor_users_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "networks_id", referencedColumnName = "id"))
     private Set<CorNetwork> networks = new HashSet<>();
+
+    @ManyToOne
+    @JsonIgnore
+    @PodamExclude
+    private CorOrganization organization;
 
     public Long getId() {
         return id;
@@ -160,7 +166,6 @@ public class CorUser extends AbstractAuditingEntity implements Serializable {
         this.email = email;
         return this;
     }
-
 
 
     public Boolean isActivated() {
@@ -343,4 +348,16 @@ public class CorUser extends AbstractAuditingEntity implements Serializable {
     }
 
 
+    public CorOrganization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(CorOrganization organization) {
+        this.organization = organization;
+    }
+
+    public CorUser organization(CorOrganization organization) {
+        this.organization = organization;
+        return this;
+    }
 }

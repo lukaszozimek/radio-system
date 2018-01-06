@@ -18,11 +18,11 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
-    List<TraOrder> findByNetwork(CorNetwork network);
 
 
     @Query("select o  from TraOrder as o " +
-            "left join fetch o.network as n " +
+            "left join fetch o.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch o.advertisment as a " +
             "left join fetch o.status as stat " +
             "left join fetch o.campaign as camp " +
@@ -32,11 +32,12 @@ public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
             "left join fetch c.range as cr " +
             "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
-            " where n.shortcut = :network")
-    Slice<TraOrder> findSliceByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization")
+    Slice<TraOrder> findSliceByChannel_Organization_ShortcutAndChannel_ShortName(@Param("organization") String organization, @Param("channelShortcut") String channelShortcut, Pageable pageable);
 
     @Query("select o  from TraOrder as o " +
-            "left join fetch o.network as n " +
+            "left join fetch o.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch o.advertisment as a " +
             "left join fetch o.status as stat " +
             "left join fetch o.campaign as camp " +
@@ -46,13 +47,14 @@ public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
             "left join fetch c.range as cr " +
             "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
-            " where n.shortcut = :network and c.shortName=:shortName")
-    Slice<TraOrder> findSliceByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String crmAccount, @Param("network") String corNetwork, Pageable pageable);
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization and c.shortName=:shortName")
+    Slice<TraOrder> findSliceByCustomer_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(@Param("shortName") String crmAccount, @Param("organization") String organization, @Param("channelShortcut") String channelShortcut, Pageable pageable);
 
-    List<TraOrder> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String corNetwork);
+    List<TraOrder> findByCustomer_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String crmAccount, String organization, String channelShortcut);
 
     @Query("select o  from TraOrder as o " +
-            "left join fetch o.network as n " +
+            "left join fetch o.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch o.advertisment as a " +
             "left join fetch o.status as stat " +
             "left join fetch o.campaign as camp " +
@@ -63,10 +65,10 @@ public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
             "left join fetch c.range as cr " +
             "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
-            "left join fetch o.customer as c where n.shortcut = :network and o.id =:id")
-    TraOrder findByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String corNetwork);
+            "left join fetch o.customer as c where ch.shortcut = :channelShortcut and org.shortcut =:organization and o.id =:id")
+    TraOrder findByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(@Param("id") Long id, @Param("organization") String organization, @Param("channelShortcut") String channelShortcutt);
 
-    void deleteByIdAndNetwork_Shortcut(Long id, String corNetwork);
+    void deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(Long id, String organization, String channelShortcut);
 
-    void deleteByCustomerAndNetwork_Shortcut(CrmAccount customer, String corNetwork);
+    void deleteByCustomerAndChannel_Organization_ShortcutAndChannel_Shortcut(CrmAccount customer, String organization, String channelShortcut);
 }

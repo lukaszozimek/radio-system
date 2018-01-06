@@ -26,12 +26,12 @@ public class TraPriceService {
     private TraPriceRepository traCompanyRepository;
 
 
-    public Slice<TraPrice> getAllPrice(String corNetwork, Pageable pageable) {
-        return traCompanyRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<TraPrice> getAllPrice(String organizationShortcut, String channelShortcut, Pageable pageable) {
+        return traCompanyRepository.findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pageable);
     }
 
-    public TraPrice getPrice(Long id, String corNetwork) {
-        return traCompanyRepository.findOneByIdAndNetwork_Shortcut(id, corNetwork);
+    public TraPrice getPrice(Long id, String organizationShortcut, String channelShortcut) {
+        return traCompanyRepository.findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 
 
@@ -40,8 +40,8 @@ public class TraPriceService {
         return traCompanyRepository.save(traInvoice);
     }
 
-    public void deletePrice(Long id, String corNetwork) {
-        traCompanyRepository.deleteByIdAndNetwork_Shortcut(id, corNetwork);
+    public void deletePrice(Long id, String organizationShortcut, String channelShortcut) {
+        traCompanyRepository.deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 
 

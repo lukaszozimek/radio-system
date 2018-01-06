@@ -1,12 +1,10 @@
 package io.protone.core.mapper;
 
 
-import io.protone.core.api.dto.CorChannelDTO;
 import io.protone.core.api.dto.CorFilterDTO;
 import io.protone.core.api.dto.thin.CorFilterThinDTO;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorFilter;
-import io.protone.core.domain.CorNetwork;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
@@ -25,9 +23,9 @@ public interface CorFilterMapper {
 
     CorFilter DTO2DB(CorFilterThinDTO cORAddressDTO);
 
-    CorFilter DTO2DB(CorFilterDTO corFilterDTO, @Context CorNetwork corNetwork);
+    CorFilter DTO2DB(CorFilterDTO corFilterDTO, @Context CorChannel corNetwork);
 
-    default List<CorFilter> DTOs2DBs(List<CorFilterDTO> corFilterDTOS, CorNetwork corNetwork) {
+    default List<CorFilter> DTOs2DBs(List<CorFilterDTO> corFilterDTOS, CorChannel corNetwork) {
         List<CorFilter> corAddresses = new ArrayList<>();
         if (corFilterDTOS.isEmpty() || corFilterDTOS == null) {
             return null;
@@ -38,7 +36,7 @@ public interface CorFilterMapper {
         return corAddresses;
     }
 
-    default Set<CorFilter> DTOs2DBsSet(List<CorFilterDTO> corFilterDTOS, CorNetwork corNetwork) {
+    default Set<CorFilter> DTOs2DBsSet(List<CorFilterDTO> corFilterDTOS, CorChannel corNetwork) {
         Set<CorFilter> corAddresses = new HashSet<>();
         if (corFilterDTOS.isEmpty() || corFilterDTOS == null) {
             return null;
@@ -50,7 +48,7 @@ public interface CorFilterMapper {
     }
 
     @AfterMapping
-    default void coreFilterDTOToCorFilterAfterMapping(CorFilterDTO dto, @MappingTarget CorFilter entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void coreFilterDTOToCorFilterAfterMapping(CorFilterDTO dto, @MappingTarget CorFilter entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 }

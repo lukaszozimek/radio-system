@@ -1,8 +1,8 @@
 package io.protone.library.service;
 
 
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorImageItem;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorImageItemService;
 import io.protone.library.domain.LibArtist;
 import io.protone.library.domain.enumeration.LibArtistTypeEnum;
@@ -34,22 +34,22 @@ public class LibArtistService {
     private CorImageItemService corImageItemService;
 
     @Transactional
-    public LibArtist findOrSaveOne(String name, CorNetwork network) {
+    public LibArtist findOrSaveOne(String name, CorChannel network) {
         if (name != null && network != null) {
-            LibArtist libArtist = libArtistRepository.findOneByNameAndNetwork(name, network);
+            LibArtist libArtist = libArtistRepository.findOneByNameAndChannel(name, network);
             if (libArtist != null) {
                 log.debug("Resolved  LibArtist: {}", libArtist);
                 return libArtist;
             }
             log.debug("Persisting new LibArtist: {}", name);
-            return libArtistRepository.saveAndFlush(new LibArtist().name(name).type(LibArtistTypeEnum.AT_OTHER).network(network));
+            return libArtistRepository.saveAndFlush(new LibArtist().name(name).type(LibArtistTypeEnum.AT_OTHER).channel(network));
         }
         return null;
     }
 
     @Transactional
     public LibArtist save(LibArtist libArtist, MultipartFile avatar) throws IOException, TikaException, SAXException {
-        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
+        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar, libArtist.getChannel().getOrganization());
         libArtist.mainImage(corImageItem);
         return libArtistRepository.saveAndFlush(libArtist);
     }
@@ -65,17 +65,17 @@ public class LibArtistService {
     }
 
     @Transactional
-    public Slice<LibArtist> findArtists(String organizationShortcut, Pageable pagable) {
-        return libArtistRepository.findSliceByNetwork_Shortcut(organizationShortcut, pagable);
+    public Slice<LibArtist> findArtists(String organizationShortcut, String channelShortcut, Pageable pagable) {
+        return libArtistRepository.findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(organizationShortcut, channelShortcut, pagable);
     }
 
     @Transactional
-    public void deleteArtist(Long id, String organizationShortcut) {
-        libArtistRepository.deleteByIdAndNetwork_Shortcut(id, organizationShortcut);
+    public void deleteArtist(Long id, String organizationShortcut, String channelShortcut) {
+        libArtistRepository.deleteByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 
     @Transactional
-    public LibArtist findArtist(String organizationShortcut, Long id) {
-        return libArtistRepository.findOneByIdAndNetwork_Shortcut(id, organizationShortcut);
+    public LibArtist findArtist(String organizationShortcut, String channelShortcut, Long id) {
+        return libArtistRepository.findOneByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(id, organizationShortcut, channelShortcut);
     }
 }

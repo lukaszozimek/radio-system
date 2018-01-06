@@ -22,7 +22,6 @@ public class SchEmissionConfigurationAttachmentSchEmissionAttachmentMapper {
                 .attachmentType(attachment.getAttachmentType())
                 .sequence(attachment.getSequence())
                 .channel(attachment.getChannel())
-                .network(attachment.getNetwork())
                 .fadeInLength(attachment.getFadeInLength())
                 .fadeOutLength(attachment.getFadeOutLength())
                 .fadeStart(attachment.getFadeStart())

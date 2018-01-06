@@ -1,6 +1,6 @@
 package io.protone.traffic.mapper;
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.traffic.api.dto.TraCampaignDTO;
 import io.protone.traffic.domain.TraCampaign;
@@ -25,9 +25,9 @@ public interface TraCampaignMapper {
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "status", target = "status")
     @Mapping(source = "orders", target = "orders")
-    TraCampaign DTO2DB(TraCampaignDTO traCampaignDTO, @Context CorNetwork corNetwork);
+    TraCampaign DTO2DB(TraCampaignDTO traCampaignDTO, @Context CorChannel corNetwork);
 
-    default List<TraCampaign> DTOs2DBs(List<TraCampaignDTO> traCampaignDTO, CorNetwork networkId) {
+    default List<TraCampaign> DTOs2DBs(List<TraCampaignDTO> traCampaignDTO, CorChannel networkId) {
         List<TraCampaign> traCampaigns = new ArrayList<>();
         if (traCampaignDTO.isEmpty() || traCampaignDTO == null) {
             return null;
@@ -39,8 +39,8 @@ public interface TraCampaignMapper {
     }
 
     @AfterMapping
-    default void traCampaignPTToTraCampaignAfterMapping(TraCampaignDTO dto, @MappingTarget TraCampaign entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void traCampaignPTToTraCampaignAfterMapping(TraCampaignDTO dto, @MappingTarget TraCampaign entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 
 }

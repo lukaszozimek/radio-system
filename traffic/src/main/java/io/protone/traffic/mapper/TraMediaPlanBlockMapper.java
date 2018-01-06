@@ -24,22 +24,21 @@ public interface TraMediaPlanBlockMapper {
 
     List<TraMediaPlanBlockDTO> DBs2DTOs(List<TraMediaPlanBlock> traInvtraMediaPlanBlocksices);
 
-    TraMediaPlanBlock DTO2DB(TraMediaPlanBlockDTO traMediaPlanBlockDTO, @Context CorNetwork network, @Context CorChannel corChannel);
+    TraMediaPlanBlock DTO2DB(TraMediaPlanBlockDTO traMediaPlanBlockDTO, @Context CorChannel corChannel);
 
-    default List<TraMediaPlanBlock> DTOs2DBs(List<TraMediaPlanBlockDTO> traMediaPlanBlockDTOS, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<TraMediaPlanBlock> DTOs2DBs(List<TraMediaPlanBlockDTO> traMediaPlanBlockDTOS, @Context CorChannel corChannel) {
         List<TraMediaPlanBlock> traOrders = new ArrayList<>();
         if (traMediaPlanBlockDTOS.isEmpty() || traMediaPlanBlockDTOS == null) {
             return null;
         }
         for (TraMediaPlanBlockDTO dto : traMediaPlanBlockDTOS) {
-            traOrders.add(DTO2DB(dto, network, corChannel));
+            traOrders.add(DTO2DB(dto, corChannel));
         }
         return traOrders;
     }
 
     @AfterMapping
-    default void traInvoicePTToTraMediaPlanBlockAfterMapping(TraMediaPlanBlockDTO dto, @MappingTarget TraMediaPlanBlock entity, @Context CorNetwork network, @Context CorChannel corChannel) {
-        entity.setNetwork(network);
+    default void traInvoicePTToTraMediaPlanBlockAfterMapping(TraMediaPlanBlockDTO dto, @MappingTarget TraMediaPlanBlock entity, @Context CorChannel corChannel) {
         entity.setChannel(corChannel);
     }
 

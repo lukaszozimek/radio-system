@@ -56,18 +56,18 @@ public class TraExcelMediaParserXlsPlan {
     private TraMediaPlanEmissionService traMediaPlanEmissionService;
 
 
-    public void parseMediaPlan(ByteArrayInputStream byteArrayInputStream, TraMediaPlan mediaPlan, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException, InvalidFormatException {
+    public void parseMediaPlan(ByteArrayInputStream byteArrayInputStream, TraMediaPlan mediaPlan, TraMediaPlanDescriptor traMediaPlanDescriptor, CorChannel corChannel) throws IOException, SAXException, InvalidFormatException {
         Workbook workbook = create(byteArrayInputStream);
         Sheet sheet = workbook.getSheetAt(traMediaPlanDescriptor.getTraMediaPlanTemplate().getSheetIndexOfMediaPlan());
         Map<Integer, LocalDate> dateHashMap = findPlaylistInExcel(sheet, traMediaPlanDescriptor);
-        Set<TraMediaPlanPlaylistDate> playlistDates = this.saveParsedPlaylistDates(dateHashMap, mediaPlan, corNetwork, corChannel);
-        buildBlocks(sheet, dateHashMap, mediaPlan, playlistDates, traMediaPlanDescriptor, corNetwork, corChannel);
+        Set<TraMediaPlanPlaylistDate> playlistDates = this.saveParsedPlaylistDates(dateHashMap, mediaPlan, corChannel);
+        buildBlocks(sheet, dateHashMap, mediaPlan, playlistDates, traMediaPlanDescriptor, corChannel);
     }
 
-    private Set<TraMediaPlanPlaylistDate> saveParsedPlaylistDates(Map<Integer, LocalDate> dateHashMap, TraMediaPlan mediaPlan, CorNetwork corNetwork, CorChannel corChannel) {
+    private Set<TraMediaPlanPlaylistDate> saveParsedPlaylistDates(Map<Integer, LocalDate> dateHashMap, TraMediaPlan mediaPlan, CorChannel corChannel) {
         Set<TraMediaPlanPlaylistDate> traMediaPlanPlaylistDate = Sets.newHashSet();
         dateHashMap.keySet().stream().forEach(columnIndex -> {
-            TraMediaPlanPlaylistDate traMediaPlanPlaylistDate1 = new TraMediaPlanPlaylistDate().playlistDate(dateHashMap.get(columnIndex)).channel(corChannel).network(corNetwork).mediaPlan(mediaPlan);
+            TraMediaPlanPlaylistDate traMediaPlanPlaylistDate1 = new TraMediaPlanPlaylistDate().playlistDate(dateHashMap.get(columnIndex)).channel(corChannel).mediaPlan(mediaPlan);
             traMediaPlanPlaylistDate.add(traMediaPlanPlaylistDate1);
         });
         return traMediaPlanPlaylistDateService.savePlaylist(traMediaPlanPlaylistDate);
@@ -93,24 +93,24 @@ public class TraExcelMediaParserXlsPlan {
         return dateHashMap;
     }
 
-    private void buildBlocks(Sheet sheet, Map<Integer, LocalDate> dateHashMap, TraMediaPlan mediaPlan, Set<TraMediaPlanPlaylistDate> traPlaylists, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) {
+    private void buildBlocks(Sheet sheet, Map<Integer, LocalDate> dateHashMap, TraMediaPlan mediaPlan, Set<TraMediaPlanPlaylistDate> traPlaylists, TraMediaPlanDescriptor traMediaPlanDescriptor, CorChannel corChannel) {
         int blockColumnIndex = CellReference.convertColStringToIndex(traMediaPlanDescriptor.getTraMediaPlanTemplate().getBlockStartColumn()); /// Kolumna poczatkowa bloków
         CellReference blockStrat = new CellReference(traMediaPlanDescriptor.getTraMediaPlanTemplate().getBlockStartCell());//Pierwsza wartośc deklaracji blokwo
         CellReference blockEnd = new CellReference(traMediaPlanDescriptor.getTraMediaPlanTemplate().getBlockEndCell());//Pierwszej wartości deklaracji blokow
-        Set<TraMediaPlanBlock> parsedBlocks = parseBlocks(sheet, blockStrat, blockEnd, blockColumnIndex, mediaPlan, traMediaPlanDescriptor, corNetwork, corChannel);
+        Set<TraMediaPlanBlock> parsedBlocks = parseBlocks(sheet, blockStrat, blockEnd, blockColumnIndex, mediaPlan, traMediaPlanDescriptor, corChannel);
         List<TraMediaPlanBlock> blocks = traMediaPlanBlockService.traSaveBlockSet(parsedBlocks);
 
         dateHashMap.keySet().stream().forEach(columnIndex -> {
 
             TraMediaPlanPlaylistDate traMediaPlanPlaylistDate = traPlaylists.stream().filter(mediaPlanPlaylistDate -> mediaPlanPlaylistDate.getPlaylistDate().equals(dateHashMap.get(columnIndex))).findFirst().get();
-            Set<TraMediaPlanEmission> traMediaPlanEmissions = findEmissionsInDay(sheet, columnIndex, traMediaPlanDescriptor, corNetwork, corChannel, blocks, mediaPlan, traMediaPlanPlaylistDate);
+            Set<TraMediaPlanEmission> traMediaPlanEmissions = findEmissionsInDay(sheet, columnIndex, traMediaPlanDescriptor, corChannel, blocks, mediaPlan, traMediaPlanPlaylistDate);
             traMediaPlanEmissionService.saveTraMediaPlanEmissions(traMediaPlanEmissions);
         });
 
 
     }
 
-    private Set<TraMediaPlanEmission> findEmissionsInDay(Sheet sheet, Integer columnIndex, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel, List<TraMediaPlanBlock> traBlocks, TraMediaPlan mediaPlan, TraMediaPlanPlaylistDate traMediaPlanPlaylistDates) {
+    private Set<TraMediaPlanEmission> findEmissionsInDay(Sheet sheet, Integer columnIndex, TraMediaPlanDescriptor traMediaPlanDescriptor, CorChannel corChannel, List<TraMediaPlanBlock> traBlocks, TraMediaPlan mediaPlan, TraMediaPlanPlaylistDate traMediaPlanPlaylistDates) {
         Set<TraMediaPlanEmission> traMediaPlanEmissions = Sets.newHashSet();
         CellReference emissionStart = new CellReference(traMediaPlanDescriptor.getTraMediaPlanTemplate().getFirstEmissionValueCell());//Pierwszej wartości emisji
         CellReference emissionsStop = new CellReference(traMediaPlanDescriptor.getTraMediaPlanTemplate().getLastEmissionValueCell()); //Adress komórki po przekątnej zakresu wartości emisji
@@ -128,7 +128,6 @@ public class TraExcelMediaParserXlsPlan {
                             .timeStop(DEFAULT_START_STOP)
                             .mediaPlanBlock(traMediaPlanBlock)
                             .advertiment(traMediaPlanDescriptor.getLibMediaItem())
-                            .network(corNetwork)
                             .channel(corChannel)
                             .order(traMediaPlanDescriptor.getOrder())
                             .mediaPlan(mediaPlan)
@@ -141,7 +140,7 @@ public class TraExcelMediaParserXlsPlan {
         return traMediaPlanEmissions;
     }
 
-    private Set<TraMediaPlanBlock> parseBlocks(Sheet sheet, CellReference blockCellStart, CellReference blockCellEnd, int blockColumnIndex, TraMediaPlan mediaPlan, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) {
+    private Set<TraMediaPlanBlock> parseBlocks(Sheet sheet, CellReference blockCellStart, CellReference blockCellEnd, int blockColumnIndex, TraMediaPlan mediaPlan, TraMediaPlanDescriptor traMediaPlanDescriptor, CorChannel corChannel) {
         String hourSeparator = traMediaPlanDescriptor.getTraMediaPlanTemplate().getBlockHourSeparator();
         Set<TraMediaPlanBlock> blocks = Sets.newHashSet();
         int startBlockIndex = blockCellStart.getRow();
@@ -150,7 +149,7 @@ public class TraExcelMediaParserXlsPlan {
             Cell blockEmission = sheet.getRow(rowIndex).getCell(blockColumnIndex);
             String[] timeRange = blockEmission.toString().split(hourSeparator);
             if (timeRange.length != 1) {
-                blocks.add(new TraMediaPlanBlock().sequence(rowIndex - startBlockIndex).startBlock(LocalTime.from(DateTimeFormatter.ofPattern("HH:mm").parse(timeRange[0])).toNanoOfDay()).stopBlock(LocalTime.from(DateTimeFormatter.ofPattern("HH:mm").parse(timeRange[1])).toNanoOfDay()).network(corNetwork).channel(corChannel).mediaPlan(mediaPlan));
+                blocks.add(new TraMediaPlanBlock().sequence(rowIndex - startBlockIndex).startBlock(LocalTime.from(DateTimeFormatter.ofPattern("HH:mm").parse(timeRange[0])).toNanoOfDay()).stopBlock(LocalTime.from(DateTimeFormatter.ofPattern("HH:mm").parse(timeRange[1])).toNanoOfDay()).channel(corChannel).mediaPlan(mediaPlan));
             }
         }
         return blocks;

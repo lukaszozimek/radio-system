@@ -3,7 +3,7 @@ package io.protone.core.mapper;
 
 import io.protone.core.api.dto.CoreAddressDTO;
 import io.protone.core.domain.CorAddress;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -21,9 +21,9 @@ public interface CorAddressMapper {
 
     List<CoreAddressDTO> DBs2DTOs(List<CorAddress> cORAddresses);
 
-    CorAddress DTO2DB(CoreAddressDTO cORAddressDTO, @Context CorNetwork corNetwork);
+    CorAddress DTO2DB(CoreAddressDTO cORAddressDTO, @Context CorChannel corNetwork);
 
-    default List<CorAddress> DTOs2DBs(List<CoreAddressDTO> coreAddressDTOS, CorNetwork networkId) {
+    default List<CorAddress> DTOs2DBs(List<CoreAddressDTO> coreAddressDTOS, CorChannel networkId) {
         List<CorAddress> corAddresses = new ArrayList<>();
         if (coreAddressDTOS.isEmpty() || coreAddressDTOS == null) {
             return null;
@@ -35,7 +35,7 @@ public interface CorAddressMapper {
     }
 
     @AfterMapping
-    default void coreAddressPTToCorAddressAfterMapping(CoreAddressDTO dto, @MappingTarget CorAddress entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void coreAddressPTToCorAddressAfterMapping(CoreAddressDTO dto, @MappingTarget CorAddress entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 }

@@ -16,40 +16,43 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface TraAdvertisementRepository extends JpaRepository<TraAdvertisement, Long> {
-    List<TraAdvertisement> findByNetwork(CorNetwork network);
+    List<TraAdvertisement> findByChannel_Organization_ShortcutAndChannel_Shortcut(String organization, String channelShortcut);
 
     @Query("select a  from TraAdvertisement as a " +
-            "left join fetch a.network as n " +
+            "left join fetch a.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch a.customer as c " +
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
             "left join fetch c.range as cr " +
             "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
-            " where n.shortcut = :network")
-    Slice<TraAdvertisement> findSliceByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization")
+    Slice<TraAdvertisement> findSliceByChannel_Organization_ShortcutAndChannel_Shortcut(@Param("organization") String organization, @Param("channelShortcut") String channelShortcut, Pageable pageable);
 
     @Query("select a  from TraAdvertisement as a " +
-            "left join fetch a.network as n " +
+            "left join fetch a.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch a.customer as c " +
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
             "left join fetch c.range as cr " +
             "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
-            " where n.shortcut = :network  and a.id =:id")
-    TraAdvertisement findByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String network);
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization  and a.id =:id")
+    TraAdvertisement findByIdAndChannel_Organization_ShortcutAndChannel_Shortcut(@Param("id") Long id, @Param("organization") String organization, @Param("channelShortcut") String channelShortcut);
 
     @Query("select a  from TraAdvertisement as a " +
-            "left join fetch a.network as n " +
+            "left join fetch a.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch a.customer as c " +
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
             "left join fetch c.range as cr " +
             "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
-            " where n.shortcut = :network and c.shortName = :shortName")
-    List<TraAdvertisement> findByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String crmAccount, @Param("network") String network, Pageable pageable);
+            " where ch.shortcut = :channelShortcut and org.shortcut =:organization and c.shortName = :shortName")
+    List<TraAdvertisement> findByCustomer_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(@Param("shortName") String crmAccount, @Param("organization") String organization, @Param("channelShortcut") String channelShortcut, Pageable pageable);
 
-    List<TraAdvertisement> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String network);
+    List<TraAdvertisement> findByCustomer_ShortNameAndChannel_Organization_ShortcutAndChannel_Shortcut(String crmAccount, String organization, String channelShortcut);
 }

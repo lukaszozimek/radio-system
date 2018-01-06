@@ -58,8 +58,6 @@ public interface ProtoneMetadataProperty extends TikaCoreProperties, XMPDM {
     String CART_CHUNK_TIMER_INT ="CartChunkTimerINT";
     String CART_CHUNK_FIFTH_TIMER ="CartChunkFifthTimer";
     String CART_CHUNK_SIXTH_TIMER ="CartChunkSixthTimer";
-
     String CART_CHUNK_SEVENTH_TIMER ="CartChunkSeventhTimer";
-
     String CART_CHUNK_EIGHT_TIMER ="CartChunkEightTimer";
 }

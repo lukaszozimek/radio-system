@@ -62,8 +62,8 @@ public class TraBlockService {
     }
 
     @Transactional
-    public Set<TraBlock> buildBlocks(LocalDate localDate, String organizationShortcut) {
-        List<TraBlockConfiguration> traBlockConfigurations = traBlockConfigurationService.getAllBlockConfigurationsByDay(organizationShortcut, corDayOfWeekEnumMap.get(localDate.getDayOfWeek()));
+    public Set<TraBlock> buildBlocks(LocalDate localDate, String organizationShortcut, String channelShortcut) {
+        List<TraBlockConfiguration> traBlockConfigurations = traBlockConfigurationService.getAllBlockConfigurationsByDay(organizationShortcut, channelShortcut, corDayOfWeekEnumMap.get(localDate.getDayOfWeek()));
         if (traBlockConfigurations.isEmpty()) {
             return new HashSet<>();
         }
@@ -80,14 +80,13 @@ public class TraBlockService {
 
     private TraBlock buildBlockBasedOnConfiguration(TraBlockConfiguration traBlockConfiguration) {
         return new TraBlock()
-            .network(traBlockConfiguration.getNetwork())
-            .channel(traBlockConfiguration.getChannel())
-            .length(traBlockConfiguration.getLength())
-            .sequence(traBlockConfiguration.getSequence())
-            .blockStartSound(traBlockConfiguration.getBlockStartSound())
-            .blockEndSound(traBlockConfiguration.getBlockEndSound())
-            .startBlock(traBlockConfiguration.getStartBlock())
-            .stopBlock(traBlockConfiguration.getStopBlock())
-            .name(traBlockConfiguration.getName());
+                .channel(traBlockConfiguration.getChannel())
+                .length(traBlockConfiguration.getLength())
+                .sequence(traBlockConfiguration.getSequence())
+                .blockStartSound(traBlockConfiguration.getBlockStartSound())
+                .blockEndSound(traBlockConfiguration.getBlockEndSound())
+                .startBlock(traBlockConfiguration.getStartBlock())
+                .stopBlock(traBlockConfiguration.getStopBlock())
+                .name(traBlockConfiguration.getName());
     }
 }

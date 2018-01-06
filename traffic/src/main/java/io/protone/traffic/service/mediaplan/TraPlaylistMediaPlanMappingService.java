@@ -62,7 +62,7 @@ public class TraPlaylistMediaPlanMappingService {
     private TraMediaPlanMapping traFixedLastPositionMediaPlanMapping;
 
     public TraPlaylistDiff mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(TraMediaPlanAdvertisementAssigneDTO assigneDTO, String organizationShortcut, String channelShortcut) {
-        LibMediaItem traAdvertisement = libMediaItemService.getMediaItem(organizationShortcut, COM_DEFAULT, assigneDTO.getLibMediaItemIdx());
+        LibMediaItem traAdvertisement = libMediaItemService.getMediaItem(organizationShortcut, channelShortcut, COM_DEFAULT, assigneDTO.getLibMediaItemIdx());
         if (traAdvertisement == null) {
             return null;
         }

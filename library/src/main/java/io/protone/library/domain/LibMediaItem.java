@@ -22,7 +22,7 @@ import static javax.persistence.FetchType.EAGER;
  */
 @Entity
 @Table(name = "lib_media_item", uniqueConstraints =
-@UniqueConstraint(columnNames = {"idx", "library_id", "network_id"}))
+@UniqueConstraint(columnNames = {"idx", "library_id", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibMediaItem extends CorItem implements Serializable {
 
@@ -399,6 +399,11 @@ public class LibMediaItem extends CorItem implements Serializable {
 
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public LibMediaItem channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
     }
 
     public void setChannel(CorChannel channel) {

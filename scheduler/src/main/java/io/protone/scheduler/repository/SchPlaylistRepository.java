@@ -14,21 +14,21 @@ import java.time.LocalDate;
  */
 public interface SchPlaylistRepository extends JpaRepository<SchPlaylist, Long> {
 
-    Slice<SchPlaylist> findAllByNetwork_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut, Pageable pageable);
+    Slice<SchPlaylist> findAllByChannel_Organization_ShortcutAndChannel_Shortcut(String organizationShortcut, String channelShortcut, Pageable pageable);
 
 
     @Query("select play from SchPlaylist as play " +
-            "left join fetch play.network as n " +
             "left join fetch play.channel as ch " +
+            "left join fetch ch.organization as org " +
             "left join fetch play.emissions as emi " +
-            "where n.shortcut = :network  and ch.shortcut= :channelShortcut and play.date=:datePlaylist")
-    SchPlaylist findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(@Param("network") String organizationShortcut, @Param("channelShortcut") String channelShortcut, @Param("datePlaylist") LocalDate date);
+            "where org.shortcut = :organization  and ch.shortcut= :channelShortcut and play.date=:datePlaylist")
+    SchPlaylist findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndDate(@Param("organization") String organizationShortcut, @Param("channelShortcut") String channelShortcut, @Param("datePlaylist") LocalDate date);
 
     @Query("select play from SchPlaylist as play " +
-            "left join fetch play.network as n " +
             "left join fetch play.channel as ch " +
-            "where n.shortcut = :network  and ch.shortcut= :channelShortcut and play.date=:datePlaylist")
-    SchPlaylist findOne(@Param("network") String organizationShortcut, @Param("channelShortcut") String channelShortcut, @Param("datePlaylist") LocalDate date);
+            "left join fetch ch.organization as org " +
+            "where org.shortcut = :organization  and ch.shortcut= :channelShortcut and play.date=:datePlaylist")
+    SchPlaylist findOne(@Param("organization") String organizationShortcut, @Param("channelShortcut") String channelShortcut, @Param("datePlaylist") LocalDate date);
 
-    void deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(String organizationShortcut, String channelShortcut, LocalDate date);
+    void deleteByChannel_Organization_ShortcutAndChannel_ShortcutAndDate(String organizationShortcut, String channelShortcut, LocalDate date);
 }

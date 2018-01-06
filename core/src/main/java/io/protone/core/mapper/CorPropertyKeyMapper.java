@@ -2,6 +2,7 @@ package io.protone.core.mapper;
 
 
 import io.protone.core.api.dto.CorKeyDTO;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorPropertyKey;
 import org.mapstruct.AfterMapping;
@@ -22,9 +23,9 @@ public interface CorPropertyKeyMapper {
 
     List<CorKeyDTO> DBs2DTOs(List<CorPropertyKey> cORPropertyKeys);
 
-    CorPropertyKey DTO2DB(CorKeyDTO cORPropertyKeyDTO, @Context CorNetwork network);
+    CorPropertyKey DTO2DB(CorKeyDTO cORPropertyKeyDTO, @Context CorChannel network);
 
-    default List<CorPropertyKey> DTOs2DBs(List<CorKeyDTO> cORPropertyKeyDTOs, @Context CorNetwork network) {
+    default List<CorPropertyKey> DTOs2DBs(List<CorKeyDTO> cORPropertyKeyDTOs, @Context CorChannel network) {
         List<CorPropertyKey> corPeople = new ArrayList<>();
         if (cORPropertyKeyDTOs.isEmpty() || cORPropertyKeyDTOs == null) {
             return null;
@@ -36,8 +37,8 @@ public interface CorPropertyKeyMapper {
     }
 
     @AfterMapping
-    default void coreKeyPTToCorPropertyKeyAfterMapping(CorKeyDTO dto, @MappingTarget CorPropertyKey entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void coreKeyPTToCorPropertyKeyAfterMapping(CorKeyDTO dto, @MappingTarget CorPropertyKey entity, @Context CorChannel channel) {
+        entity.setChannel(channel);
     }
 
 }

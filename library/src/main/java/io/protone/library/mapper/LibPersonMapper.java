@@ -1,6 +1,6 @@
 package io.protone.library.mapper;
 
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorPerson;
 import io.protone.core.mapper.CorContactMapper;
 import io.protone.library.api.dto.LibPersonDTO;
@@ -21,9 +21,9 @@ public interface LibPersonMapper {
 
     List<LibPersonDTO> corPersons2LibPersonPTs(List<CorPerson> cORPeople);
 
-    CorPerson libPersonPT2CorPerson(LibPersonDTO dto, @Context CorNetwork network);
+    CorPerson libPersonPT2CorPerson(LibPersonDTO dto, @Context CorChannel network);
 
-    default List<CorPerson> libPersonPTs2corPersons(List<LibPersonDTO> dtos, @Context CorNetwork network) {
+    default List<CorPerson> libPersonPTs2corPersons(List<LibPersonDTO> dtos, @Context CorChannel network) {
         List<CorPerson> corPeople = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {
             return null;
@@ -35,8 +35,8 @@ public interface LibPersonMapper {
     }
 
     @AfterMapping
-    default void libPersonPTToCorPersonAfterMapping(LibPersonDTO dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
-        entity.setNetwork(corNetwork);
+    default void libPersonPTToCorPersonAfterMapping(LibPersonDTO dto, @MappingTarget CorPerson entity, @Context CorChannel corNetwork) {
+        entity.setChannel(corNetwork);
     }
 
 }
