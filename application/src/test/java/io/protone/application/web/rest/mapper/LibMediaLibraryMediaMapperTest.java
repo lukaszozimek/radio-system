@@ -2,7 +2,7 @@ package io.protone.application.web.rest.mapper;
 
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.library.api.dto.LibMediaLibraryDTO;
 import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.mapper.LibLibraryMediaMapper;
@@ -39,7 +39,8 @@ public class LibMediaLibraryMediaMapperTest {
 
     private List<LibMediaLibrary> libLibraries = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
@@ -49,7 +50,7 @@ public class LibMediaLibraryMediaMapperTest {
         libLibraries.add(libMediaLibrary);
         libMediaLibraryDTO = factory.manufacturePojo(LibMediaLibraryDTO.class);
         libMediaLibraryDTOS.add(libMediaLibraryDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
 
     }
 
@@ -86,7 +87,7 @@ public class LibMediaLibraryMediaMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibMediaLibrary entity = libLibraryMediaMapper.DTO2DB(libMediaLibraryDTO, corNetwork);
+        LibMediaLibrary entity = libLibraryMediaMapper.DTO2DB(libMediaLibraryDTO, corChannel);
 
 
         LibMediaLibrary libMediaLibrary = new LibMediaLibrary();
@@ -98,12 +99,12 @@ public class LibMediaLibraryMediaMapperTest {
         assertNotNull(entity.getCounter());
         assertNotNull(entity.getDescription());
 
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibMediaLibrary> entities = libLibraryMediaMapper.DTOs2DBs(libMediaLibraryDTOS, corNetwork);
+        List<LibMediaLibrary> entities = libLibraryMediaMapper.DTOs2DBs(libMediaLibraryDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -115,7 +116,7 @@ public class LibMediaLibraryMediaMapperTest {
             assertNotNull(entity.getCounter());
             assertNotNull(entity.getDescription());
 
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }

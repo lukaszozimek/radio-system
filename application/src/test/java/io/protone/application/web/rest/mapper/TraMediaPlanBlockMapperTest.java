@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.traffic.api.dto.TraMediaPlanBlockDTO;
 import io.protone.traffic.domain.TraMediaPlanBlock;
 import io.protone.traffic.mapper.TraMediaPlanBlockMapper;
@@ -39,22 +38,20 @@ public class TraMediaPlanBlockMapperTest {
 
     private List<TraMediaPlanBlockDTO> traMediaPlanBlockDTOS = new ArrayList<>();
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
 
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
         corChannel = factory.manufacturePojo(CorChannel.class);
         traMediaPlanBlockDTO = factory.manufacturePojo(TraMediaPlanBlockDTO.class);
         traMediaPlanBlockDTOS.add(traMediaPlanBlockDTO);
         mediaPlanBlock = factory.manufacturePojo(TraMediaPlanBlock.class);
         mediaPlanBlock.setId(1L);
         mediaPlanBlock.setChannel(corChannel);
-        mediaPlanBlock.setNetwork(corNetwork);
         traMediaPlanBlocks.add(mediaPlanBlock);
     }
 
@@ -90,17 +87,16 @@ public class TraMediaPlanBlockMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraMediaPlanBlock entity = traMediaPlanBlockMapper.DTO2DB(traMediaPlanBlockDTO, corNetwork, corChannel);
+        TraMediaPlanBlock entity = traMediaPlanBlockMapper.DTO2DB(traMediaPlanBlockDTO, corChannel);
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
         assertNotNull(entity.getChannel());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getSequence());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraMediaPlanBlock> entities = traMediaPlanBlockMapper.DTOs2DBs(traMediaPlanBlockDTOS, corNetwork, corChannel);
+        List<TraMediaPlanBlock> entities = traMediaPlanBlockMapper.DTOs2DBs(traMediaPlanBlockDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -110,7 +106,6 @@ public class TraMediaPlanBlockMapperTest {
             assertNotNull(entity.getSequence());
 
             assertNotNull(entity.getChannel());
-            assertNotNull(entity.getNetwork());
 
         });
     }

@@ -2,7 +2,8 @@ package io.protone.application.service.cor;
 
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.CorPerson;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.service.CorPersonService;
@@ -17,6 +18,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.junit.Assert.*;
 
 /**
@@ -32,23 +34,27 @@ public class CorPersonServiceTest {
     @Autowired
     private CorNetworkRepository networkRepository;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
+
 
     private PodamFactory factory;
 
     @Before
     public void setUp() throws Exception {
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = networkRepository.saveAndFlush(corNetwork);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
 
     }
 
     @Test
     public void shouldSaveCorPerson() throws Exception {
         //then
-        CorPerson corPerson = corPersonService.savePerson(factory.manufacturePojo(CorPerson.class).network(corNetwork));
+        CorPerson corPerson = corPersonService.savePerson(factory.manufacturePojo(CorPerson.class).channel(corChannel));
 
         //assert
         assertNotNull(corPerson);
@@ -62,7 +68,7 @@ public class CorPersonServiceTest {
     @Test
     public void shouldNotSaveCorContacst() throws Exception {
         //then
-        CorPerson corPerson = corPersonService.savePerson(factory.manufacturePojo(CorPerson.class).network(corNetwork).contacts(null));
+        CorPerson corPerson = corPersonService.savePerson(factory.manufacturePojo(CorPerson.class).channel(corChannel).contacts(null));
 
         //assert
         assertNotNull(corPerson);

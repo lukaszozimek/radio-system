@@ -2,7 +2,7 @@ package io.protone.application.web.rest.mapper;
 
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorUser;
 import io.protone.crm.api.dto.CrmTaskCommentDTO;
 import io.protone.crm.domain.CrmTaskComment;
@@ -39,7 +39,7 @@ public class CrmTaskCommentMapperTest {
 
     private CrmTaskCommentDTO crmTaskCommentDTO;
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     private List<CrmTaskCommentDTO> crmTaskCommentDTOS = new ArrayList<>();
 
@@ -57,7 +57,7 @@ public class CrmTaskCommentMapperTest {
         crmTaskCommentDTO = factory.manufacturePojo(CrmTaskCommentDTO.class);
         crmTaskCommentDTOS.add(crmTaskCommentDTO);
         crmTaskCommentsSet.add(crmTaskComment);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
     @Test
@@ -101,22 +101,22 @@ public class CrmTaskCommentMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmTaskComment entity = crmTaskCommentMapper.DTO2DB(crmTaskCommentDTO, corNetwork);
+        CrmTaskComment entity = crmTaskCommentMapper.DTO2DB(crmTaskCommentDTO, corChannel);
         notNull(entity.getCreatedBy());
         notNull(entity.getId());
         notNull(entity.getComment());
-        notNull(entity.getNetwork());
+        notNull(entity.getChannel());
 
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        Set<CrmTaskComment> entities = crmTaskCommentMapper.DTOs2DBs(crmTaskCommentDTOS, corNetwork);
+        Set<CrmTaskComment> entities = crmTaskCommentMapper.DTOs2DBs(crmTaskCommentDTOS, corChannel);
         entities.stream().forEach(entity -> {
             notNull(entity.getCreatedBy());
             notNull(entity.getId());
             notNull(entity.getComment());
-            notNull(entity.getNetwork());
+            notNull(entity.getChannel());
         });
 
     }

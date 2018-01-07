@@ -2,13 +2,11 @@ package io.protone.application.web.api.traffic;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.traffic.impl.TraMediaPlanResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.service.CorChannelService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.library.domain.*;
@@ -63,6 +61,7 @@ import javax.persistence.EntityManager;
 import java.io.InputStream;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.any;
@@ -92,11 +91,7 @@ public class TraMediaPlanResourceImplTest {
     private TraMediaPlanMapper traMediaPlanMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
-
-    @Inject
     private CorChannelService corChannelService;
-
 
     @Inject
     private TraMediaPlanBlockService traMediaPlanBlockService;
@@ -160,7 +155,7 @@ public class TraMediaPlanResourceImplTest {
 
     private TraMediaPlan traMediaPlan;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
 
     private CorChannel corChannel;
 
@@ -204,38 +199,36 @@ public class TraMediaPlanResourceImplTest {
         factory = new PodamFactoryImpl();
 
         TraMediaPlanResourceImpl traMediaPlanResource = new TraMediaPlanResourceImpl();
-        libMediaLibrary = new LibMediaLibrary().shortcut("tes").network(corNetwork);
+        libMediaLibrary = new LibMediaLibrary().shortcut("tes").channel(corChannel);
         libMediaLibrary.setId(1L);
 
 
-            libFileLibrary = new LibFileLibrary().shortcut("mpl").prefix("u");
-            libFileLibrary.setId(8L);
+        libFileLibrary = new LibFileLibrary().shortcut("mpl").prefix("u");
+        libFileLibrary.setId(8L);
 
         crmAccount = factory.manufacturePojo(CrmAccount.class);
-        crmAccount.network(corNetwork);
+        crmAccount.channel(corChannel);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
 
         libCloudObject = factory.manufacturePojo(LibCloudObject.class);
-        libCloudObject.setNetwork(corNetwork);
         libCloudObject = libCloudObjectRepository.saveAndFlush(libCloudObject);
 
         libFileItem = factory.manufacturePojo(LibFileItem.class);
         libFileItem.library(libFileLibrary);
         libFileItem.setCloudObject(libCloudObject);
-        libFileItem.network(corNetwork);
         libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
         libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.library(libMediaLibrary);
 
-        libMediaItem.network(corNetwork);
+        libMediaItem.channel(corChannel);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
-        traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(Sets.newLinkedHashSet(libMediaItem));
+        traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).channel(corChannel).mediaItem(Sets.newLinkedHashSet(libMediaItem));
         traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
         traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setCustomer(crmAccount);
         traOrder.setAdvertisment(traAdvertisement);
-        traOrder.setNetwork(corNetwork);
+        traOrder.setChannel(corChannel);
         traOrder = traOrderRepository.saveAndFlush(traOrder);
         TraMediaPlanTemplateDTO traMediaPlanTemplateDTO = new TraMediaPlanTemplateDTO();
         mediaPlanDescriptor = new TraMediaPlanDescriptorDTO()
@@ -261,7 +254,7 @@ public class TraMediaPlanResourceImplTest {
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanEmissionService", traMediaPlanEmissionService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanService", traMediaPlanService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanMapper", traMediaPlanMapper);
-        ReflectionTestUtils.setField(traMediaPlanResource, "corNetworkService", corNetworkService);
+
         ReflectionTestUtils.setField(traMediaPlanResource, "corChannelService", corChannelService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanDescriptorMapper", traMediaPlanDescriptorMapper);
         this.restTraMediaPlanMockMvc = MockMvcBuilders.standaloneSetup(traMediaPlanResource)
@@ -272,13 +265,12 @@ public class TraMediaPlanResourceImplTest {
 
     @Before
     public void initTest() {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
         traMediaPlan = createEntity(em);
         traMediaPlan.setChannel(corChannel);
-        traMediaPlan.setNetwork(corNetwork);
     }
 
     @Test
@@ -286,7 +278,7 @@ public class TraMediaPlanResourceImplTest {
     public void createTraMediaPlan() throws Exception {
 
         int databaseSizeBeforeCreate = traMediaPlanRepository.findAll().size();
-        when(libFileItemService.uploadFileItem(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libFileItem);
+        when(libFileItemService.uploadFileItem(anyString(), anyString(), anyString(), any(MultipartFile.class))).thenReturn(libFileItem);
 
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
         // Create the TraMediaPlan
@@ -294,7 +286,7 @@ public class TraMediaPlanResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("traMediaPlanDescriptorDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(mediaPlanDescriptor));
 
-        ResultActions resultActions = restTraMediaPlanMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
+        ResultActions resultActions = restTraMediaPlanMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/mediaplan", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(firstFile)
                 .file(jsonFile))
                 .andExpect(status().is(200))
@@ -313,10 +305,10 @@ public class TraMediaPlanResourceImplTest {
     @Transactional
     public void getAllTraMediaPlans() throws Exception {
         // Initialize the database
-        traMediaPlanRepository.saveAndFlush(traMediaPlan.fileItem(libFileItem).channel(corChannel).network(corNetwork).account(crmAccount));
+        traMediaPlanRepository.saveAndFlush(traMediaPlan.fileItem(libFileItem).channel(corChannel).account(crmAccount));
 
         // Get all the traMediaPlanList
-        restTraMediaPlanMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/mediaplan?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restTraMediaPlanMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/mediaplan?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traMediaPlan.getId().intValue())))
@@ -327,10 +319,10 @@ public class TraMediaPlanResourceImplTest {
     @Transactional
     public void getTraMediaPlan() throws Exception {
         // Initialize the database
-        traMediaPlanRepository.saveAndFlush(traMediaPlan.fileItem(libFileItem).channel(corChannel).network(corNetwork).account(crmAccount));
+        traMediaPlanRepository.saveAndFlush(traMediaPlan.fileItem(libFileItem).channel(corChannel).account(crmAccount));
 
         // Get the traMediaPlan
-        restTraMediaPlanMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId()))
+        restTraMediaPlanMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/mediaplan/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(traMediaPlan.getId().intValue()))
@@ -341,7 +333,7 @@ public class TraMediaPlanResourceImplTest {
     @Transactional
     public void getNonExistingTraMediaPlan() throws Exception {
         // Get the traMediaPlan
-        restTraMediaPlanMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
+        restTraMediaPlanMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/mediaplan/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -349,7 +341,7 @@ public class TraMediaPlanResourceImplTest {
     @Transactional
     public void updateTraMediaPlan() throws Exception {
         // Initialize the database
-        traMediaPlanRepository.saveAndFlush(traMediaPlan.fileItem(libFileItem).channel(corChannel).network(corNetwork).account(crmAccount));
+        traMediaPlanRepository.saveAndFlush(traMediaPlan.fileItem(libFileItem).channel(corChannel).account(crmAccount));
         int databaseSizeBeforeUpdate = traMediaPlanRepository.findAll().size();
 
         // Update the traMediaPlan
@@ -358,7 +350,7 @@ public class TraMediaPlanResourceImplTest {
                 .name(UPDATED_NAME);
         TraMediaPlanDTO traMediaPlanDTO = traMediaPlanMapper.DB2DTO(updatedTraMediaPlan);
 
-        restTraMediaPlanMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
+        restTraMediaPlanMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/mediaplan", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanDTO)))
                 .andExpect(status().isOk());
@@ -375,11 +367,11 @@ public class TraMediaPlanResourceImplTest {
     public void deleteTraMediaPlan() throws Exception {
         // Initialize the database
         doNothing().when(libFileItemService).deleteFile(any(LibFileItem.class));
-        traMediaPlanRepository.saveAndFlush(traMediaPlan.fileItem(libFileItem).channel(corChannel).network(corNetwork).account(crmAccount));
+        traMediaPlanRepository.saveAndFlush(traMediaPlan.fileItem(libFileItem).channel(corChannel).account(crmAccount));
         int databaseSizeBeforeDelete = traMediaPlanRepository.findAll().size();
 
         // Get the traMediaPlan
-        restTraMediaPlanMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId())
+        restTraMediaPlanMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/mediaplan/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

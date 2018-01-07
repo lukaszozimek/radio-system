@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwsHeader;
 import io.protone.application.ProtoneApp;
 import io.protone.application.security.jwt.TokenProvider;
+import io.protone.application.util.TestConstans;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.impl.CorChannelResourceImpl;
 import io.protone.application.web.api.cor.impl.CorNetworkResourceImpl;
@@ -12,10 +13,12 @@ import io.protone.application.web.api.library.impl.LibraryMediaResourceImpl;
 import io.protone.application.web.rest.JWTToken;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.application.web.rest.vm.LoginVM;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.mapper.CorChannelMapper;
 import io.protone.core.mapper.CorNetworkMapper;
 import io.protone.core.service.CorChannelService;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorOrganizationService;
 import io.protone.library.mapper.LibLibraryMediaMapper;
 import io.protone.library.service.LibLibraryMediaService;
 import org.junit.Before;
@@ -36,12 +39,10 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
-import static io.protone.application.security.jwt.TokenProvider.CHANNEL;
-import static io.protone.application.security.jwt.TokenProvider.NETWORK;
+import static io.protone.application.security.jwt.TokenProvider.ORGANIZATION;
+import static io.protone.application.util.TestConstans.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -82,10 +83,11 @@ public class CorSecurityTest {
     private LibLibraryMediaMapper libLibraryMediaMapper;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorOrganizationService corOrganizationService;
+
 
     @Autowired
-    private CorChannelService channelService;
+    private CorChannelService corChannelService;
 
     @Autowired
     private CorChannelMapper corChannelMapper;
@@ -93,27 +95,37 @@ public class CorSecurityTest {
     @Autowired
     private CorNetworkMapper corNetworkMapper;
 
+    protected CorOrganization corOrganization;
+
+    protected CorChannel corChannel;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         LibraryMediaResourceImpl libLibraryResource = new LibraryMediaResourceImpl();
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryMediaService", libLibraryMediaService);
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryMediaMapper", libLibraryMediaMapper);
-        ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(libLibraryResource, "corChannelService", corChannelService);
+
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.setOrganization(corOrganization);
 
         CorUserJWTController corUserJWTController = new CorUserJWTController(tokenProvider, authenticationManager);
 
         CorNetworkResourceImpl corNetworkResource = new CorNetworkResourceImpl();
-        ReflectionTestUtils.setField(corNetworkResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(corNetworkResource, "corOrganizationService", corOrganizationService);
         ReflectionTestUtils.setField(corNetworkResource, "corNetworkMapper", corNetworkMapper);
 
-        CorChannelResourceImpl corChannelResource = new CorChannelResourceImpl(channelService, corChannelMapper, corNetworkService);
+        CorChannelResourceImpl corChannelResource = new CorChannelResourceImpl(corChannelService, corChannelMapper, corOrganizationService);
 
         this.restLibLibraryMockMvc = MockMvcBuilders.standaloneSetup(libLibraryResource, corUserJWTController, corNetworkResource, corChannelResource)
-            .apply(SecurityMockMvcConfigurers.springSecurity(springSecurityFilterChain))
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
+                .apply(SecurityMockMvcConfigurers.springSecurity(springSecurityFilterChain))
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Test
@@ -124,40 +136,19 @@ public class CorSecurityTest {
         loginVM.setPassword("admin");
 
         String jwtToken = restLibLibraryMockMvc.perform(post("/api/v1/user/authenticate").contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(loginVM))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+                .content(TestUtil.convertObjectToJsonBytes(loginVM))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         ObjectMapper mapper = new ObjectMapper();
         JWTToken token = mapper.readValue(jwtToken, JWTToken.class);
 
         JwsHeader jwsHeader = tokenProvider.getUserAuthorizationAccess(token.getIdToken());
-        LinkedHashMap<String, String> corNetworkMap = (LinkedHashMap<String, String>) jwsHeader.get(NETWORK);
-        List<LinkedHashMap<String, String>> corChannelSet = (ArrayList<LinkedHashMap<String, String>>) jwsHeader.get(CHANNEL);
+        LinkedHashMap<String, String> corNetworkMap = (LinkedHashMap<String, String>) jwsHeader.get(ORGANIZATION);
+
 
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corNetworkMap.get("shortcut"), corChannelSet.stream().findFirst().get().get("shortcut"))
-            .header("Authorization", "Bearer " + token.getIdToken()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
-    }
-
-    @Test
-    public void shouldLoginAndGetLibrariesInNetworkContext() throws Exception {
-        //when
-        LoginVM loginVM = new LoginVM();
-        loginVM.setUsername("admin");
-        loginVM.setPassword("admin");
-
-        String jwtToken = restLibLibraryMockMvc.perform(post("/api/v1/user/authenticate").contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(loginVM))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-        ObjectMapper mapper = new ObjectMapper();
-        JWTToken token = mapper.readValue(jwtToken, JWTToken.class);
-
-        JwsHeader jwsHeader = tokenProvider.getUserAuthorizationAccess(token.getIdToken());
-        LinkedHashMap<String, String> corNetworkMap = (LinkedHashMap<String, String>) jwsHeader.get(NETWORK);
-        // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/media", corNetworkMap.get("shortcut"))
-            .header("Authorization", "Bearer " + token.getIdToken()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corNetworkMap.get("shortcut"), TestConstans.TEST_CHANNEL_SHORTCUT)
+                .header("Authorization", "Bearer " + token.getIdToken()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 
     @Test
@@ -168,15 +159,15 @@ public class CorSecurityTest {
         loginVM.setPassword("admin");
 
         String jwtToken = restLibLibraryMockMvc.perform(post("/api/v1/user/authenticate").contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(loginVM))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+                .content(TestUtil.convertObjectToJsonBytes(loginVM))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         ObjectMapper mapper = new ObjectMapper();
         JWTToken token = mapper.readValue(jwtToken, JWTToken.class);
 
 
-        // pass channel to filter
-        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/", "channel")
-            .header("Authorization", "Bearer " + token.getIdToken()))
-            .andExpect(status().isUnauthorized());
+        // pass organization to filter
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", "organization", TestConstans.TEST_CHANNEL_SHORTCUT)
+                .header("Authorization", "Bearer " + token.getIdToken()))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -188,18 +179,18 @@ public class CorSecurityTest {
 
 
         String jwtToken = restLibLibraryMockMvc.perform(post("/api/v1/user/authenticate").contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(loginVM))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+                .content(TestUtil.convertObjectToJsonBytes(loginVM))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         ObjectMapper mapper = new ObjectMapper();
         JWTToken token = mapper.readValue(jwtToken, JWTToken.class);
 
         JwsHeader jwsHeader = tokenProvider.getUserAuthorizationAccess(token.getIdToken());
-        LinkedHashMap<String, String> corNetworkMap = (LinkedHashMap<String, String>) jwsHeader.get(NETWORK);
+        LinkedHashMap<String, String> corNetworkMap = (LinkedHashMap<String, String>) jwsHeader.get(ORGANIZATION);
 
 
-        // pass channel to filter
-        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/{libraryPrefix}", corNetworkMap.get("shortcut"), "channel")
-            .header("Authorization", "Bearer " + token.getIdToken()))
-            .andExpect(status().isNotFound());
+        // pass organization to filter
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corNetworkMap.get("shortcut"), TEST_CHANNEL_SHORTCUT, "Wybitna")
+                .header("Authorization", "Bearer " + token.getIdToken()))
+                .andExpect(status().isNotFound());
     }
 
 
@@ -212,19 +203,19 @@ public class CorSecurityTest {
 
 
         String jwtToken = restLibLibraryMockMvc.perform(post("/api/v1/user/authenticate").contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(loginVM))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+                .content(TestUtil.convertObjectToJsonBytes(loginVM))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         ObjectMapper mapper = new ObjectMapper();
         JWTToken token = mapper.readValue(jwtToken, JWTToken.class);
 
         JwsHeader jwsHeader = tokenProvider.getUserAuthorizationAccess(token.getIdToken());
-        LinkedHashMap<String, String> corNetworkMap = (LinkedHashMap<String, String>) jwsHeader.get(NETWORK);
+        LinkedHashMap<String, String> corNetworkMap = (LinkedHashMap<String, String>) jwsHeader.get(ORGANIZATION);
 
 
-        // pass channel to filter
-        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel", corNetworkMap.get("shortcut"))
-            .header("Authorization", "Bearer " + token.getIdToken()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+        // pass organization to filter
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel", corOrganization.getShortcut())
+                .header("Authorization", "Bearer " + token.getIdToken()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 
     @Test
@@ -236,14 +227,14 @@ public class CorSecurityTest {
 
 
         String jwtToken = restLibLibraryMockMvc.perform(post("/api/v1/user/authenticate").contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(loginVM))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+                .content(TestUtil.convertObjectToJsonBytes(loginVM))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         ObjectMapper mapper = new ObjectMapper();
         JWTToken token = mapper.readValue(jwtToken, JWTToken.class);
 
-        // pass channel to filter
-        restLibLibraryMockMvc.perform(get("/api/v1/organization")
-            .header("Authorization", "Bearer " + token.getIdToken()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+        // pass organization to filter
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel", corOrganization.getShortcut())
+                .header("Authorization", "Bearer " + token.getIdToken()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 }

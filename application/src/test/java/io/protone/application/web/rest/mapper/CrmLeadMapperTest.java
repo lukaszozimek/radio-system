@@ -44,7 +44,7 @@ public class CrmLeadMapperTest {
 
     private List<CrmLead> crmLeads = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -63,13 +63,13 @@ public class CrmLeadMapperTest {
         crmLead.setShortname("fefe");
         crmLead.setName("fwafwafwa");
         crmLead.setTasks(Sets.newLinkedHashSet(factory.manufacturePojo(CrmTask.class)));
-        crmLead.setNetwork(factory.manufacturePojo(CorNetwork.class));
+        crmLead.setChannel(factory.manufacturePojo(CorChannel.class));
         crmLead.setAddres(factory.manufacturePojo(CorAddress.class));
         crmLeads.add(crmLead);
         crmLeadDTO = factory.manufacturePojo(CrmLeadDTO.class);
         crmLeadDTO.setOwner(factory.manufacturePojo(CoreUserThinDTO.class));
         crmLeadDTOS.add(crmLeadDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
 
     }
 
@@ -128,7 +128,7 @@ public class CrmLeadMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CrmLead> entities = customCrmLeadMapper.DTOs2DBs(crmLeadDTOS, corNetwork);
+        List<CrmLead> entities = customCrmLeadMapper.DTOs2DBs(crmLeadDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -146,14 +146,14 @@ public class CrmLeadMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getDescription());
             assertNotNull(entity.getTasks());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmLead entity = customCrmLeadMapper.DTO2DB(crmLeadDTO, corNetwork);
+        CrmLead entity = customCrmLeadMapper.DTO2DB(crmLeadDTO, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getKeeper());
@@ -167,7 +167,7 @@ public class CrmLeadMapperTest {
         assertNotNull(entity.getName());
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getTasks());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test

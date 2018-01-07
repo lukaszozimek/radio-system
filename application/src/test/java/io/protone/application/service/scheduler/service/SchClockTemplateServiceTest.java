@@ -1,10 +1,9 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.repository.LibMediaItemRepository;
@@ -30,6 +29,7 @@ import javax.transaction.Transactional;
 import java.util.Random;
 
 import static io.protone.application.service.scheduler.base.SchedulerBaseTest.LIBRARY_ID;
+import static io.protone.application.util.TestConstans.*;
 import static org.junit.Assert.*;
 
 /**
@@ -64,19 +64,21 @@ public class SchClockTemplateServiceTest {
 
     private LibMediaLibrary libMediaLibrary;
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
+
+    private CorOrganization corOrganization;
 
     @Before
     public void setUp() throws Exception {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
+        factory = new PodamFactoryImpl();
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.setOrganization(corOrganization);
         libMediaLibrary = new LibMediaLibrary();
         libMediaLibrary.setId(LIBRARY_ID);
-        libMediaItem = new LibMediaItem().name(String.valueOf(new Random().nextLong())).library(libMediaLibrary).idx(String.valueOf(new Random().nextLong())).length(40.0).network(corNetwork);
+        libMediaItem = new LibMediaItem().name(String.valueOf(new Random().nextLong())).library(libMediaLibrary).idx(String.valueOf(new Random().nextLong())).length(40.0).channel(corChannel);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
     }
@@ -86,18 +88,16 @@ public class SchClockTemplateServiceTest {
     public void shouldGetClocks() throws Exception {
         //when
         SchClockTemplate schClock = factory.manufacturePojo(SchClockTemplate.class);
-        schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
         schClock = schClockTemplateRepository.save(schClock);
 
         //then
-        Slice<SchClockTemplate> fetchedEntity = schClockTemplateService.findSchClockConfigurationsForNetworkAndChannel(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+        Slice<SchClockTemplate> fetchedEntity = schClockTemplateService.findSchClockConfigurationsForNetworkAndChannel(corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(schClock.getId(), fetchedEntity.getContent().get(0).getId());
-        assertEquals(schClock.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
 
@@ -105,7 +105,6 @@ public class SchClockTemplateServiceTest {
     public void shouldGetClocksGroupedByCategory() throws Exception {
         //when
         SchClockTemplate schClock = factory.manufacturePojo(SchClockTemplate.class);
-        schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
         CorDictionary corDictionary = new CorDictionary();
         corDictionary.setId(48L);
@@ -113,13 +112,13 @@ public class SchClockTemplateServiceTest {
         schClock = schClockTemplateRepository.save(schClock);
 
         //then
-        Slice<SchClockTemplate> fetchedEntity = schClockTemplateService.findAllClocksByCategoryName(corNetwork.getShortcut(), corChannel.getShortcut(), CLOCK_TEST_CATEGORY, new PageRequest(0, 10));
+        Slice<SchClockTemplate> fetchedEntity = schClockTemplateService.findAllClocksByCategoryName(corOrganization.getShortcut(), corChannel.getShortcut(), CLOCK_TEST_CATEGORY, new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(schClock.getId(), fetchedEntity.getContent().get(0).getId());
-        assertEquals(schClock.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+        assertEquals(schClock.getChannel(), fetchedEntity.getContent().get(0).getChannel());
 
     }
 
@@ -127,7 +126,6 @@ public class SchClockTemplateServiceTest {
     public void shouldSaveClock() throws Exception {
         //when
         SchClockTemplate schClock = factory.manufacturePojo(SchClockTemplate.class);
-        schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
         //then
         SchClockTemplateDTO fetchedEntity = schClockTemplateService.saveClockConfiguration(schClock);
@@ -143,7 +141,7 @@ public class SchClockTemplateServiceTest {
 //        SchClockTemplate schClock = factory.manufacturePojo(SchClockTemplate.class);
 //        schClock.schEvents(buildNestedSetEvents(factory, libMediaItem, corNetwork, corChannel));
 //        schClock.setEmissions(Lists.newArrayList(buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork)));
-//        schClock.setNetwork(corNetwork);
+//        schClock.setChannel(corNetwork);
 //        schClock.setChannel(corChannel);
 //        //then
 //        SchClockTemplateDTO fetchedEntity = schClockTemplateService.saveClockConfiguration(schClock);
@@ -157,12 +155,11 @@ public class SchClockTemplateServiceTest {
     public void shouldDeleteClock() throws Exception {
         //when
         SchClockTemplate schClock = factory.manufacturePojo(SchClockTemplate.class);
-        schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
         schClock = schClockTemplateRepository.saveAndFlush(schClock);
         //then
-        schClockTemplateService.deleteSchClockConfigurationByNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schClock.getShortName());
-        SchClockTemplate fetchedEntity = schClockTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schClock.getShortName());
+        schClockTemplateService.deleteSchClockConfigurationByNetworkAndChannelAndShortName(corOrganization.getShortcut(), corChannel.getShortcut(), schClock.getShortName());
+        SchClockTemplate fetchedEntity = schClockTemplateRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndShortName(corOrganization.getShortcut(), corChannel.getShortcut(), schClock.getShortName());
 
         //assert
         assertNull(fetchedEntity);
@@ -173,7 +170,7 @@ public class SchClockTemplateServiceTest {
 //        SchClockTemplate schClock = factory.manufacturePojo(SchClockTemplate.class);
 //        schClock.schEvents(buildNestedSetEvents(factory, libMediaItem, corNetwork, corChannel));
 //        schClock.setEmissions(Lists.newArrayList(buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork)));
-//        schClock.setNetwork(corNetwork);
+//        schClock.setChannel(corNetwork);
 //        schClock.setChannel(corChannel);
 //        SchClockTemplateDTO fetchedEntity = schClockTemplateService.saveClockConfiguration(schClock);
 //        long clockNumberAfterSave = schClockTemplateRepository.count();
@@ -181,7 +178,7 @@ public class SchClockTemplateServiceTest {
 //        long emissionNumberAfterSave = schEmissionTemplateRepository.count();
 //        long attachmentNumberAfterSave = schAttachmentTemplateRepository.count();
 //        //then
-//        schClockTemplateService.deleteSchClockConfigurationByNetworkAndChannelAndShortName(schClock.getNetwork().getShortcut(), schClock.getChannel().getShortcut(), fetchedEntity.getShortName());
+//        schClockTemplateService.deleteSchClockConfigurationByNetworkAndChannelAndShortName(schClock.getChannel().getShortcut(), schClock.getChannel().getShortcut(), fetchedEntity.getShortName());
 //
 //
 //        assertEquals(clockNumberAfterSave - 1, schClockTemplateRepository.count());
@@ -197,7 +194,7 @@ public class SchClockTemplateServiceTest {
 //        schClock.schEvents(buildNestedSetEvents(factory, libMediaItem, corNetwork, corChannel));
 //        schClock.shortName("EEEEEWWWSSS");
 //        schClock.setEmissions(Lists.newArrayList(buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork)));
-//        schClock.setNetwork(corNetwork);
+//        schClock.setChannel(corNetwork);
 //        schClock.setChannel(corChannel);
 //        schClock.setId(null);
 //        SchClockTemplateDTO   templateDTO = schClockTemplateService.saveClockConfiguration(schClock);

@@ -4,7 +4,6 @@ import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchEmissionTemplateDTO;
 import io.protone.scheduler.api.dto.SchEventTemplateDTO;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
@@ -47,13 +46,12 @@ public class SchEventTemplateMapperTest {
     private List<SchEventTemplate> schEventConfigurations = new ArrayList<>();
 
     private List<SchEventTemplateDTO> schEventTemplateDTOS = new ArrayList<>();
-    private CorNetwork network;
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class);
         schEventConfiguration.addEmissionTemplate(factory.manufacturePojo(SchEmissionTemplate.class));
@@ -119,7 +117,7 @@ public class SchEventTemplateMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchEventTemplate entity = schEventTemplateMapper.DTO2DB(schEventTemplateDTO, network, corChannel);
+        SchEventTemplate entity = schEventTemplateMapper.DTO2DB(schEventTemplateDTO, corChannel);
 
         assertNotNull(entity.getName());
         assertNotNull(entity.getShortName());
@@ -128,14 +126,13 @@ public class SchEventTemplateMapperTest {
         assertNotNull(entity.getSchLogConfiguration());
         assertNotNull(entity.getEmissions());
         assertNotNull(entity.getSchEventTemplates());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getLength());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchEventTemplate> entities = schEventTemplateMapper.DTOs2DBs(schEventTemplateDTOS, network, corChannel);
+        List<SchEventTemplate> entities = schEventTemplateMapper.DTOs2DBs(schEventTemplateDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -147,7 +144,6 @@ public class SchEventTemplateMapperTest {
             assertNotNull(entity.getSchEventTemplates());
             assertNotNull(entity.getSchLogConfiguration());
             assertNotNull(entity.getEmissions());
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getLength());
         });

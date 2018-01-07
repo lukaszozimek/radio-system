@@ -58,7 +58,7 @@ public class TraPlnLogServiceTest extends TraPlaylistBasedTest {
         TraEmissionLogDescriptorDTO descriptorDTO = new TraEmissionLogDescriptorDTO().libMediaItemThinDTO(libMediaItemToShuffleThinDTO).order(traOrderThinDTO);
 
         //then
-        TraLogDiff traLogDiff = traPlnLogParserService.transform(descriptorDTO, pln, corNetwork.getShortcut(), corChannel.getShortcut());
+        TraLogDiff traLogDiff = traPlnLogParserService.transform(descriptorDTO, pln, corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(traLogDiff);
@@ -72,7 +72,7 @@ public class TraPlnLogServiceTest extends TraPlaylistBasedTest {
         TraEmissionLogDescriptorDTO descriptorDTO = new TraEmissionLogDescriptorDTO().libMediaItemThinDTO(libMediaItemToShuffleThinDTO).order(traOrderThinDTO);
 
         //then
-        TraLogDiff traLogDiff = traPlnLogParserService.transform(descriptorDTO, pln, corNetwork.getShortcut(), corChannel.getShortcut());
+        TraLogDiff traLogDiff = traPlnLogParserService.transform(descriptorDTO, pln, corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(traLogDiff);
@@ -85,7 +85,7 @@ public class TraPlnLogServiceTest extends TraPlaylistBasedTest {
         TraEmissionLogDescriptorDTO descriptorDTO = new TraEmissionLogDescriptorDTO().libMediaItemThinDTO(libMediaItemToShuffleThinDTO).order(traOrderThinDTO);
 
         //then
-        TraLogDiff traLogDiff = traPlnLogParserService.transform(descriptorDTO, pln, corNetwork.getShortcut(), corChannel.getShortcut());
+        TraLogDiff traLogDiff = traPlnLogParserService.transform(descriptorDTO, pln, corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(traLogDiff);
@@ -98,7 +98,7 @@ public class TraPlnLogServiceTest extends TraPlaylistBasedTest {
         TraEmissionLogDescriptorDTO descriptorDTO = new TraEmissionLogDescriptorDTO().libMediaItemThinDTO(libMediaItemToShuffleThinDTO).order(traOrderThinDTO);
 
         //then
-        TraLogDiff traLogDiff = traPlnLogParserService.transform(descriptorDTO, pln, corNetwork.getShortcut(), corChannel.getShortcut());
+        TraLogDiff traLogDiff = traPlnLogParserService.transform(descriptorDTO, pln, corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(traLogDiff);

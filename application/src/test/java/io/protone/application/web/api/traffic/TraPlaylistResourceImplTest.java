@@ -3,13 +3,11 @@ package io.protone.application.web.api.traffic;
 import com.google.common.collect.Lists;
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.traffic.impl.TraPlaylistResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.service.CorChannelService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.traffic.api.dto.TraPlaylistDTO;
 import io.protone.traffic.domain.TraBlock;
 import io.protone.traffic.domain.TraEmission;
@@ -38,6 +36,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.notNullValue;
@@ -68,9 +67,6 @@ public class TraPlaylistResourceImplTest {
     private CorChannelService corChannelService;
 
     @Autowired
-    private CorNetworkService corNetworkService;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -86,9 +82,10 @@ public class TraPlaylistResourceImplTest {
 
     private TraPlaylist traPlaylist;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
 
     private CorChannel corChannel;
+
 
     /**
      * Create an entity for this test.
@@ -98,7 +95,7 @@ public class TraPlaylistResourceImplTest {
      */
     public static TraPlaylist createEntity(EntityManager em) {
         TraPlaylist traPlaylist = new TraPlaylist()
-            .playlistDate(DEFAULT_PLAYLIST_DATE);
+                .playlistDate(DEFAULT_PLAYLIST_DATE);
         return traPlaylist;
     }
 
@@ -108,23 +105,23 @@ public class TraPlaylistResourceImplTest {
         TraPlaylistResourceImpl traPlaylistResource = new TraPlaylistResourceImpl();
         ReflectionTestUtils.setField(traPlaylistResource, "traPlaylistService", traPlaylistService);
         ReflectionTestUtils.setField(traPlaylistResource, "traPlaylistMapper", traPlaylistMapper);
-        ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(traPlaylistResource, "corChannelService", corChannelService);
 
 
         this.restTraPlaylistMockMvc = MockMvcBuilders.standaloneSetup(traPlaylistResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
     public void initTest() {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
-        traPlaylist = createEntity(em).network(corNetwork).channel(corChannel);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.setOrganization(corOrganization);
+        traPlaylist = createEntity(em).channel(corChannel).channel(corChannel);
     }
 
     @Test
@@ -135,10 +132,10 @@ public class TraPlaylistResourceImplTest {
         // Create the TraPlaylist
         TraPlaylistDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(traPlaylist);
 
-        restTraPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
-            .andExpect(status().isCreated());
+        restTraPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the TraPlaylist in the database
         List<TraPlaylist> traPlaylistList = traPlaylistRepository.findAll();
@@ -153,16 +150,16 @@ public class TraPlaylistResourceImplTest {
         int databaseSizeBeforeCreate = traPlaylistRepository.findAll().size();
 
 
-        TraPlaylist traPlaylist1 = createEntity(em).network(corNetwork).channel(corChannel);
+        TraPlaylist traPlaylist1 = createEntity(em).channel(corChannel).channel(corChannel);
         traPlaylist1.playlistDate(LocalDate.now().plusMonths(1));
         // Create the TraPlaylist
         List<TraPlaylistDTO> traPlaylistDTOS = traPlaylistMapper.DBs2DTOs(Lists.newArrayList(traPlaylist, traPlaylist1));
 
 
-        restTraPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/batch", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTOS)))
-            .andExpect(status().isCreated());
+        restTraPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/batch", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTOS)))
+                .andExpect(status().isCreated());
 
         // Validate the TraPlaylist in the database
         List<TraPlaylist> traPlaylistList = traPlaylistRepository.findAll();
@@ -180,10 +177,10 @@ public class TraPlaylistResourceImplTest {
         TraPlaylistDTO existingTraPlaylistDTO = traPlaylistMapper.DB2DTO(existingTraPlaylist);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingTraPlaylistDTO)))
-            .andExpect(status().isBadRequest());
+        restTraPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/playlist", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(existingTraPlaylistDTO)))
+                .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
         List<TraPlaylist> traPlaylistList = traPlaylistRepository.findAll();
@@ -194,28 +191,28 @@ public class TraPlaylistResourceImplTest {
     @Transactional
     public void getAllTraPlaylists() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        traPlaylistRepository.saveAndFlush(traPlaylist.channel(corChannel).channel(corChannel));
 
         // Get all the traPlaylistList
-        restTraPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(traPlaylist.getId().intValue())))
-            .andExpect(jsonPath("$.[*].playlistDate").value(hasItem(DEFAULT_PLAYLIST_DATE.toString())));
+        restTraPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/playlist?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(traPlaylist.getId().intValue())))
+                .andExpect(jsonPath("$.[*].playlistDate").value(hasItem(DEFAULT_PLAYLIST_DATE.toString())));
     }
 
     @Test
     @Transactional
     public void getTraPlaylist() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        traPlaylistRepository.saveAndFlush(traPlaylist.channel(corChannel));
 
         // Get the traPlaylist
-        restTraPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(traPlaylist.getId().intValue()))
-            .andExpect(jsonPath("$.playlistDate").value(DEFAULT_PLAYLIST_DATE.toString()));
+        restTraPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/playlist/{date}", corOrganization.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(traPlaylist.getId().intValue()))
+                .andExpect(jsonPath("$.playlistDate").value(DEFAULT_PLAYLIST_DATE.toString()));
     }
 
     @Test
@@ -223,29 +220,29 @@ public class TraPlaylistResourceImplTest {
     public void getNonExistingTraPlaylist() throws Exception {
         // Get the traPlaylist
         LocalDate localDate = LocalDate.now();
-        restTraPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), localDate))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(notNullValue()))
-            .andExpect(jsonPath("$.playlistDate").value(localDate.toString()));
+        restTraPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/playlist/{date}", corOrganization.getShortcut(), corChannel.getShortcut(), localDate))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(notNullValue()))
+                .andExpect(jsonPath("$.playlistDate").value(localDate.toString()));
     }
 
     @Test
     @Transactional
     public void updateTraPlaylist() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        traPlaylistRepository.saveAndFlush(traPlaylist.channel(corChannel).channel(corChannel));
         int databaseSizeBeforeUpdate = traPlaylistRepository.findAll().size();
 
         // Update the traPlaylist
         TraPlaylist updatedTraPlaylist = traPlaylistRepository.findOne(traPlaylist.getId());
         updatedTraPlaylist
-            .playlistDate(UPDATED_PLAYLIST_DATE);
+                .playlistDate(UPDATED_PLAYLIST_DATE);
         TraPlaylistDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(updatedTraPlaylist);
 
-        restTraPlaylistMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
-            .andExpect(status().isOk());
+        restTraPlaylistMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/playlist", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
+                .andExpect(status().isOk());
 
         // Validate the TraPlaylist in the database
         List<TraPlaylist> traPlaylistList = traPlaylistRepository.findAll();
@@ -263,10 +260,10 @@ public class TraPlaylistResourceImplTest {
         TraPlaylistDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(traPlaylist);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraPlaylistMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
-            .andExpect(status().isCreated());
+        restTraPlaylistMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/playlist", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the TraPlaylist in the database
         List<TraPlaylist> traPlaylistList = traPlaylistRepository.findAll();
@@ -277,13 +274,13 @@ public class TraPlaylistResourceImplTest {
     @Transactional
     public void deleteTraPlaylist() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        traPlaylistRepository.saveAndFlush(traPlaylist.channel(corChannel).channel(corChannel));
         int databaseSizeBeforeDelete = traPlaylistRepository.findAll().size();
 
         // Get the traPlaylist
-        restTraPlaylistMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+        restTraPlaylistMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/playlist/{date}", corOrganization.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
 
         // Validate the database is empty
         List<TraPlaylist> traPlaylistList = traPlaylistRepository.findAll();
@@ -295,15 +292,15 @@ public class TraPlaylistResourceImplTest {
     public void shouldDownloadTraPlaylist() throws Exception {
         // Initialize the database
 
-        traPlaylistService.savePlaylist(traPlaylist.network(corNetwork).channel(corChannel).addPlaylists(new TraBlock().channel(corChannel).network(corNetwork).addEmissions(new TraEmission().timeStart(1L).timeStop(2L))));
+        traPlaylistService.savePlaylist(traPlaylist.channel(corChannel).channel(corChannel).addPlaylists(new TraBlock().channel(corChannel).addEmissions(new TraEmission().timeStart(1L).timeStop(2L))));
         String csvFileName = DEFAULT_PLAYLIST_DATE + ".csv";
         // Get the traPlaylist
-        restTraPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/{date}/download", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType("text/csv"))
-            .andExpect(header().string("Content-Disposition", String.format("attachment; filename=\"%s\"",
-                csvFileName)));
+        restTraPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/playlist/{date}/download", corOrganization.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/csv"))
+                .andExpect(header().string("Content-Disposition", String.format("attachment; filename=\"%s\"",
+                        csvFileName)));
 
         // Validate the database is empty
 
@@ -312,7 +309,7 @@ public class TraPlaylistResourceImplTest {
     @Test
     @Transactional
     public void checkDateIsRequired() throws Exception {
-        traPlaylist = createEntity(em).network(corNetwork).channel(corChannel);
+        traPlaylist = createEntity(em).channel(corChannel).channel(corChannel);
 
         int databaseSizeBeforeTest = traPlaylistRepository.findAll().size();
         // set the field null
@@ -321,10 +318,10 @@ public class TraPlaylistResourceImplTest {
         // Create the TraOrder, which fails.
         TraPlaylistDTO traOrderDTO = traPlaylistMapper.DB2DTO(traPlaylist);
 
-        restTraPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
-            .andExpect(status().isBadRequest());
+        restTraPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/playlist", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
+                .andExpect(status().isBadRequest());
 
         List<TraPlaylist> traOrderList = traPlaylistRepository.findAll();
         assertThat(traOrderList).hasSize(databaseSizeBeforeTest);

@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
 import io.protone.scheduler.domain.SchEmission;
@@ -38,14 +37,13 @@ public class SchPlaylistMapperTest {
     private List<SchPlaylist> playlists = new ArrayList<>();
 
     private List<SchPlaylistDTO> playlistDTOs = new ArrayList<>();
-    private CorNetwork network;
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         playlist = factory.manufacturePojo(SchPlaylist.class);
         playlist.addEmission(factory.manufacturePojo(SchEmission.class));
@@ -78,24 +76,22 @@ public class SchPlaylistMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchPlaylist entity = playlistMapper.DTO2DB(playlistDTO, network, corChannel);
+        SchPlaylist entity = playlistMapper.DTO2DB(playlistDTO, corChannel);
 
         assertNotNull(entity.getDate());
         assertNotNull(entity.getEmissions());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchPlaylist> entities = playlistMapper.DTOs2DBs(playlistDTOs, network, corChannel);
+        List<SchPlaylist> entities = playlistMapper.DTOs2DBs(playlistDTOs, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getDate());
             assertNotNull(entity.getEmissions());
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });
     }

@@ -1,16 +1,12 @@
 package io.protone.core.mapper;
 
 
-import io.protone.core.api.dto.CorChannelDTO;
 import io.protone.core.api.dto.CorNetworkDTO;
-import io.protone.core.api.dto.CorOrganizationDTO;
-import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorOrganization;
 import org.mapstruct.*;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Mapper for the entity CorNetwork and its DTO CorNetworkDTO.
@@ -19,7 +15,7 @@ import java.util.Set;
 public interface CorNetworkMapper {
 
     @Mapping(source = "corImageItem.publicUrl", target = "publicUrl")
-    @Mapping(source = "corOrganization", target = "corOrganizationDTO")
+    @Mapping(source = "organization", target = "corOrganizationDTO")
     CorNetworkDTO DB2DTO(CorNetwork cORNetwork);
 
     List<CorNetworkDTO> DBs2DTOs(List<CorNetwork> cORNetworks);
@@ -30,7 +26,7 @@ public interface CorNetworkMapper {
 
     @AfterMapping
     default void corNetworkDTOToCorNetworkAfterMapping(CorNetworkDTO dto, @MappingTarget CorNetwork entity, @Context CorOrganization organization) {
-        entity.setCorOrganization(organization);
+        entity.setOrganization(organization);
     }
 
 }

@@ -13,12 +13,14 @@ import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.application.web.rest.vm.LoginVM;
 import io.protone.core.api.dto.CorNetworkDTO;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.mapper.CorChannelMapper;
 import io.protone.core.mapper.CorNetworkMapper;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorOrganizationService;
 import io.protone.library.mapper.LibLibraryMediaMapper;
 import io.protone.library.service.LibLibraryMediaService;
 import org.junit.Assert;
@@ -45,6 +47,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.persistence.EntityManager;
 
+import static io.protone.application.util.TestConstans.TEST_ORGANIZATION_ID;
+import static io.protone.application.util.TestConstans.TEST_ORGANIZATION_SHORTCUT;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -90,6 +94,9 @@ public class CorAuditTest {
     private CorNetworkService corNetworkService;
 
     @Autowired
+    private CorOrganizationService corOrganizationService;
+
+    @Autowired
     private CorChannelService channelService;
 
     @Autowired
@@ -104,13 +111,16 @@ public class CorAuditTest {
     @Mock
     private CorImageItemService corImageItemService;
 
+    private CorOrganization corOrganization;
+
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         LibraryMediaResourceImpl libLibraryResource = new LibraryMediaResourceImpl();
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryMediaService", libLibraryMediaService);
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryMediaMapper", libLibraryMediaMapper);
-        ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(libLibraryResource, "corChannelService", channelService);
 
         CorUserJWTController corUserJWTController = new CorUserJWTController(tokenProvider, authenticationManager);
 
@@ -118,9 +128,10 @@ public class CorAuditTest {
         ReflectionTestUtils.setField(corNetworkService, "corImageItemService", corImageItemService);
         ReflectionTestUtils.setField(corNetworkResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(corNetworkResource, "corNetworkMapper", corNetworkMapper);
-
-        CorChannelResourceImpl corChannelResource = new CorChannelResourceImpl(channelService, corChannelMapper, corNetworkService);
-
+        ReflectionTestUtils.setField(corNetworkResource, "corOrganizationService", corOrganizationService);
+        CorChannelResourceImpl corChannelResource = new CorChannelResourceImpl(channelService, corChannelMapper, corOrganizationService);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
         this.restLibLibraryMockMvc = MockMvcBuilders.standaloneSetup(libLibraryResource, corUserJWTController, corNetworkResource, corChannelResource)
                 .apply(SecurityMockMvcConfigurers.springSecurity(springSecurityFilterChain))
                 .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -132,7 +143,7 @@ public class CorAuditTest {
     @Test
     public void shouldCreateCorNetworksAndChangeAuditLog() throws Exception {
         when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(null);
-        when(corImageItemService.saveImageItem(anyObject())).thenReturn(null);
+        when(corImageItemService.saveImageItem(anyObject(), anyObject())).thenReturn(null);
         //when
         LoginVM loginVM = new LoginVM();
         loginVM.setUsername("admin");
@@ -144,13 +155,13 @@ public class CorAuditTest {
         ObjectMapper mapper = new ObjectMapper();
         JWTToken token = mapper.readValue(jwtToken, JWTToken.class);
 
-        CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(CorNetworkResourceIntTest.createEntity(em).shortcut("pep").name("tts"));
+        CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(CorNetworkResourceIntTest.createEntity(em).shortcut("pep").name("tts").organization(corOrganization));
 
         MockMultipartFile emptyFile = new MockMultipartFile("logo", new byte[0]);
-        MockMultipartFile jsonFile = new MockMultipartFile("network", "",
+        MockMultipartFile jsonFile = new MockMultipartFile("organization", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(corNetworkDTO));
-        // pass channel to filter
-        String corNetworkDTOWithId = restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization")
+        // pass organization to filter
+        String corNetworkDTOWithId = restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/network", corOrganization.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)
                 .header("Authorization", "Bearer " + token.getIdToken()))
@@ -168,7 +179,7 @@ public class CorAuditTest {
 
         Thread.sleep(10000);
 
-        String corNetworkDTOWithId1 = restLibLibraryMockMvc.perform(put("/api/v1/organization")
+        String corNetworkDTOWithId1 = restLibLibraryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/network", corOrganization.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(networkDTO))
                 .header("Authorization", "Bearer " + tokenUser.getIdToken()))

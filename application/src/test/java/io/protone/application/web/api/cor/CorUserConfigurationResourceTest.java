@@ -6,15 +6,11 @@ import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.impl.CorUserConfigurationResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.api.dto.CorUserDTO;
-import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.domain.CorUser;
+import io.protone.core.domain.*;
 import io.protone.core.mapper.CorUserMapper;
-import io.protone.core.repository.CorImageItemRepository;
 import io.protone.core.repository.CorUserRepository;
 import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorMailService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.core.service.CorUserService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.assertj.core.util.Sets;
@@ -45,6 +41,7 @@ import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.anyObject;
@@ -68,9 +65,6 @@ public class CorUserConfigurationResourceTest {
     private CorUserRepository corUserRepository;
 
     @Autowired
-    private CorNetworkService corNetworkService;
-
-    @Autowired
     private CorUserMapper corUserMapper;
 
     @Autowired
@@ -80,9 +74,6 @@ public class CorUserConfigurationResourceTest {
     private CorMailService corMailService;
     @Mock
     private CorImageItemService corImageItemService;
-
-    @Autowired
-    private CorImageItemRepository corImageItemRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -100,7 +91,10 @@ public class CorUserConfigurationResourceTest {
 
     private CorUser corUser;
 
-    private CorNetwork corNetwork;
+
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
 
     /**
      * Create an entity for this test.
@@ -130,11 +124,13 @@ public class CorUserConfigurationResourceTest {
 
         ReflectionTestUtils.setField(corUserService, "corImageItemService", corImageItemService);
         CorUserConfigurationResourceImpl corUserConfigurationResource = new CorUserConfigurationResourceImpl(corUserRepository, corMailService,
-                corUserService, corNetworkService, corUserMapper);
+                corUserService, corUserMapper);
 
 
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
 
         this.restCorUserMockMvc = MockMvcBuilders.standaloneSetup(corUserConfigurationResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -144,13 +140,13 @@ public class CorUserConfigurationResourceTest {
 
     @Before
     public void initTest() {
-        corUser = createEntity(em).networks(Sets.newLinkedHashSet(corNetwork));
+        corUser = createEntity(em).organization(corOrganization);
     }
 
     @Test
     @Transactional
     public void createCorUser() throws Exception {
-        when(corImageItemService.saveImageItem(anyObject())).thenReturn(null);
+        when(corImageItemService.saveImageItem(anyObject(), anyObject())).thenReturn(null);
         User principal = new User("admin", "", Collections.singletonList(new SimpleGrantedAuthority("ADMIN")));
         SecurityContextImpl impl = new SecurityContextImpl();
         impl.setAuthentication(new UsernamePasswordAuthenticationToken(principal,
@@ -160,12 +156,12 @@ public class CorUserConfigurationResourceTest {
         int databaseSizeBeforeCreate = corUserRepository.findAll().size();
 
         // Create the CorDictionary
-        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
+        CorUserDTO corUserDTO = corUserMapper.DB2DTO(corUser.organization(corOrganization));
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", new byte[0]);
         MockMultipartFile jsonFile = new MockMultipartFile("corUserDTO", "",
-                "application/json", TestUtil.convertObjectToJsonBytes(corDictionaryDTO));
+                "application/json", TestUtil.convertObjectToJsonBytes(corUserDTO));
 
-        restCorUserMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/configuration/user", corNetwork.getShortcut())
+        restCorUserMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/configuration/user", corOrganization.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -187,13 +183,13 @@ public class CorUserConfigurationResourceTest {
         // Create the CorDictionary with an existing ID
         CorUser existingCorDictionary = new CorUser();
         existingCorDictionary.setId(1L);
-        CorUserDTO existingCorDictionaryDTO = corUserMapper.DB2DTO(existingCorDictionary.networks(Sets.newLinkedHashSet(corNetwork)));
+        CorUserDTO existingCorDictionaryDTO = corUserMapper.DB2DTO(existingCorDictionary.organization(corOrganization));
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", new byte[0]);
         MockMultipartFile jsonFile = new MockMultipartFile("corUserDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(existingCorDictionaryDTO));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorUserMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/configuration/user", corNetwork.getShortcut())
+        restCorUserMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/configuration/user", corOrganization.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -207,10 +203,10 @@ public class CorUserConfigurationResourceTest {
     @Transactional
     public void getAllCorUsers() throws Exception {
         // Initialize the database
-        corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
+        corUserRepository.saveAndFlush(corUser.organization(corOrganization));
 
         // Get all the corDictionaryList
-        restCorUserMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/user?sort=id,desc", corNetwork.getShortcut()))
+        restCorUserMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/user?sort=id,desc", corOrganization.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(corUser.getId().intValue())))
@@ -222,10 +218,10 @@ public class CorUserConfigurationResourceTest {
     public void getCorUser() throws Exception {
 
         // Initialize the database
-        corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
+        corUserRepository.saveAndFlush(corUser.organization(corOrganization));
 
         // Get the corUser
-        restCorUserMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/user/{login}", corNetwork.getShortcut(), corUser.getLogin()))
+        restCorUserMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/user/{login}", corOrganization.getShortcut(), corUser.getLogin()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(corUser.getId().intValue()))
@@ -236,7 +232,7 @@ public class CorUserConfigurationResourceTest {
     @Transactional
     public void getNonExistingCorUser() throws Exception {
         // Get the corUser
-        restCorUserMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/user/{login}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCorUserMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/user/{login}", corOrganization.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -245,7 +241,7 @@ public class CorUserConfigurationResourceTest {
     public void updateCorUser() throws Exception {
 
         // Initialize the database
-        corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
+        corUserRepository.saveAndFlush(corUser.organization(corOrganization));
         int databaseSizeBeforeUpdate = corUserRepository.findAll().size();
 
         // Update the corUser
@@ -255,7 +251,7 @@ public class CorUserConfigurationResourceTest {
                 .passwordhash(UPDATED_PASSWORD_HASH);
         CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser1);
 
-        restCorUserMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/user", corNetwork.getShortcut())
+        restCorUserMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/user", corOrganization.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corDictionaryDTO)))
                 .andExpect(status().isOk());
@@ -278,12 +274,12 @@ public class CorUserConfigurationResourceTest {
         corUser.setLogin(null);
 
         // Create the LibMediaLibrary, which fails.
-        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
+        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser.organization(corOrganization));
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", new byte[0]);
         MockMultipartFile jsonFile = new MockMultipartFile("corUserDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(corDictionaryDTO));
 
-        restCorUserMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/configuration/user", corNetwork.getShortcut())
+        restCorUserMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/configuration/user", corOrganization.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -305,12 +301,12 @@ public class CorUserConfigurationResourceTest {
         int databaseSizeBeforeUpdate = corUserRepository.findAll().size();
 
         // Create the CorDictionary
-        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
+        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser.organization(corOrganization));
         corDictionaryDTO.setLogin("xxxxxx");
         corDictionaryDTO.setEmail("lfllflflflflf@com.pl");
         corDictionaryDTO.setId(null);
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorUserMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/user", corNetwork.getShortcut())
+        restCorUserMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/user", corOrganization.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corDictionaryDTO)))
                 .andExpect(status().isCreated());
@@ -325,11 +321,11 @@ public class CorUserConfigurationResourceTest {
     public void deleteCorDictionary() throws Exception {
 
         // Initialize the database
-        corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
+        corUserRepository.saveAndFlush(corUser.organization(corOrganization));
         int databaseSizeBeforeDelete = corUserRepository.findAll().size();
 
         // Get the corUser
-        restCorUserMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/user/{login}", corNetwork.getShortcut(), corUser.getLogin())
+        restCorUserMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/user/{login}", corOrganization.getShortcut(), corUser.getLogin())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

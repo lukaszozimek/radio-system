@@ -2,9 +2,9 @@ package io.protone.application.web.rest.mapper;
 
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
-import io.protone.crm.domain.CrmDiscount;
+import io.protone.core.domain.CorChannel;
 import io.protone.crm.api.dto.CrmDiscountDTO;
+import io.protone.crm.domain.CrmDiscount;
 import io.protone.crm.mapper.CrmDiscountMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class CrmDiscountMapperTest {
 
     private List<CrmDiscount> traDiscounts = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -49,7 +49,7 @@ public class CrmDiscountMapperTest {
         traDiscounts.add(traDiscount);
         crmDiscountDTO = factory.manufacturePojo(CrmDiscountDTO.class);
         crmDiscountDTOS.add(crmDiscountDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
 
@@ -84,18 +84,18 @@ public class CrmDiscountMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmDiscount entity = customCrmDiscountMapper.DTO2DB(crmDiscountDTO, corNetwork);
+        CrmDiscount entity = customCrmDiscountMapper.DTO2DB(crmDiscountDTO, corChannel);
         assertNotNull(entity.getId());
         assertNotNull(entity.getValidFrom());
         assertNotNull(entity.getValidTo());
         assertNotNull(entity.getDiscount());
         assertNotNull(entity.getId());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CrmDiscount> entities = customCrmDiscountMapper.DTOs2DBs(crmDiscountDTOS, corNetwork);
+        List<CrmDiscount> entities = customCrmDiscountMapper.DTOs2DBs(crmDiscountDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -105,7 +105,7 @@ public class CrmDiscountMapperTest {
             assertNotNull(entity.getValidTo());
             assertNotNull(entity.getDiscount());
             assertNotNull(entity.getId());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }

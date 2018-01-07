@@ -3,8 +3,8 @@ package io.protone.application.web.rest.mapper;
 
 import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorUser;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.library.domain.LibMediaItem;
@@ -46,7 +46,7 @@ public class TraAdvertisementMapperTest {
 
     private List<TraAdvertisement> traAdvertisements = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -63,7 +63,7 @@ public class TraAdvertisementMapperTest {
         traAdvertisements.add(traAdvertisement);
         traAdvertisementDTO = factory.manufacturePojo(TraAdvertisementDTO.class);
         traAdvertisementDTOS.add(traAdvertisementDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
 
     }
 
@@ -108,7 +108,7 @@ public class TraAdvertisementMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<TraAdvertisement> entities = customTRAAdvertisementMapper.DTOs2DBs(traAdvertisementDTOS, corNetwork);
+        List<TraAdvertisement> entities = customTRAAdvertisementMapper.DTOs2DBs(traAdvertisementDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -123,13 +123,13 @@ public class TraAdvertisementMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getName());
 
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
         });
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        TraAdvertisement entity = customTRAAdvertisementMapper.DTO2DB(traAdvertisementDTO, corNetwork);
+        TraAdvertisement entity = customTRAAdvertisementMapper.DTO2DB(traAdvertisementDTO, corChannel);
 
 
         assertNotNull(entity.getId());
@@ -141,6 +141,6 @@ public class TraAdvertisementMapperTest {
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
 
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 }

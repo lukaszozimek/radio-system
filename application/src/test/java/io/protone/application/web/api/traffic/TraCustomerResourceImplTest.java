@@ -3,14 +3,14 @@ package io.protone.application.web.api.traffic;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.traffic.impl.TraCustomerResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorImageItem;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorImageItemRepository;
+import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorImageItemService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.crm.service.CrmCustomerService;
@@ -41,9 +41,11 @@ import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -73,7 +75,7 @@ public class TraCustomerResourceImplTest {
     private static final String DEFAULT_VAT_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_VAT_NUMBER = "BBBBBBBBBB";
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Autowired
     private CrmAccountRepository crmAccountRepository;
@@ -108,7 +110,10 @@ public class TraCustomerResourceImplTest {
 
     private CrmAccount crmAccount;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
+
 
     /**
      * Create an entity for this test.
@@ -131,16 +136,16 @@ public class TraCustomerResourceImplTest {
     public void setup() throws IOException, TikaException, SAXException {
         MockitoAnnotations.initMocks(this);
         TraCustomerResourceImpl apiNetworkTrafficCustomer = new TraCustomerResourceImpl();
-        CorImageItem corImageItem = new CorImageItem().name("test").network(corNetwork);
+        CorImageItem corImageItem = new CorImageItem().name("test");
         corImageItemRepository.saveAndFlush(corImageItem);
-        when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(corImageItem);
         ReflectionTestUtils.setField(crmCustomerService, "corImageItemService", corImageItemService);
         ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "crmCustomerService", crmCustomerService);
         ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "accountMapper", crmAccountMapper);
 
         ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "traCustomerService", traCustomerService);
 
-        ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "corChannelService", corChannelService);
 
 
         this.restCrmAccountMockMvc = MockMvcBuilders.standaloneSetup(apiNetworkTrafficCustomer)
@@ -151,9 +156,13 @@ public class TraCustomerResourceImplTest {
 
     @Before
     public void initTest() {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        crmAccount = createEntity(em).network(corNetwork);
+
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
+        crmAccount = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -167,7 +176,7 @@ public class TraCustomerResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("traCustomerDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(traCustomerDTO));
 
-        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/traffic/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/customer", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -200,7 +209,7 @@ public class TraCustomerResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("traCustomerDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(existingTraCustomerDTO));
 
-        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/traffic/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/customer", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -214,10 +223,10 @@ public class TraCustomerResourceImplTest {
     @Transactional
     public void getAllCrmAccounts() throws Exception {
         // Initialize the database
-        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
+        crmAccountRepository.saveAndFlush(crmAccount.channel(corChannel));
 
         // Get all the crmAccountList
-        restCrmAccountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/customer?sort=id,desc", corNetwork.getShortcut()))
+        restCrmAccountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/customer?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(crmAccount.getId().intValue())))
@@ -233,10 +242,10 @@ public class TraCustomerResourceImplTest {
     @Transactional
     public void getCrmAccount() throws Exception {
         // Initialize the database
-        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork).shortName("yyyy"));
+        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.channel(corChannel).shortName("yyyy"));
 
         // Get the crmAccount
-        restCrmAccountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName()))
+        restCrmAccountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/customer/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(crmAccount.getId().intValue()))
@@ -261,7 +270,7 @@ public class TraCustomerResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("traCustomerDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(traCustomerDTO));
 
-        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/traffic/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/customer", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -283,7 +292,7 @@ public class TraCustomerResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("traCustomerDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(traCustomerDTO));
 
-        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/traffic/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/customer", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -297,15 +306,15 @@ public class TraCustomerResourceImplTest {
     @Transactional
     public void getNonExistingCrmAccount() throws Exception {
         // Get the crmAccount
-        restCrmAccountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/customer/{shortName}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCrmAccountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/customer/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateCrmAccountWithImage () throws Exception {
+    public void updateCrmAccountWithImage() throws Exception {
         // Initialize the database
-        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
+        crmAccountRepository.saveAndFlush(crmAccount.channel(corChannel));
         int databaseSizeBeforeUpdate = crmAccountRepository.findAll().size();
 
         // Update the crmAccount
@@ -323,7 +332,7 @@ public class TraCustomerResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("traCustomerDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(traCustomerDTO));
 
-        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/traffic/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName())
+        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/customer/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isOk());
@@ -344,7 +353,7 @@ public class TraCustomerResourceImplTest {
     @Transactional
     public void updateCrmAccount() throws Exception {
         // Initialize the database
-        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
+        crmAccountRepository.saveAndFlush(crmAccount.channel(corChannel));
         int databaseSizeBeforeUpdate = crmAccountRepository.findAll().size();
 
         // Update the crmAccount
@@ -358,7 +367,7 @@ public class TraCustomerResourceImplTest {
                 .vatNumber(UPDATED_VAT_NUMBER);
         TraCustomerDTO traCustomerDTO = crmAccountMapper.traDB2DTO(updatedCrmAccount);
 
-        restCrmAccountMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/traffic/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/customer", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traCustomerDTO)))
                 .andExpect(status().isOk());
@@ -384,7 +393,7 @@ public class TraCustomerResourceImplTest {
         TraCustomerDTO traCustomerDTO = crmAccountMapper.traDB2DTO(crmAccount);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCrmAccountMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/traffic/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/customer", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traCustomerDTO)))
                 .andExpect(status().isCreated());
@@ -398,11 +407,11 @@ public class TraCustomerResourceImplTest {
     @Transactional
     public void deleteCrmAccount() throws Exception {
         // Initialize the database
-        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork).shortName("XXXX"));
+        crmAccountRepository.saveAndFlush(crmAccount.channel(corChannel).shortName("XXXX"));
         int databaseSizeBeforeDelete = crmAccountRepository.findAll().size();
 
         // Get the crmAccount
-        restCrmAccountMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/traffic/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName())
+        restCrmAccountMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/customer/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

@@ -3,7 +3,7 @@ package io.protone.application.service.traffic;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
@@ -32,6 +32,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import javax.transaction.Transactional;
 import java.util.Set;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -73,15 +74,13 @@ public class TraMediaPlanPlaylistDateServiceTest {
     @Autowired
     private LibCloudObjectRepository libCloudObjectRepository;
 
-
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
+
+    private CorOrganization corOrganization;
 
     private PodamFactory factory;
 
     private LibFileLibrary libFileLibrary;
-
 
     private CrmAccount crmAccount;
 
@@ -96,39 +95,33 @@ public class TraMediaPlanPlaylistDateServiceTest {
     public void setup() {
 
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
 
-        corChannel = factory.manufacturePojo(CorChannel.class);
-        corChannel.setId(null);
-        corChannel.setShortcut("HHH");
-        corChannel.network(corNetwork);
-        corChannelRepository.saveAndFlush(corChannel);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
         libCloudObject = factory.manufacturePojo(LibCloudObject.class);
-        libCloudObject.setNetwork(corNetwork);
+
 
         libCloudObject = libCloudObjectRepository.saveAndFlush(libCloudObject);
         libFileLibrary = factory.manufacturePojo(LibFileLibrary.class);
         libFileLibrary.setShortcut("ppp");
-        libFileLibrary.network(corNetwork);
-        libFileLibrary.addChannel(corChannel);
+        libFileLibrary.setChannel(corChannel);
         libFileLibrary = libFileLibraryRepository.saveAndFlush(libFileLibrary);
 
 
         crmAccount = factory.manufacturePojo(CrmAccount.class);
-        crmAccount.network(corNetwork);
+        crmAccount.channel(corChannel);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
         libFileItem = factory.manufacturePojo(LibFileItem.class);
         libFileItem.library(libFileLibrary);
-        libFileItem.network(corNetwork);
         libFileItem.setCloudObject(libCloudObject);
         libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
 
         traMediaPlan = factory.manufacturePojo(TraMediaPlan.class);
         traMediaPlan.setId(null);
         traMediaPlan.channel(corChannel);
-        traMediaPlan.network(corNetwork);
         traMediaPlan.account(crmAccount);
         traMediaPlan.fileItem(libFileItem);
 
@@ -140,7 +133,6 @@ public class TraMediaPlanPlaylistDateServiceTest {
     public void savePlaylist() throws Exception {
         //when
         TraMediaPlanPlaylistDate traPlaylist = factory.manufacturePojo(TraMediaPlanPlaylistDate.class);
-        traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
         traPlaylist.setMediaPlan(traMediaPlan);
         Set<TraMediaPlanPlaylistDate> traMediaPlanPlaylistDateSet = Sets.newSet(traPlaylist);
@@ -154,7 +146,6 @@ public class TraMediaPlanPlaylistDateServiceTest {
         traMediaPlanPlaylistDates.stream().forEach(fetchedEntity -> {
             assertNotNull(fetchedEntity.getId());
             assertNotNull(fetchedEntity.getPlaylistDate().toString(), traPlaylist.getPlaylistDate().toString());
-            assertEquals(traPlaylist.getNetwork(), fetchedEntity.getNetwork());
 
         });
     }

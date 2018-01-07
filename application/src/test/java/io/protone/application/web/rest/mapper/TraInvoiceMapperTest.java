@@ -2,8 +2,8 @@ package io.protone.application.web.rest.mapper;
 
 import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorUser;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.api.dto.TraInvoiceDTO;
@@ -43,7 +43,8 @@ public class TraInvoiceMapperTest {
     private List<TraInvoiceDTO> traInvoiceDTOS = new ArrayList<>();
 
     private List<TraInvoice> traInvoices = new ArrayList<>();
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
@@ -59,7 +60,7 @@ public class TraInvoiceMapperTest {
         traInvoices.add(traInvoice);
         traInvoiceDTO = factory.manufacturePojo(TraInvoiceDTO.class);
         traInvoiceDTOS.add(traInvoiceDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
 
@@ -103,7 +104,7 @@ public class TraInvoiceMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<TraInvoice> entities = customTraInvoiceMapper.DTOs2DBs(traInvoiceDTOS, corNetwork);
+        List<TraInvoice> entities = customTraInvoiceMapper.DTOs2DBs(traInvoiceDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -117,14 +118,14 @@ public class TraInvoiceMapperTest {
             assertNotNull(entity.getPrice());
             assertNotNull(entity.getPaymentDay());
 
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        TraInvoice entity = customTraInvoiceMapper.DTO2DB(traInvoiceDTO, corNetwork);
+        TraInvoice entity = customTraInvoiceMapper.DTO2DB(traInvoiceDTO, corChannel);
 
 
         assertNotNull(entity.getCustomer());
@@ -135,6 +136,6 @@ public class TraInvoiceMapperTest {
         assertNotNull(entity.getPrice());
         assertNotNull(entity.getPaymentDay());
 
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 }

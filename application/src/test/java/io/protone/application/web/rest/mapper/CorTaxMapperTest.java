@@ -3,7 +3,7 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorTaxDTO;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorTax;
 import io.protone.core.mapper.CorTaxMapper;
 import org.junit.Before;
@@ -40,7 +40,7 @@ public class CorTaxMapperTest {
 
     private List<CorTax> corTaxes = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -49,13 +49,13 @@ public class CorTaxMapperTest {
         corTaxes.add(corTax);
         corTaxDTO = factory.manufacturePojo(CorTaxDTO.class);
         corTaxDTOS.add(corTaxDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
 
     @Test
     public void DTO2DB() throws Exception {
-        CorTax entity = corTaxMapper.DTO2DB(corTaxDTO, corNetwork);
+        CorTax entity = corTaxMapper.DTO2DB(corTaxDTO, corChannel);
 
 
         assertNotNull(entity.getId());
@@ -65,7 +65,7 @@ public class CorTaxMapperTest {
         assertNotNull(entity.getValue());
         assertNotNull(entity.isActive());
 
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class CorTaxMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorTax> entities = corTaxMapper.DTOs2DBs(corTaxDTOS, corNetwork);
+        List<CorTax> entities = corTaxMapper.DTOs2DBs(corTaxDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -110,7 +110,7 @@ public class CorTaxMapperTest {
             assertNotNull(entity.getValue());
             assertNotNull(entity.isActive());
 
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
 
         });

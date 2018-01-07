@@ -1,8 +1,7 @@
 package io.protone.application.service.scheduler.base;
 
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.domain.LibMediaLibrary;
@@ -26,6 +25,7 @@ import java.util.stream.Collectors;
 import static io.protone.application.service.scheduler.base.SchedulerBaseTest.LIBRARY_ID;
 import static io.protone.application.service.scheduler.service.SchParseLogServiceTest.buildMusLogConfigurationWithSeparator;
 import static io.protone.application.service.scheduler.service.SchParseLogServiceTest.buildOPRLogConfigurationWithSeparator;
+import static io.protone.application.util.TestConstans.*;
 
 /**
  * Created by lukaszozimek on 14/08/2017.
@@ -58,9 +58,10 @@ public class SchedulerBuildSchedulerBaseTest {
 
     @Autowired
     private SchEventTemplateEvnetTemplateRepostiory schEventTemplateEvnetTemplateRepostiory;
-    protected CorNetwork corNetwork;
 
     protected CorChannel corChannel;
+
+    protected CorOrganization corOrganization;
 
     private LibMediaLibrary libMediaLibrary;
 
@@ -69,13 +70,15 @@ public class SchedulerBuildSchedulerBaseTest {
     private SchGridRepository schGridRepository;
 
     public void setUp() throws Exception {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
+
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.setOrganization(corOrganization);
         libMediaLibrary = new LibMediaLibrary();
         libMediaLibrary.setId(LIBRARY_ID);
-        libMediaItem = new LibMediaItem().name(String.valueOf(new Random().nextLong())).library(libMediaLibrary).idx(String.valueOf(new Random().nextLong())).length(40.0).network(corNetwork);
+        libMediaItem = new LibMediaItem().name(String.valueOf(new Random().nextLong())).library(libMediaLibrary).idx(String.valueOf(new Random().nextLong())).length(40.0).channel(corChannel);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
         corDayOfWeekEnumMap = new HashMap<>();
         corDayOfWeekEnumMap.put(DayOfWeek.MONDAY, CorDayOfWeekEnum.DW_MONDAY);
@@ -92,7 +95,6 @@ public class SchedulerBuildSchedulerBaseTest {
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
         schGrid.channel(corChannel);
-        schGrid.network(corNetwork);
         return schGrid;
     }
 
@@ -101,7 +103,6 @@ public class SchedulerBuildSchedulerBaseTest {
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
         schGrid.channel(corChannel);
-        schGrid.network(corNetwork);
         schGrid = schGridRepository.saveAndFlush(schGrid);
         schGrid.addEventTemplate(this.schEventTemplateEvnetTemplateRepostiory.saveAndFlush(new SchEventTemplateEvnetTemplate().parent(schGrid).sequence(0L).child(buildClockConfiguration())));
         return schGrid;
@@ -112,7 +113,6 @@ public class SchedulerBuildSchedulerBaseTest {
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
         schGrid.channel(corChannel);
-        schGrid.network(corNetwork);
         schGridRepository.saveAndFlush(schGrid);
         schGrid.addEventTemplate(this.schEventTemplateEvnetTemplateRepostiory.saveAndFlush(new SchEventTemplateEvnetTemplate().parent(schGrid).sequence(0L).child(buildClockWithNestedEventsConfiguration())));
 
@@ -125,7 +125,6 @@ public class SchedulerBuildSchedulerBaseTest {
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
         schGrid.channel(corChannel);
-        schGrid.network(corNetwork);
         schGridRepository.saveAndFlush(schGrid);
         schGrid.addEventTemplate(this.schEventTemplateEvnetTemplateRepostiory.saveAndFlush(new SchEventTemplateEvnetTemplate().parent(schGrid).sequence(0L).child(buildClockWithNestedMusicAndImportEventsAndEmissionsConfiguration())));
 
@@ -137,7 +136,6 @@ public class SchedulerBuildSchedulerBaseTest {
         schClockTemplate.setSequence(0L);
         schClockTemplate.length(3600000L);
         schClockTemplate.channel(corChannel);
-        schClockTemplate.network(corNetwork);
         schClockTemplate.setEmissions(buildQuatreEmissionConfiguration(schClockTemplate, 4, 0));
         return schClockTemplateRepository.saveAndFlush(schClockTemplate);
     }
@@ -147,7 +145,6 @@ public class SchedulerBuildSchedulerBaseTest {
         schClockTemplate.length(3600000L);
         schClockTemplate.setSequence(0L);
         schClockTemplate.channel(corChannel);
-        schClockTemplate.network(corNetwork);
         schClockTemplate.emissions(buildQuatreEmissionConfiguration(schClockTemplate, 2, 3));
         schClockTemplate = schClockTemplateRepository.saveAndFlush(schClockTemplate);
         schClockTemplate.schEventTemplates(buildNestedSetEventsWithLenght30minoutes(schClockTemplate));
@@ -160,7 +157,6 @@ public class SchedulerBuildSchedulerBaseTest {
         schClockTemplate.setSequence(0L);
         schClockTemplate.length(7200000L);
         schClockTemplate.channel(corChannel);
-        schClockTemplate.network(corNetwork);
         schClockTemplate.emissions(buildQuatreEmissionConfiguration(schClockTemplate, 2, 3));
         schClockTemplate = schClockTemplateRepository.saveAndFlush(schClockTemplate);
         schClockTemplate.schEventTemplates(buildNestedSetEventsWithLenght30minoutesWithMusicImport(schClockTemplate));
@@ -176,7 +172,6 @@ public class SchedulerBuildSchedulerBaseTest {
             schEmissionTemplate.mediaItem(libMediaItem);
             schEmissionTemplate.sequence(startSequence + i);
             schEmissionTemplate.channel(corChannel);
-            schEmissionTemplate.network(corNetwork);
             emissionConfigurations.add(schEmissionTemplate);
         }
         return emissionConfigurations;
@@ -201,8 +196,7 @@ public class SchedulerBuildSchedulerBaseTest {
         SchEventTemplate schEventTemplate = new SchEventTemplate()
                 .eventType(EventTypeEnum.ET_MUSIC)
                 .length(12000000L)
-                .channel(corChannel)
-                .network(corNetwork);
+                .channel(corChannel);
         schEventRepository.saveAndFlush(schEventTemplate);
         schEventTemplate.schEventTemplates(Lists.newArrayList(buildOprImportEvent(0, 1000000L, schEventTemplate)))
                 .emissions(Lists.newArrayList(
@@ -215,10 +209,9 @@ public class SchedulerBuildSchedulerBaseTest {
     private SchEventTemplateEvnetTemplate buildOprImportEvent(long i, long l, SchEventTemplate parent) {
         SchEventTemplate schEventTemplate = new SchEventTemplate()
                 .eventType(EventTypeEnum.ET_IMPORT_LOG)
-                .schLogConfiguration(buildOPRLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel))
+                .schLogConfiguration(buildOPRLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corChannel))
                 .length(l)
-                .channel(corChannel)
-                .network(corNetwork);
+                .channel(corChannel);
         schEventRepository.saveAndFlush(schEventTemplate);
         return schEventTemplateEvnetTemplateRepostiory.saveAndFlush(new SchEventTemplateEvnetTemplate().child(schEventTemplate).parent(parent).sequence(i));
     }
@@ -228,9 +221,8 @@ public class SchedulerBuildSchedulerBaseTest {
         SchEventTemplate schEventTemplate = new SchEventTemplate()
                 .eventType(EventTypeEnum.ET_IMPORT_LOG)
                 .length(1200000L)
-                .schLogConfiguration(buildMusLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel))
-                .channel(corChannel)
-                .network(corNetwork);
+                .schLogConfiguration(buildMusLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corChannel))
+                .channel(corChannel);
 
         return schEventRepository.saveAndFlush(schEventTemplate);
     }
@@ -239,8 +231,7 @@ public class SchedulerBuildSchedulerBaseTest {
         SchEventTemplate schEventTemplate = new SchEventTemplate()
                 .eventType(EventTypeEnum.ET_MUSIC)
                 .length(600000L)
-                .channel(corChannel)
-                .network(corNetwork);
+                .channel(corChannel);
 
 
         schEventRepository.saveAndFlush(schEventTemplate);
@@ -259,8 +250,7 @@ public class SchedulerBuildSchedulerBaseTest {
                 .eventType(EventTypeEnum.ET_MUSIC)
                 .length(lenght)
                 .sequence(sequence)
-                .channel(corChannel)
-                .network(corNetwork);
+                .channel(corChannel);
         schEventRepository.saveAndFlush(schEventTemplate1);
         schEventTemplate1.emissions(Lists.newArrayList(
                 buildEmissionWithAttachment(0, lenght / 3, schEventTemplate1),
@@ -274,8 +264,7 @@ public class SchedulerBuildSchedulerBaseTest {
         SchEmissionTemplate schEventEmission = new SchEmissionTemplate().mediaItem(libMediaItem)
                 .sequence(sequence)
                 .length(lenght)
-                .channel(corChannel)
-                .network(corNetwork);
+                .channel(corChannel);
 
         schEventEmission = schEmissionRepository.saveAndFlush(schEventEmission);
         schEventEmission.attachments(Lists.newArrayList(buildAttachmentWithSequence(0, schEventEmission),
@@ -289,8 +278,7 @@ public class SchedulerBuildSchedulerBaseTest {
                 .emission(schEventEmission)
                 .sequence(sequence)
                 .mediaItem(libMediaItem)
-                .channel(corChannel)
-                .network(corNetwork);
+                .channel(corChannel);
     }
 
 }

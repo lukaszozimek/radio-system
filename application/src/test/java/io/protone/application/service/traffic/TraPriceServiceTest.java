@@ -1,7 +1,8 @@
 package io.protone.application.service.traffic;
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.traffic.domain.TraPrice;
 import io.protone.traffic.repository.TraPriceRepository;
@@ -18,10 +19,9 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
-
 import java.math.BigDecimal;
-import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.junit.Assert.*;
 
 /**
@@ -40,17 +40,21 @@ public class TraPriceServiceTest {
     @Autowired
     private CorNetworkRepository corNetworkRepository;
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
+    private CorOrganization corOrganization;
 
     private PodamFactory factory;
 
     @Before
     public void setUp() throws Exception {
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
     }
 
     @Test
@@ -61,23 +65,14 @@ public class TraPriceServiceTest {
         traPrice.setPriceFirstPostion(new BigDecimal(1L));
         traPrice.setPriceLastPostion(new BigDecimal(1L));
 
-        traPrice.setNetwork(corNetwork);
+        traPrice.setChannel(corChannel);
         traPrice = traPriceRepository.save(traPrice);
 
         //then
-        Slice<TraPrice> fetchedEntity = traPriceService.getAllPrice(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraPrice> fetchedEntity = traPriceService.getAllPrice(corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
-        assertEquals(1, fetchedEntity.getContent().size());
-        assertEquals(traPrice.getId(), fetchedEntity.getContent().get(0).getId());
-        assertEquals(traPrice.getName(), fetchedEntity.getContent().get(0).getName());
-        assertEquals(traPrice.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
-        assertNotNull(fetchedEntity.getContent().get(0).getLenghtMultiplier());
-        assertNotNull(fetchedEntity.getContent().get(0).getLenghtMultiplier().keySet());
-        assertNotEquals(0, fetchedEntity.getContent().get(0).getLenghtMultiplier().keySet().size());
-        assertNotNull(fetchedEntity.getContent().get(0).getLenghtMultiplier().keySet().stream().findAny().get());
-
     }
 
     @Test
@@ -88,7 +83,7 @@ public class TraPriceServiceTest {
         traPrice.setPriceFirstPostion(new BigDecimal(1L));
         traPrice.setPriceLastPostion(new BigDecimal(1L));
 
-        traPrice.setNetwork(corNetwork);
+        traPrice.setChannel(corChannel);
 
         //then
         TraPrice fetchedEntity = traPriceService.savePrice(traPrice);
@@ -98,7 +93,7 @@ public class TraPriceServiceTest {
         assertNotNull(fetchedEntity.getId());
         assertNotNull(fetchedEntity.getCreatedBy());
         assertNotNull(traPrice.getName());
-        assertEquals(traPrice.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(traPrice.getChannel(), fetchedEntity.getChannel());
     }
 
     @Test
@@ -109,11 +104,11 @@ public class TraPriceServiceTest {
         traPrice.setPriceFirstPostion(new BigDecimal(1L));
         traPrice.setPriceLastPostion(new BigDecimal(1L));
 
-        traPrice.setNetwork(corNetwork);
+        traPrice.setChannel(corChannel);
         traPrice = traPriceRepository.save(traPrice);
         //then
-        traPriceService.deletePrice(traPrice.getId(), corNetwork.getShortcut());
-        TraPrice fetchedEntity = traPriceService.getPrice(traPrice.getId(), corNetwork.getShortcut());
+        traPriceService.deletePrice(traPrice.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
+        TraPrice fetchedEntity = traPriceService.getPrice(traPrice.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(fetchedEntity);
@@ -127,18 +122,18 @@ public class TraPriceServiceTest {
         traPrice.setPriceFirstPostion(new BigDecimal(1L));
         traPrice.setPriceLastPostion(new BigDecimal(1L));
 
-        traPrice.setNetwork(corNetwork);
+        traPrice.setChannel(corChannel);
         traPrice = traPriceRepository.save(traPrice);
 
         //then
-        TraPrice fetchedEntity = traPriceService.getPrice(traPrice.getId(), corNetwork.getShortcut());
+        TraPrice fetchedEntity = traPriceService.getPrice(traPrice.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(traPrice.getId(), fetchedEntity.getId());
         assertEquals(traPrice.getName(), fetchedEntity.getName());
-        assertEquals(traPrice.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(traPrice.getChannel(), fetchedEntity.getChannel());
     }
 
 }

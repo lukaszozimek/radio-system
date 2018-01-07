@@ -3,8 +3,9 @@ package io.protone.application.web.api.crm;
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.crm.impl.CrmContactTaskResourceImpl;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
+import io.protone.core.service.CorChannelService;
 import io.protone.crm.api.dto.CrmTaskDTO;
 import io.protone.crm.domain.CrmContact;
 import io.protone.crm.domain.CrmTask;
@@ -16,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
@@ -32,7 +34,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
-import static io.protone.application.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -67,8 +69,8 @@ public class CrmContactTaskResourceImplTest {
     @Inject
     private CrmTaskMapper crmTaskMapper;
 
-    @Inject
-    private CorNetworkService corNetworkService;
+    @Autowired
+    private CorChannelService corChannelService;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -87,7 +89,9 @@ public class CrmContactTaskResourceImplTest {
 
     private CrmTask crmTask;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
 
     private CrmContact crmContact;
 
@@ -111,11 +115,13 @@ public class CrmContactTaskResourceImplTest {
         MockitoAnnotations.initMocks(this);
         CrmContactTaskResourceImpl crmTaskResource = new CrmContactTaskResourceImpl();
         ReflectionTestUtils.setField(crmTaskResource, "crmContactService", crmContactService);
-        ReflectionTestUtils.setField(crmTaskResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(crmTaskResource, "corChannelService",  corChannelService);
         ReflectionTestUtils.setField(crmTaskResource, "crmTaskMapper", crmTaskMapper);
 
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
 
         this.restCrmTaskMockMvc = MockMvcBuilders.standaloneSetup(crmTaskResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -124,21 +130,21 @@ public class CrmContactTaskResourceImplTest {
 
     @Before
     public void initTest() {
-        crmContact = CrmContactResourceImplTest.createEntity(em).network(corNetwork);
-        crmTask = createEntity(em).network(corNetwork);
+        crmContact = CrmContactResourceImplTest.createEntity(em).channel(corChannel);
+        crmTask = createEntity(em).channel(corChannel);
     }
 
     @Test
     @Transactional
     public void createCrmTask() throws Exception {
         crmContactRepository.deleteAll();
-        crmContact = crmContactRepository.save(crmContact.network(corNetwork));
+        crmContact = crmContactRepository.save(crmContact.channel(corChannel));
         int databaseSizeBeforeCreate = crmTaskRepository.findAll().size();
 
         // Create the CrmTask
-        CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask.network(corNetwork).contact(crmContact));
+        CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask.channel(corChannel).contact(crmContact));
 
-        restCrmTaskMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), crmContact.getShortName())
+        restCrmTaskMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}/task", corOrganization.getShortcut(), corChannel.getShortcut(), crmContact.getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskDTO)))
             .andExpect(status().isCreated());
@@ -157,7 +163,7 @@ public class CrmContactTaskResourceImplTest {
     @Transactional
     public void createCrmTaskWithExistingId() throws Exception {
         crmContactRepository.deleteAll();
-        crmContactRepository.save(crmContact.network(corNetwork));
+        crmContactRepository.save(crmContact.channel(corChannel));
         int databaseSizeBeforeCreate = crmTaskRepository.findAll().size();
 
         // Create the CrmTask with an existing ID
@@ -166,7 +172,7 @@ public class CrmContactTaskResourceImplTest {
         CrmTaskDTO existingCrmTaskDTO = crmTaskMapper.DB2DTO(existingCrmTask.contact(crmContact));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmTaskMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
+        restCrmTaskMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}/task", corOrganization.getShortcut(), corChannel.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCrmTaskDTO)))
             .andExpect(status().isBadRequest());
@@ -181,12 +187,12 @@ public class CrmContactTaskResourceImplTest {
     public void getAllCrmTasks() throws Exception {
         crmContactRepository.deleteAll();
 
-        crmContactRepository.save(crmContact.network(corNetwork));
+        crmContactRepository.save(crmContact.channel(corChannel));
         // Initialize the database
-        crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).contact(crmContact));
+        crmTaskRepository.saveAndFlush(crmTask.channel(corChannel).contact(crmContact));
 
         // Get all the crmTaskList
-        restCrmTaskMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task?sort=id,desc", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName()))
+        restCrmTaskMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}/task?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(crmTask.getId().intValue())))
@@ -200,12 +206,12 @@ public class CrmContactTaskResourceImplTest {
     @Transactional
     public void getCrmTask() throws Exception {
         crmContactRepository.deleteAll();
-        crmContactRepository.save(crmContact.network(corNetwork));
+        crmContactRepository.save(crmContact.channel(corChannel));
         // Initialize the database
-        crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).contact(crmContact));
+        crmTaskRepository.saveAndFlush(crmTask.channel(corChannel).contact(crmContact));
 
         // Get the crmTask
-        restCrmTaskMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task/{id}", corNetwork.getShortcut(), crmContact.getShortName(), crmTask.getId()))
+        restCrmTaskMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}/task/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), crmContact.getShortName(), crmTask.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmTask.getId().intValue()))
@@ -219,7 +225,7 @@ public class CrmContactTaskResourceImplTest {
     @Transactional
     public void getNonExistingCrmTask() throws Exception {
         // Get the crmTask
-        restCrmTaskMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task/{id}", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName(), Long.MAX_VALUE))
+        restCrmTaskMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}/task/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -227,9 +233,9 @@ public class CrmContactTaskResourceImplTest {
     @Transactional
     public void updateCrmTask() throws Exception {
         crmContactRepository.deleteAll();
-        crmContactRepository.save(crmContact.network(corNetwork));
+        crmContactRepository.save(crmContact.channel(corChannel));
         // Initialize the database
-        crmTaskRepository.saveAndFlush(crmTask.contact(crmContact).network(corNetwork));
+        crmTaskRepository.saveAndFlush(crmTask.contact(crmContact).channel(corChannel));
         int databaseSizeBeforeUpdate = crmTaskRepository.findAll().size();
 
         // Update the crmTask
@@ -241,7 +247,7 @@ public class CrmContactTaskResourceImplTest {
             .comment(UPDATED_COMMENT);
         CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(updatedCrmTask);
 
-        restCrmTaskMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
+        restCrmTaskMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}/task", corOrganization.getShortcut(), corChannel.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskDTO)))
             .andExpect(status().isOk());
@@ -260,14 +266,14 @@ public class CrmContactTaskResourceImplTest {
     @Transactional
     public void updateNonExistingCrmTask() throws Exception {
         crmContactRepository.deleteAll();
-        crmContactRepository.save(crmContact.network(corNetwork));
+        crmContactRepository.save(crmContact.channel(corChannel));
         int databaseSizeBeforeUpdate = crmTaskRepository.findAll().size();
 
         // Create the CrmTask
         CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask.contact(crmContact));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCrmTaskMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
+        restCrmTaskMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}/task", corOrganization.getShortcut(), corChannel.getShortcut(), CrmContactResourceImplTest.createEntity(em).getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskDTO)))
             .andExpect(status().isCreated());
@@ -281,13 +287,13 @@ public class CrmContactTaskResourceImplTest {
     @Transactional
     public void deleteCrmTask() throws Exception {
         crmContactRepository.deleteAll();
-        crmContactRepository.save(crmContact.network(corNetwork));
+        crmContactRepository.save(crmContact.channel(corChannel));
         // Initialize the database
-        crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).contact(crmContact));
+        crmTaskRepository.saveAndFlush(crmTask.channel(corChannel).contact(crmContact));
         int databaseSizeBeforeDelete = crmTaskRepository.findAll().size();
 
         // Get the crmTask
-        restCrmTaskMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task/{id}", corNetwork.getShortcut(), crmContact.getShortName(), crmTask.getId())
+        restCrmTaskMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}/task/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), crmContact.getShortName(), crmTask.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
@@ -300,7 +306,7 @@ public class CrmContactTaskResourceImplTest {
     @Transactional
     public void checkShortNameIsRequired() throws Exception {
         crmContactRepository.deleteAll();
-        crmContactRepository.save(crmContact.network(corNetwork));
+        crmContactRepository.save(crmContact.channel(corChannel));
         int databaseSizeBeforeTest = crmTaskRepository.findAll().size();
         // set the field null
         crmTask.setSubject(null);
@@ -308,7 +314,7 @@ public class CrmContactTaskResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         CrmTaskDTO cfgMarkerConfigurationDTO = crmTaskMapper.DB2DTO(crmTask);
 
-        restCrmTaskMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), crmContact.getShortName())
+        restCrmTaskMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}/task", corOrganization.getShortcut(), corChannel.getShortcut(), crmContact.getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());

@@ -5,9 +5,9 @@ import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorUserDTO;
 import io.protone.core.domain.CorAuthority;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.CorUser;
-import io.protone.core.mapper.CorNetworkMapper;
+import io.protone.core.mapper.CorOrganizationMapper;
 import io.protone.core.mapper.CorUserMapper;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.repository.CorUserRepository;
@@ -36,6 +36,8 @@ import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
+import static io.protone.application.util.TestConstans.TEST_ORGANIZATION_ID;
+import static io.protone.application.util.TestConstans.TEST_ORGANIZATION_SHORTCUT;
 import static io.protone.core.security.AuthoritiesConstants.ADMIN;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
@@ -68,8 +70,9 @@ public class CorUserServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     @Autowired
-    private CorNetworkMapper corNetworkMapper;
+    private CorOrganizationMapper corOrganizationMapper;
 
     @Autowired
     private CorImageItemService corImageItemService;
@@ -77,7 +80,8 @@ public class CorUserServiceTest {
     @Autowired
     private CorUserMapper corUserMapper;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
 
     private PodamFactory factory;
     @Mock
@@ -92,9 +96,10 @@ public class CorUserServiceTest {
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = networkRepository.saveAndFlush(corNetwork);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corOrganization.name(TEST_ORGANIZATION_SHORTCUT);
+
 
     }
 
@@ -102,7 +107,7 @@ public class CorUserServiceTest {
     public void activateRegistration() throws Exception {
         //when
         CorUser corUser = factory.manufacturePojo(CorUser.class);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser.setActivated(false);
         corUser.setChannels(null);
@@ -123,7 +128,7 @@ public class CorUserServiceTest {
     public void completePasswordReset() throws Exception {
         //when
         CorUser corUser = factory.manufacturePojo(CorUser.class);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser.setActivated(true);
         corUser.setChannels(null);
@@ -147,7 +152,7 @@ public class CorUserServiceTest {
     public void requestPasswordReset() throws Exception {
         //when
         CorUser corUser = factory.manufacturePojo(CorUser.class);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser.setActivated(true);
         corUser.setChannels(null);
@@ -166,7 +171,7 @@ public class CorUserServiceTest {
     public void createUser() throws Exception {
         CorUser corUser = factory.manufacturePojo(CorUser.class);
         corUser.setChannels(null);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
 
         CorUserDTO corUserDTO = corUserMapper.DB2DTO(corUser);
@@ -178,7 +183,7 @@ public class CorUserServiceTest {
 
     @Test
     public void createUser1() throws Exception {
-        corUserService.createUser(SAMPLE_LOGIN, TEST_PASSWORD, "test", "test", "test@test.com", "en-US", corNetworkMapper.DB2DTO(corNetwork));
+        corUserService.createUser(SAMPLE_LOGIN, TEST_PASSWORD, "test", "test", "test@test.com", "en-US", corOrganizationMapper.DB2DTO(corOrganization));
         Optional<CorUser> corUser = corUserRepository.findOneByLogin(SAMPLE_LOGIN);
         assertTrue(corUser.isPresent());
         assertEquals("test@test.com", corUser.get().getEmail());
@@ -189,7 +194,7 @@ public class CorUserServiceTest {
     public void deleteUser() throws Exception {
         //when
         CorUser corUser = factory.manufacturePojo(CorUser.class);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser.setActivated(false);
         corUser.setChannels(null);
@@ -207,7 +212,7 @@ public class CorUserServiceTest {
     @Test
     public void changePassword() throws Exception {
         CorUser corUser = factory.manufacturePojo(CorUser.class);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser.setActivated(true);
         corUser.setChannels(null);
@@ -229,7 +234,7 @@ public class CorUserServiceTest {
     @Test
     public void getAllManagedUsers() throws Exception {
         CorUser corUser = factory.manufacturePojo(CorUser.class);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser.setActivated(true);
         corUser.setChannels(null);
@@ -239,7 +244,7 @@ public class CorUserServiceTest {
         corUser = corUserRepository.saveAndFlush(corUser);
 
         //then
-        Slice<CorUser> corUsersList = corUserService.getAllManagedUsers(corNetwork, new PageRequest(0, 10));
+        Slice<CorUser> corUsersList = corUserService.getAllManagedUsers(corOrganization.getShortcut(), new PageRequest(0, 10));
 
         //assert
         Assert.notNull(corUsersList.getContent());
@@ -252,7 +257,7 @@ public class CorUserServiceTest {
     public void getUserWithAuthoritiesByLogin() throws Exception {
         //when
         CorUser corUser = factory.manufacturePojo(CorUser.class);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser.setActivated(true);
         corUser.setChannels(null);
@@ -276,7 +281,7 @@ public class CorUserServiceTest {
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
         CorUser corUser = factory.manufacturePojo(CorUser.class);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser.setActivated(false);
         corUser.setChannels(null);
@@ -297,7 +302,7 @@ public class CorUserServiceTest {
     public void getUserWithAuthorities1() throws Exception {
         //when
         CorUser corUser = factory.manufacturePojo(CorUser.class);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser.setActivated(false);
         corUser.setChannels(null);
@@ -318,7 +323,7 @@ public class CorUserServiceTest {
     public void removeNotActivatedUsers() throws Exception {
         //when
         CorUser corUser = factory.manufacturePojo(CorUser.class);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser.setActivated(false);
         corUser.setChannels(null);
@@ -338,7 +343,7 @@ public class CorUserServiceTest {
     public void getUserWithAuthoritiesByLoginAndNetwork() throws Exception {
         //when
         CorUser corUser = factory.manufacturePojo(CorUser.class);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser.setActivated(true);
         corUser.setChannels(null);
@@ -348,7 +353,7 @@ public class CorUserServiceTest {
         corUser = corUserRepository.saveAndFlush(corUser);
 
         //then
-        Optional<CorUser> fetchedCorUser = corUserService.getUserWithAuthoritiesByLoginAndNetwork(corUser.getLogin(), corNetwork);
+        Optional<CorUser> fetchedCorUser = corUserService.getUserWithAuthoritiesByLoginAndNetwork(corUser.getLogin(), corOrganization.getShortcut());
 
         assertNotNull(fetchedCorUser);
         assertTrue(fetchedCorUser.isPresent());

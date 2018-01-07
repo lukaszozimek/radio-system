@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
 import io.protone.library.api.dto.LibMarkerDTO;
 import io.protone.library.domain.LibMarker;
 import io.protone.library.domain.LibMediaItem;
@@ -40,7 +39,6 @@ public class LibMarkerMapperTest {
 
     private List<LibMarker> libMarkers = new ArrayList<>();
 
-    private CorNetwork corNetwork;
 
     @Before
     public void initPojos() {
@@ -52,8 +50,6 @@ public class LibMarkerMapperTest {
         libMarkers.add(libMarker);
         libMarkerDTO = factory.manufacturePojo(LibMarkerDTO.class);
         libMarkerDTOS.add(libMarkerDTO);
-
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
@@ -85,7 +81,7 @@ public class LibMarkerMapperTest {
     @Test
     public void DTO2DB() throws Exception {
         //TODO: add Network
-        LibMarker entity = customLibMarkerMapperExt.DTO2DB(libMarkerDTO, corNetwork);
+        LibMarker entity = customLibMarkerMapperExt.DTO2DB(libMarkerDTO);
 
         assertNotNull(entity.getMediaItem());
         assertNotNull(entity.getId());
@@ -98,7 +94,7 @@ public class LibMarkerMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibMarker> entities = customLibMarkerMapperExt.DTOs2DBs(libMarkerDTOS, corNetwork);
+        List<LibMarker> entities = customLibMarkerMapperExt.DTOs2DBs(libMarkerDTOS);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

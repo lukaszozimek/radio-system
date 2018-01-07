@@ -3,7 +3,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.traffic.api.dto.TraBlockConfigurationDTO;
 import io.protone.traffic.domain.TraBlockConfiguration;
 import io.protone.traffic.mapper.TraBlockConfigurationMapper;
@@ -41,8 +40,6 @@ public class TraBlockConfigurationMapperTest {
 
     private List<TraBlockConfiguration> traBlockConfigurations = new ArrayList<>();
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
 
     @Before
@@ -54,7 +51,7 @@ public class TraBlockConfigurationMapperTest {
         traDitraBlockConfigurationDTO = factory.manufacturePojo(TraBlockConfigurationDTO.class);
         traDitraBlockConfigurationDTO.setId(1L);
         traBlockConfigurationDTOS.add(traDitraBlockConfigurationDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
         corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
@@ -92,7 +89,7 @@ public class TraBlockConfigurationMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraBlockConfiguration entity = traBlockConfigurationMapper.DTO2DB(traDitraBlockConfigurationDTO, corNetwork, corChannel);
+        TraBlockConfiguration entity = traBlockConfigurationMapper.DTO2DB(traDitraBlockConfigurationDTO, corChannel);
         assertNotNull(entity.getId());
         assertNotNull(entity.getStartBlock());
         assertNotNull(entity.getStopBlock());
@@ -100,13 +97,12 @@ public class TraBlockConfigurationMapperTest {
         assertNotNull(entity.getLength());
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getDay());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getSequence());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraBlockConfiguration> entities = traBlockConfigurationMapper.DTOs2DBs(traBlockConfigurationDTOS, corNetwork, corChannel);
+        List<TraBlockConfiguration> entities = traBlockConfigurationMapper.DTOs2DBs(traBlockConfigurationDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -120,7 +116,6 @@ public class TraBlockConfigurationMapperTest {
             assertNotNull(entity.getSequence());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getDay());
-            assertNotNull(entity.getNetwork());
 
         });
     }

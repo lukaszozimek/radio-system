@@ -4,9 +4,11 @@ package io.protone.application.service.crm;
 import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorAuthority;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.CorUser;
-import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.repository.CorChannelRepository;
+import io.protone.core.repository.CorOrganizationRepository;
 import io.protone.core.repository.CorUserRepository;
 import io.protone.crm.domain.*;
 import io.protone.crm.repostiory.CrmAccountRepository;
@@ -27,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+import static io.protone.application.util.TestConstans.*;
 import static io.protone.core.security.AuthoritiesConstants.ADMIN;
 import static org.junit.Assert.*;
 
@@ -44,7 +47,7 @@ public class CrmOpportunityServiceTest {
     private CrmOpportunityService crmOpportunityService;
 
     @Autowired
-    private CorNetworkRepository corNetworkRepository;
+    private CorChannelRepository corChannelRepository;
 
     @Autowired
     private CrmOpportunityRepository crmOpportunityRepository;
@@ -61,7 +64,13 @@ public class CrmOpportunityServiceTest {
     @Autowired
     private CorUserRepository corUserRepository;
 
-    private CorNetwork corNetwork;
+    @Autowired
+    private CorOrganizationRepository corOrganizationRepository;
+
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
+
 
     private PodamFactory factory;
     private String CONVERTED = "conv";
@@ -69,9 +78,11 @@ public class CrmOpportunityServiceTest {
     @Before
     public void setUp() throws Exception {
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.setOrganization(corOrganization);
 
     }
 
@@ -80,11 +91,11 @@ public class CrmOpportunityServiceTest {
         //when
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
         crmOpportunityRepository.saveAndFlush(crmOpportunity);
 
         //then
-        Slice<CrmOpportunity> allOpportunity = crmOpportunityService.getAllOpportunity(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<CrmOpportunity> allOpportunity = crmOpportunityService.getAllOpportunity(corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(allOpportunity);
@@ -99,7 +110,7 @@ public class CrmOpportunityServiceTest {
         //when
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
 
         //then
         crmOpportunity = crmOpportunityService.saveOpportunity(crmOpportunity);
@@ -116,12 +127,12 @@ public class CrmOpportunityServiceTest {
     public void shouldSaveCrmOpportuniteWithAssociatedLead() throws Exception {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
-        crmLead.network(corNetwork);
+        crmLead.channel(corChannel);
         crmLead = crmLeadRepository.saveAndFlush(crmLead);
 
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
         crmOpportunity.setLead(crmLead);
 
         //then
@@ -140,12 +151,12 @@ public class CrmOpportunityServiceTest {
     public void shouldSaveCrmContactWithWithAssociatedContact() throws Exception {
         //when
         CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
-        crmContact.setNetwork(corNetwork);
+        crmContact.setChannel(corChannel);
         crmContact = crmContactRepository.saveAndFlush(crmContact);
 
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
         crmOpportunity.setContact(crmContact);
 
         //then
@@ -165,12 +176,12 @@ public class CrmOpportunityServiceTest {
     public void shouldSaveCrmContacthWithAssociatedAccount() throws Exception {
         //when
         CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
-        crmAccount.setNetwork(corNetwork);
+        crmAccount.setChannel(corChannel);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
 
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
         crmOpportunity.setAccount(crmAccount);
 
 
@@ -192,11 +203,11 @@ public class CrmOpportunityServiceTest {
         //when
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
         crmOpportunity = crmOpportunityRepository.saveAndFlush(crmOpportunity);
 
         //then
-        crmOpportunityService.getOpportunity(crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
+        crmOpportunityService.getOpportunity(crmOpportunity.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
         CrmOpportunity localCrmContact = crmOpportunityRepository.findOne(crmOpportunity.getId());
 
         //assert
@@ -208,16 +219,16 @@ public class CrmOpportunityServiceTest {
         //when
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
         crmOpportunity = crmOpportunityRepository.saveAndFlush(crmOpportunity);
 
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         //then
-        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
-        CrmOpportunity localContact = crmOpportunityService.getOpportunity(crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
+        CrmOpportunity localContact = crmOpportunityService.getOpportunity(crmOpportunity.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(crmTask1);
@@ -235,10 +246,10 @@ public class CrmOpportunityServiceTest {
         //when
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         //then
-        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, "", corNetwork.getShortcut());
+        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, "", corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(crmTask1);
@@ -249,17 +260,17 @@ public class CrmOpportunityServiceTest {
         //when
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
 
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         crmOpportunity = crmOpportunityRepository.saveAndFlush(crmOpportunity);
-        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //then
-        Slice<CrmTask> localTask = crmOpportunityService.getTasksAssociatedWithOpportunity(crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut(), new PageRequest(0, 10));
+        Slice<CrmTask> localTask = crmOpportunityService.getTasksAssociatedWithOpportunity(crmOpportunity.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(localTask.getContent());
@@ -272,17 +283,17 @@ public class CrmOpportunityServiceTest {
         //when
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
 
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         crmOpportunity = crmOpportunityRepository.saveAndFlush(crmOpportunity);
-        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //then
-        CrmTask localTask = crmOpportunityService.getTaskAssociatedWithOpportunity(crmTask1.getId(), crmOpportunity.getNetwork().getShortcut());
+        CrmTask localTask = crmOpportunityService.getTaskAssociatedWithOpportunity(crmTask1.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(localTask);
@@ -295,20 +306,20 @@ public class CrmOpportunityServiceTest {
         //when
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
 
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         crmOpportunity = crmOpportunityRepository.saveAndFlush(crmOpportunity);
-        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         // then
-        crmOpportunityService.deleteOpportunityTask(crmOpportunity.getShortName(), crmTask1.getId(), crmOpportunity.getNetwork().getShortcut());
+        crmOpportunityService.deleteOpportunityTask(crmOpportunity.getShortName(), crmTask1.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
-        CrmTask localTask = crmOpportunityService.getTaskAssociatedWithOpportunity(crmTask1.getId(), crmOpportunity.getNetwork().getShortcut());
-        CrmOpportunity localContact = crmOpportunityService.getOpportunity(crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
+        CrmTask localTask = crmOpportunityService.getTaskAssociatedWithOpportunity(crmTask1.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
+        CrmOpportunity localContact = crmOpportunityService.getOpportunity(crmOpportunity.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(localTask);
@@ -322,11 +333,11 @@ public class CrmOpportunityServiceTest {
         //when
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
         crmOpportunity = crmOpportunityRepository.saveAndFlush(crmOpportunity);
 
         //then
-        crmOpportunityService.deleteOpportunity(crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
+        crmOpportunityService.deleteOpportunity(crmOpportunity.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
         CrmOpportunity localContact = crmOpportunityRepository.findOne(crmOpportunity.getId());
 
         //assert
@@ -340,11 +351,11 @@ public class CrmOpportunityServiceTest {
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
         crmOpportunity.setShortName(TEST_SHORTNAME);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
         CrmOpportunity crmOpportunity1 = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity1.setId(null);
         crmOpportunity1.setShortName(TEST_SHORTNAME);
-        crmOpportunity1.setNetwork(corNetwork);
+        crmOpportunity1.setChannel(corChannel);
 
         crmOpportunity = crmOpportunityService.saveOpportunity(crmOpportunity);
         crmOpportunity1 = crmOpportunityService.saveOpportunity(crmOpportunity1);
@@ -355,19 +366,23 @@ public class CrmOpportunityServiceTest {
     @Test
     public void shouldSaveTwoLeadWithSameShortNameInDifferentNetwork() {
         //given
-        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
-        corNetworkSecond.setId(null);
-        corNetworkSecond = corNetworkRepository.save(corNetworkSecond);
+        CorOrganization corOrganizationkSecond = factory.manufacturePojo(CorOrganization.class);
+        corOrganizationkSecond.setId(null);
+        corOrganizationkSecond = corOrganizationRepository.saveAndFlush(corOrganizationkSecond);
+        CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);
+        corChannelSecond.setId(null);
+        corChannelSecond.setOrganization(corOrganizationkSecond);
+        corChannelSecond = corChannelRepository.save(corChannelSecond);
 
         ///when
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(null);
         crmOpportunity.setShortName(TEST_SHORTNAME);
-        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunity.setChannel(corChannel);
         CrmOpportunity crmOpportunity1 = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity1.setId(null);
         crmOpportunity1.setShortName(TEST_SHORTNAME);
-        crmOpportunity1.setNetwork(corNetworkSecond);
+        crmOpportunity1.setChannel(corChannelSecond);
 
         //then
         crmOpportunity = crmOpportunityService.saveOpportunity(crmOpportunity);
@@ -378,10 +393,10 @@ public class CrmOpportunityServiceTest {
     @Test
     public void shouldConvertLeadToOpportunity() {
         CorUser corUser1 = factory.manufacturePojo(CorUser.class);
-        CorUser userEntity = corUserRepository.saveAndFlush(corUser1.networks(Sets.newHashSet(corNetwork)).authorities(Sets.newHashSet(new CorAuthority().name(ADMIN))).channels(null));
+        CorUser userEntity = corUserRepository.saveAndFlush(corUser1.organization(corOrganization).authorities(Sets.newHashSet(new CorAuthority().name(ADMIN))).channels(null));
 
         CrmLead crmLead = factory.manufacturePojoWithFullData(CrmLead.class);
-        CrmLead leadEntity = crmLeadRepository.saveAndFlush(crmLead.network(corNetwork).keeper(userEntity));
+        CrmLead leadEntity = crmLeadRepository.saveAndFlush(crmLead.channel(corChannel).keeper(userEntity));
         CrmOpportunity crmOpportunity = crmOpportunityService.convertLeadToOpportunity(leadEntity);
 
         assertNotNull(crmOpportunity);
@@ -389,15 +404,15 @@ public class CrmOpportunityServiceTest {
         assertEquals(leadEntity.getId(), crmOpportunity.getLead().getId());
         assertEquals(CONVERTED + leadEntity.getShortname(), crmOpportunity.getShortName());
         assertEquals(crmOpportunity.getKeeper().getId(), leadEntity.getKeeper().getId());
-        assertEquals(leadEntity.getNetwork().getId(), crmOpportunity.getNetwork().getId());
+        assertEquals(leadEntity.getChannel().getId(), crmOpportunity.getChannel().getId());
     }
 
     @Test
     public void shouldConvertContactToOpportunity() {
         CorUser corUser1 = factory.manufacturePojo(CorUser.class);
-        CorUser userEntity = corUserRepository.saveAndFlush(corUser1.networks(Sets.newHashSet(corNetwork)).authorities(Sets.newHashSet(new CorAuthority().name(ADMIN))).channels(null));
+        CorUser userEntity = corUserRepository.saveAndFlush(corUser1.organization(corOrganization).authorities(Sets.newHashSet(new CorAuthority().name(ADMIN))).channels(null));
         CrmContact crmContact1 = factory.manufacturePojoWithFullData(CrmContact.class);
-        CrmContact contactEntity = crmContactRepository.saveAndFlush(crmContact1.network(corNetwork).keeper(userEntity));
+        CrmContact contactEntity = crmContactRepository.saveAndFlush(crmContact1.channel(corChannel).keeper(userEntity));
 
         CrmOpportunity crmOpportunity = crmOpportunityService.convertContactToOpportunity(contactEntity);
 
@@ -406,15 +421,15 @@ public class CrmOpportunityServiceTest {
         assertEquals(contactEntity.getId(), crmOpportunity.getContact().getId());
         assertEquals(CONVERTED + contactEntity.getShortName(), crmOpportunity.getShortName());
         assertEquals(crmOpportunity.getKeeper().getId(), contactEntity.getKeeper().getId());
-        assertEquals(contactEntity.getNetwork().getId(), crmOpportunity.getNetwork().getId());
+        assertEquals(contactEntity.getChannel().getId(), crmOpportunity.getChannel().getId());
     }
 
     @Test
     public void shouldConvertAccountToOpportunity() {
         CorUser corUser1 = factory.manufacturePojo(CorUser.class);
-        CorUser userEntity = corUserRepository.saveAndFlush(corUser1.networks(Sets.newHashSet(corNetwork)).authorities(Sets.newHashSet(new CorAuthority().name(ADMIN))).channels(null));
+        CorUser userEntity = corUserRepository.saveAndFlush(corUser1.organization(corOrganization).authorities(Sets.newHashSet(new CorAuthority().name(ADMIN))).channels(null));
         CrmAccount crmAccount1 = factory.manufacturePojoWithFullData(CrmAccount.class);
-        CrmAccount accountEntity = crmAccountRepository.saveAndFlush(crmAccount1.keeper(userEntity).network(corNetwork));
+        CrmAccount accountEntity = crmAccountRepository.saveAndFlush(crmAccount1.keeper(userEntity).channel(corChannel));
 
         CrmOpportunity crmOpportunity = crmOpportunityService.convertAccountToOpportunity(accountEntity);
 
@@ -425,6 +440,6 @@ public class CrmOpportunityServiceTest {
         assertEquals(CONVERTED + accountEntity.getShortName(), crmOpportunity.getShortName());
         assertEquals(crmOpportunity.getKeeper().getId(), accountEntity.getKeeper().getId());
         assertEquals(accountEntity
-                .getNetwork().getId(), crmOpportunity.getNetwork().getId());
+                .getChannel().getId(), crmOpportunity.getChannel().getId());
     }
 }

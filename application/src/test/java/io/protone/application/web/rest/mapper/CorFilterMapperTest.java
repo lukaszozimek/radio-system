@@ -2,8 +2,8 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorFilterDTO;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorFilter;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorUser;
 import io.protone.core.mapper.CorFilterMapper;
 import org.junit.Before;
@@ -18,7 +18,8 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by lukaszozimek on 20.07.2017.
@@ -39,7 +40,7 @@ public class CorFilterMapperTest {
 
     private List<CorFilter> corFilters = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -49,18 +50,18 @@ public class CorFilterMapperTest {
         corFilters.add(corFilter);
         corFilterDTO = factory.manufacturePojo(CorFilterDTO.class);
         corFilterDTOS.add(corFilterDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CorFilter entity = corFilterMapper.DTO2DB(corFilterDTO, corNetwork);
+        CorFilter entity = corFilterMapper.DTO2DB(corFilterDTO, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
         assertNotNull(entity.getValue());
         assertNotNull(entity.getType());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
@@ -90,7 +91,7 @@ public class CorFilterMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorFilter> entities = corFilterMapper.DTOs2DBs(corFilterDTOS, corNetwork);
+        List<CorFilter> entities = corFilterMapper.DTOs2DBs(corFilterDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -100,7 +101,7 @@ public class CorFilterMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getValue());
             assertNotNull(entity.getType());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }

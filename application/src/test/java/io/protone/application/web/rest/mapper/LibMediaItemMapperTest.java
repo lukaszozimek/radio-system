@@ -2,7 +2,7 @@ package io.protone.application.web.rest.mapper;
 
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorPerson;
 import io.protone.core.domain.CorTag;
 import io.protone.library.api.dto.LibMediaItemDTO;
@@ -43,7 +43,7 @@ public class LibMediaItemMapperTest {
 
     private CorTag corTag;
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     private List<LibMediaItemDTO> libMediaItemDTOS = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class LibMediaItemMapperTest {
         libMediaItems.add(libMediaItem);
         libMediaItemDTO = factory.manufacturePojo(LibMediaItemDTO.class);
         libMediaItemDTOS.add(libMediaItemDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
         corTag = factory.manufacturePojo(CorTag.class);
 
     }
@@ -124,7 +124,7 @@ public class LibMediaItemMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibMediaItem entity = customItemMapperExt.DTO2DB(libMediaItemDTO, corNetwork);
+        LibMediaItem entity = customItemMapperExt.DTO2DB(libMediaItemDTO, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getAlbum());
@@ -141,14 +141,14 @@ public class LibMediaItemMapperTest {
         assertNotNull(entity.getTags());
         assertNotNull(entity.getTrack());
         assertNotNull(entity.getId());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
 
 
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibMediaItem> entities = customItemMapperExt.DTOs2DBs(libMediaItemDTOS, corNetwork);
+        List<LibMediaItem> entities = customItemMapperExt.DTOs2DBs(libMediaItemDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -167,16 +167,16 @@ public class LibMediaItemMapperTest {
             assertNotNull(entity.getState());
             assertNotNull(entity.getTags());
             assertNotNull(entity.getTrack());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
         });
     }
 
 
     @Test
     public void corTagFromString() throws Exception {
-        CorTag corsTag = customItemMapperExt.corTagFromString(TEST_TAG, corNetwork);
+        CorTag corsTag = customItemMapperExt.corTagFromString(TEST_TAG, corChannel);
         assertEquals(TEST_TAG, corsTag.getTag());
-        assertNotNull(TEST_TAG, corsTag.getNetwork());
+        assertNotNull(TEST_TAG, corsTag.getChannel());
 
     }
 

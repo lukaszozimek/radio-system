@@ -1,9 +1,8 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.scheduler.api.dto.SchScheduleDTO;
 import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.repository.SchScheduleRepository;
@@ -21,6 +20,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 
+import static io.protone.application.util.TestConstans.*;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -40,34 +40,34 @@ public class SchScheduleServiceTest {
     @Autowired
     private SchScheduleRepository schScheduleRepository;
 
-    private CorNetwork corNetwork;
+    protected CorChannel corChannel;
 
-    private CorChannel corChannel;
+    protected CorOrganization corOrganization;
 
     @Before
     public void setUp() throws Exception {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
+
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
     }
 
     @Test
     public void shouldGetSchedule() throws Exception {
         //when
         SchSchedule schSchedule = factory.manufacturePojo(SchSchedule.class);
-        schSchedule.setNetwork(corNetwork);
         schSchedule.setChannel(corChannel);
         schSchedule = schScheduleRepository.save(schSchedule);
 
         //then
-        Slice<SchSchedule> fetchedEntity = schScheduleService.findSchSchedulesForNetworkAndChannel(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+        Slice<SchSchedule> fetchedEntity = schScheduleService.findSchSchedulesForNetworkAndChannel(corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(schSchedule.getId(), fetchedEntity.getContent().get(0).getId());
-        assertEquals(schSchedule.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
 
@@ -75,7 +75,6 @@ public class SchScheduleServiceTest {
     public void shouldSaveGrid() throws Exception {
         //when
         SchSchedule schSchedule = factory.manufacturePojo(SchSchedule.class);
-        schSchedule.setNetwork(corNetwork);
         schSchedule.setChannel(corChannel);
         //then
         SchSchedule fetchedEntity = schScheduleService.saveSchedule(schSchedule);
@@ -83,19 +82,17 @@ public class SchScheduleServiceTest {
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
-        assertEquals(schSchedule.getNetwork(), fetchedEntity.getNetwork());
     }
 
     @Test
     public void shouldDeleteGrid() throws Exception {
         //when
         SchSchedule schSchedule = factory.manufacturePojo(SchSchedule.class);
-        schSchedule.setNetwork(corNetwork);
         schSchedule.setChannel(corChannel);
         schSchedule = schScheduleRepository.saveAndFlush(schSchedule);
         //then
-        schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
-        SchSchedule fetchedEntity = schScheduleRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
+        schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(corOrganization.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
+        SchSchedule fetchedEntity = schScheduleRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndDate(corOrganization.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
 
         //assert
         assertNull(fetchedEntity);
@@ -105,12 +102,11 @@ public class SchScheduleServiceTest {
     public void shouldGetGrid() throws Exception {
         //when
         SchSchedule schSchedule = factory.manufacturePojo(SchSchedule.class);
-        schSchedule.setNetwork(corNetwork);
         schSchedule.setChannel(corChannel);
         schSchedule = schScheduleRepository.save(schSchedule);
 
         //then
-        SchScheduleDTO fetchedEntity = schScheduleService.findSchScheduleForNetworkAndChannelAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
+        SchScheduleDTO fetchedEntity = schScheduleService.findSchScheduleForNetworkAndChannelAndDate(corOrganization.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
 
         //assert
         assertNotNull(fetchedEntity);

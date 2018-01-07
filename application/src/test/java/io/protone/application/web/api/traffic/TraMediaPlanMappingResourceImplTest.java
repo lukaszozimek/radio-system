@@ -3,11 +3,10 @@ package io.protone.application.web.api.traffic;
 import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.traffic.impl.TraMediaPlanMappingResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.domain.CrmAccount;
@@ -54,6 +53,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.io.InputStream;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -128,9 +128,10 @@ public class TraMediaPlanMappingResourceImplTest {
 
     private TraMediaPlan traMediaPlan;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
 
     private CorChannel corChannel;
+
 
     private LibMediaLibrary libMediaLibrary;
 
@@ -168,38 +169,42 @@ public class TraMediaPlanMappingResourceImplTest {
         MockitoAnnotations.initMocks(this);
 
         factory = new PodamFactoryImpl();
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.organization(corOrganization);
 
         TraMediaPlanMappingResourceImpl traMediaPlanMappingResource = new TraMediaPlanMappingResourceImpl();
-        libMediaLibrary = new LibMediaLibrary().shortcut("tes").network(corNetwork);
+        libMediaLibrary = new LibMediaLibrary().shortcut("tes").channel(corChannel);
         libMediaLibrary.setId(1L);
         libFileLibrary = new LibFileLibrary().shortcut("mpl").prefix("u");
         libFileLibrary.setId(8L);
         libCloudObject = factory.manufacturePojo(LibCloudObject.class);
-        libCloudObject.setNetwork(corNetwork);
         libCloudObject = libCloudObjectRepository.saveAndFlush(libCloudObject);
 
         libFileItem = factory.manufacturePojo(LibFileItem.class);
         libFileItem.library(libFileLibrary);
         libFileItem.setCloudObject(libCloudObject);
-        libFileItem.network(corNetwork);
+        libFileItem.channel(corChannel);
         libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
 
         crmAccount = factory.manufacturePojo(CrmAccount.class);
-        crmAccount.network(corNetwork);
+        crmAccount.channel(corChannel);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
         libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setItemType(LibItemTypeEnum.IT_DOCUMENT);
         libMediaItem.library(libMediaLibrary);
-        libMediaItem.network(corNetwork);
+        libMediaItem.channel(corChannel);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
-        traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(Sets.newHashSet(libMediaItem));
+        traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).channel(corChannel).mediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
 
         traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setCustomer(crmAccount);
         traOrder.setAdvertisment(traAdvertisement);
-        traOrder.setNetwork(corNetwork);
+        traOrder.setChannel(corChannel);
         traOrder = traOrderRepository.saveAndFlush(traOrder);
 
         ReflectionTestUtils.setField(traMediaPlanService, "libFileItemService", libFileItemService);
@@ -218,20 +223,20 @@ public class TraMediaPlanMappingResourceImplTest {
 
     @Before
     public void initTest() {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.setOrganization(corOrganization);
         traMediaPlan = createEntity(em);
         traMediaPlan.setChannel(corChannel);
-        traMediaPlan.setNetwork(corNetwork);
     }
 
     @Test
     @Transactional
     public void shouldMapMediaPlanWithPlaylist() throws Exception {
-        when(libMediaItemService.getMediaItem(libMediaItem.getNetwork().getShortcut(), "com", libMediaItem.getIdx())).thenReturn(libMediaItem);
-        when(libFileItemService.uploadFileItem(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libFileItem);
+        when(libMediaItemService.getMediaItem(libMediaItem.getChannel().getOrganization().getShortcut(), libMediaItem.getChannel().getShortcut(), "com", libMediaItem.getIdx())).thenReturn(libMediaItem);
+        when(libFileItemService.uploadFileItem(anyString(), anyString(), anyString(), any(MultipartFile.class))).thenReturn(libFileItem);
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItem);
         ReflectionTestUtils.setField(traMediaPlanService, "libFileItemService", libFileItemService);
         TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
@@ -253,10 +258,10 @@ public class TraMediaPlanMappingResourceImplTest {
         // Create the TraMediaPlan
         MockMultipartFile firstFile = new MockMultipartFile("file", DEFAULT_NAME, "", inputStream);
 
-        TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(firstFile, mediaPlanDescriptor, corNetwork, corChannel);
+        TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(firstFile, mediaPlanDescriptor, corChannel);
         TraMediaPlanAdvertisementAssigneDTO traMediaPlanAdvertisementAssigneDTO = new TraMediaPlanAdvertisementAssigneDTO().mediaPlanId(traMediaPlan.getId()).libMediaItemIdx(libMediaItem.getIdx());
         restTraMediaPlanMappingMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan",
-                corNetwork.getShortcut(),
+                corOrganization.getShortcut(),
                 corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanAdvertisementAssigneDTO)))

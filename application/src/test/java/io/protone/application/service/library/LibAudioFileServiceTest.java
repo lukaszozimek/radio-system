@@ -7,8 +7,6 @@ import io.protone.library.domain.LibAudioObject;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.protone.library.repository.LibAudioObjectRepository;
-import io.protone.library.repository.LibCloudObjectRepository;
-import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.library.service.file.LibFileService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,14 +37,9 @@ public class LibAudioFileServiceTest extends LibFileServiceBaseTest {
     @Autowired
     @Qualifier("libAudioFileService")
     private LibFileService libAudioFileService;
-    @Autowired
-    private LibMediaItemRepository libMediaItemRepository;
 
     @Autowired
     private LibAudioObjectRepository audioObjectRepository;
-
-    @Autowired
-    private LibCloudObjectRepository cloudObjectRepository;
 
     @Test
     public void shouldSaveAudioFile() throws Exception {
@@ -57,16 +50,14 @@ public class LibAudioFileServiceTest extends LibFileServiceBaseTest {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libAudioFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
+        LibMediaItem libMediaItem = libAudioFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary, corChannel);
         List<LibAudioObject> libAudioObjects = audioObjectRepository.findByMediaItem(libMediaItem);
         //assert
         Assert.notNull(libMediaItem);
         Assert.notNull(libMediaItem.getId());
         Assert.notNull(libMediaItem.getIdx());
         Assert.notNull(libMediaItem.getProperites());
-        Assert.notNull(libMediaItem.getNetwork());
         Assert.isTrue(libMediaItem.getLibrary().getName().equals(libMediaLibrary.getName()));
-        Assert.isTrue(libMediaItem.getNetwork().getName().equals(corNetwork.getName()));
         Assert.isTrue(libMediaItem.getItemType().equals(LibItemTypeEnum.IT_AUDIO));
         Assert.isTrue(libMediaItem.getProperites().size() > 1);
         Assert.isTrue(libAudioObjects.size() == 1);
@@ -83,7 +74,7 @@ public class LibAudioFileServiceTest extends LibFileServiceBaseTest {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libAudioFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
+        LibMediaItem libMediaItem = libAudioFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary, corChannel);
         byte[] bytes = libAudioFileService.download(libMediaItem);
 
         //assert
@@ -100,7 +91,7 @@ public class LibAudioFileServiceTest extends LibFileServiceBaseTest {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libAudioFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
+        LibMediaItem libMediaItem = libAudioFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary, corChannel);
         libAudioFileService.deleteFile(libMediaItem);
         List<LibAudioObject> audioObjectList = audioObjectRepository.findByMediaItem(libMediaItem);
 

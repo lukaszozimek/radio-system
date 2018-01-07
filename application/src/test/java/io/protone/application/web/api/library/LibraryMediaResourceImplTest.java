@@ -2,15 +2,15 @@ package io.protone.application.web.api.library;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.library.impl.LibraryMediaResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorImageItem;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorImageItemRepository;
 import io.protone.core.s3.S3Client;
+import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorImageItemService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.library.api.dto.LibMediaLibraryDTO;
 import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.mapper.LibLibraryMediaMapper;
@@ -37,11 +37,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static io.protone.core.constans.MinioFoldersConstants.MEDIA_ITEM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -80,7 +80,7 @@ public class LibraryMediaResourceImplTest {
     private S3Client s3Client;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -104,7 +104,10 @@ public class LibraryMediaResourceImplTest {
 
     private LibMediaLibrary libMediaLibrary;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
+
     private CorImageItem corImageItem;
 
     /**
@@ -127,18 +130,21 @@ public class LibraryMediaResourceImplTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         LibraryMediaResourceImpl libLibraryResource = new LibraryMediaResourceImpl();
-        corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test").network(corNetwork);
+        corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test");
         corImageItemRepository.saveAndFlush(corImageItem);
-        when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(corImageItem);
         ReflectionTestUtils.setField(libLibraryMediaService, "corImageItemService", corImageItemService);
         ReflectionTestUtils.setField(libLibraryMediaService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryMediaService", libLibraryMediaService);
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryMediaMapper", libLibraryMediaMapper);
-        ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(libLibraryResource, "corChannelService", corChannelService);
 
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        when(s3Client.makeBucket(anyString(), anyString())).thenReturn(corNetwork.getShortcut() + MEDIA_ITEM + "testBucket");
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
+        when(s3Client.makeBucket(anyString(), anyString())).thenReturn(corChannel.getShortcut() + MEDIA_ITEM + "testBucket");
         this.restLibLibraryMockMvc = MockMvcBuilders.standaloneSetup(libLibraryResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
                 .setControllerAdvice(exceptionTranslator)
@@ -147,7 +153,7 @@ public class LibraryMediaResourceImplTest {
 
     @Before
     public void initTest() {
-        libMediaLibrary = createEntity(em).network(corNetwork);
+        libMediaLibrary = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -156,12 +162,12 @@ public class LibraryMediaResourceImplTest {
         int databaseSizeBeforeCreate = libLibraryRepository.findAll().size();
 
         // Create the LibMediaLibrary
-        LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO(libMediaLibrary);
+        LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO(libMediaLibrary.channel(corChannel));
         MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/media", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -191,7 +197,7 @@ public class LibraryMediaResourceImplTest {
                 "application/json", TestUtil.convertObjectToJsonBytes(existingLibMediaLibraryDTO));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/media", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -214,7 +220,7 @@ public class LibraryMediaResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/media", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -237,7 +243,7 @@ public class LibraryMediaResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/media", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -259,7 +265,7 @@ public class LibraryMediaResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/media", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -281,7 +287,7 @@ public class LibraryMediaResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/media", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -295,11 +301,11 @@ public class LibraryMediaResourceImplTest {
     @Transactional
     public void getAllLibLibraries() throws Exception {
         // Initialize the database
-        when(corImageItemService.saveImageItem(any())).thenReturn(null);
-        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork));
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(null);
+        libLibraryRepository.saveAndFlush(libMediaLibrary.channel(corChannel));
 
         // Get all the libLibraryList
-        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/media?sort=id,desc", corNetwork.getShortcut()))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(libMediaLibrary.getId().intValue())))
@@ -314,11 +320,11 @@ public class LibraryMediaResourceImplTest {
     @Transactional
     public void getLibLibrary() throws Exception {
         // Initialize the database
-        when(corImageItemService.saveImageItem(any())).thenReturn(null);
-        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).shortcut("123"));
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(null);
+        libLibraryRepository.saveAndFlush(libMediaLibrary.channel(corChannel).shortcut("123"));
 
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), "123"))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corOrganization.getShortcut(), corChannel.getShortcut(), "123"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(libMediaLibrary.getId().intValue()))
@@ -334,10 +340,10 @@ public class LibraryMediaResourceImplTest {
     public void getAllLibLibrariesWithImages() throws Exception {
         // Initialize the database
 
-        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).mainImage(corImageItem));
+        libLibraryRepository.saveAndFlush(libMediaLibrary.channel(corChannel).mainImage(corImageItem));
 
         // Get all the libLibraryList
-        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/media?sort=id,desc", corNetwork.getShortcut()))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(libMediaLibrary.getId().intValue())))
@@ -353,10 +359,10 @@ public class LibraryMediaResourceImplTest {
     @Transactional
     public void getLibLibraryWithImage() throws Exception {
         // Initialize the database
-        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).shortcut("123").mainImage(corImageItem));
+        libLibraryRepository.saveAndFlush(libMediaLibrary.channel(corChannel).shortcut("123").mainImage(corImageItem));
 
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), "123"))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corOrganization.getShortcut(), corChannel.getShortcut(), "123"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(libMediaLibrary.getId().intValue()))
@@ -372,7 +378,7 @@ public class LibraryMediaResourceImplTest {
     @Transactional
     public void getNonExistingLibLibrary() throws Exception {
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restLibLibraryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -380,7 +386,7 @@ public class LibraryMediaResourceImplTest {
     @Transactional
     public void updateLibLibrary() throws Exception {
         // Initialize the database
-        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).shortcut("Tst"));
+        libLibraryRepository.saveAndFlush(libMediaLibrary.channel(corChannel).shortcut("Tst"));
         int databaseSizeBeforeUpdate = libLibraryRepository.findAll().size();
 
         // Update the libMediaLibrary
@@ -393,7 +399,7 @@ public class LibraryMediaResourceImplTest {
                 .description(UPDATED_DESCRIPTION);
         LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO((updatedLibMediaLibrary));
 
-        restLibLibraryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/library/media", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO)))
                 .andExpect(status().isOk());
@@ -413,7 +419,7 @@ public class LibraryMediaResourceImplTest {
     @Transactional
     public void updateLibLibraryWithImage() throws Exception {
         // Initialize the database
-        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).shortcut("Tst"));
+        libLibraryRepository.saveAndFlush(libMediaLibrary.channel(corChannel).shortcut("Tst"));
         int databaseSizeBeforeUpdate = libLibraryRepository.findAll().size();
 
         // Update the libMediaLibrary
@@ -429,7 +435,7 @@ public class LibraryMediaResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), libMediaLibrary.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corOrganization.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isOk());
@@ -451,10 +457,10 @@ public class LibraryMediaResourceImplTest {
         int databaseSizeBeforeUpdate = libLibraryRepository.findAll().size();
 
         // Create the LibMediaLibrary
-        LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO(libMediaLibrary);
+        LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO(libMediaLibrary.channel(corChannel));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restLibLibraryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/library/media", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO)))
                 .andExpect(status().isCreated());
@@ -465,14 +471,13 @@ public class LibraryMediaResourceImplTest {
     }
 
     @Test
-    @Transactional
     public void deleteLibLibrary() throws Exception {
         // Initialize the database
-        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).shortcut("Tet"));
+        libLibraryRepository.saveAndFlush(libMediaLibrary.channel(corChannel).shortcut("Tet"));
         int databaseSizeBeforeDelete = libLibraryRepository.findAll().size();
 
         // Get the libMediaLibrary
-        restLibLibraryMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), libMediaLibrary.getShortcut())
+        restLibLibraryMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}", corOrganization.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

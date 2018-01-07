@@ -1,7 +1,7 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.traffic.api.dto.TraMediaPlanTemplateDTO;
 import io.protone.traffic.domain.TraMediaPlanTemplate;
 import io.protone.traffic.mapper.TraMediaPlanTemplateMapper;
@@ -38,7 +38,8 @@ public class TraMediaPlanTemplateMapperTest {
 
     private List<TraMediaPlanTemplate> traMediaPlanTemplates = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
@@ -48,12 +49,12 @@ public class TraMediaPlanTemplateMapperTest {
         traMediaPlanTemplateDTO = factory.manufacturePojo(TraMediaPlanTemplateDTO.class);
         traMediaPlanTemplateDTOS.add(traMediaPlanTemplateDTO);
 
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        TraMediaPlanTemplate entity = traMediaPlanTemplateMapper.DTO2DB(traMediaPlanTemplateDTO, corNetwork);
+        TraMediaPlanTemplate entity = traMediaPlanTemplateMapper.DTO2DB(traMediaPlanTemplateDTO, corChannel);
 
 
         assertNotNull(entity.getBlockStartCell());
@@ -69,12 +70,12 @@ public class TraMediaPlanTemplateMapperTest {
         assertNotNull(entity.getLastEmissionValueCell());
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraMediaPlanTemplate> entities = traMediaPlanTemplateMapper.DTOs2DBs(traMediaPlanTemplateDTOS, corNetwork);
+        List<TraMediaPlanTemplate> entities = traMediaPlanTemplateMapper.DTOs2DBs(traMediaPlanTemplateDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -92,7 +93,7 @@ public class TraMediaPlanTemplateMapperTest {
             assertNotNull(entity.getLastEmissionValueCell());
             assertNotNull(entity.getId());
             assertNotNull(entity.getName());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }

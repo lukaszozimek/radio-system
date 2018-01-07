@@ -2,7 +2,6 @@ package io.protone.library.service.metadata;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorPropertyService;
 import io.protone.library.constans.MarkerConstans;
 import io.protone.library.domain.*;
@@ -70,7 +69,7 @@ public class LibAudioMetadataService {
         metadataMap.put(MarkerConstans.INT, MarkerConstans.INT);
     }
 
-    public LibMediaItem resolveMetadata(Metadata metadata, LibMediaLibrary libraryDB, CorChannel corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject, String orginalFileName) throws TikaException, SAXException, IOException {
+    public LibMediaItem resolveMetadata(Metadata metadata, LibMediaLibrary libraryDB, CorChannel corChannel, LibMediaItem mediaItem, LibAudioObject audioObject, String orginalFileName) throws TikaException, SAXException, IOException {
         log.debug("Start processing Audio :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
 
 
@@ -83,17 +82,17 @@ public class LibAudioMetadataService {
 
         metadata.remove(ProtoneMetadataProperty.TITLE.getName());
         mediaItem.setDescription(metadata.get(ProtoneMetadataProperty.COMMENTS));
-        LibArtist libArtist = libArtistService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork);
+        LibArtist libArtist = libArtistService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ARTIST), corChannel);
         if (libArtist != null) {
             mediaItem.setArtist(libArtist);
         }
         if (!Strings.isNullOrEmpty(metadata.get(ProtoneMetadataProperty.ALBUM_NAME))) {
-            LibAlbum libAlbum = libAlbumService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ALBUM_NAME), metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork);
+            LibAlbum libAlbum = libAlbumService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ALBUM_NAME), metadata.get(ProtoneMetadataProperty.ARTIST), corChannel);
             if (libAlbum != null) {
                 mediaItem.album(libAlbum);
             }
         } else {
-            LibAlbum libAlbum = libAlbumService.findOrSaveOne(metadata.get(NO_DATA), metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork);
+            LibAlbum libAlbum = libAlbumService.findOrSaveOne(metadata.get(NO_DATA), metadata.get(ProtoneMetadataProperty.ARTIST), corChannel);
             mediaItem.album(libAlbum);
         }
         if (mediaItem.getIdx() == null) {
@@ -110,7 +109,7 @@ public class LibAudioMetadataService {
         metadata.remove(ProtoneMetadataProperty.ARTIST.getName());
         mediaItem.setState(LibItemStateEnum.IS_NEW);
         mediaItem.setLibrary(libraryDB);
-        mediaItem.channel(corNetwork);
+        mediaItem.channel(corChannel);
         log.debug("Persisting LibMediaItem: {}", mediaItem);
         mediaItem = mediaItemRepository.saveAndFlush(mediaItem);
         LibMediaItem finalMediaItem = mediaItem;
@@ -135,7 +134,7 @@ public class LibAudioMetadataService {
         });
         mediaItem.markers(markers);
         Arrays.stream(metadata.names()).forEach(metadataName -> {
-            finalMediaItem.addProperites(corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, corNetwork));
+            finalMediaItem.addProperites(corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, corChannel));
         });
 
         log.debug("Resolved LibMediaItem with Metadata: {}", mediaItem);

@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.traffic.api.dto.TraMediaPlanEmissionDTO;
 import io.protone.traffic.domain.TraMediaPlanBlock;
 import io.protone.traffic.domain.TraMediaPlanEmission;
@@ -41,15 +40,12 @@ public class TraMediaPlanEmissionMapperTest {
 
     private List<TraMediaPlanEmissionDTO> traMediaPlanEmissionDTOS = new ArrayList<>();
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
 
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
         corChannel = factory.manufacturePojo(CorChannel.class);
         traMediaPlanEmissionDTO = factory.manufacturePojo(TraMediaPlanEmissionDTO.class);
         traMediaPlanEmissionDTOS.add(traMediaPlanEmissionDTO);
@@ -58,7 +54,6 @@ public class TraMediaPlanEmissionMapperTest {
         traMediaPlanEmission.setMediaPlanPlaylistDate(factory.manufacturePojo(TraMediaPlanPlaylistDate.class));
         traMediaPlanEmission.setMediaPlanBlock(factory.manufacturePojo(TraMediaPlanBlock.class));
         traMediaPlanEmission.setChannel(corChannel);
-        traMediaPlanEmission.setNetwork(corNetwork);
         traMediaPlanEmissions.add(traMediaPlanEmission);
     }
 
@@ -90,16 +85,15 @@ public class TraMediaPlanEmissionMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraMediaPlanEmission entity = traMediaPlanEmissionMapper.DTO2DB(traMediaPlanEmissionDTO, corNetwork, corChannel);
+        TraMediaPlanEmission entity = traMediaPlanEmissionMapper.DTO2DB(traMediaPlanEmissionDTO, corChannel);
         assertNotNull(entity.getId());
         assertNotNull(entity.getChannel());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getSequence());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraMediaPlanEmission> entities = traMediaPlanEmissionMapper.DTOs2DBs(traMediaPlanEmissionDTOS, corNetwork, corChannel);
+        List<TraMediaPlanEmission> entities = traMediaPlanEmissionMapper.DTOs2DBs(traMediaPlanEmissionDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -107,7 +101,6 @@ public class TraMediaPlanEmissionMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getSequence());
             assertNotNull(entity.getChannel());
-            assertNotNull(entity.getNetwork());
 
         });
     }

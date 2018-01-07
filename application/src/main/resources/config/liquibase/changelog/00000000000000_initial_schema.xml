@@ -113,7 +113,7 @@
             <column name="parent_network_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
-            <column name="cor_organization_id" type="bigint">
+            <column name="organization_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="network_users_id" type="bigint">

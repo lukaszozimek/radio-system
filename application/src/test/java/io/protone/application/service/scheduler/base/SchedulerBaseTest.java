@@ -24,11 +24,11 @@ public class SchedulerBaseTest {
     public static final Long LIBRARY_ID = 1L;
 
     public static SchEmission buildEmissionForBlock(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
-        return new SchEmission().mediaItem(libMediaItem).channel(corChannel).network(corNetwork);
+        return new SchEmission().mediaItem(libMediaItem).channel(corChannel);
     }
 
     public static SchEmission buildEmissionForWithAttachment(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
-        return new SchEmission().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Lists.newArrayList(new SchAttachment().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
+        return new SchEmission().mediaItem(libMediaItem).channel(corChannel).attachments(Lists.newArrayList(new SchAttachment().channel(corChannel).mediaItem(libMediaItem)));
     }
 
     public static SchBlockDTO buildBlockDTOWithEmissionAndAttachmentsAndNestedBlock(long sequence, LibMediaItemThinDTO libMediaItemThinDTO) {
@@ -90,7 +90,7 @@ public class SchedulerBaseTest {
     }
 
     public static SchEmissionTemplate buildEmissionConfigurationForWithAttachment(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
-        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Lists.newArrayList(new SchAttachmentTemplate().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
+        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel).attachments(Lists.newArrayList(new SchAttachmentTemplate().channel(corChannel).mediaItem(libMediaItem)));
     }
 
     public static List<SchEventTemplate> buildNestedSetEvents(PodamFactory factory, LibMediaItem libMediaItem, CorNetwork corNetwork, CorChannel corChannel) {
@@ -98,42 +98,36 @@ public class SchedulerBaseTest {
         SchEventTemplate schEventTemplateRootChildChild = factory.manufacturePojo(SchEventTemplate.class);
         schEventTemplateRootChildChild.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRootChildChild.setId(null);
-        schEventTemplateRootChildChild.setNetwork(corNetwork);
         schEventTemplateRootChildChild.setChannel(corChannel);
 
         SchEventTemplate schEventTemplateRootChildChild1 = factory.manufacturePojo(SchEventTemplate.class);
 
         schEventTemplateRootChildChild1.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRootChildChild1.setId(null);
-        schEventTemplateRootChildChild1.setNetwork(corNetwork);
         schEventTemplateRootChildChild1.setChannel(corChannel);
 
         SchEventTemplate schEventTemplateRootChildChild2 = factory.manufacturePojo(SchEventTemplate.class);
 
         schEventTemplateRootChildChild2.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRootChildChild2.setId(null);
-        schEventTemplateRootChildChild2.setNetwork(corNetwork);
         schEventTemplateRootChildChild2.setChannel(corChannel);
 
         //ROOTS Childs
         SchEventTemplate schEventTemplateRootChild = factory.manufacturePojo(SchEventTemplate.class);
         schEventTemplateRootChild.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRootChild.setId(null);
-        schEventTemplateRootChild.setNetwork(corNetwork);
         schEventTemplateRootChild.setChannel(corChannel);
         //  schEventTemplateRootChild.addEventTemplate(schEventTemplateRootChildChild);
 
         SchEventTemplate schEventTemplateRootChild1 = factory.manufacturePojo(SchEventTemplate.class);
         schEventTemplateRootChild1.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRootChild1.setId(null);
-        schEventTemplateRootChild1.setNetwork(corNetwork);
-        schEventTemplateRootChild1.setChannel(corChannel);
+         schEventTemplateRootChild1.setChannel(corChannel);
         // schEventTemplateRootChild1.addEventTemplate(schEventTemplateRootChildChild1);
 
         SchEventTemplate schEventTemplateRootChild2 = factory.manufacturePojo(SchEventTemplate.class);
         schEventTemplateRootChild2.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRootChild2.setId(null);
-        schEventTemplateRootChild2.setNetwork(corNetwork);
         schEventTemplateRootChild2.setChannel(corChannel);
         //    schEventTemplateRootChild2.addEventTemplate(schEventTemplateRootChildChild2);
 
@@ -141,32 +135,29 @@ public class SchedulerBaseTest {
         SchEventTemplate schEventTemplateRoot = factory.manufacturePojo(SchEventTemplate.class);
         schEventTemplateRoot.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRoot.setId(null);
-        schEventTemplateRoot.setNetwork(corNetwork);
         schEventTemplateRoot.setChannel(corChannel);
         //  schEventTemplateRoot.addEventTemplate(schEventTemplateRootChild);
 
         SchEventTemplate schEventTemplateRoot1 = factory.manufacturePojo(SchEventTemplate.class);
         schEventTemplateRoot1.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRoot1.setId(null);
-        schEventTemplateRoot1.setNetwork(corNetwork);
         schEventTemplateRoot1.setChannel(corChannel);
         //     schEventTemplateRoot1.addEventTemplate(schEventTemplateRootChild1);
 
         SchEventTemplate schEventTemplateRoot2 = factory.manufacturePojo(SchEventTemplate.class);
         schEventTemplateRoot2.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRoot2.setId(null);
-        schEventTemplateRoot2.setNetwork(corNetwork);
         schEventTemplateRoot2.setChannel(corChannel);
         //    schEventTemplateRoot2.addEventTemplate(schEventTemplateRootChild2);
         return Lists.newArrayList(Lists.newArrayList(schEventTemplateRoot, schEventTemplateRoot1, schEventTemplateRoot2));
     }
 
     public static SchEmissionTemplate buildSchEventEmissionForSchEventWithAttachment(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
-        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Lists.newArrayList(new SchAttachmentTemplate().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
+        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel).attachments(Lists.newArrayList(new SchAttachmentTemplate().channel(corChannel).mediaItem(libMediaItem)));
     }
 
     public static SchEmissionTemplate buildSchEventEmissionForSchEvent(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
-        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel).network(corNetwork);
+        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel);
     }
 
 
@@ -175,42 +166,36 @@ public class SchedulerBaseTest {
         SchBlock schBlockRootChildChild = factory.manufacturePojo(SchBlock.class);
         schBlockRootChildChild.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRootChildChild.setId(null);
-        schBlockRootChildChild.setNetwork(corNetwork);
         schBlockRootChildChild.setChannel(corChannel);
 
         SchBlock schBlockRootChildChild1 = factory.manufacturePojo(SchBlock.class);
 
         schBlockRootChildChild1.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRootChildChild1.setId(null);
-        schBlockRootChildChild1.setNetwork(corNetwork);
         schBlockRootChildChild1.setChannel(corChannel);
 
         SchBlock schBlockRootChildChild2 = factory.manufacturePojo(SchBlock.class);
 
         schBlockRootChildChild2.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRootChildChild2.setId(null);
-        schBlockRootChildChild2.setNetwork(corNetwork);
         schBlockRootChildChild2.setChannel(corChannel);
 
         //ROOTS Childs
         SchBlock schBlockRootChild = factory.manufacturePojo(SchBlock.class);
         schBlockRootChild.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRootChild.setId(null);
-        schBlockRootChild.setNetwork(corNetwork);
         schBlockRootChild.setChannel(corChannel);
         schBlockRootChild.addBlock(new SchBlockSchBlock().parent(schBlockRootChild).child(schBlockRootChildChild));
 
         SchBlock schBlockRootChild1 = factory.manufacturePojo(SchBlock.class);
         schBlockRootChild1.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRootChild1.setId(null);
-        schBlockRootChild1.setNetwork(corNetwork);
         schBlockRootChild1.setChannel(corChannel);
         schBlockRootChild1.addBlock(new SchBlockSchBlock().parent(schBlockRootChild1).child(schBlockRootChildChild1));
 
         SchBlock schBlockRootChild2 = factory.manufacturePojo(SchBlock.class);
         schBlockRootChild2.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRootChild2.setId(null);
-        schBlockRootChild2.setNetwork(corNetwork);
         schBlockRootChild2.setChannel(corChannel);
         schBlockRootChild2.addBlock(new SchBlockSchBlock().parent(schBlockRootChild2).child(schBlockRootChildChild2));
 
@@ -218,21 +203,18 @@ public class SchedulerBaseTest {
         SchBlock schBlockRoot = factory.manufacturePojo(SchBlock.class);
         schBlockRoot.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRoot.setId(null);
-        schBlockRoot.setNetwork(corNetwork);
         schBlockRoot.setChannel(corChannel);
         schBlockRoot.addBlock(new SchBlockSchBlock().parent(schBlockRoot).child(schBlockRootChild));
 
         SchBlock schBlockRoot1 = factory.manufacturePojo(SchBlock.class);
         schBlockRoot1.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRoot1.setId(null);
-        schBlockRoot1.setNetwork(corNetwork);
         schBlockRoot1.setChannel(corChannel);
         schBlockRoot1.addBlock(new SchBlockSchBlock().parent(schBlockRoot1).child(schBlockRootChild1));
 
         SchBlock schBlockRoot2 = factory.manufacturePojo(SchBlock.class);
         schBlockRoot2.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRoot2.setId(null);
-        schBlockRoot2.setNetwork(corNetwork);
         schBlockRoot2.setChannel(corChannel);
         schBlockRoot2.addBlock(new SchBlockSchBlock().parent(schBlockRoot2).child(schBlockRootChild2));
         return Sets.newHashSet(Sets.newHashSet(schBlockRoot, schBlockRoot1, schBlockRoot2));

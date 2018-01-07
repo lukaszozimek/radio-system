@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
 import io.protone.scheduler.domain.SchLogConfiguration;
 import io.protone.scheduler.mapper.SchLogConfigurationMapper;
@@ -40,13 +39,12 @@ public class SchLogConfigurationMapperTest {
     private List<SchLogConfiguration> schLogs = new ArrayList<>();
 
     private List<SchLogConfigurationDTO> schLogDTOS = new ArrayList<>();
-    private CorNetwork network;
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         schLog = factory.manufacturePojo(SchLogConfiguration.class);
         schLogs.add(schLog);
@@ -81,19 +79,18 @@ public class SchLogConfigurationMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchLogConfiguration entity = schLogMapper.DTO2DB(schLogDTO, network, corChannel);
+        SchLogConfiguration entity = schLogMapper.DTO2DB(schLogDTO, corChannel);
         assertNotNull(entity.getLogColumns());
         assertNotNull(entity.getName());
         assertNotNull(entity.getSpearator());
         assertNotNull(entity.getExtension());
         assertNotNull(entity.getPattern());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchLogConfiguration> entities = schLogMapper.DTOs2DBs(schLogDTOS, network, corChannel);
+        List<SchLogConfiguration> entities = schLogMapper.DTOs2DBs(schLogDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -103,7 +100,6 @@ public class SchLogConfigurationMapperTest {
             assertNotNull(entity.getSpearator());
             assertNotNull(entity.getExtension());
             assertNotNull(entity.getPattern());
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });
     }

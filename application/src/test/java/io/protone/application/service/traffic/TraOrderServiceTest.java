@@ -4,9 +4,9 @@ package io.protone.application.service.traffic;
 import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorChannelRepository;
-import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.repository.CorOrganizationRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.library.domain.LibMediaItem;
@@ -32,6 +32,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.junit.Assert.*;
 
 /**
@@ -49,9 +50,6 @@ public class TraOrderServiceTest {
     private TraOrderRepository customTraOrderRepository;
 
     @Autowired
-    private CorNetworkRepository corNetworkRepository;
-
-    @Autowired
     private CrmAccountRepository crmAccountRepository;
 
     @Autowired
@@ -64,50 +62,49 @@ public class TraOrderServiceTest {
     private TraAdvertisementRepository traAdvertisementRepository;
 
     @Autowired
-    private CorChannelRepository corChannelRepository;
+    private CorOrganizationRepository corOrganizationRepository;
 
-    private CorNetwork corNetwork;
+    @Autowired
+    private CorChannelRepository corChannelRepository;
 
     private CrmAccount crmAccount;
 
     private PodamFactory factory;
+
     private CorChannel corChannel;
+
+    private CorOrganization corOrganization;
+
     private LibMediaLibrary libMediaLibrary;
+
     private TraAdvertisement traAdvertisement;
 
     @Before
     public void setUp() throws Exception {
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.setOrganization(corOrganization);
 
         crmAccount = factory.manufacturePojo(CrmAccount.class);
-        crmAccount.setNetwork(corNetwork);
+        crmAccount.setChannel(corChannel);
         crmAccount = crmAccountRepository.save(crmAccount);
         crmAccount = factory.manufacturePojo(CrmAccount.class);
-        crmAccount.setNetwork(corNetwork);
+        crmAccount.setChannel(corChannel);
         crmAccount = crmAccountRepository.save(crmAccount);
 
-        corChannel = factory.manufacturePojo(CorChannel.class);
-        corChannel.setId(null);
-        corChannel.setShortcut("HHH");
-        corChannel.network(corNetwork);
-        corChannelRepository.saveAndFlush(corChannel);
 
-        libMediaLibrary = factory.manufacturePojo(LibMediaLibrary.class);
-        libMediaLibrary.setShortcut("ppp");
-        libMediaLibrary.network(corNetwork);
-        libMediaLibrary.addChannel(corChannel);
-        libMediaLibrary = libLibraryRepository.saveAndFlush(libMediaLibrary);
+        libMediaLibrary = libLibraryRepository.findOne(2L);
         LibMediaItem libMediaItemToShuffle = factory.manufacturePojo(LibMediaItem.class);
-        libMediaItemToShuffle.setNetwork(corNetwork);
         libMediaItemToShuffle.setLibrary(libMediaLibrary);
         libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle);
 
         traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setCustomer(crmAccount);
-        traAdvertisement.setNetwork(corNetwork);
+        traAdvertisement.setChannel(corChannel);
         traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItemToShuffle));
         traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
     }
@@ -117,18 +114,18 @@ public class TraOrderServiceTest {
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setCustomer(crmAccount);
-        traOrder.setNetwork(corNetwork);
+        traOrder.setChannel(corChannel);
         traOrder.setAdvertisment(traAdvertisement);
         traOrder = customTraOrderRepository.save(traOrder);
 
         //then
-        Slice<TraOrder> fetchedEntity = traOrderService.getAllOrders(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraOrder> fetchedEntity = traOrderService.getAllOrders(corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(traOrder.getId(), fetchedEntity.getContent().get(0).getId());
-        assertEquals(traOrder.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+        assertEquals(traOrder.getChannel(), fetchedEntity.getContent().get(0).getChannel());
 
     }
 
@@ -136,9 +133,8 @@ public class TraOrderServiceTest {
     public void shouldSaveOrder() throws Exception {
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
-
         traOrder.setCustomer(crmAccount);
-        traOrder.setNetwork(corNetwork);
+        traOrder.setChannel(corChannel);
         traOrder.setAdvertisment(traAdvertisement);
 
         //then
@@ -150,7 +146,7 @@ public class TraOrderServiceTest {
         assertNotNull(fetchedEntity.getCreatedBy());
 
         assertNotNull(fetchedEntity.getName(), traOrder.getName());
-        assertEquals(traOrder.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(traOrder.getChannel(), fetchedEntity.getChannel());
     }
 
     @Test
@@ -158,12 +154,12 @@ public class TraOrderServiceTest {
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setCustomer(crmAccount);
-        traOrder.setNetwork(corNetwork);
+        traOrder.setChannel(corChannel);
         traOrder.setAdvertisment(traAdvertisement);
         traOrder = customTraOrderRepository.save(traOrder);
         //then
-        traOrderService.deleteOrder(traOrder.getId(), corNetwork.getShortcut());
-        TraOrder fetchedEntity = traOrderService.getOrder(traOrder.getId(), corNetwork.getShortcut());
+        traOrderService.deleteOrder(traOrder.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
+        TraOrder fetchedEntity = traOrderService.getOrder(traOrder.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(fetchedEntity);
@@ -175,18 +171,18 @@ public class TraOrderServiceTest {
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
 
         traOrder.setCustomer(crmAccount);
-        traOrder.setNetwork(corNetwork);
+        traOrder.setChannel(corChannel);
         traOrder.setAdvertisment(traAdvertisement);
         traOrder = customTraOrderRepository.save(traOrder);
 
         //then
-        TraOrder fetchedEntity = traOrderService.getOrder(traOrder.getId(), corNetwork.getShortcut());
+        TraOrder fetchedEntity = traOrderService.getOrder(traOrder.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(traOrder.getId(), fetchedEntity.getId());
-        assertEquals(traOrder.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(traOrder.getChannel(), fetchedEntity.getChannel());
 
     }
 
@@ -197,19 +193,19 @@ public class TraOrderServiceTest {
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
 
         traOrder.setCustomer(crmAccount);
-        traOrder.setNetwork(corNetwork);
+        traOrder.setChannel(corChannel);
         traOrder.setAdvertisment(traAdvertisement);
         traOrder = customTraOrderRepository.save(traOrder);
 
         //then
-        Slice<TraOrder> fetchedEntity = traOrderService.getCustomerOrders(crmAccount.getShortName(), corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraOrder> fetchedEntity = traOrderService.getCustomerOrders(crmAccount.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(traOrder.getId(), fetchedEntity.getContent().get(0).getId());
         assertEquals(traOrder.getCustomer(), fetchedEntity.getContent().get(0).getCustomer());
-        assertEquals(traOrder.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+        assertEquals(traOrder.getChannel(), fetchedEntity.getContent().get(0).getChannel());
     }
 
     @Test(expected = DataIntegrityViolationException.class)
@@ -219,12 +215,12 @@ public class TraOrderServiceTest {
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class).name(TEST_NAME);
 
         traOrder.setCustomer(crmAccount);
-        traOrder.setNetwork(corNetwork);
+        traOrder.setChannel(corChannel);
         traOrder.setAdvertisment(traAdvertisement);
 
         TraOrder traOrderSecond = factory.manufacturePojo(TraOrder.class).name(TEST_NAME);
         traOrderSecond.setCustomer(crmAccount);
-        traOrderSecond.setNetwork(corNetwork);
+        traOrderSecond.setChannel(corChannel);
 
 
         //then
@@ -236,20 +232,24 @@ public class TraOrderServiceTest {
     @Test
     public void shouldSaveTwoOrdersWithSameNameInDifferentNetworks() throws Exception {
         //given
+        CorOrganization corOrganizationkSecond = factory.manufacturePojo(CorOrganization.class);
+        corOrganizationkSecond.setId(null);
+        corOrganizationkSecond = corOrganizationRepository.saveAndFlush(corOrganizationkSecond);
 
+        CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);
+        corChannelSecond.setId(null);
+        corChannelSecond.setOrganization(corOrganizationkSecond);
+        corChannelSecond = corChannelRepository.save(corChannelSecond);
 
-        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
-        corNetworkSecond.setId(null);
-        corNetworkSecond = corNetworkRepository.saveAndFlush(corNetworkSecond);
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class).name(TEST_NAME);
         traOrder.setCustomer(crmAccount);
-        traOrder.setNetwork(corNetwork);
+        traOrder.setChannel(corChannel);
         traOrder.setAdvertisment(traAdvertisement);
 
         TraOrder traOrderSecond = factory.manufacturePojo(TraOrder.class).name(TEST_NAME);
         traOrderSecond.setCustomer(crmAccount);
-        traOrderSecond.setNetwork(corNetworkSecond);
+        traOrderSecond.setChannel(corChannelSecond);
         traOrderSecond.setAdvertisment(traAdvertisement);
 
 

@@ -2,7 +2,7 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorPersonDTO;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorPerson;
 import io.protone.traffic.api.dto.TraCustomerPersonDTO;
 import io.protone.traffic.mapper.TraPersonMapper;
@@ -41,7 +41,8 @@ public class TraPersonMapperTest {
 
     private List<TraCustomerPersonDTO> traCustomerPersonDTOList = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
@@ -54,7 +55,7 @@ public class TraPersonMapperTest {
         traCustomerPersonDTO = factory.manufacturePojo(TraCustomerPersonDTO.class);
         traCustomerPersonDTO.setId(1L);
         traCustomerPersonDTOList.add(traCustomerPersonDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
     @Test
@@ -72,20 +73,20 @@ public class TraPersonMapperTest {
 
     @Test
     public void traCustomerPersonPT2CorPerson() throws Exception {
-        CorPerson entity = corPersonMapper.traCustomerPersonPT2CorPerson(traCustomerPersonDTO, corNetwork);
+        CorPerson entity = corPersonMapper.traCustomerPersonPT2CorPerson(traCustomerPersonDTO, corChannel);
 
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getFirstName());
         assertNotNull(entity.getId());
         assertNotNull(entity.getLastName());
         assertNotNull(entity.getContacts());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
 
     }
 
     @Test
     public void traCustomerPersonPTs2CorPersons() throws Exception {
-        List<CorPerson> entities = corPersonMapper.traCustomerPersonPTs2CorPersons(traCustomerPersonDTOList, corNetwork);
+        List<CorPerson> entities = corPersonMapper.traCustomerPersonPTs2CorPersons(traCustomerPersonDTOList, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -95,7 +96,7 @@ public class TraPersonMapperTest {
             assertNotNull(entity.getLastName());
             assertNotNull(entity.getDescription());
             assertNotNull(entity.getContacts());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
 
         });

@@ -73,7 +73,7 @@ public class TraAdvertisementShuffleServiceTest extends TraPlaylistBasedTest {
         traShuffleAdvertisementDTO.setNumber(LARGE_NUMBER_TO_SHUFFLE);
         traShuffleAdvertisementDTO.setTraShuffleAdvertisementOptionalDTO(new TraShuffleAdvertisementOptionalDTO());
         //then
-        List<TraPlaylist> traPlaylists = traAdvertisementShuffleService.shuffleCommercials(traShuffleAdvertisementDTO, corNetwork.getShortcut(), corChannel.getShortcut());
+        List<TraPlaylist> traPlaylists = traAdvertisementShuffleService.shuffleCommercials(traShuffleAdvertisementDTO, corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         notNull(traPlaylists);
@@ -82,12 +82,10 @@ public class TraAdvertisementShuffleServiceTest extends TraPlaylistBasedTest {
                 long numberFounded = traBlock.getEmissions().stream().filter(traEmission -> traEmission.getAdvertiment().getId().equals(traOrderThinDTO.getAdvertismentId().getId())).count();
                 assertTrue((numberFounded < 2 && numberFounded >= 0));
                 assertTrue((traBlock.getLength() >= traBlock.getEmissions().stream().mapToDouble(traEmission -> traEmission.getAdvertiment().getLength()).sum()));
-                assertNotNull(traBlock.getNetwork());
                 assertNotNull(traBlock.getChannel());
                 Optional<TraEmission> traEmission = traBlock.getEmissions().stream().findFirst();
                 if (traEmission.isPresent()) {
                     assertNotNull(traEmission.get().getSequence());
-                    assertNotNull(traEmission.get().getNetwork());
                     assertNotNull(traEmission.get().getChannel());
                 }
 

@@ -5,7 +5,7 @@ import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorChannelDTO;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorImageItem;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.mapper.CorChannelMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class CorChannelMapperTest {
     private List<CorChannelDTO> corChannelDTOS = new ArrayList<>();
 
     private List<CorChannel> channels = new ArrayList<>();
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
 
 
     @Before
@@ -52,7 +52,7 @@ public class CorChannelMapperTest {
         channels.add(channel);
         corChannelDTO = factory.manufacturePojo(CorChannelDTO.class);
         corChannelDTOS.add(corChannelDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corOrganization = factory.manufacturePojo(CorOrganization.class);
     }
 
     @Test
@@ -83,18 +83,18 @@ public class CorChannelMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorChannel entity = corChannelMapper.DTO2DB(corChannelDTO, corNetwork);
+        CorChannel entity = corChannelMapper.DTO2DB(corChannelDTO, corOrganization);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getShortcut());
         assertNotNull(entity.getName());
         assertNotNull(entity.getDescription());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getOrganization());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorChannel> entities = corChannelMapper.DTOs2DBs(corChannelDTOS, corNetwork);
+        List<CorChannel> entities = corChannelMapper.DTOs2DBs(corChannelDTOS, corOrganization);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -103,7 +103,7 @@ public class CorChannelMapperTest {
             assertNotNull(entity.getShortcut());
             assertNotNull(entity.getName());
             assertNotNull(entity.getDescription());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getOrganization());
         });
     }
 

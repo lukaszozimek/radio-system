@@ -3,7 +3,7 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorKeyDTO;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorPropertyKey;
 import io.protone.core.mapper.CorPropertyKeyMapper;
 import org.junit.Before;
@@ -39,7 +39,9 @@ public class CorPropertyKeyMapperTest {
     private List<CorKeyDTO> corKeyDTOS = new ArrayList<>();
 
     private List<CorPropertyKey> corPropertyKeys = new ArrayList<>();
-    private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
@@ -48,17 +50,17 @@ public class CorPropertyKeyMapperTest {
         corPropertyKeys.add(corPropertyKey);
         corKeyDTO = factory.manufacturePojo(CorKeyDTO.class);
         corKeyDTOS.add(corKeyDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
 
     @Test
     public void DTO2DB() throws Exception {
-        CorPropertyKey entity = corPropertyKeyMapper.DTO2DB(corKeyDTO, corNetwork);
+        CorPropertyKey entity = corPropertyKeyMapper.DTO2DB(corKeyDTO, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getKey());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
@@ -83,7 +85,7 @@ public class CorPropertyKeyMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorPropertyKey> entities = corPropertyKeyMapper.DTOs2DBs(corKeyDTOS, corNetwork);
+        List<CorPropertyKey> entities = corPropertyKeyMapper.DTOs2DBs(corKeyDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -91,7 +93,7 @@ public class CorPropertyKeyMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getKey());
 
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }

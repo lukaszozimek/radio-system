@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.library.api.dto.thin.LibFileItemThinDTO;
 import io.protone.library.domain.LibFileItem;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
@@ -44,13 +43,12 @@ public class SchLogMapperTest {
     private List<SchLog> schLogs = new ArrayList<>();
 
     private List<SchLogDTO> schLogDTOS = new ArrayList<>();
-    private CorNetwork network;
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         schLog = factory.manufacturePojo(SchLog.class);
         schLog.setLibFileItem(factory.manufacturePojo(LibFileItem.class));
@@ -87,18 +85,17 @@ public class SchLogMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchLog entity = schLogMapper.DTO2DB(schLogDTO, network, corChannel);
+        SchLog entity = schLogMapper.DTO2DB(schLogDTO, corChannel);
 
         assertNotNull(entity.getDate());
         assertNotNull(entity.getLibFileItem());
         assertNotNull(entity.getSchLogConfiguration());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchLog> entities = schLogMapper.DTOs2DBs(schLogDTOS, network, corChannel);
+        List<SchLog> entities = schLogMapper.DTOs2DBs(schLogDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -106,9 +103,6 @@ public class SchLogMapperTest {
             assertNotNull(entity.getDate());
             assertNotNull(entity.getLibFileItem());
             assertNotNull(entity.getSchLogConfiguration());
-
-
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });
     }

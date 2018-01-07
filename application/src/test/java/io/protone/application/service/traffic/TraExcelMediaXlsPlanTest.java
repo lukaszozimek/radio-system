@@ -88,17 +88,17 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
 
 
         //when
-        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).network(corNetwork).fileItem(libFileItem).channel(corChannel).network(corNetwork);
+        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).fileItem(libFileItem).channel(corChannel);
         traMediaPlan.setId(null);
         traMediaPlan = traMediaPlanRepository.save(traMediaPlan);
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
 
         //then
-        traExcelMediaXlsPlan.parseMediaPlan(byteArrayInputStream, traMediaPlan, mediaPlanDescriptor, corNetwork, corChannel);
-        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
-        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
-        List<TraMediaPlanBlock> traMediaPlanBlocks = traMediaPlanBlockRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        traExcelMediaXlsPlan.parseMediaPlan(byteArrayInputStream, traMediaPlan, mediaPlanDescriptor, corChannel);
+        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        List<TraMediaPlanBlock> traMediaPlanBlocks = traMediaPlanBlockRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
 
         //assert
         assertNotNull(mediaPlanPlaylistDates);
@@ -132,17 +132,17 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
 
 
         //when
-        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).network(corNetwork).fileItem(libFileItem).channel(corChannel).network(corNetwork);
+        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).fileItem(libFileItem).channel(corChannel);
         traMediaPlan.setId(null);
         traMediaPlan = traMediaPlanRepository.save(traMediaPlan);
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_2.xlsx");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
 
         //then
-        traExcelMediaXlsPlan.parseMediaPlan(byteArrayInputStream, traMediaPlan, mediaPlanDescriptor, corNetwork, corChannel);
-        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
-        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
-        List<TraMediaPlanBlock> traMediaPlanBlocks = traMediaPlanBlockRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        traExcelMediaXlsPlan.parseMediaPlan(byteArrayInputStream, traMediaPlan, mediaPlanDescriptor, corChannel);
+        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        List<TraMediaPlanBlock> traMediaPlanBlocks = traMediaPlanBlockRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
 
 
         assertNotNull(mediaPlanPlaylistDates);
@@ -175,17 +175,17 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         mediaPlanDescriptor.setTraMediaPlanTemplate(traMediaPlanTemplate);
 
         //when
-        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).network(corNetwork).fileItem(libFileItem).channel(corChannel).network(corNetwork);
+        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).fileItem(libFileItem).channel(corChannel);
         traMediaPlan.setId(null);
         traMediaPlan = traMediaPlanRepository.save(traMediaPlan);
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_3.xls");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
 
         //then
-        traExcelMediaXlsPlan.parseMediaPlan(byteArrayInputStream, traMediaPlan, mediaPlanDescriptor, corNetwork, corChannel);
-        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
-        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
-        List<TraMediaPlanBlock> traMediaPlanBlocks = traMediaPlanBlockRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        traExcelMediaXlsPlan.parseMediaPlan(byteArrayInputStream, traMediaPlan, mediaPlanDescriptor, corChannel);
+        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        List<TraMediaPlanBlock> traMediaPlanBlocks = traMediaPlanBlockRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
 
 
         assertNotNull(mediaPlanPlaylistDates);
@@ -218,17 +218,17 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
 
 
         //when
-        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).network(corNetwork).fileItem(libFileItem).channel(corChannel).network(corNetwork);
+        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).fileItem(libFileItem).channel(corChannel);
         traMediaPlan.setId(null);
         traMediaPlan = traMediaPlanRepository.save(traMediaPlan);
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_4.xls");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
         inputStream.close();
         //then
-        traExcelMediaXlsPlan.parseMediaPlan(byteArrayInputStream, traMediaPlan, mediaPlanDescriptor, corNetwork, corChannel);
-        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
-        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
-        List<TraMediaPlanBlock> traMediaPlanBlocks = traMediaPlanBlockRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        traExcelMediaXlsPlan.parseMediaPlan(byteArrayInputStream, traMediaPlan, mediaPlanDescriptor, corChannel);
+        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        List<TraMediaPlanBlock> traMediaPlanBlocks = traMediaPlanBlockRepository.findAllByChannel_Organization_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corOrganization.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
 
 
         assertNotNull(mediaPlanPlaylistDates);

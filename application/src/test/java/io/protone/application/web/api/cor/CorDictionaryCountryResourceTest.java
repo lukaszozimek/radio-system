@@ -5,12 +5,12 @@ import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.impl.CorDictionaryCountryResourceImpl;
 import io.protone.core.api.dto.CorCountryDTO;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorCountry;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.mapper.CorCountryMapper;
 import io.protone.core.repository.CorCountryRepository;
-import io.protone.core.repository.CorNetworkRepository;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorOrganizationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static io.protone.application.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -56,10 +56,7 @@ public class CorDictionaryCountryResourceTest {
     private CorCountryMapper corCountryMapper;
 
     @Inject
-    private CorNetworkService corNetworkService;
-
-    @Inject
-    private CorNetworkRepository corNetworkRepository;
+    private CorOrganizationService corOrganizationService;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -74,7 +71,9 @@ public class CorDictionaryCountryResourceTest {
 
     private CorCountry corCountry;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
 
     /**
      * Create an entity for this test.
@@ -84,29 +83,31 @@ public class CorDictionaryCountryResourceTest {
      */
     public static CorCountry createEntity(EntityManager em) {
         CorCountry corCountry = new CorCountry()
-            .name(DEFAULT_NAME)
-            .shortName(DEFAULT_SHORT_NAME);
+                .name(DEFAULT_NAME)
+                .shortName(DEFAULT_SHORT_NAME);
         return corCountry;
     }
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
         CorDictionaryCountryResourceImpl corCountryResource = new CorDictionaryCountryResourceImpl();
         ReflectionTestUtils.setField(corCountryResource, "corCountryRepository", corCountryRepository);
         ReflectionTestUtils.setField(corCountryResource, "corCountryMapper", corCountryMapper);
-        ReflectionTestUtils.setField(corCountryResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(corCountryResource, "corOrganizationService", corOrganizationService);
 
         this.restCorCountryMockMvc = MockMvcBuilders.standaloneSetup(corCountryResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setMessageConverters(jacksonMessageConverter).build();
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
     public void initTest() {
-        corCountry = createEntity(em).network(corNetwork);
+        corCountry = createEntity(em).organization(corOrganization);
     }
 
     @Test
@@ -117,10 +118,10 @@ public class CorDictionaryCountryResourceTest {
         // Create the CorCountry
         CorCountryDTO corCountryDTO = corCountryMapper.DB2DTO(corCountry);
 
-        restCorCountryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corCountryDTO)))
-            .andExpect(status().isCreated());
+        restCorCountryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country", corOrganization.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corCountryDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the CorCountry in the database
         List<CorCountry> corCountryList = corCountryRepository.findAll();
@@ -141,10 +142,10 @@ public class CorDictionaryCountryResourceTest {
         CorCountryDTO existingCorCountryDTO = corCountryMapper.DB2DTO(existingCorCountry);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorCountryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingCorCountryDTO)))
-            .andExpect(status().isBadRequest());
+        restCorCountryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country", corOrganization.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(existingCorCountryDTO)))
+                .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
         List<CorCountry> corCountryList = corCountryRepository.findAll();
@@ -155,58 +156,58 @@ public class CorDictionaryCountryResourceTest {
     @Transactional
     public void getAllCorCountries() throws Exception {
         // Initialize the database
-        corCountryRepository.saveAndFlush(corCountry.network(corNetwork));
+        corCountryRepository.saveAndFlush(corCountry.organization(corOrganization));
 
         // Get all the corCountryList
-        restCorCountryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country?sort=id,desc", corNetwork.getShortcut()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(corCountry.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORT_NAME.toString())));
+        restCorCountryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country?sort=id,desc", corOrganization.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(corCountry.getId().intValue())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORT_NAME.toString())));
     }
 
     @Test
     @Transactional
     public void getCorCountry() throws Exception {
         // Initialize the database
-        corCountryRepository.saveAndFlush(corCountry.network(corNetwork));
+        corCountryRepository.saveAndFlush(corCountry.organization(corOrganization));
 
         // Get the corCountry
-        restCorCountryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country/{id}", corNetwork.getShortcut(), corCountry.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(corCountry.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.shortName").value(DEFAULT_SHORT_NAME.toString()));
+        restCorCountryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country/{id}", corOrganization.getShortcut(), corCountry.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(corCountry.getId().intValue()))
+                .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+                .andExpect(jsonPath("$.shortName").value(DEFAULT_SHORT_NAME.toString()));
     }
 
     @Test
     @Transactional
     public void getNonExistingCorCountry() throws Exception {
         // Get the corCountry
-        restCorCountryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restCorCountryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country/{id}", corOrganization.getShortcut(), Long.MAX_VALUE))
+                .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
     public void updateCorCountry() throws Exception {
         // Initialize the database
-        corCountryRepository.saveAndFlush(corCountry.network(corNetwork));
+        corCountryRepository.saveAndFlush(corCountry.organization(corOrganization));
         int databaseSizeBeforeUpdate = corCountryRepository.findAll().size();
 
         // Update the corCountry
         CorCountry updatedCorCountry = corCountryRepository.findOne(corCountry.getId());
         updatedCorCountry
-            .name(UPDATED_NAME)
-            .shortName(UPDATED_SHORT_NAME);
+                .name(UPDATED_NAME)
+                .shortName(UPDATED_SHORT_NAME);
         CorCountryDTO corCountryDTO = corCountryMapper.DB2DTO(updatedCorCountry);
 
-        restCorCountryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corCountryDTO)))
-            .andExpect(status().isOk());
+        restCorCountryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country", corOrganization.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corCountryDTO)))
+                .andExpect(status().isOk());
 
         // Validate the CorCountry in the database
         List<CorCountry> corCountryList = corCountryRepository.findAll();
@@ -225,10 +226,10 @@ public class CorDictionaryCountryResourceTest {
         // Create the CorChannel, which fails.
         CorCountryDTO corChannelDTO = corCountryMapper.DB2DTO(corCountry);
 
-        restCorCountryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corChannelDTO)))
-            .andExpect(status().isBadRequest());
+        restCorCountryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country", corOrganization.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corChannelDTO)))
+                .andExpect(status().isBadRequest());
 
         List<CorCountry> corChannelList = corCountryRepository.findAll();
         assertThat(corChannelList).hasSize(databaseSizeBeforeTest);
@@ -243,10 +244,10 @@ public class CorDictionaryCountryResourceTest {
         // Create the CorChannel, which fails.
         CorCountryDTO corChannelDTO = corCountryMapper.DB2DTO(corCountry);
 
-        restCorCountryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corChannelDTO)))
-            .andExpect(status().isBadRequest());
+        restCorCountryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country", corOrganization.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corChannelDTO)))
+                .andExpect(status().isBadRequest());
 
         List<CorCountry> corChannelList = corCountryRepository.findAll();
         assertThat(corChannelList).hasSize(databaseSizeBeforeTest);
@@ -261,10 +262,10 @@ public class CorDictionaryCountryResourceTest {
         CorCountryDTO corCountryDTO = corCountryMapper.DB2DTO(corCountry);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorCountryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corCountryDTO)))
-            .andExpect(status().isCreated());
+        restCorCountryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country", corOrganization.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corCountryDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the CorCountry in the database
         List<CorCountry> corCountryList = corCountryRepository.findAll();
@@ -275,13 +276,13 @@ public class CorDictionaryCountryResourceTest {
     @Transactional
     public void deleteCorCountry() throws Exception {
         // Initialize the database
-        corCountryRepository.saveAndFlush(corCountry.network(corNetwork));
+        corCountryRepository.saveAndFlush(corCountry.organization(corOrganization));
         int databaseSizeBeforeDelete = corCountryRepository.findAll().size();
 
         // Get the corCountry
-        restCorCountryMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country/{id}", corNetwork.getShortcut(), corCountry.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+        restCorCountryMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/country/{id}", corOrganization.getShortcut(), corCountry.getId())
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
 
         // Validate the database is empty
         List<CorCountry> corCountryList = corCountryRepository.findAll();

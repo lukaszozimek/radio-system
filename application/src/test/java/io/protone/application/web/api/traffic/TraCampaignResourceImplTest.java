@@ -2,12 +2,12 @@ package io.protone.application.web.api.traffic;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.crm.CrmCustomerResourceImplTest;
 import io.protone.application.web.api.traffic.impl.TraCampaignResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
+import io.protone.core.service.CorChannelService;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.traffic.api.dto.TraCampaignDTO;
@@ -35,6 +35,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -61,11 +62,12 @@ public class TraCampaignResourceImplTest {
     private static final Long DEFAULT_PRIZE = 1L;
     private static final Long UPDATED_PRIZE = 2L;
 
-    @Autowired
-    private CorNetworkService corNetworkService;
 
     @Autowired
     private TraCampaignRepository traCampaignRepository;
+
+    @Autowired
+    private CorChannelService corChannelService;
 
     @Autowired
     private TraCampaignService traCampaignService;
@@ -89,9 +91,12 @@ public class TraCampaignResourceImplTest {
 
     private TraCampaign traCampaign;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
 
     private CrmAccount crmAccount;
+
     @Autowired
     private CrmAccountRepository crmAccountRepository;
 
@@ -103,11 +108,11 @@ public class TraCampaignResourceImplTest {
      */
     public static TraCampaign createEntity(EntityManager em) {
         TraCampaign traCampaign = new TraCampaign()
-            .name(DEFAULT_NAME)
-            .shortName(DEFAULT_SHORT_NAME)
-            .startDate(DEFAULT_START_DATE)
-            .endDate(DEFAULT_END_DATE)
-            .prize(DEFAULT_PRIZE);
+                .name(DEFAULT_NAME)
+                .shortName(DEFAULT_SHORT_NAME)
+                .startDate(DEFAULT_START_DATE)
+                .endDate(DEFAULT_END_DATE)
+                .prize(DEFAULT_PRIZE);
         return traCampaign;
     }
 
@@ -118,38 +123,40 @@ public class TraCampaignResourceImplTest {
 
         ReflectionTestUtils.setField(traCampaignResource, "traCampaignService", traCampaignService);
         ReflectionTestUtils.setField(traCampaignResource, "traCampaignMapper", traCampaignMapper);
-        ReflectionTestUtils.setField(traCampaignResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(traCampaignResource, "corChannelService", corChannelService);
 
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
 
         this.restTraCampaignMockMvc = MockMvcBuilders.standaloneSetup(traCampaignResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
     public void initTest() {
         crmAccountRepository.deleteAllInBatch();
-        crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
-        traCampaign = createEntity(em).network(corNetwork).customer(crmAccount);
+        crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).channel(corChannel));
+        traCampaign = createEntity(em).channel(corChannel).customer(crmAccount);
     }
 
     @Test
     @Transactional
     public void createTraCampaign() throws Exception {
 
-        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).channel(corChannel));
         int databaseSizeBeforeCreate = traCampaignRepository.findAll().size();
 
         // Create the TraCampaign
         TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign.shortName(DEFAULT_SHORT_NAME).customer(crmAccount));
 
-        restTraCampaignMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/campaign", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
-            .andExpect(status().isCreated());
+        restTraCampaignMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the TraCampaign in the database
         List<TraCampaign> traCampaignList = traCampaignRepository.findAll();
@@ -172,10 +179,10 @@ public class TraCampaignResourceImplTest {
         TraCampaignDTO existingTraCampaignDTO = traCampaignMapper.DB2DTO(existingTraCampaign.shortName(DEFAULT_SHORT_NAME).customer(crmAccount));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraCampaignMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/campaign", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingTraCampaignDTO)))
-            .andExpect(status().isBadRequest());
+        restTraCampaignMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(existingTraCampaignDTO)))
+                .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
         List<TraCampaign> traCampaignList = traCampaignRepository.findAll();
@@ -192,10 +199,10 @@ public class TraCampaignResourceImplTest {
         // Create the TraCampaign, which fails.
         TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign);
 
-        restTraCampaignMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/campaign", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
-            .andExpect(status().isBadRequest());
+        restTraCampaignMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
+                .andExpect(status().isBadRequest());
 
         List<TraCampaign> traCampaignList = traCampaignRepository.findAll();
         assertThat(traCampaignList).hasSize(databaseSizeBeforeTest);
@@ -211,10 +218,10 @@ public class TraCampaignResourceImplTest {
         // Create the TraCampaign, which fails.
         TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign);
 
-        restTraCampaignMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/campaign", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
-            .andExpect(status().isBadRequest());
+        restTraCampaignMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
+                .andExpect(status().isBadRequest());
 
         List<TraCampaign> traCampaignList = traCampaignRepository.findAll();
         assertThat(traCampaignList).hasSize(databaseSizeBeforeTest);
@@ -225,42 +232,42 @@ public class TraCampaignResourceImplTest {
     public void getAllTraCampaigns() throws Exception {
         // Initialize the database
 
-        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).customer(crmAccount));
+        traCampaignRepository.saveAndFlush(traCampaign.channel(corChannel).customer(crmAccount));
 
         // Get all the traCampaignList
-        restTraCampaignMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/campaign?sort=id,desc", corNetwork.getShortcut()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(traCampaign.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
-            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
-            .andExpect(jsonPath("$.[*].prize").value(hasItem(DEFAULT_PRIZE.intValue())));
+        restTraCampaignMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(traCampaign.getId().intValue())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+                .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
+                .andExpect(jsonPath("$.[*].prize").value(hasItem(DEFAULT_PRIZE.intValue())));
     }
 
     @Test
     @Transactional
     public void getTraCampaign() throws Exception {
         // Initialize the database
-        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).customer(crmAccount));
+        traCampaignRepository.saveAndFlush(traCampaign.channel(corChannel).customer(crmAccount));
 
         // Get the traCampaign
-        restTraCampaignMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), traCampaign.getShortName()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(traCampaign.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
-            .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
-            .andExpect(jsonPath("$.prize").value(DEFAULT_PRIZE.intValue()));
+        restTraCampaignMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), traCampaign.getShortName()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(traCampaign.getId().intValue()))
+                .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+                .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
+                .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
+                .andExpect(jsonPath("$.prize").value(DEFAULT_PRIZE.intValue()));
     }
 
     @Test
     @Transactional
     public void getNonExistingTraCampaign() throws Exception {
         // Get the traCampaign
-        restTraCampaignMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restTraCampaignMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -268,22 +275,22 @@ public class TraCampaignResourceImplTest {
     public void updateTraCampaign() throws Exception {
         // Initialize the database
 
-        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).customer(crmAccount));
+        traCampaignRepository.saveAndFlush(traCampaign.channel(corChannel).customer(crmAccount));
         int databaseSizeBeforeUpdate = traCampaignRepository.findAll().size();
 
         // Update the traCampaign
         TraCampaign updatedTraCampaign = traCampaignRepository.findOne(traCampaign.getId());
         updatedTraCampaign
-            .name(UPDATED_NAME)
-            .startDate(UPDATED_START_DATE)
-            .endDate(UPDATED_END_DATE)
-            .prize(UPDATED_PRIZE);
+                .name(UPDATED_NAME)
+                .startDate(UPDATED_START_DATE)
+                .endDate(UPDATED_END_DATE)
+                .prize(UPDATED_PRIZE);
         TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(updatedTraCampaign.customer(crmAccount));
 
-        restTraCampaignMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/traffic/campaign", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
-            .andExpect(status().isOk());
+        restTraCampaignMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
+                .andExpect(status().isOk());
 
         // Validate the TraCampaign in the database
         List<TraCampaign> traCampaignList = traCampaignRepository.findAll();
@@ -305,10 +312,10 @@ public class TraCampaignResourceImplTest {
         TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign.customer(crmAccount));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraCampaignMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/traffic/campaign", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
-            .andExpect(status().isCreated());
+        restTraCampaignMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the TraCampaign in the database
         List<TraCampaign> traCampaignList = traCampaignRepository.findAll();
@@ -319,13 +326,13 @@ public class TraCampaignResourceImplTest {
     @Transactional
     public void deleteTraCampaign() throws Exception {
         // Initialize the database
-        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).shortName("xxx").name("xxx").customer(crmAccount));
+        traCampaignRepository.saveAndFlush(traCampaign.channel(corChannel).shortName("xxx").name("xxx").customer(crmAccount));
         int databaseSizeBeforeDelete = traCampaignRepository.findAll().size();
 
         // Get the traCampaign
-        restTraCampaignMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), "xxx")
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+        restTraCampaignMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), "xxx")
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
 
         // Validate the database is empty
         List<TraCampaign> traCampaignList = traCampaignRepository.findAll();
@@ -341,17 +348,17 @@ public class TraCampaignResourceImplTest {
     @Transactional
     public void getAllTraCampaignsForCustomer() throws Exception {
         // Initialize the database
-        traCampaignRepository.saveAndFlush(traCampaign.customer(crmAccount).network(corNetwork).customer(crmAccount));
+        traCampaignRepository.saveAndFlush(traCampaign.customer(crmAccount).channel(corChannel).customer(crmAccount));
 
         // Get all the traCampaignList
-        restTraCampaignMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/campaign/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(traCampaign.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
-            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
-            .andExpect(jsonPath("$.[*].prize").value(hasItem(DEFAULT_PRIZE.intValue())));
+        restTraCampaignMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/traffic/campaign/customer/{customerShortcut}?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(traCampaign.getId().intValue())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+                .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
+                .andExpect(jsonPath("$.[*].prize").value(hasItem(DEFAULT_PRIZE.intValue())));
     }
 
 }

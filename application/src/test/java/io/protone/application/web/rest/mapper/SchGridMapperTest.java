@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchClockTemplateDTO;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
@@ -41,16 +40,15 @@ public class SchGridMapperTest {
 
     private List<SchGridDTO> gridDTOs = new ArrayList<>();
 
-    private CorNetwork network;
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         grid = factory.manufacturePojo(SchGrid.class);
-     //   grid.setClocks(Sets.newHashSet(factory.manufacturePojo(SchGridClockTemplate.class)));
+        //   grid.setClocks(Sets.newHashSet(factory.manufacturePojo(SchGridClockTemplate.class)));
         grids.add(grid);
         gridDTO = factory.manufacturePojo(SchGridDTO.class);
         gridDTO.setClocks(Lists.newArrayList(factory.manufacturePojo(SchClockTemplateDTO.class)));
@@ -86,18 +84,17 @@ public class SchGridMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchGrid entity = gridMapper.DTO2DB(gridDTO, network, corChannel);
+        SchGrid entity = gridMapper.DTO2DB(gridDTO, corChannel);
 
         assertNotNull(entity.getName());
         assertNotNull(entity.getDayOfWeek());
         assertNotNull(entity.getShortName());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchGrid> entities = gridMapper.DTOs2DBs(gridDTOs, network, corChannel);
+        List<SchGrid> entities = gridMapper.DTOs2DBs(gridDTOs, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -105,7 +102,6 @@ public class SchGridMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getDayOfWeek());
             assertNotNull(entity.getShortName());
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });
     }

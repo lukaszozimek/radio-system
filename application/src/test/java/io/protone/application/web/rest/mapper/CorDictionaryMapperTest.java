@@ -3,10 +3,10 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorDictionaryDTO;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorDictionaryType;
 import io.protone.core.domain.CorModule;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorDictionaryMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +44,9 @@ public class CorDictionaryMapperTest {
     private List<CorDictionaryDTO> corDictionaryDTOS = new ArrayList<>();
 
     private List<CorDictionary> corDictionaries = new ArrayList<>();
-    private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
+
 
 
     @Before
@@ -55,12 +57,12 @@ public class CorDictionaryMapperTest {
         corDictionaryDTO = factory.manufacturePojo(CorDictionaryDTO.class);
         corDictionaryDTOS.add(corDictionaryDTO);
 
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CorDictionary entity = corDictionaryMapper.DTO2DB(corDictionaryDTO, corNetwork, new CorModule().name(TEST_MODULE), new CorDictionaryType().name(TEST_DICTIONERY_TYPE));
+        CorDictionary entity = corDictionaryMapper.DTO2DB(corDictionaryDTO, corChannel, new CorModule().name(TEST_MODULE), new CorDictionaryType().name(TEST_DICTIONERY_TYPE));
 
 
         assertNotNull(entity.getId());
@@ -71,7 +73,7 @@ public class CorDictionaryMapperTest {
         assertNotNull(entity.getCorModule());
 
 
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
@@ -102,7 +104,7 @@ public class CorDictionaryMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorDictionary> entities = corDictionaryMapper.DTOs2DBs(corDictionaryDTOS, corNetwork, new CorModule().name(TEST_MODULE), new CorDictionaryType().name(TEST_DICTIONERY_TYPE));
+        List<CorDictionary> entities = corDictionaryMapper.DTOs2DBs(corDictionaryDTOS, corChannel, new CorModule().name(TEST_MODULE), new CorDictionaryType().name(TEST_DICTIONERY_TYPE));
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -115,7 +117,7 @@ public class CorDictionaryMapperTest {
             assertNotNull(entity.getCorModule());
 
 
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }

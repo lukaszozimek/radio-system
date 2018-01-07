@@ -4,8 +4,9 @@ import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.traffic.impl.TraPriceResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
+import io.protone.core.service.CorChannelService;
 import io.protone.traffic.api.dto.TraPriceDTO;
 import io.protone.traffic.domain.TraPrice;
 import io.protone.traffic.mapper.TraPriceMapper;
@@ -31,7 +32,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import static io.protone.application.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertEquals;
@@ -74,9 +75,11 @@ public class TraPriceResourceImplTest {
     private TraPriceMapper traPriceMapper;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
+
     @Autowired
     private TraPriceService traPriceService;
+
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -91,7 +94,9 @@ public class TraPriceResourceImplTest {
 
     private MockMvc restTraMediaPlantMockMvc;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
 
     private TraPrice traPrice;
 
@@ -117,12 +122,14 @@ public class TraPriceResourceImplTest {
         MockitoAnnotations.initMocks(this);
         TraPriceResourceImpl traMediaPlanTemplateResource = new TraPriceResourceImpl();
 
-        ReflectionTestUtils.setField(traMediaPlanTemplateResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(traMediaPlanTemplateResource, "corChannelService", corChannelService);
         ReflectionTestUtils.setField(traMediaPlanTemplateResource, "traPriceService", traPriceService);
         ReflectionTestUtils.setField(traMediaPlanTemplateResource, "traPriceMapper", traPriceMapper);
 
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
 
         this.restTraMediaPlantMockMvc = MockMvcBuilders.standaloneSetup(traMediaPlanTemplateResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -132,7 +139,7 @@ public class TraPriceResourceImplTest {
 
     @Before
     public void initTest() {
-        traPrice = createEntity(em).network(corNetwork);
+        traPrice = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -143,7 +150,7 @@ public class TraPriceResourceImplTest {
         // Create the TraDiscount
         TraPriceDTO traMediaPlanTemplateDTO = traPriceMapper.DB2DTO(traPrice);
 
-        restTraMediaPlantMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/price", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/price", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isCreated());
@@ -166,7 +173,7 @@ public class TraPriceResourceImplTest {
         TraPriceDTO existingTraPriceDTO = traPriceMapper.DB2DTO(existingTraDiscount);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraMediaPlantMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/price", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/price", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingTraPriceDTO)))
                 .andExpect(status().isBadRequest());
@@ -180,10 +187,10 @@ public class TraPriceResourceImplTest {
     @Transactional
     public void getAllTraPrice() throws Exception {
         // Initialize the database
-        traPriceRepository.saveAndFlush(traPrice.network(corNetwork));
+        traPriceRepository.saveAndFlush(traPrice.channel(corChannel));
 
         // Get all the traMediaPlanList
-        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/price?sort=id,desc", corNetwork.getShortcut()))
+        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/price?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traPrice.getId().intValue())))
@@ -197,10 +204,10 @@ public class TraPriceResourceImplTest {
     @Transactional
     public void getTraPrice() throws Exception {
         // Initialize the database
-        traPriceRepository.saveAndFlush(traPrice.network(corNetwork));
+        traPriceRepository.saveAndFlush(traPrice.channel(corChannel));
 
         // Get the traPrice
-        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/price/{id}", corNetwork.getShortcut(), traPrice.getId()))
+        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/price/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), traPrice.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(traPrice.getId().intValue()))
@@ -219,7 +226,7 @@ public class TraPriceResourceImplTest {
     @Transactional
     public void getNonExistingTraPrice() throws Exception {
         // Get the traPrice
-        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/price/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/price/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -227,7 +234,7 @@ public class TraPriceResourceImplTest {
     @Transactional
     public void updateTraPrice() throws Exception {
         // Initialize the database
-        traPriceRepository.saveAndFlush(traPrice.network(corNetwork));
+        traPriceRepository.saveAndFlush(traPrice.channel(corChannel));
         int databaseSizeBeforeUpdate = traPriceRepository.findAll().size();
 
         // Update the traPrice
@@ -240,7 +247,7 @@ public class TraPriceResourceImplTest {
                 .baseLength(UPDATED_BASE_LENGHT);
         TraPriceDTO traMediaPlanTemplateDTO = traPriceMapper.DB2DTO(this.traPrice);
 
-        restTraMediaPlantMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/traffic/price", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/price", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isOk());
@@ -268,7 +275,7 @@ public class TraPriceResourceImplTest {
         TraPriceDTO traMediaPlanTemplateDTO = traPriceMapper.DB2DTO(traPrice);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraMediaPlantMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/traffic/price", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/price", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isCreated());
@@ -282,11 +289,11 @@ public class TraPriceResourceImplTest {
     @Transactional
     public void deleteTraPrice() throws Exception {
         // Initialize the database
-        traPriceRepository.saveAndFlush(traPrice.network(corNetwork));
+        traPriceRepository.saveAndFlush(traPrice.channel(corChannel));
         int databaseSizeBeforeDelete = traPriceRepository.findAll().size();
 
         // Get the traPrice
-        restTraMediaPlantMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/traffic/price/{id}", corNetwork.getShortcut(), traPrice.getId())
+        restTraMediaPlantMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/price/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), traPrice.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

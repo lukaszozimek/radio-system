@@ -4,8 +4,9 @@ import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.traffic.impl.TraCompanyResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
+import io.protone.core.service.CorChannelService;
 import io.protone.traffic.api.dto.TraCompanyDTO;
 import io.protone.traffic.domain.TraCompany;
 import io.protone.traffic.mapper.TraCompanyMapper;
@@ -29,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static io.protone.application.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertEquals;
@@ -66,7 +67,7 @@ public class TraCompanyResourceImplTest {
     private TraCompanyMapper traCompanyMapper;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
     @Autowired
     private TraCompanyService traCompanyService;
     @Autowired
@@ -83,7 +84,10 @@ public class TraCompanyResourceImplTest {
 
     private MockMvc restTraMediaPlantMockMvc;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
+
 
     private TraCompany traCompany;
 
@@ -107,12 +111,15 @@ public class TraCompanyResourceImplTest {
         MockitoAnnotations.initMocks(this);
         TraCompanyResourceImpl traMediaPlanTemplateResource = new TraCompanyResourceImpl();
 
-        ReflectionTestUtils.setField(traMediaPlanTemplateResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(traMediaPlanTemplateResource, "corChannelService", corChannelService);
         ReflectionTestUtils.setField(traMediaPlanTemplateResource, "traCompanyService", traCompanyService);
         ReflectionTestUtils.setField(traMediaPlanTemplateResource, "traCompanyMapper", traCompanyMapper);
 
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
 
         this.restTraMediaPlantMockMvc = MockMvcBuilders.standaloneSetup(traMediaPlanTemplateResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -122,7 +129,7 @@ public class TraCompanyResourceImplTest {
 
     @Before
     public void initTest() {
-        traCompany = createEntity(em).network(corNetwork);
+        traCompany = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -133,7 +140,7 @@ public class TraCompanyResourceImplTest {
         // Create the TraDiscount
         TraCompanyDTO traMediaPlanTemplateDTO = traCompanyMapper.DB2DTO(traCompany);
 
-        restTraMediaPlantMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/company", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/company", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isCreated());
@@ -156,7 +163,7 @@ public class TraCompanyResourceImplTest {
         TraCompanyDTO existingTraCompanyDTO = traCompanyMapper.DB2DTO(existingTraDiscount);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraMediaPlantMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/traffic/company", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/company", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingTraCompanyDTO)))
                 .andExpect(status().isBadRequest());
@@ -170,10 +177,10 @@ public class TraCompanyResourceImplTest {
     @Transactional
     public void getAllTraCompany() throws Exception {
         // Initialize the database
-        traCompanyRepository.saveAndFlush(traCompany.network(corNetwork));
+        traCompanyRepository.saveAndFlush(traCompany.channel(corChannel));
 
         // Get all the traMediaPlanList
-        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/company?sort=id,desc", corNetwork.getShortcut()))
+        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/company?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traCompany.getId().intValue())))
@@ -189,10 +196,10 @@ public class TraCompanyResourceImplTest {
     @Transactional
     public void getTraCompany() throws Exception {
         // Initialize the database
-        traCompanyRepository.saveAndFlush(traCompany.network(corNetwork));
+        traCompanyRepository.saveAndFlush(traCompany.channel(corChannel));
 
         // Get the traCompany
-        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/company/{id}", corNetwork.getShortcut(), traCompany.getId()))
+        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/company/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), traCompany.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(traCompany.getId().intValue()))
@@ -208,7 +215,7 @@ public class TraCompanyResourceImplTest {
     @Transactional
     public void getNonExistingTraCompany() throws Exception {
         // Get the traCompany
-        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/traffic/company/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restTraMediaPlantMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/company/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -216,7 +223,7 @@ public class TraCompanyResourceImplTest {
     @Transactional
     public void updateTraCompany() throws Exception {
         // Initialize the database
-        traCompanyRepository.saveAndFlush(traCompany.network(corNetwork));
+        traCompanyRepository.saveAndFlush(traCompany.channel(corChannel));
         int databaseSizeBeforeUpdate = traCompanyRepository.findAll().size();
 
         // Update the traCompany
@@ -227,7 +234,7 @@ public class TraCompanyResourceImplTest {
                 .shortName(UPDATED_SHORT_NAME);
         TraCompanyDTO traMediaPlanTemplateDTO = traCompanyMapper.DB2DTO(this.traCompany);
 
-        restTraMediaPlantMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/traffic/company", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/company", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isOk());
@@ -252,7 +259,7 @@ public class TraCompanyResourceImplTest {
         TraCompanyDTO traMediaPlanTemplateDTO = traCompanyMapper.DB2DTO(traCompany);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraMediaPlantMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/traffic/company", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/company", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isCreated());
@@ -266,11 +273,11 @@ public class TraCompanyResourceImplTest {
     @Transactional
     public void deleteTraCompany() throws Exception {
         // Initialize the database
-        traCompanyRepository.saveAndFlush(traCompany.network(corNetwork));
+        traCompanyRepository.saveAndFlush(traCompany.channel(corChannel));
         int databaseSizeBeforeDelete = traCompanyRepository.findAll().size();
 
         // Get the traCompany
-        restTraMediaPlantMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/traffic/company/{id}", corNetwork.getShortcut(), traCompany.getId())
+        restTraMediaPlantMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/traffic/company/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), traCompany.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

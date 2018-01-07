@@ -12,7 +12,7 @@
                                  baseTableName="lib_file_library"
                                  constraintName="fk_lib_file_library_channel_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+                                 referencedTableName="cor_channel"/>
 
         <addForeignKeyConstraint baseColumnNames="created_by_id"
                                  baseTableName="lib_file_library"

@@ -1,9 +1,8 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.scheduler.domain.SchAttachment;
 import io.protone.scheduler.repository.SchAttachmentRepository;
 import io.protone.scheduler.service.SchAttachmentService;
@@ -21,7 +20,9 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static io.protone.application.util.TestConstans.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by lukaszozimek on 28/08/2017.
@@ -38,17 +39,17 @@ public class SchAttachmentServiceTest {
     @Autowired
     private SchAttachmentRepository schAttachmentRepository;
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
 
+    private CorOrganization corOrganization;
 
     @Before
     public void setUp() throws Exception {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
+        factory = new PodamFactoryImpl();
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
     }
 
 
@@ -56,7 +57,6 @@ public class SchAttachmentServiceTest {
     public void shouldSaveSchAttachment() throws Exception {
         //when
         SchAttachment schAttachment = factory.manufacturePojo(SchAttachment.class);
-        schAttachment.setNetwork(corNetwork);
         schAttachment.setChannel(corChannel);
         //then
         List<SchAttachment> fetchedEntity = attachmentService.saveAttachmenst(Lists.newArrayList(schAttachment));
@@ -64,14 +64,13 @@ public class SchAttachmentServiceTest {
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.stream().findFirst().get().getId());
-        assertEquals(schAttachment.getNetwork(), fetchedEntity.stream().findFirst().get().getNetwork());
+
     }
 
     @Test
     public void shouldDeleteSchAttachment() throws Exception {
         //when
         SchAttachment schAttachment = factory.manufacturePojo(SchAttachment.class);
-        schAttachment.setNetwork(corNetwork);
         schAttachment.setChannel(corChannel);
         schAttachment = schAttachmentRepository.saveAndFlush(schAttachment);
         //then

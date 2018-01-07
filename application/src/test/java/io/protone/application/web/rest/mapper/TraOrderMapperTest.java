@@ -3,8 +3,8 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorDictionaryDTO;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorUser;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.api.dto.TraOrderDTO;
@@ -52,7 +52,8 @@ public class TraOrderMapperTest {
 
     private List<TraOrder> traOrders = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
+
 
     private PodamFactory factory;
 
@@ -85,7 +86,7 @@ public class TraOrderMapperTest {
         traOrderDTO.setStatusId(factory.manufacturePojo(CorDictionaryDTO.class));
         traOrderDTO.setInvoiceId(1L);
         orderPTS.add(traOrderDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
 
     }
 
@@ -157,7 +158,7 @@ public class TraOrderMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<TraOrder> entities = customTraOrderMapper.DTOs2DBs(orderPTS, corNetwork);
+        List<TraOrder> entities = customTraOrderMapper.DTOs2DBs(orderPTS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -174,14 +175,14 @@ public class TraOrderMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getStartDate());
 
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        TraOrder entity = customTraOrderMapper.DTO2DB(traOrderDTO, corNetwork);
+        TraOrder entity = customTraOrderMapper.DTO2DB(traOrderDTO, corChannel);
 
         assertNotNull(entity.getAdvertisment());
         assertNotNull(entity.getStatus());
@@ -194,7 +195,7 @@ public class TraOrderMapperTest {
         assertNotNull(entity.getName());
         assertNotNull(entity.getStartDate());
 
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
 
 
     }

@@ -2,8 +2,8 @@ package io.protone.application.web.rest.mapper;
 
 import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorUser;
 import io.protone.crm.api.dto.CrmOpportunityDTO;
 import io.protone.crm.api.dto.thin.CrmOpportunityThinDTO;
@@ -44,7 +44,7 @@ public class CrmOpportunityMapperTest {
 
     private List<CrmOpportunity> crmOpportunities = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -67,7 +67,7 @@ public class CrmOpportunityMapperTest {
         crmOpportunities.add(crmOpportunity);
         crmOpportunityDTO = factory.manufacturePojo(CrmOpportunityDTO.class);
         crmOpportunityDTOS.add(crmOpportunityDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
 
 
     }
@@ -125,7 +125,7 @@ public class CrmOpportunityMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CrmOpportunity> entities = customCrmOpportunityMapper.DTOs2DBs(crmOpportunityDTOS, corNetwork);
+        List<CrmOpportunity> entities = customCrmOpportunityMapper.DTOs2DBs(crmOpportunityDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -141,14 +141,14 @@ public class CrmOpportunityMapperTest {
             assertNotNull(entity.getLastTry());
             assertNotNull(entity.getCloseDate());
             assertNotNull(entity.getTasks());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmOpportunity entity = customCrmOpportunityMapper.DTO2DB(crmOpportunityDTO, corNetwork);
+        CrmOpportunity entity = customCrmOpportunityMapper.DTO2DB(crmOpportunityDTO, corChannel);
 
 
         assertNotNull(entity.getId());
@@ -161,7 +161,7 @@ public class CrmOpportunityMapperTest {
         assertNotNull(entity.getLastTry());
         assertNotNull(entity.getCloseDate());
         assertNotNull(entity.getTasks());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test

@@ -5,12 +5,13 @@ import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.impl.CorPropertyKeyResourceImpl;
 import io.protone.core.api.dto.CorKeyDTO;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.CorPropertyKey;
 import io.protone.core.mapper.CorPropertyKeyMapper;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.repository.CorPropertyKeyRepository;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -54,7 +56,7 @@ public class CorPropertyKeyResourceTest {
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Inject
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
@@ -66,7 +68,9 @@ public class CorPropertyKeyResourceTest {
 
     private CorPropertyKey corPropertyKey;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
 
     /**
      * Create an entity for this test.
@@ -76,27 +80,29 @@ public class CorPropertyKeyResourceTest {
      */
     public static CorPropertyKey createEntity(EntityManager em) {
         CorPropertyKey corPropertyKey = new CorPropertyKey()
-            .key(DEFAULT_KEY);
+                .key(DEFAULT_KEY);
         return corPropertyKey;
     }
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
         CorPropertyKeyResourceImpl corPropertyKeyResource = new CorPropertyKeyResourceImpl();
         ReflectionTestUtils.setField(corPropertyKeyResource, "corPropertyKeyRepository", corPropertyKeyRepository);
         ReflectionTestUtils.setField(corPropertyKeyResource, "corPropertyKeyMapper", corPropertyKeyMapper);
-        ReflectionTestUtils.setField(corPropertyKeyResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(corPropertyKeyResource, "corChannelService", corChannelService);
         this.restCorPropertyKeyMockMvc = MockMvcBuilders.standaloneSetup(corPropertyKeyResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setMessageConverters(jacksonMessageConverter).build();
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
     public void initTest() {
-        corPropertyKey = createEntity(em).network(corNetwork);
+        corPropertyKey = createEntity(em).channel(corChannel);
     }
 
 
@@ -108,10 +114,10 @@ public class CorPropertyKeyResourceTest {
         // Create the CorPropertyKey
         CorKeyDTO corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(corPropertyKey);
 
-        restCorPropertyKeyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corPropertyKeyDTO)))
-            .andExpect(status().isCreated());
+        restCorPropertyKeyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/dictionary/property/key", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corPropertyKeyDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the CorPropertyKey in the database
         List<CorPropertyKey> corPropertyKeyList = corPropertyKeyRepository.findAll();
@@ -131,10 +137,10 @@ public class CorPropertyKeyResourceTest {
         CorKeyDTO existingCorPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(existingCorPropertyKey);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorPropertyKeyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingCorPropertyKeyDTO)))
-            .andExpect(status().isBadRequest());
+        restCorPropertyKeyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/dictionary/property/key", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(existingCorPropertyKeyDTO)))
+                .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
         List<CorPropertyKey> corPropertyKeyList = corPropertyKeyRepository.findAll();
@@ -151,10 +157,10 @@ public class CorPropertyKeyResourceTest {
         // Create the CorPropertyKey, which fails.
         CorKeyDTO corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(corPropertyKey);
 
-        restCorPropertyKeyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corPropertyKeyDTO)))
-            .andExpect(status().isBadRequest());
+        restCorPropertyKeyMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/dictionary/property/key", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corPropertyKeyDTO)))
+                .andExpect(status().isBadRequest());
 
         List<CorPropertyKey> corPropertyKeyList = corPropertyKeyRepository.findAll();
         assertThat(corPropertyKeyList).hasSize(databaseSizeBeforeTest);
@@ -164,55 +170,55 @@ public class CorPropertyKeyResourceTest {
     @Transactional
     public void getAllCorPropertyKeys() throws Exception {
         // Initialize the database
-        CorPropertyKey propertyKey = corPropertyKeyRepository.saveAndFlush(corPropertyKey.network(corNetwork));
+        CorPropertyKey propertyKey = corPropertyKeyRepository.saveAndFlush(corPropertyKey.channel(corChannel));
 
         // Get all the corPropertyKeyList
-        restCorPropertyKeyMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key?sort=id,desc", corNetwork.getShortcut()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(propertyKey.getId().intValue())))
-            .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY.toString())));
+        restCorPropertyKeyMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/dictionary/property/key?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(propertyKey.getId().intValue())))
+                .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY.toString())));
     }
 
     @Test
     @Transactional
     public void getCorPropertyKey() throws Exception {
         // Initialize the database
-        corPropertyKeyRepository.saveAndFlush(corPropertyKey.network(corNetwork));
+        corPropertyKeyRepository.saveAndFlush(corPropertyKey.channel(corChannel));
 
         // Get the corPropertyKey
-        restCorPropertyKeyMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/{id}", corNetwork.getShortcut(), corPropertyKey.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(corPropertyKey.getId().intValue()))
-            .andExpect(jsonPath("$.key").value(DEFAULT_KEY.toString()));
+        restCorPropertyKeyMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/dictionary/property/key/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), corPropertyKey.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(corPropertyKey.getId().intValue()))
+                .andExpect(jsonPath("$.key").value(DEFAULT_KEY.toString()));
     }
 
     @Test
     @Transactional
     public void getNonExistingCorPropertyKey() throws Exception {
         // Get the corPropertyKey
-        restCorPropertyKeyMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restCorPropertyKeyMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/dictionary/property/key/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
+                .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
     public void updateCorPropertyKey() throws Exception {
         // Initialize the database
-        corPropertyKeyRepository.saveAndFlush(corPropertyKey.network(corNetwork));
+        corPropertyKeyRepository.saveAndFlush(corPropertyKey.channel(corChannel));
         int databaseSizeBeforeUpdate = corPropertyKeyRepository.findAll().size();
 
         // Update the corPropertyKey
         CorPropertyKey updatedCorPropertyKey = corPropertyKeyRepository.findOne(corPropertyKey.getId());
         updatedCorPropertyKey
-            .key(UPDATED_KEY);
+                .key(UPDATED_KEY);
         CorKeyDTO corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(updatedCorPropertyKey);
 
-        restCorPropertyKeyMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corPropertyKeyDTO)))
-            .andExpect(status().isOk());
+        restCorPropertyKeyMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/dictionary/property/key", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corPropertyKeyDTO)))
+                .andExpect(status().isOk());
 
         // Validate the CorPropertyKey in the database
         List<CorPropertyKey> corPropertyKeyList = corPropertyKeyRepository.findAll();
@@ -230,10 +236,10 @@ public class CorPropertyKeyResourceTest {
         CorKeyDTO corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(corPropertyKey);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorPropertyKeyMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corPropertyKeyDTO)))
-            .andExpect(status().isCreated());
+        restCorPropertyKeyMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/dictionary/property/key", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corPropertyKeyDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the CorPropertyKey in the database
         List<CorPropertyKey> corPropertyKeyList = corPropertyKeyRepository.findAll();
@@ -244,13 +250,13 @@ public class CorPropertyKeyResourceTest {
     @Transactional
     public void deleteCorPropertyKey() throws Exception {
         // Initialize the database
-        corPropertyKeyRepository.saveAndFlush(corPropertyKey.network(corNetwork));
+        corPropertyKeyRepository.saveAndFlush(corPropertyKey.channel(corChannel));
         int databaseSizeBeforeDelete = corPropertyKeyRepository.findAll().size();
 
         // Get the corPropertyKey
-        restCorPropertyKeyMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/property/key/{id}", corNetwork.getShortcut(), corPropertyKey.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+        restCorPropertyKeyMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/dictionary/property/key/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), corPropertyKey.getId())
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
 
         // Validate the database is empty
         List<CorPropertyKey> corPropertyKeyList = corPropertyKeyRepository.findAll();

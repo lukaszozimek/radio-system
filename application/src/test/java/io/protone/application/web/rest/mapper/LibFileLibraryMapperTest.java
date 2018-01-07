@@ -1,7 +1,7 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.library.api.dto.LibFileLibraryDTO;
 import io.protone.library.domain.LibFileLibrary;
 import io.protone.library.mapper.LibFileLibraryMapper;
@@ -39,7 +39,7 @@ public class LibFileLibraryMapperTest {
 
     private List<LibFileLibrary> libLibraries = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -49,7 +49,7 @@ public class LibFileLibraryMapperTest {
         libLibraries.add(libLibrary);
         libLibraryDTO = factory.manufacturePojo(LibFileLibraryDTO.class);
         libLibraryDTOS.add(libLibraryDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
 
     }
 
@@ -86,7 +86,7 @@ public class LibFileLibraryMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibFileLibrary entity = libLibraryMapper.DTO2DB(libLibraryDTO, corNetwork);
+        LibFileLibrary entity = libLibraryMapper.DTO2DB(libLibraryDTO, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getPrefix());
@@ -94,13 +94,12 @@ public class LibFileLibraryMapperTest {
         assertNotNull(entity.getName());
         assertNotNull(entity.getCounter());
         assertNotNull(entity.getDescription());
-
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibFileLibrary> entities = libLibraryMapper.DTOs2DBs(libLibraryDTOS, corNetwork);
+        List<LibFileLibrary> entities = libLibraryMapper.DTOs2DBs(libLibraryDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -112,7 +111,7 @@ public class LibFileLibraryMapperTest {
             assertNotNull(entity.getCounter());
             assertNotNull(entity.getDescription());
 
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }

@@ -3,7 +3,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.traffic.api.dto.TraEmissionDTO;
@@ -43,8 +42,6 @@ public class TraEmissionMapperTest {
 
     private List<TraEmission> traEmissions = new ArrayList<>();
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
 
     @Before
@@ -61,7 +58,7 @@ public class TraEmissionMapperTest {
         traEmissionDTO.setId(1L);
         traEmissionDTO.advertisment(factory.manufacturePojo(LibMediaItemThinDTO.class));
         traEmissionDTOS.add(traEmissionDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
         corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
@@ -99,13 +96,12 @@ public class TraEmissionMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraEmission entity = traEmissionMapper.DTO2DB(traEmissionDTO, corNetwork, corChannel);
+        TraEmission entity = traEmissionMapper.DTO2DB(traEmissionDTO, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getAdvertiment());
         assertNotNull(entity.getTimeStart());
         assertNotNull(entity.getTimeStop());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getSequence());
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getOrder());
@@ -114,7 +110,7 @@ public class TraEmissionMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraEmission> entities = traEmissionMapper.DTOs2DBs(traEmissionDTOS, corNetwork, corChannel);
+        List<TraEmission> entities = traEmissionMapper.DTOs2DBs(traEmissionDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -125,7 +121,6 @@ public class TraEmissionMapperTest {
             assertNotNull(entity.getTimeStart());
             assertNotNull(entity.getSequence());
             assertNotNull(entity.getTimeStop());
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getOrder());
 

@@ -1,7 +1,8 @@
 package io.protone.application.service.traffic;
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.traffic.domain.TraCompany;
 import io.protone.traffic.repository.TraCompanyRepository;
@@ -18,11 +19,9 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static io.protone.application.util.TestConstans.*;
+import static org.junit.Assert.*;
 
 /**
  * Created by lukaszozimek on 11/08/2017.
@@ -40,7 +39,9 @@ public class TraCompanyServiceTest {
     @Autowired
     private CorNetworkRepository corNetworkRepository;
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
+
+    private CorOrganization corOrganization;
 
 
     private PodamFactory factory;
@@ -48,31 +49,25 @@ public class TraCompanyServiceTest {
     @Before
     public void setUp() throws Exception {
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
     }
 
     @Test
     public void shouldGetAllCompany() throws Exception {
         //when
         TraCompany traCompany = factory.manufacturePojo(TraCompany.class);
-        traCompany.setNetwork(corNetwork);
+        traCompany.setChannel(corChannel);
         traCompany = traCompanyRepository.save(traCompany);
 
         //then
-        Slice<TraCompany> fetchedEntity = traCompanyService.getAllCompany(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraCompany> fetchedEntity = traCompanyService.getAllCompany(corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
-        assertEquals(1, fetchedEntity.getContent().size());
-        assertEquals(traCompany.getId(), fetchedEntity.getContent().get(0).getId());
-        assertEquals(traCompany.getName(), fetchedEntity.getContent().get(0).getName());
-        assertEquals(traCompany.getDescription(), fetchedEntity.getContent().get(0).getDescription());
-        assertEquals(traCompany.getTaxId1(), fetchedEntity.getContent().get(0).getTaxId1());
-        assertEquals(traCompany.getTaxId2(), fetchedEntity.getContent().get(0).getTaxId2());
-        assertEquals(traCompany.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
-
 
     }
 
@@ -81,7 +76,7 @@ public class TraCompanyServiceTest {
         //when
         TraCompany traCompany = factory.manufacturePojo(TraCompany.class);
 
-        traCompany.setNetwork(corNetwork);
+        traCompany.setChannel(corChannel);
 
         //then
         TraCompany fetchedEntity = traCompanyService.saveCompany(traCompany);
@@ -94,7 +89,7 @@ public class TraCompanyServiceTest {
         assertNotNull(traCompany.getDescription());
         assertNotNull(traCompany.getTaxId1());
         assertNotNull(traCompany.getTaxId2());
-        assertEquals(traCompany.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(traCompany.getChannel(), fetchedEntity.getChannel());
     }
 
     @Test
@@ -102,11 +97,11 @@ public class TraCompanyServiceTest {
         //when
         TraCompany traCompany = factory.manufacturePojo(TraCompany.class);
 
-        traCompany.setNetwork(corNetwork);
+        traCompany.setChannel(corChannel);
         traCompany = traCompanyRepository.save(traCompany);
         //then
-        traCompanyService.deleteCompany(traCompany.getId(), corNetwork.getShortcut());
-        TraCompany fetchedEntity = traCompanyService.getCompany(traCompany.getId(), corNetwork.getShortcut());
+        traCompanyService.deleteCompany(traCompany.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
+        TraCompany fetchedEntity = traCompanyService.getCompany(traCompany.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(fetchedEntity);
@@ -116,11 +111,11 @@ public class TraCompanyServiceTest {
     public void shouldGetCompany() throws Exception {
         //when
         TraCompany traCompany = factory.manufacturePojo(TraCompany.class);
-        traCompany.setNetwork(corNetwork);
+        traCompany.setChannel(corChannel);
         traCompany = traCompanyRepository.save(traCompany);
 
         //then
-        TraCompany fetchedEntity = traCompanyService.getCompany(traCompany.getId(), corNetwork.getShortcut());
+        TraCompany fetchedEntity = traCompanyService.getCompany(traCompany.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(fetchedEntity);
@@ -130,7 +125,7 @@ public class TraCompanyServiceTest {
         assertEquals(traCompany.getDescription(), fetchedEntity.getDescription());
         assertEquals(traCompany.getTaxId1(), fetchedEntity.getTaxId1());
         assertEquals(traCompany.getTaxId2(), fetchedEntity.getTaxId2());
-        assertEquals(traCompany.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(traCompany.getChannel(), fetchedEntity.getChannel());
     }
 
 

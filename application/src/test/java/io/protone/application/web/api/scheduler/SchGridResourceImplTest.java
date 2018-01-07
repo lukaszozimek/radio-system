@@ -3,14 +3,12 @@ package io.protone.application.web.api.scheduler;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.scheduler.impl.SchGridConfigurationResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.service.CorChannelService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.mapper.SchGridMapper;
@@ -34,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -68,9 +67,6 @@ public class SchGridResourceImplTest {
     private CorChannelService corChannelService;
 
     @Autowired
-    private CorNetworkService corNetworkService;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -86,9 +82,10 @@ public class SchGridResourceImplTest {
 
     private SchGrid schGrid;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
 
     private CorChannel corChannel;
+
 
     /**
      * Create an entity for this test.
@@ -109,7 +106,6 @@ public class SchGridResourceImplTest {
         SchGridConfigurationResourceImpl traPlaylistResource = new SchGridConfigurationResourceImpl();
         ReflectionTestUtils.setField(traPlaylistResource, "schGridService", schGridService);
         ReflectionTestUtils.setField(traPlaylistResource, "schGridMapper", schGridMapper);
-        ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(traPlaylistResource, "corChannelService", corChannelService);
 
 
@@ -121,11 +117,11 @@ public class SchGridResourceImplTest {
 
     @Before
     public void initTest() {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
-        schGrid = createEntity(em).network(corNetwork).channel(corChannel);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        schGrid = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -136,7 +132,7 @@ public class SchGridResourceImplTest {
         // Create the SchGrid
         SchGridDTO traPlaylistDTO = schGridMapper.DB2DTO(schGrid);
 
-        restSchGridMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchGridMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -161,7 +157,7 @@ public class SchGridResourceImplTest {
         SchGridDTO existingSchGridDTO = schGridMapper.DB2DTO(existingSchGrid);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSchGridMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchGridMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingSchGridDTO)))
                 .andExpect(status().isBadRequest());
@@ -175,10 +171,10 @@ public class SchGridResourceImplTest {
     @Transactional
     public void getAllSchGrids() throws Exception {
         // Initialize the database
-        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel));
+        schGridRepository.saveAndFlush(schGrid.channel(corChannel));
 
         // Get all the traPlaylistList
-        restSchGridMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchGridMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schGrid.getId().intValue())))
@@ -192,10 +188,10 @@ public class SchGridResourceImplTest {
     @Transactional
     public void getAllSchGridsDefaults() throws Exception {
         // Initialize the database
-        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel).defaultGrid(true));
+        schGridRepository.saveAndFlush(schGrid.channel(corChannel).defaultGrid(true));
 
         // Get all the traPlaylistList
-        restSchGridMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/default?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchGridMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/default?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schGrid.getId().intValue())))
@@ -211,10 +207,10 @@ public class SchGridResourceImplTest {
         // Initialize the database
         CorDictionary corDictionary = new CorDictionary();
         corDictionary.setId(51L);
-        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel).gridCategory(corDictionary));
+        schGridRepository.saveAndFlush(schGrid.channel(corChannel).gridCategory(corDictionary));
 
         // Get all the traPlaylistList
-        restSchGridMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut(),GRID_TEST_CATEGORY))
+        restSchGridMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/category/{name}?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut(),GRID_TEST_CATEGORY))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schGrid.getId().intValue())))
@@ -227,10 +223,10 @@ public class SchGridResourceImplTest {
     @Transactional
     public void getSchGrid() throws Exception {
         // Initialize the database
-        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel));
+        schGridRepository.saveAndFlush(schGrid.channel(corChannel));
 
         // Get the schGrid
-        restSchGridMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME))
+        restSchGridMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
@@ -241,7 +237,7 @@ public class SchGridResourceImplTest {
     @Transactional
     public void getNonExistingSchGrid() throws Exception {
         // Get the schGrid
-        restSchGridMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
+        restSchGridMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -249,7 +245,7 @@ public class SchGridResourceImplTest {
     @Transactional
     public void updateSchGrid() throws Exception {
         // Initialize the database
-        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel));
+        schGridRepository.saveAndFlush(schGrid.channel(corChannel));
         int databaseSizeBeforeUpdate = schGridRepository.findAll().size();
 
         // Update the schGrid
@@ -258,7 +254,7 @@ public class SchGridResourceImplTest {
                 .name(UPDATED_NAME).shortName(UPDATED_SHORTNAME);
         SchGridDTO traPlaylistDTO = schGridMapper.DB2DTO(updatedSchGrid);
 
-        restSchGridMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchGridMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isOk());
@@ -280,7 +276,7 @@ public class SchGridResourceImplTest {
         SchGridDTO traPlaylistDTO = schGridMapper.DB2DTO(schGrid);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSchGridMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchGridMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -294,11 +290,11 @@ public class SchGridResourceImplTest {
     @Transactional
     public void deleteSchGrid() throws Exception {
         // Initialize the database
-        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel));
+        schGridRepository.saveAndFlush(schGrid.channel(corChannel));
         int databaseSizeBeforeDelete = schGridRepository.findAll().size();
 
         // Get the schGrid
-        restSchGridMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME)
+        restSchGridMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME)
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

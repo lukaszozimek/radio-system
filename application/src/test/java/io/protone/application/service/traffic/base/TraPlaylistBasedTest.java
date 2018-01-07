@@ -2,15 +2,12 @@ package io.protone.application.service.traffic.base;
 
 import com.google.common.collect.Sets;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
-import io.protone.core.repository.CorChannelRepository;
-import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.*;
-import io.protone.library.mapper.LibMediaItemMapper;
 import io.protone.library.mapper.LibMediaItemThinMapper;
 import io.protone.library.repository.*;
 import io.protone.traffic.api.dto.thin.TraOrderThinDTO;
@@ -18,7 +15,6 @@ import io.protone.traffic.domain.*;
 import io.protone.traffic.mapper.TraOrderMapper;
 import io.protone.traffic.repository.*;
 import io.protone.traffic.service.TraAdvertisementService;
-import io.protone.traffic.service.TraPlaylistService;
 import org.assertj.core.util.Lists;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -31,6 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static io.protone.application.util.TestConstans.*;
+
 /**
  * Created by lukaszozimek on 06/06/2017.
  */
@@ -39,8 +37,8 @@ public class TraPlaylistBasedTest {
 
     private static final int DAILY_BLOCK_NUMBER = 96;
     protected PodamFactory factory = new PodamFactoryImpl();
-    protected CorNetwork corNetwork;
     protected CorChannel corChannel;
+    protected CorOrganization corOrganization;
     protected LibMediaLibrary libMediaLibrary;
     protected TraOrderThinDTO traOrderThinDTO;
     protected TraAdvertisement advertisementToShuffle;
@@ -61,21 +59,14 @@ public class TraPlaylistBasedTest {
     @Inject
     protected LibFileItemRepository libFileItemRepository;
     @Inject
-    private LibMediaItemMapper libMediaItemMapper;
-    @Inject
     private LibMediaItemThinMapper thinMapper;
     @Inject
     protected TraBlockConfigurationRepository trablockConfigurationRepository;
     @Inject
-    protected TraPlaylistService traPlaylistService;
-    @Inject
     private TraAdvertisementService traAdvertisementService;
     @Inject
     private LibMediaItemRepository libMediaItemRepository;
-    @Inject
-    private CorChannelRepository corChannelRepository;
-    @Inject
-    private CorNetworkRepository corNetworkRepository;
+
     @Inject
     protected TraBlockRepository trablockRepository;
     @Inject
@@ -98,7 +89,6 @@ public class TraPlaylistBasedTest {
             LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
             libMediaItem.setIdx(String.valueOf(java.util.concurrent.ThreadLocalRandom.current().nextInt()));
             libMediaItem.length(java.util.concurrent.ThreadLocalRandom.current().nextDouble(30000.0));
-            libMediaItem.network(corNetwork);
             libMediaItem.setLibrary(libMediaLibrary);
             libMediaItems.add(libMediaItemRepository.saveAndFlush(libMediaItem));
         }
@@ -110,7 +100,7 @@ public class TraPlaylistBasedTest {
         mediaItemList.stream().forEach(libMediaItem -> {
             TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
             traAdvertisement.mediaItem(Sets.newHashSet(libMediaItem));
-            traAdvertisement.network(corNetwork);
+            traAdvertisement.channel(corChannel);
             traAdvertisement.setCustomer(crmAccount);
             traAdvertisements.add(traAdvertisementService.saveAdvertisement(traAdvertisement));
 
@@ -126,7 +116,7 @@ public class TraPlaylistBasedTest {
             trablock.sequence(i);
             trablock.setLength(Long.valueOf((180000)));
             trablock.setChannel(corChannel);
-            trablock.setNetwork(corNetwork);
+
             trablock = trablockRepository.saveAndFlush(trablock);
             trablock.emissions(buildTraEmissionss(java.util.concurrent.ThreadLocalRandom.current().nextInt(0, 5), 5, trablock.getLength(), trablock));
             trablock = trablockRepository.saveAndFlush(trablock);
@@ -150,7 +140,6 @@ public class TraPlaylistBasedTest {
                 }
                 trablock.setStopBlock(trablock.getStartBlock().longValue() + trablock.getLength());
                 trablock.setChannel(corChannel);
-                trablock.setNetwork(corNetwork);
                 trablock.setDay(corDayOfWeekEnum);
                 trablock = trablockConfigurationRepository.saveAndFlush(trablock);
                 traBlocks.add(trablock);
@@ -175,8 +164,6 @@ public class TraPlaylistBasedTest {
                 }
                 trablock.setStopBlock(trablock.getStartBlock().longValue() + trablock.getLength());
                 trablock.setChannel(corChannel);
-                trablock.setNetwork(corNetwork);
-
                 trablock = trablockRepository.saveAndFlush(trablock);
                 trablock.emissions(buildTraEmissionss(java.util.concurrent.ThreadLocalRandom.current().nextInt(0, 3), 5, trablock.getLength(), trablock));
 
@@ -196,7 +183,6 @@ public class TraPlaylistBasedTest {
             traEmission.sequence(java.util.concurrent.ThreadLocalRandom.current().nextInt(0, maxCommercialNumber));
             traEmission.setChannel(corChannel);
             traEmission.setPrice(new BigDecimal(1L));
-            traEmission.setNetwork(corNetwork);
             traEmission.setOrder(traOrder);
             traEmission.setBlock(traBlock);
             if (0 < (currentLenght - traEmission.getAdvertiment().getLength().longValue())) {
@@ -213,7 +199,6 @@ public class TraPlaylistBasedTest {
         traPlaylist.playlists(buildDayliBlockStrucutre());
         traPlaylist.setPlaylistDate(date);
         traPlaylist.setChannel(corChannel);
-        traPlaylist.setNetwork(corNetwork);
         traPlaylist = traPlaylistRepository.saveAndFlush(traPlaylist);
         return traPlaylist;
     }
@@ -223,59 +208,55 @@ public class TraPlaylistBasedTest {
         traPlaylist.playlists(buildBlockWithEmission());
         traPlaylist.setPlaylistDate(date);
         traPlaylist.setChannel(corChannel);
-        traPlaylist.setNetwork(corNetwork);
         traPlaylist = traPlaylistRepository.saveAndFlush(traPlaylist);
         return traPlaylist;
     }
 
     protected void buildMustHavePojos() {
-        corChannel = factory.manufacturePojo(CorChannel.class);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
         this.libMediaLibrary = factory.manufacturePojo(LibMediaLibrary.class);
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         libMediaItemToShuffle = factory.manufacturePojo(LibMediaItem.class);
         advertisementToShuffle = factory.manufacturePojo(TraAdvertisement.class);
         traOrder = factory.manufacturePojo(TraOrder.class);
 
-        corNetwork.setId(12L);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
-        corChannel.setId(12L);
-        corChannel.setNetwork(corNetwork);
-        corChannel = corChannelRepository.saveAndFlush(corChannel);
-        this.libMediaLibrary.setId(12L);
-        this.libMediaLibrary.network(corNetwork);
-        this.libCloudObject = factory.manufacturePojo(LibCloudObject.class);
-        this.libCloudObject.network(corNetwork);
-        this.libCloudObject = libCloudObjectRepository.saveAndFlush(this.libCloudObject);
-        this.libMediaLibrary = libLibraryRepository.saveAndFlush(this.libMediaLibrary);
-        this.libFileLibrary = factory.manufacturePojo(LibFileLibrary.class);
-        this.libFileLibrary.shortcut("mpl");
-        this.libFileLibrary.network(corNetwork);
-        this.libFileLibrary = libFileLibraryRepository.saveAndFlush(libFileLibrary);
-        this.libFileItem = factory.manufacturePojo(LibFileItem.class);
-        this.libFileItem.network(corNetwork);
-        this.libFileItem.setCloudObject(libCloudObject);
-        this.libFileItem.library(this.libFileLibrary);
-        this.libFileItem = this.libFileItemRepository.save(libFileItem);
 
-        crmAccount.setNetwork(corNetwork);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.setOrganization(corOrganization);
+        this.libMediaLibrary.setId(2L);
+        this.libMediaLibrary.setChannel(corChannel);
+        this.libCloudObject = factory.manufacturePojo(LibCloudObject.class);
+        this.libCloudObject = libCloudObjectRepository.saveAndFlush(this.libCloudObject);
+        this.libFileLibrary = factory.manufacturePojo(LibFileLibrary.class);
+
+        this.libFileLibrary.setId(8L);
+        this.libFileLibrary.shortcut("mpl");
+        this.libFileLibrary.setChannel(corChannel);
+
+        this.libFileItem = factory.manufacturePojo(LibFileItem.class);
+        this.libFileItem.setCloudObject(libCloudObject);
+        this.libFileItem.setChannel(corChannel);
+        this.libFileItem.library(this.libFileLibrary);
+        this.libFileItemRepository.saveAndFlush(libFileItem);
+
+        crmAccount.setChannel(corChannel);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
 
-        libMediaItemToShuffle.setNetwork(corNetwork);
         libMediaItemToShuffle.setLibrary(this.libMediaLibrary);
-        LibMediaLibrary libMediaLibrary = new LibMediaLibrary();
-        libMediaLibrary.setId(2L);
+        libMediaItemToShuffle.setChannel(corChannel);
         libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle.length(30000.0).library(libMediaLibrary));
         libMediaItemToShuffleThinDTO = thinMapper.DB2DTO(libMediaItemToShuffle);
         advertisementToShuffle.setCustomer(crmAccount);
-        advertisementToShuffle.setNetwork(corNetwork);
+        advertisementToShuffle.setChannel(corChannel);
         advertisementToShuffle.setMediaItem(Sets.newHashSet(libMediaItemToShuffle));
         advertisementToShuffle = traAdvertisementService.saveAdvertisement(advertisementToShuffle);
 
 
         traOrder.setCustomer(crmAccount);
-        traOrder.setNetwork(corNetwork);
         traOrder.setAdvertisment(advertisementToShuffle);
+        traOrder.setChannel(corChannel);
         traOrder = traOrderRepository.saveAndFlush(traOrder);
         traOrderThinDTO = traOrderMapper.DB2ThinDTO(traOrder);
 

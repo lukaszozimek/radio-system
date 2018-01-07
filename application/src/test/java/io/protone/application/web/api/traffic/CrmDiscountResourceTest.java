@@ -5,8 +5,9 @@ import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.crm.impl.CrmDiscountResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
+import io.protone.core.service.CorChannelService;
 import io.protone.crm.api.dto.CrmDiscountDTO;
 import io.protone.crm.domain.CrmDiscount;
 import io.protone.crm.mapper.CrmDiscountMapper;
@@ -31,7 +32,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
-import static io.protone.application.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -59,7 +60,7 @@ public class CrmDiscountResourceTest {
     private CrmDiscountMapper crmDiscountMapper;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -76,7 +77,10 @@ public class CrmDiscountResourceTest {
     private MockMvc restTraDiscountMockMvc;
 
     private CrmDiscount traDiscount;
-    private CorNetwork corNetwork;
+    
+    private CorOrganization corOrganization;
+    
+    private CorChannel corChannel;
 
     /**
      * Create an entity for this test.
@@ -86,9 +90,9 @@ public class CrmDiscountResourceTest {
      */
     public static CrmDiscount createEntity(EntityManager em) {
         CrmDiscount traDiscount = new CrmDiscount()
-            .validFrom(DEFAULT_VALID_FROM)
-            .validTo(DEFAULT_VALID_TO)
-            .discount(DEFAULT_DISCOUNT);
+                .validFrom(DEFAULT_VALID_FROM)
+                .validTo(DEFAULT_VALID_TO)
+                .discount(DEFAULT_DISCOUNT);
         return traDiscount;
     }
 
@@ -99,20 +103,22 @@ public class CrmDiscountResourceTest {
 
         ReflectionTestUtils.setField(traDiscountResource, "traDiscountRepository", traDiscountRepository);
         ReflectionTestUtils.setField(traDiscountResource, "crmDiscountMapper", crmDiscountMapper);
-        ReflectionTestUtils.setField(traDiscountResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(traDiscountResource, "corChannelService", corChannelService);
 
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
 
         this.restTraDiscountMockMvc = MockMvcBuilders.standaloneSetup(traDiscountResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
     public void initTest() {
-        traDiscount = createEntity(em).network(corNetwork);
+        traDiscount = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -123,10 +129,10 @@ public class CrmDiscountResourceTest {
         // Create the TraDiscount
         CrmDiscountDTO crmDiscountDTO = crmDiscountMapper.DB2DTO(traDiscount);
 
-        restTraDiscountMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/crm/discount", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(crmDiscountDTO)))
-            .andExpect(status().isCreated());
+        restTraDiscountMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(crmDiscountDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the TraDiscount in the database
         List<CrmDiscount> traDiscountList = traDiscountRepository.findAll();
@@ -148,10 +154,10 @@ public class CrmDiscountResourceTest {
         CrmDiscountDTO existingCrmDiscountDTO = crmDiscountMapper.DB2DTO(existingTraDiscount);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraDiscountMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/crm/discount", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingCrmDiscountDTO)))
-            .andExpect(status().isBadRequest());
+        restTraDiscountMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(existingCrmDiscountDTO)))
+                .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
         List<CrmDiscount> traDiscountList = traDiscountRepository.findAll();
@@ -162,61 +168,61 @@ public class CrmDiscountResourceTest {
     @Transactional
     public void getAllTraDiscounts() throws Exception {
         // Initialize the database
-        traDiscountRepository.saveAndFlush(traDiscount.network(corNetwork));
+        traDiscountRepository.saveAndFlush(traDiscount.channel(corChannel));
 
         // Get all the traDiscountList
-        restTraDiscountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/crm/discount?sort=id,desc", corNetwork.getShortcut()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(traDiscount.getId().intValue())))
-            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
-            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())))
-            .andExpect(jsonPath("$.[*].discount").value(hasItem(DEFAULT_DISCOUNT.intValue())));
+        restTraDiscountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(traDiscount.getId().intValue())))
+                .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+                .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())))
+                .andExpect(jsonPath("$.[*].discount").value(hasItem(DEFAULT_DISCOUNT.intValue())));
     }
 
     @Test
     @Transactional
     public void getTraDiscount() throws Exception {
         // Initialize the database
-        traDiscountRepository.saveAndFlush(traDiscount.network(corNetwork));
+        traDiscountRepository.saveAndFlush(traDiscount.channel(corChannel));
 
         // Get the traDiscount
-        restTraDiscountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/crm/discount/{id}", corNetwork.getShortcut(), traDiscount.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(traDiscount.getId().intValue()))
-            .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
-            .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()))
-            .andExpect(jsonPath("$.discount").value(DEFAULT_DISCOUNT.intValue()));
+        restTraDiscountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), traDiscount.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(traDiscount.getId().intValue()))
+                .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
+                .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()))
+                .andExpect(jsonPath("$.discount").value(DEFAULT_DISCOUNT.intValue()));
     }
 
     @Test
     @Transactional
     public void getNonExistingTraDiscount() throws Exception {
         // Get the traDiscount
-        restTraDiscountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/crm/discount/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restTraDiscountMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
+                .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
     public void updateTraDiscount() throws Exception {
         // Initialize the database
-        traDiscountRepository.saveAndFlush(traDiscount.network(corNetwork));
+        traDiscountRepository.saveAndFlush(traDiscount.channel(corChannel));
         int databaseSizeBeforeUpdate = traDiscountRepository.findAll().size();
 
         // Update the traDiscount
         CrmDiscount updatedTraDiscount = traDiscountRepository.findOne(traDiscount.getId());
         updatedTraDiscount
-            .validFrom(UPDATED_VALID_FROM)
-            .validTo(UPDATED_VALID_TO)
-            .discount(UPDATED_DISCOUNT);
+                .validFrom(UPDATED_VALID_FROM)
+                .validTo(UPDATED_VALID_TO)
+                .discount(UPDATED_DISCOUNT);
         CrmDiscountDTO crmDiscountDTO = crmDiscountMapper.DB2DTO(traDiscount);
 
-        restTraDiscountMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/crm/discount", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(crmDiscountDTO)))
-            .andExpect(status().isOk());
+        restTraDiscountMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(crmDiscountDTO)))
+                .andExpect(status().isOk());
 
         // Validate the TraDiscount in the database
         List<CrmDiscount> traDiscountList = traDiscountRepository.findAll();
@@ -236,10 +242,10 @@ public class CrmDiscountResourceTest {
         CrmDiscountDTO crmDiscountDTO = crmDiscountMapper.DB2DTO(traDiscount);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraDiscountMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/crm/discount", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(crmDiscountDTO)))
-            .andExpect(status().isCreated());
+        restTraDiscountMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount", corOrganization.getShortcut(), corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(crmDiscountDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the TraDiscount in the database
         List<CrmDiscount> traDiscountList = traDiscountRepository.findAll();
@@ -250,13 +256,13 @@ public class CrmDiscountResourceTest {
     @Transactional
     public void deleteTraDiscount() throws Exception {
         // Initialize the database
-        traDiscountRepository.saveAndFlush(traDiscount.network(corNetwork));
+        traDiscountRepository.saveAndFlush(traDiscount.channel(corChannel));
         int databaseSizeBeforeDelete = traDiscountRepository.findAll().size();
 
         // Get the traDiscount
-        restTraDiscountMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/crm/discount/{id}", corNetwork.getShortcut(), traDiscount.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+        restTraDiscountMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/crm/discount/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), traDiscount.getId())
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
 
         // Validate the database is empty
         List<CrmDiscount> traDiscountList = traDiscountRepository.findAll();

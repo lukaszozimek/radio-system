@@ -3,7 +3,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorUser;
 import io.protone.traffic.api.dto.TraBlockDTO;
 import io.protone.traffic.api.dto.TraPlaylistDTO;
@@ -42,8 +41,6 @@ public class TraPlaylistMapperTest {
 
     private List<TraPlaylist> traPlaylists = new ArrayList<>();
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
 
     @Before
@@ -64,7 +61,7 @@ public class TraPlaylistMapperTest {
         TraBlockDTO traBlockDTO = factory.manufacturePojo(TraBlockDTO.class);
         traPlaylistDTO.addBlocksItem(traBlockDTO);
         traPlaylistDTOS.add(traPlaylistDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
         corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
@@ -106,18 +103,17 @@ public class TraPlaylistMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraPlaylist entity = traPlaylistMapper.DTO2DB(traPlaylistDTO, corNetwork, corChannel);
+        TraPlaylist entity = traPlaylistMapper.DTO2DB(traPlaylistDTO, corChannel);
         assertNotNull(entity.getId());
         assertNotNull(entity.getPlaylists());
         assertNotEquals(0, entity.getPlaylists().size());
         assertNotNull(entity.getPlaylistDate());
         assertNotNull(entity.getChannel());
-        assertNotNull(entity.getNetwork());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraPlaylist> entities = traPlaylistMapper.DTOs2DBs(traPlaylistDTOS, corNetwork, corChannel);
+        List<TraPlaylist> entities = traPlaylistMapper.DTOs2DBs(traPlaylistDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -127,7 +123,6 @@ public class TraPlaylistMapperTest {
             assertNotEquals(0, entity.getPlaylists().size());
             assertNotNull(entity.getPlaylistDate());
             assertNotNull(entity.getChannel());
-            assertNotNull(entity.getNetwork());
         });
     }
 }

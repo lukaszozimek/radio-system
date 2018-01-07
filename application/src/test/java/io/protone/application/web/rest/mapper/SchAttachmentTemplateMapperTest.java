@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.scheduler.api.dto.SchAttachmentTemplateDTO;
@@ -39,15 +38,14 @@ public class SchAttachmentTemplateMapperTest {
     private List<SchAttachmentTemplate> attachments = new ArrayList<>();
 
     private List<SchAttachmentTemplateDTO> attachmentDTOs = new ArrayList<>();
-    private CorNetwork network;
     private CorChannel corChannel;
+
     private SchEmissionTemplate schEmissionTemplate;
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         attachment = factory.manufacturePojo(SchAttachmentTemplate.class);
         attachment.setMediaItem(factory.manufacturePojo(LibMediaItem.class));
@@ -96,7 +94,7 @@ public class SchAttachmentTemplateMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchAttachmentTemplate entity = schAttachmentTemplateMapper.DTO2DB(attachmentDTO, network, corChannel, schEmissionTemplate);
+        SchAttachmentTemplate entity = schAttachmentTemplateMapper.DTO2DB(attachmentDTO, corChannel, schEmissionTemplate);
 
         assertNotNull(entity.getAttachmentType());
         assertNotNull(entity.getFadeInLength());
@@ -106,7 +104,6 @@ public class SchAttachmentTemplateMapperTest {
         assertNotNull(entity.getMediaItem());
         assertNotNull(entity.getVolumeLevel());
         assertNotNull(entity.getSequence());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
 
         assertNotNull(entity.getLength());
@@ -116,7 +113,7 @@ public class SchAttachmentTemplateMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchAttachmentTemplate> entities = schAttachmentTemplateMapper.DTOs2DBs(attachmentDTOs, network, corChannel, schEmissionTemplate);
+        List<SchAttachmentTemplate> entities = schAttachmentTemplateMapper.DTOs2DBs(attachmentDTOs, corChannel, schEmissionTemplate);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -129,7 +126,6 @@ public class SchAttachmentTemplateMapperTest {
             assertNotNull(entity.getMediaItem());
             assertNotNull(entity.getVolumeLevel());
             assertNotNull(entity.getSequence());
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getLength());
             assertNotNull(entity.getRelativeDelay());

@@ -3,9 +3,9 @@ package io.protone.application.service.library;
 import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorAuthority;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.CorUser;
-import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.repository.CorUserRepository;
 import io.protone.core.s3.S3Client;
 import io.protone.core.service.CorUserService;
@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
+import static io.protone.application.util.TestConstans.*;
 import static io.protone.core.security.AuthoritiesConstants.ADMIN;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
@@ -57,9 +58,6 @@ public class LibMediaItemServiceTest {
     private LibMediaItemService libMediaItemService;
 
     @Autowired
-    private CorNetworkRepository corNetworkRepository;
-
-    @Autowired
     private LibMediaItemRepository libMediaItemRepository;
 
     @Autowired
@@ -68,9 +66,11 @@ public class LibMediaItemServiceTest {
     @Autowired
     @Qualifier("libAudioFileService")
     private LibFileService audioFileService;
+
     @Autowired
     @Qualifier("libVideoFileService")
     private LibFileService videoFileService;
+
     @Autowired
     @Qualifier("libImageFileService")
     private LibFileService imageFileService;
@@ -78,14 +78,19 @@ public class LibMediaItemServiceTest {
     @Autowired
     @Qualifier("libDocumentFileService")
     private LibFileService libDocumentFileService;
+
     @Autowired
     private CorUserRepository corUserRepository;
+
     @Mock
     private S3Client s3Client;
+
     @Mock
     private CorUserService corUserService;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
 
     private PodamFactory factory;
 
@@ -98,29 +103,28 @@ public class LibMediaItemServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
         libMediaLibrary = factory.manufacturePojo(LibMediaLibrary.class);
-        libMediaLibrary.setNetwork(corNetwork);
+        libMediaLibrary.setChannel(corChannel);
         libMediaLibrary = libLibraryRepository.save(libMediaLibrary);
-        corUser = factory.manufacturePojo(CorUser.class);
-        corUser.setNetworks(Sets.newHashSet(corNetwork));
-        corUser.setChannels(null);
+        corUser = new CorUser();
+        corUser.setId(3L);
+        corUser.setLogin("admin");
+        corUser.setOrganization(corOrganization);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
-        corUser = corUserRepository.saveAndFlush(corUser);
+
         doNothing().when(s3Client).delete(anyString(), anyString(), anyObject());
         doNothing().when(s3Client).upload(anyString(), anyObject(), anyString());
         when(corUserService.getUserWithAuthoritiesByLogin(anyString())).thenReturn(Optional.of(corUser));
 
         ReflectionTestUtils.setField(audioFileService, "s3Client", s3Client);
-        ReflectionTestUtils.setField(audioFileService, "corUserService", corUserService);
         ReflectionTestUtils.setField(videoFileService, "s3Client", s3Client);
-        ReflectionTestUtils.setField(videoFileService, "corUserService", corUserService);
         ReflectionTestUtils.setField(imageFileService, "s3Client", s3Client);
-        ReflectionTestUtils.setField(imageFileService, "corUserService", corUserService);
         ReflectionTestUtils.setField(libDocumentFileService, "s3Client", s3Client);
-        ReflectionTestUtils.setField(libDocumentFileService, "corUserService", corUserService);
         ReflectionTestUtils.setField(libMediaItemService, "audioFileService", audioFileService);
         ReflectionTestUtils.setField(libMediaItemService, "videoFileService", videoFileService);
         ReflectionTestUtils.setField(libMediaItemService, "imageFileService", imageFileService);
@@ -134,17 +138,17 @@ public class LibMediaItemServiceTest {
         //when
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setLibrary(libMediaLibrary);
-        libMediaItem.setNetwork(corNetwork);
+        libMediaItem.setChannel(corChannel);
         libMediaItem = libMediaItemRepository.save(libMediaItem);
 
         //then
-        Slice<LibMediaItem> fetchedEntity = libMediaItemService.getMediaItems(corNetwork.getShortcut(), libMediaLibrary.getShortcut(), new PageRequest(0, 10));
+        Slice<LibMediaItem> fetchedEntity = libMediaItemService.getMediaItems(corOrganization.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(libMediaItem.getId(), fetchedEntity.getContent().get(0).getId());
-        assertEquals(libMediaItem.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+        assertEquals(libMediaItem.getChannel(), fetchedEntity.getContent().get(0).getChannel());
 
     }
 
@@ -154,17 +158,17 @@ public class LibMediaItemServiceTest {
         //when
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setLibrary(libMediaLibrary);
-        libMediaItem.setNetwork(corNetwork);
+        libMediaItem.setChannel(corChannel);
         libMediaItem = libMediaItemRepository.save(libMediaItem);
 
         //then
-        LibMediaItem fetchedEntity = libMediaItemService.getMediaItem(corNetwork.getShortcut(), libMediaLibrary.getShortcut(), libMediaItem.getIdx());
+        LibMediaItem fetchedEntity = libMediaItemService.getMediaItem(corOrganization.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut(), libMediaItem.getIdx());
 
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(libMediaItem.getId(), fetchedEntity.getId());
-        assertEquals(libMediaItem.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(libMediaItem.getChannel(), fetchedEntity.getChannel());
 
     }
 
@@ -174,12 +178,12 @@ public class LibMediaItemServiceTest {
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setItemType(LibItemTypeEnum.IT_AUDIO);
         libMediaItem.setLibrary(libMediaLibrary);
-        libMediaItem.setNetwork(corNetwork);
+        libMediaItem.setChannel(corChannel);
         libMediaItem = libMediaItemRepository.save(libMediaItem);
 
         //then
-        libMediaItemService.deleteItem(corNetwork.getShortcut(), libMediaLibrary.getShortcut(), libMediaItem.getIdx());
-        LibMediaItem fetchedEntity = libMediaItemService.getMediaItem(corNetwork.getShortcut(), libMediaLibrary.getShortcut(), libMediaItem.getIdx());
+        libMediaItemService.deleteItem(corOrganization.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut(), libMediaItem.getIdx());
+        LibMediaItem fetchedEntity = libMediaItemService.getMediaItem(corOrganization.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut(), libMediaItem.getIdx());
 
         //assert
         assertNull(fetchedEntity);
@@ -192,7 +196,7 @@ public class LibMediaItemServiceTest {
         MultipartFile multipartFile = new MockMultipartFile("testFile", inputStream);
         MultipartFile[] multipartFiles = Arrays.array(multipartFile);
         //then
-        List<LibMediaItem> libMediaItems = libMediaItemService.upload(corNetwork.getShortcut(), libMediaLibrary.getShortcut(), multipartFiles);
+        List<LibMediaItem> libMediaItems = libMediaItemService.upload(corOrganization.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut(), multipartFiles);
 
         //assert
         assertNotNull(libMediaItems);
@@ -209,7 +213,7 @@ public class LibMediaItemServiceTest {
 
         //then
 
-        List<LibMediaItem> libMediaItems = libMediaItemService.upload(corNetwork.getShortcut(), libMediaLibrary.getShortcut(), multipartFiles);
+        List<LibMediaItem> libMediaItems = libMediaItemService.upload(corOrganization.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut(), multipartFiles);
 
         //assert
         assertNotNull(libMediaItems);
@@ -227,7 +231,7 @@ public class LibMediaItemServiceTest {
         MultipartFile[] multipartFiles = Arrays.array(multipartFile);
 
         //then
-        List<LibMediaItem> libMediaItems = libMediaItemService.upload(corNetwork.getShortcut(), libMediaLibrary.getShortcut(), multipartFiles);
+        List<LibMediaItem> libMediaItems = libMediaItemService.upload(corOrganization.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut(), multipartFiles);
 
         //assert
         assertNotNull(libMediaItems);
@@ -244,7 +248,7 @@ public class LibMediaItemServiceTest {
         MultipartFile[] multipartFiles = Arrays.array(multipartFile);
 
         //then
-        List<LibMediaItem> libMediaItems = libMediaItemService.upload(corNetwork.getShortcut(), libMediaLibrary.getShortcut(), multipartFiles);
+        List<LibMediaItem> libMediaItems = libMediaItemService.upload(corOrganization.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut(), multipartFiles);
 
         //assert
         assertNotNull(libMediaItems);
@@ -261,7 +265,7 @@ public class LibMediaItemServiceTest {
         MultipartFile[] multipartFiles = Arrays.array(multipartFile);
 
         //then
-        List<LibMediaItem> libMediaItems = libMediaItemService.upload(corNetwork.getShortcut(), libMediaLibrary.getShortcut(), multipartFiles);
+        List<LibMediaItem> libMediaItems = libMediaItemService.upload(corOrganization.getShortcut(), corChannel.getShortcut(), libMediaLibrary.getShortcut(), multipartFiles);
 
         //assert
         assertNotNull(libMediaItems);

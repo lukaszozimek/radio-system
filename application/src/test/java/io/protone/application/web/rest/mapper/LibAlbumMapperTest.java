@@ -2,8 +2,8 @@ package io.protone.application.web.rest.mapper;
 
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorImageItem;
-import io.protone.core.domain.CorNetwork;
 import io.protone.library.api.dto.LibAlbumDTO;
 import io.protone.library.domain.LibAlbum;
 import io.protone.library.domain.LibArtist;
@@ -42,7 +42,7 @@ public class LibAlbumMapperTest {
 
     private List<LibAlbum> libAlbums = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
 
     @Before
@@ -55,7 +55,7 @@ public class LibAlbumMapperTest {
         libAlbums.add(libAlbum);
         libAlbumDTO = factory.manufacturePojo(LibAlbumDTO.class);
         libAlbumDTOS.add(libAlbumDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class LibAlbumMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibAlbum entity = customLibAlbumMapper.DTO2DB(libAlbumDTO, corNetwork);
+        LibAlbum entity = customLibAlbumMapper.DTO2DB(libAlbumDTO, corChannel);
 
         assertNotNull(entity.getLabel());
         assertNotNull(entity.getArtist());
@@ -111,12 +111,12 @@ public class LibAlbumMapperTest {
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getId());
 
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibAlbum> entities = customLibAlbumMapper.DTOs2DBs(libAlbumDTOS, corNetwork);
+        List<LibAlbum> entities = customLibAlbumMapper.DTOs2DBs(libAlbumDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -131,7 +131,7 @@ public class LibAlbumMapperTest {
             assertNotNull(entity.getDescription());
             assertNotNull(entity.getId());
 
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
         });
     }
 

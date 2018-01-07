@@ -45,9 +45,9 @@ public class CorNetworkResourceImpl implements CorNetworkResource {
     @Override
     public ResponseEntity<List<CorNetworkDTO>> getAllNetworksUsingGET(@ApiParam(value = "organizationShortcut", required = true) @PathVariable("organizationShortcut") String organizationShortcut) {
         log.debug("REST request to get all CorNetworks");
-        Slice<CorNetwork> networks = corNetworkService.findAllNetworks(organizationShortcut);
+        List<CorNetwork> networks = corNetworkService.findAllNetworks(organizationShortcut);
         return ResponseEntity.ok()
-                .body(corNetworkMapper.DBs2DTOs(networks.getContent()));
+                .body(corNetworkMapper.DBs2DTOs(networks));
 
     }
 

@@ -3,11 +3,11 @@ package io.protone.application.web.api.crm;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.crm.impl.CrmLeadResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
+import io.protone.core.service.CorChannelService;
 import io.protone.crm.api.dto.CrmLeadDTO;
 import io.protone.crm.domain.CrmLead;
 import io.protone.crm.mapper.CrmLeadMapper;
@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -62,7 +63,7 @@ public class CrmLeadResourceImplTest {
     private CrmLeadService crmLeadService;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -80,7 +81,9 @@ public class CrmLeadResourceImplTest {
 
     private CrmLead crmLead;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
 
     /**
      * Create an entity for this test.
@@ -103,10 +106,12 @@ public class CrmLeadResourceImplTest {
 
         ReflectionTestUtils.setField(crmLeadResource, "crmLeadService", crmLeadService);
         ReflectionTestUtils.setField(crmLeadResource, "crmLeadMapper", crmLeadMapper);
-        ReflectionTestUtils.setField(crmLeadResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(crmLeadResource, "corChannelService", corChannelService);
 
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
 
         this.restCrmLeadMockMvc = MockMvcBuilders.standaloneSetup(crmLeadResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -116,7 +121,7 @@ public class CrmLeadResourceImplTest {
 
     @Before
     public void initTest() {
-        crmLead = createEntity(em).network(corNetwork);
+        crmLead = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -127,7 +132,7 @@ public class CrmLeadResourceImplTest {
         // Create the CrmLead
         CrmLeadDTO crmLeadDTO = crmLeadMapper.DB2DTO(crmLead);
 
-        restCrmLeadMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/lead", corNetwork.getShortcut())
+        restCrmLeadMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/lead", corOrganization.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmLeadDTO)))
             .andExpect(status().isCreated());
@@ -151,7 +156,7 @@ public class CrmLeadResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         CrmLeadDTO cfgMarkerConfigurationDTO = crmLeadMapper.DB2DTO(crmLead);
 
-        restCrmLeadMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/lead", corNetwork.getShortcut())
+        restCrmLeadMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/lead", corOrganization.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());
@@ -170,7 +175,7 @@ public class CrmLeadResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         CrmLeadDTO cfgMarkerConfigurationDTO = crmLeadMapper.DB2DTO(crmLead);
 
-        restCrmLeadMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/lead", corNetwork.getShortcut())
+        restCrmLeadMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/lead", corOrganization.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());
@@ -190,7 +195,7 @@ public class CrmLeadResourceImplTest {
         CrmLeadDTO existingCrmLeadDTO = crmLeadMapper.DB2DTO(existingCrmLead);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmLeadMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/lead", corNetwork.getShortcut())
+        restCrmLeadMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/lead", corOrganization.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCrmLeadDTO)))
             .andExpect(status().isBadRequest());
@@ -204,10 +209,10 @@ public class CrmLeadResourceImplTest {
     @Transactional
     public void getAllCrmLeads() throws Exception {
         // Initialize the database
-        crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
+        crmLeadRepository.saveAndFlush(crmLead.channel(corChannel));
 
         // Get all the crmLeadList
-        restCrmLeadMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/lead?sort=id,desc", corNetwork.getShortcut()))
+        restCrmLeadMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/lead?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(crmLead.getId().intValue())))
@@ -220,10 +225,10 @@ public class CrmLeadResourceImplTest {
     @Transactional
     public void getCrmLead() throws Exception {
         // Initialize the database
-        crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
+        crmLeadRepository.saveAndFlush(crmLead.channel(corChannel));
 
         // Get the crmLead
-        restCrmLeadMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}", corNetwork.getShortcut(), crmLead.getShortname()))
+        restCrmLeadMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/lead/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), crmLead.getShortname()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmLead.getId().intValue()))
@@ -236,7 +241,7 @@ public class CrmLeadResourceImplTest {
     @Transactional
     public void getNonExistingCrmLead() throws Exception {
         // Get the crmLead
-        restCrmLeadMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCrmLeadMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/lead/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -245,7 +250,7 @@ public class CrmLeadResourceImplTest {
     @Transactional
     public void updateCrmLead() throws Exception {
         // Initialize the database
-        crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
+        crmLeadRepository.saveAndFlush(crmLead.channel(corChannel));
         int databaseSizeBeforeUpdate = crmLeadRepository.findAll().size();
 
         // Update the crmLead
@@ -256,7 +261,7 @@ public class CrmLeadResourceImplTest {
             .description(UPDATED_DESCRIPTION);
         CrmLeadDTO crmLeadDTO = crmLeadMapper.DB2DTO(updatedCrmLead);
 
-        restCrmLeadMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/lead", corNetwork.getShortcut())
+        restCrmLeadMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/lead", corOrganization.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmLeadDTO)))
             .andExpect(status().isOk());
@@ -279,7 +284,7 @@ public class CrmLeadResourceImplTest {
         CrmLeadDTO crmLeadDTO = crmLeadMapper.DB2DTO(crmLead);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCrmLeadMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/lead", corNetwork.getShortcut())
+        restCrmLeadMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/lead", corOrganization.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmLeadDTO)))
             .andExpect(status().isCreated());
@@ -293,11 +298,11 @@ public class CrmLeadResourceImplTest {
     @Transactional
     public void deleteCrmLead() throws Exception {
         // Initialize the database
-        crmLeadRepository.saveAndFlush(crmLead.shortname("test").network(corNetwork));
+        crmLeadRepository.saveAndFlush(crmLead.shortname("test").channel(corChannel));
         int databaseSizeBeforeDelete = crmLeadRepository.findAll().size();
 
         // Get the crmLead
-        restCrmLeadMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/crm/lead/{shortName}", corNetwork.getShortcut(), crmLead.getShortname())
+        restCrmLeadMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/lead/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), crmLead.getShortname())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

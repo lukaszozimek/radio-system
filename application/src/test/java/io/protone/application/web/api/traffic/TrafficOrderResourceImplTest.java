@@ -9,9 +9,9 @@ import io.protone.application.web.api.library.LibMediaItemResourceTest;
 import io.protone.application.web.api.traffic.impl.TraOrderResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorChannelRepository;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.library.domain.LibMediaItem;
@@ -47,7 +47,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
-import static io.protone.application.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -76,7 +76,7 @@ public class TrafficOrderResourceImplTest {
     private TraOrderRepository traOrderRepository;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Autowired
     private TraOrderMapper traOrderMapper;
@@ -109,8 +109,6 @@ public class TrafficOrderResourceImplTest {
 
     private TraOrder traOrder;
 
-    private CorNetwork corNetwork;
-
     private TraAdvertisement traAdvertisement;
 
     private LibMediaItem libMediaItem;
@@ -118,8 +116,13 @@ public class TrafficOrderResourceImplTest {
     private LibMediaLibrary libMediaLibrary;
 
     private CrmAccount crmAccount;
+
     private PodamFactoryImpl factory;
+
+    private CorOrganization corOrganization;
+
     private CorChannel corChannel;
+
     @Autowired
     private CorChannelRepository corChannelRepository;
     @Autowired
@@ -153,24 +156,26 @@ public class TrafficOrderResourceImplTest {
         libMediaItemRepository.deleteAllInBatch();
         crmAccountRepository.deleteAllInBatch();
 
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
 
         libMediaLibrary = new LibMediaLibrary();
         libMediaLibrary.setId(1L);
         libMediaLibrary.setShortcut("tes");
 
         libMediaItem = LibMediaItemResourceTest.createEntity(em);
-        libMediaItem.setNetwork(corNetwork);
+        libMediaItem.setChannel(corChannel);
         libMediaItem.setLibrary(libMediaLibrary);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
-        crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
-        traAdvertisement = traAdvertisementRepository.saveAndFlush(TraAdvertisementResourceImplTest.createEntity(em).mediaItem(Sets.newHashSet(libMediaItem)).customer(crmAccount).network(corNetwork));
+        crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).channel(corChannel));
+        traAdvertisement = traAdvertisementRepository.saveAndFlush(TraAdvertisementResourceImplTest.createEntity(em).mediaItem(Sets.newHashSet(libMediaItem)).customer(crmAccount).channel(corChannel));
 
         ReflectionTestUtils.setField(traOrderResource, "traOrderService", traOrderService);
         ReflectionTestUtils.setField(traOrderResource, "traOrderMapper", traOrderMapper);
-        ReflectionTestUtils.setField(traOrderResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(traOrderResource, "corChannelService", corChannelService);
 
 
         this.restTraOrderMockMvc = MockMvcBuilders.standaloneSetup(traOrderResource)
@@ -182,14 +187,14 @@ public class TrafficOrderResourceImplTest {
     @Test
     @Transactional
     public void createTraOrder() throws Exception {
-        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+        traOrder = createEntity(em).channel(corChannel).advertisment(traAdvertisement).customer(crmAccount);
 
         int databaseSizeBeforeCreate = traOrderRepository.findAll().size();
 
         // Create the TraOrder
         TraOrderDTO traOrderDTO = traOrderMapper.DB2DTO(traOrder);
 
-        restTraOrderMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/order", corNetwork.getShortcut())
+        restTraOrderMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/order", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
                 .andExpect(status().isCreated());
@@ -207,17 +212,17 @@ public class TrafficOrderResourceImplTest {
     @Test
     @Transactional
     public void createTraOrderWithExistingId() throws Exception {
-        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+        traOrder = createEntity(em).channel(corChannel).advertisment(traAdvertisement).customer(crmAccount);
 
         int databaseSizeBeforeCreate = traOrderRepository.findAll().size();
 
         // Create the TraOrder with an existing ID
         TraOrder existingTraOrder = new TraOrder();
         existingTraOrder.setId(1L);
-        TraOrderDTO existingTraOrderDTO = traOrderMapper.DB2DTO(existingTraOrder.network(corNetwork).advertisment(traAdvertisement).customer(crmAccount));
+        TraOrderDTO existingTraOrderDTO = traOrderMapper.DB2DTO(existingTraOrder.channel(corChannel).advertisment(traAdvertisement).customer(crmAccount));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraOrderMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/order", corNetwork.getShortcut())
+        restTraOrderMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/order", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingTraOrderDTO)))
                 .andExpect(status().isBadRequest());
@@ -230,16 +235,16 @@ public class TrafficOrderResourceImplTest {
     @Test
     @Transactional
     public void checkNameIsRequired() throws Exception {
-        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+        traOrder = createEntity(em).channel(corChannel).advertisment(traAdvertisement).customer(crmAccount);
 
         int databaseSizeBeforeTest = traOrderRepository.findAll().size();
         // set the field null
         traOrder.setName(null);
 
         // Create the TraOrder, which fails.
-        TraOrderDTO traOrderDTO = traOrderMapper.DB2DTO(traOrder.network(corNetwork).advertisment(traAdvertisement).customer(crmAccount));
+        TraOrderDTO traOrderDTO = traOrderMapper.DB2DTO(traOrder.channel(corChannel).advertisment(traAdvertisement).customer(crmAccount));
 
-        restTraOrderMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/order", corNetwork.getShortcut())
+        restTraOrderMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/order", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
                 .andExpect(status().isBadRequest());
@@ -251,7 +256,7 @@ public class TrafficOrderResourceImplTest {
     @Test
     @Transactional
     public void checkCustomerIsRequired() throws Exception {
-        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+        traOrder = createEntity(em).channel(corChannel).advertisment(traAdvertisement).customer(crmAccount);
 
         int databaseSizeBeforeTest = traOrderRepository.findAll().size();
         // set the field null
@@ -260,7 +265,7 @@ public class TrafficOrderResourceImplTest {
         // Create the TraOrder, which fails.
         TraOrderDTO traOrderDTO = traOrderMapper.DB2DTO(traOrder);
 
-        restTraOrderMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/order", corNetwork.getShortcut())
+        restTraOrderMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/order", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
                 .andExpect(status().isBadRequest());
@@ -272,7 +277,7 @@ public class TrafficOrderResourceImplTest {
     @Test
     @Transactional
     public void checkCommercialIsRequired() throws Exception {
-        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+        traOrder = createEntity(em).channel(corChannel).advertisment(traAdvertisement).customer(crmAccount);
 
         int databaseSizeBeforeTest = traOrderRepository.findAll().size();
         // set the field null
@@ -281,7 +286,7 @@ public class TrafficOrderResourceImplTest {
         // Create the TraOrder, which fails.
         TraOrderDTO traOrderDTO = traOrderMapper.DB2DTO(traOrder);
 
-        restTraOrderMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/traffic/order", corNetwork.getShortcut())
+        restTraOrderMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/order", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
                 .andExpect(status().isBadRequest());
@@ -293,13 +298,13 @@ public class TrafficOrderResourceImplTest {
     @Test
     @Transactional
     public void getAllTraOrders() throws Exception {
-        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+        traOrder = createEntity(em).channel(corChannel).advertisment(traAdvertisement).customer(crmAccount);
 
         // Initialize the database
-        traOrderRepository.saveAndFlush(traOrder.network(corNetwork));
+        traOrderRepository.saveAndFlush(traOrder.channel(corChannel));
 
         // Get all the traOrderList
-        restTraOrderMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/order?sort=id,desc", corNetwork.getShortcut()))
+        restTraOrderMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/order?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traOrder.getId().intValue())))
@@ -312,13 +317,13 @@ public class TrafficOrderResourceImplTest {
     @Test
     @Transactional
     public void getTraOrder() throws Exception {
-        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+        traOrder = createEntity(em).channel(corChannel).advertisment(traAdvertisement).customer(crmAccount);
 
         // Initialize the database
         traOrderRepository.saveAndFlush(traOrder);
 
         // Get the traOrder
-        restTraOrderMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/order/{id}", corNetwork.getShortcut(), traOrder.getId()))
+        restTraOrderMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/order/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), traOrder.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(traOrder.getId().intValue()))
@@ -331,17 +336,17 @@ public class TrafficOrderResourceImplTest {
     @Test
     @Transactional
     public void getNonExistingTraOrder() throws Exception {
-        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+        traOrder = createEntity(em).channel(corChannel).advertisment(traAdvertisement).customer(crmAccount);
 
         // Get the traOrder
-        restTraOrderMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/order/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restTraOrderMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/order/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
     public void updateTraOrder() throws Exception {
-        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+        traOrder = createEntity(em).channel(corChannel).advertisment(traAdvertisement).customer(crmAccount);
 
         // Initialize the database
         traOrderRepository.saveAndFlush(traOrder);
@@ -356,7 +361,7 @@ public class TrafficOrderResourceImplTest {
                 .calculatedPrize(UPDATED_CALCULATED_PRIZE);
         TraOrderDTO traOrderDTO = traOrderMapper.DB2DTO(updatedTraOrder);
 
-        restTraOrderMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/traffic/order", corNetwork.getShortcut())
+        restTraOrderMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/order", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
                 .andExpect(status().isOk());
@@ -374,7 +379,7 @@ public class TrafficOrderResourceImplTest {
     @Test
     @Transactional
     public void updateNonExistingTraOrder() throws Exception {
-        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+        traOrder = createEntity(em).channel(corChannel).advertisment(traAdvertisement).customer(crmAccount);
 
         int databaseSizeBeforeUpdate = traOrderRepository.findAll().size();
 
@@ -382,7 +387,7 @@ public class TrafficOrderResourceImplTest {
         TraOrderDTO traOrderDTO = traOrderMapper.DB2DTO(traOrder);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraOrderMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/traffic/order", corNetwork.getShortcut())
+        restTraOrderMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/order", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
                 .andExpect(status().isCreated());
@@ -395,14 +400,14 @@ public class TrafficOrderResourceImplTest {
     @Test
     @Transactional
     public void deleteTraOrder() throws Exception {
-        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+        traOrder = createEntity(em).channel(corChannel).advertisment(traAdvertisement).customer(crmAccount);
 
         // Initialize the database
         traOrderRepository.saveAndFlush(traOrder);
         int databaseSizeBeforeDelete = traOrderRepository.findAll().size();
 
         // Get the traOrder
-        restTraOrderMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/traffic/order/{id}", corNetwork.getShortcut(), traOrder.getId())
+        restTraOrderMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/order/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), traOrder.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
@@ -414,13 +419,13 @@ public class TrafficOrderResourceImplTest {
     @Test
     @Transactional
     public void getAllTraOrdersForCustomer() throws Exception {
-        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+        traOrder = createEntity(em).channel(corChannel).advertisment(traAdvertisement).customer(crmAccount);
 
         // Initialize the database
         traOrderRepository.saveAndFlush(traOrder);
 
         // Get all the traOrderList
-        restTraOrderMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/traffic/order/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))
+        restTraOrderMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//traffic/order/customer/{customerShortcut}?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traOrder.getId().intValue())))

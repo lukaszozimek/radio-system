@@ -3,13 +3,11 @@ package io.protone.application.web.api.scheduler;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.scheduler.impl.SchPlaylistResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.service.CorChannelService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
 import io.protone.scheduler.domain.SchPlaylist;
 import io.protone.scheduler.mapper.SchPlaylistMapper;
@@ -35,6 +33,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -67,9 +66,6 @@ public class SchPlaylistResourceImplTest {
     private CorChannelService corChannelService;
 
     @Autowired
-    private CorNetworkService corNetworkService;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -85,9 +81,10 @@ public class SchPlaylistResourceImplTest {
 
     private SchPlaylist schPlaylist;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
 
     private CorChannel corChannel;
+
 
     /**
      * Create an entity for this test.
@@ -107,7 +104,6 @@ public class SchPlaylistResourceImplTest {
         SchPlaylistResourceImpl traPlaylistResource = new SchPlaylistResourceImpl();
         ReflectionTestUtils.setField(traPlaylistResource, "schPlaylistService", schPlaylistService);
         ReflectionTestUtils.setField(traPlaylistResource, "schPlaylistMapper", schPlaylistMapper);
-        ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(traPlaylistResource, "corChannelService", corChannelService);
 
 
@@ -119,11 +115,11 @@ public class SchPlaylistResourceImplTest {
 
     @Before
     public void initTest() {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
-        schPlaylist = createEntity(em).network(corNetwork).channel(corChannel);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        schPlaylist = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -134,7 +130,7 @@ public class SchPlaylistResourceImplTest {
         // Create the SchPlaylist
         SchPlaylistDTO schPlaylistDTO = schPlaylistMapper.DB2DTO(schPlaylist);
 
-        restSchPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -158,7 +154,7 @@ public class SchPlaylistResourceImplTest {
         SchPlaylistDTO existingSchPlaylistDTO = schPlaylistMapper.DB2DTO(existingSchPlaylist);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSchPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingSchPlaylistDTO)))
                 .andExpect(status().isBadRequest());
@@ -172,10 +168,10 @@ public class SchPlaylistResourceImplTest {
     @Transactional
     public void getAllSchPlaylists() throws Exception {
         // Initialize the database
-        schPlaylistRepository.saveAndFlush(schPlaylist.network(corNetwork).channel(corChannel));
+        schPlaylistRepository.saveAndFlush(schPlaylist.channel(corChannel));
 
         // Get all the traPlaylistList
-        restSchPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schPlaylist.getId().intValue())))
@@ -186,10 +182,10 @@ public class SchPlaylistResourceImplTest {
     @Transactional
     public void getSchPlaylist() throws Exception {
         // Initialize the database
-        schPlaylistRepository.saveAndFlush(schPlaylist.network(corNetwork).channel(corChannel));
+        schPlaylistRepository.saveAndFlush(schPlaylist.channel(corChannel));
 
         // Get the schPlaylist
-        restSchPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
+        restSchPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}", corOrganization.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(schPlaylist.getId().intValue()))
@@ -201,7 +197,7 @@ public class SchPlaylistResourceImplTest {
     public void getNonExistingSchPlaylist() throws Exception {
         // Get the schPlaylist
         LocalDate localDate = LocalDate.now();
-        restSchPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), localDate))
+        restSchPlaylistMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}", corOrganization.getShortcut(), corChannel.getShortcut(), localDate))
                 .andExpect(status().isNotFound());
 
     }
@@ -210,7 +206,7 @@ public class SchPlaylistResourceImplTest {
     @Transactional
     public void updateSchPlaylist() throws Exception {
         // Initialize the database
-        schPlaylistRepository.saveAndFlush(schPlaylist.network(corNetwork).channel(corChannel));
+        schPlaylistRepository.saveAndFlush(schPlaylist.channel(corChannel));
         int databaseSizeBeforeUpdate = schPlaylistRepository.findAll().size();
 
         // Update the schPlaylist
@@ -219,7 +215,7 @@ public class SchPlaylistResourceImplTest {
                 .date(UPDATED_PLAYLIST_DATE);
         SchPlaylistDTO schPlaylistDTO = schPlaylistMapper.DB2DTO(updatedSchPlaylist);
 
-        restSchPlaylistMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchPlaylistMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schPlaylistDTO)))
                 .andExpect(status().isOk());
@@ -240,7 +236,7 @@ public class SchPlaylistResourceImplTest {
         SchPlaylistDTO schPlaylistDTO = schPlaylistMapper.DB2DTO(schPlaylist);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSchPlaylistMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchPlaylistMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -254,11 +250,11 @@ public class SchPlaylistResourceImplTest {
     @Transactional
     public void deleteSchPlaylist() throws Exception {
         // Initialize the database
-        schPlaylistRepository.saveAndFlush(schPlaylist.network(corNetwork).channel(corChannel));
+        schPlaylistRepository.saveAndFlush(schPlaylist.channel(corChannel));
         int databaseSizeBeforeDelete = schPlaylistRepository.findAll().size();
 
         // Get the schPlaylist
-        restSchPlaylistMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
+        restSchPlaylistMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}", corOrganization.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
@@ -271,7 +267,7 @@ public class SchPlaylistResourceImplTest {
     @Test
     @Transactional
     public void checkDateIsRequired() throws Exception {
-        schPlaylist = createEntity(em).network(corNetwork).channel(corChannel);
+        schPlaylist = createEntity(em).channel(corChannel);
 
         int databaseSizeBeforeTest = schPlaylistRepository.findAll().size();
         // set the field null
@@ -280,7 +276,7 @@ public class SchPlaylistResourceImplTest {
         // Create the TraOrder, which fails.
         SchPlaylistDTO schPlaylistDTO = schPlaylistMapper.DB2DTO(schPlaylist);
 
-        restSchPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchPlaylistMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/playlist", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schPlaylistDTO)))
                 .andExpect(status().isBadRequest());

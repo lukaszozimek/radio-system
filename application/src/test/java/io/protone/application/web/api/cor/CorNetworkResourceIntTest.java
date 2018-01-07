@@ -6,17 +6,17 @@ import io.protone.application.web.api.cor.impl.CorNetworkResourceImpl;
 import io.protone.core.api.dto.CorNetworkDTO;
 import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.mapper.CorNetworkMapper;
-import io.protone.core.repository.CorImageItemRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorOrganizationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
@@ -33,6 +33,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.TEST_ORGANIZATION_ID;
+import static io.protone.application.util.TestConstans.TEST_ORGANIZATION_SHORTCUT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.anyObject;
@@ -65,16 +67,18 @@ public class CorNetworkResourceIntTest {
 
     @Inject
     private CorNetworkRepository corNetworkRepository;
+
     @Inject
     private CorNetworkService corNetworkService;
 
     @Inject
+    private CorOrganizationService corOrganizationService;
+
+    @Inject
     private CorNetworkMapper corNetworkMapper;
+
     @Mock
     private CorImageItemService corImageItemService;
-
-    @Autowired
-    private CorImageItemRepository corImageItemRepository;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -88,6 +92,8 @@ public class CorNetworkResourceIntTest {
     private MockMvc restCorNetworkMockMvc;
 
     private CorNetwork corNetwork;
+
+    private CorOrganization corOrganization;
 
     /**
      * Create an entity for this test.
@@ -106,10 +112,13 @@ public class CorNetworkResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
         CorNetworkResourceImpl corNetworkResource = new CorNetworkResourceImpl();
         ReflectionTestUtils.setField(corNetworkService, "corImageItemService", corImageItemService);
         ReflectionTestUtils.setField(corNetworkResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(corNetworkResource, "corNetworkMapper", corNetworkMapper);
+        ReflectionTestUtils.setField(corNetworkResource, "corOrganizationService", corOrganizationService);
         this.restCorNetworkMockMvc = MockMvcBuilders.standaloneSetup(corNetworkResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
                 .setMessageConverters(jacksonMessageConverter).build();
@@ -124,17 +133,17 @@ public class CorNetworkResourceIntTest {
     @Transactional
     public void createCorNetwork() throws Exception {
 
-        when(corImageItemService.saveImageItem(anyObject())).thenReturn(null);
+        when(corImageItemService.saveImageItem(anyObject(), anyObject())).thenReturn(null);
         int databaseSizeBeforeCreate = corNetworkRepository.findAll().size();
 
         // Create the CorNetwork
-        CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
+        CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork.organization(corOrganization));
 
         MockMultipartFile emptyFile = new MockMultipartFile("logo", new byte[0]);
-        MockMultipartFile jsonFile = new MockMultipartFile("network", "",
+        MockMultipartFile jsonFile = new MockMultipartFile("organization", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(corNetworkDTO));
 
-        restCorNetworkMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization")
+        restCorNetworkMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/network", corOrganization.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -157,10 +166,10 @@ public class CorNetworkResourceIntTest {
         CorNetwork existingCorNetwork = new CorNetwork();
         existingCorNetwork.setId(1L);
         // Create the CorNetwork
-        CorNetworkDTO existingCorNetworkDTO = corNetworkMapper.DB2DTO(existingCorNetwork);
+        CorNetworkDTO existingCorNetworkDTO = corNetworkMapper.DB2DTO(existingCorNetwork.organization(corOrganization));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorNetworkMockMvc.perform(post("/api/v1/organization")
+        restCorNetworkMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/network", corOrganization.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingCorNetworkDTO)))
                 .andExpect(status().isBadRequest());
@@ -180,7 +189,7 @@ public class CorNetworkResourceIntTest {
         // Create the CorNetwork
         CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
 
-        restCorNetworkMockMvc.perform(post("/api/v1/organization")
+        restCorNetworkMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/network", corOrganization.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corNetworkDTO)))
                 .andExpect(status().isBadRequest());
@@ -199,7 +208,7 @@ public class CorNetworkResourceIntTest {
         // Create the CorNetwork
         CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
 
-        restCorNetworkMockMvc.perform(post("/api/v1/organization")
+        restCorNetworkMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/network", corOrganization.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corNetworkDTO)))
                 .andExpect(status().isBadRequest());
@@ -213,10 +222,10 @@ public class CorNetworkResourceIntTest {
     public void getAllCorNetworks() throws Exception {
         // Initialize the database
         when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(null);
-        corNetworkRepository.saveAndFlush(corNetwork);
+        corNetworkRepository.saveAndFlush(corNetwork.organization(corOrganization));
 
         // Get all the corNetworkList
-        restCorNetworkMockMvc.perform(get("/api/v1/organization?sort=id,desc"))
+        restCorNetworkMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/network?sort=id,desc", corOrganization.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(corNetwork.getId().intValue())))
@@ -224,15 +233,16 @@ public class CorNetworkResourceIntTest {
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
                 .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
+
     @Test
     @Transactional
     public void getAllCorNetworksWithImages() throws Exception {
         // Initialize the database
         when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
-        corNetworkRepository.saveAndFlush(corNetwork);
+        corNetworkRepository.saveAndFlush(corNetwork.organization(corOrganization));
 
         // Get all the corNetworkList
-        restCorNetworkMockMvc.perform(get("/api/v1/organization?sort=id,desc"))
+        restCorNetworkMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/network?sort=id,desc", corOrganization.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(corNetwork.getId().intValue())))
@@ -246,10 +256,10 @@ public class CorNetworkResourceIntTest {
     public void getCorNetwork() throws Exception {
         // Initialize the database
         when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(null);
-        corNetworkRepository.saveAndFlush(corNetwork);
+        corNetworkRepository.saveAndFlush(corNetwork.organization(corOrganization));
 
         // Get the corNetwork
-        restCorNetworkMockMvc.perform(get("/api/v1/organization/{organizationShortcut}", corNetwork.getShortcut()))
+        restCorNetworkMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/network/{networkShortcut}", corOrganization.getShortcut(), corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(corNetwork.getId().intValue()))
@@ -257,15 +267,16 @@ public class CorNetworkResourceIntTest {
                 .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
                 .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
+
     @Test
     @Transactional
     public void getCorNetworkWithImage() throws Exception {
         // Initialize the database
         when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
-        corNetworkRepository.saveAndFlush(corNetwork);
+        corNetworkRepository.saveAndFlush(corNetwork.organization(corOrganization));
 
         // Get the corNetwork
-        restCorNetworkMockMvc.perform(get("/api/v1/organization/{organizationShortcut}", corNetwork.getShortcut()))
+        restCorNetworkMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/network/{networkShortcut}", corOrganization.getShortcut(), corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(corNetwork.getId().intValue()))
@@ -279,7 +290,7 @@ public class CorNetworkResourceIntTest {
     @Transactional
     public void getNonExistingCorNetwork() throws Exception {
         // Get the corNetwork
-        restCorNetworkMockMvc.perform(get("/api/v1/organization/{organizationShortcut}", Long.MAX_VALUE))
+        restCorNetworkMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/network/{networkShortcut}", corOrganization.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -287,7 +298,7 @@ public class CorNetworkResourceIntTest {
     @Transactional
     public void updateCorNetwork() throws Exception {
         // Initialize the database
-        corNetworkRepository.saveAndFlush(corNetwork);
+        corNetworkRepository.saveAndFlush(corNetwork.organization(corOrganization));
         int databaseSizeBeforeUpdate = corNetworkRepository.findAll().size();
 
         // Update the corNetwork
@@ -299,7 +310,7 @@ public class CorNetworkResourceIntTest {
         // Create the CorNetwork
         CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
 
-        restCorNetworkMockMvc.perform(put("/api/v1/organization")
+        restCorNetworkMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/network", corOrganization.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corNetworkDTO)))
                 .andExpect(status().isOk());
@@ -319,10 +330,10 @@ public class CorNetworkResourceIntTest {
         int databaseSizeBeforeUpdate = corNetworkRepository.findAll().size();
 
         // Create the CorNetwork
-        CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
+        CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork.organization(corOrganization));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorNetworkMockMvc.perform(put("/api/v1/organization")
+        restCorNetworkMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/network", corOrganization.getShortcut(), corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corNetworkDTO)))
                 .andExpect(status().isCreated());
@@ -336,11 +347,11 @@ public class CorNetworkResourceIntTest {
     @Transactional
     public void deleteCorNetwork() throws Exception {
         // Initialize the database
-        corNetworkRepository.saveAndFlush(corNetwork);
+        corNetworkRepository.saveAndFlush(corNetwork.organization(corOrganization));
         int databaseSizeBeforeDelete = corNetworkRepository.findAll().size();
 
         // Get the corNetwork
-        restCorNetworkMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}", corNetwork.getShortcut())
+        restCorNetworkMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/network/{networkShortcut}", corOrganization.getShortcut(), corNetwork.getShortcut())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

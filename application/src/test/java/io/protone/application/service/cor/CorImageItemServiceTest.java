@@ -2,6 +2,7 @@ package io.protone.application.service.cor;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorImageItem;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorImageItemRepository;
 import io.protone.core.s3.S3Client;
 import io.protone.core.service.CorImageItemService;
@@ -25,6 +26,8 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import javax.transaction.Transactional;
 import java.util.Set;
 
+import static io.protone.application.util.TestConstans.TEST_ORGANIZATION_ID;
+import static io.protone.application.util.TestConstans.TEST_ORGANIZATION_SHORTCUT;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
@@ -49,18 +52,23 @@ public class CorImageItemServiceTest {
     @Mock
     private S3Client s3Client;
 
+    private CorOrganization corOrganization;
+
     private PodamFactory factory;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        doNothing().when(s3Client).upload(anyString(),anyString(), anyString(), anyObject(), anyString());
-        when(s3Client.getCover(anyString(),anyString(), anyString())).thenReturn("test");
+        doNothing().when(s3Client).upload(anyString(), anyString(), anyString(), anyObject(), anyString());
+        when(s3Client.getCover(anyString(), anyString(), anyString())).thenReturn("test");
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
         ReflectionTestUtils.setField(corImageItemService, "s3Client", s3Client);
         factory = new PodamFactoryImpl();
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+
     }
 
     @Test
@@ -68,7 +76,7 @@ public class CorImageItemServiceTest {
         int size = corImageItemRepository.findAll().size();
 
         MockMultipartFile logo = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
-        CorImageItem corImageItem = corImageItemService.saveImageItem(logo);
+        CorImageItem corImageItem = corImageItemService.saveImageItem(logo, corOrganization);
         int afterAdd = corImageItemRepository.findAll().size();
         notNull(corImageItem);
         assertEquals(size + 1, afterAdd);
@@ -81,7 +89,7 @@ public class CorImageItemServiceTest {
         MockMultipartFile logo = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
         MockMultipartFile secondLogo = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
         MockMultipartFile[] mockMultipartFiles = {logo, secondLogo};
-        Set<CorImageItem> corImageItem = corImageItemService.saveImageItems(mockMultipartFiles);
+        Set<CorImageItem> corImageItem = corImageItemService.saveImageItems(mockMultipartFiles, corOrganization);
         int afterAdd = corImageItemRepository.findAll().size();
         assertNotNull(corImageItem);
         notEmpty(corImageItem);

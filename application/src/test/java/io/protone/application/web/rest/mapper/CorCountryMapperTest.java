@@ -4,7 +4,7 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorCountryDTO;
 import io.protone.core.domain.CorCountry;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.mapper.CorCountryMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +39,8 @@ public class CorCountryMapperTest {
     private List<CorCountryDTO> corCountryDTOS = new ArrayList<>();
 
     private List<CorCountry> corCountries = new ArrayList<>();
-    private CorNetwork corNetwork;
+
+    private CorOrganization corOrganization;
 
     @Before
     public void initPojos() {
@@ -49,22 +50,22 @@ public class CorCountryMapperTest {
         corCountryDTO = factory.manufacturePojo(CorCountryDTO.class);
         corCountryDTOS.add(corCountryDTO);
 
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corOrganization = factory.manufacturePojo(CorOrganization.class);
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CorCountry entity = corCountryMapper.DTO2DB(corCountryDTO, corNetwork);
+        CorCountry entity = corCountryMapper.DTO2DB(corCountryDTO, corOrganization);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
         assertNotNull(entity.getShortName());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getOrganization());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorCountry> entities = corCountryMapper.DTOs2DBs(corCountryDTOS, corNetwork);
+        List<CorCountry> entities = corCountryMapper.DTOs2DBs(corCountryDTOS, corOrganization);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -72,7 +73,7 @@ public class CorCountryMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getName());
             assertNotNull(entity.getShortName());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getOrganization());
 
         });
     }

@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchBlockDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.domain.SchBlock;
@@ -40,15 +39,14 @@ public class SchBlockMapperTest {
 
     private List<SchBlockDTO> blockDTOs = new ArrayList<>();
 
-    private CorNetwork network;
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
 
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         block = factory.manufacturePojo(SchBlock.class);
 
@@ -112,7 +110,7 @@ public class SchBlockMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchBlock entity = blockMapper.DTO2DB(blockDTO, network, corChannel);
+        SchBlock entity = blockMapper.DTO2DB(blockDTO, corChannel);
 
         assertNotNull(entity.getBlocks());
         assertNotNull(entity.getEmissions());
@@ -129,7 +127,7 @@ public class SchBlockMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchBlock> entities = blockMapper.DTOs2DBs(blockDTOs, network, corChannel);
+        List<SchBlock> entities = blockMapper.DTOs2DBs(blockDTOs, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -142,7 +140,6 @@ public class SchBlockMapperTest {
             assertNotNull(entity.getStartTime());
             assertNotNull(entity.getEndTime());
             assertNotNull(entity.getRelativeDelay());
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });
     }

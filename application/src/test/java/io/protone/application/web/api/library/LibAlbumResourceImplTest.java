@@ -2,15 +2,15 @@ package io.protone.application.web.api.library;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.library.impl.LibAlbumResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorImageItem;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorImageItemRepository;
 import io.protone.core.s3.S3Client;
+import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorImageItemService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.library.api.dto.LibAlbumDTO;
 import io.protone.library.domain.LibAlbum;
 import io.protone.library.domain.enumeration.LibAlbumTypeEnum;
@@ -38,11 +38,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static io.protone.core.constans.MinioFoldersConstants.MEDIA_ITEM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -73,7 +73,7 @@ public class LibAlbumResourceImplTest {
     private S3Client s3Client;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -97,7 +97,10 @@ public class LibAlbumResourceImplTest {
 
     private LibAlbum libAlbum;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
+
     private CorImageItem corImageItem;
 
     /**
@@ -118,18 +121,21 @@ public class LibAlbumResourceImplTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         LibAlbumResourceImpl libLibraryResource = new LibAlbumResourceImpl();
-        corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test").network(corNetwork);
+        corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test");
         corImageItemRepository.saveAndFlush(corImageItem);
-        when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(corImageItem);
         ReflectionTestUtils.setField(libAlbumService, "corImageItemService", corImageItemService);
         ReflectionTestUtils.setField(corImageItemService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libLibraryResource, "libAlbumService", libAlbumService);
         ReflectionTestUtils.setField(libLibraryResource, "libAlbumMapper", libAlbumMapper);
-        ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(libLibraryResource, "corChannelService", corChannelService);
 
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        when(s3Client.makeBucket(anyString(), anyString())).thenReturn(corNetwork.getShortcut() + MEDIA_ITEM + "testBucket");
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
+        when(s3Client.makeBucket(anyString(), anyString())).thenReturn(corChannel.getShortcut() + MEDIA_ITEM + "testBucket");
         this.restLibAlbumMockMvc = MockMvcBuilders.standaloneSetup(libLibraryResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
                 .setControllerAdvice(exceptionTranslator)
@@ -138,7 +144,7 @@ public class LibAlbumResourceImplTest {
 
     @Before
     public void initTest() {
-        libAlbum = createEntity(em).network(corNetwork);
+        libAlbum = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -152,7 +158,7 @@ public class LibAlbumResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libAlbumDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
-        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/album", corNetwork.getShortcut())
+        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/album", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -179,7 +185,7 @@ public class LibAlbumResourceImplTest {
                 "application/json", TestUtil.convertObjectToJsonBytes(existingLibAlbumDTO));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/album", corNetwork.getShortcut())
+        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/album", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -203,7 +209,7 @@ public class LibAlbumResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libAlbumDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
-        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/album", corNetwork.getShortcut())
+        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/album", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
@@ -217,11 +223,11 @@ public class LibAlbumResourceImplTest {
     @Transactional
     public void getAllLibLibraries() throws Exception {
         // Initialize the database
-        when(corImageItemService.saveImageItem(any())).thenReturn(null);
-        libAlbumRepository.saveAndFlush(libAlbum.network(corNetwork));
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(null);
+        libAlbumRepository.saveAndFlush(libAlbum.channel(corChannel));
 
         // Get all the libLibraryList
-        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/album?sort=id,desc", corNetwork.getShortcut()))
+        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/album?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(libAlbum.getId().intValue())))
@@ -233,11 +239,11 @@ public class LibAlbumResourceImplTest {
     @Transactional
     public void getLibAlbum() throws Exception {
         // Initialize the database
-        when(corImageItemService.saveImageItem(any())).thenReturn(null);
-        libAlbumRepository.saveAndFlush(libAlbum.network(corNetwork));
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(null);
+        libAlbumRepository.saveAndFlush(libAlbum.channel(corChannel));
 
         // Get the libAlbum
-        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/album/{id}", corNetwork.getShortcut(), libAlbum.getId()))
+        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/album/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), libAlbum.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(libAlbum.getId().intValue()))
@@ -250,10 +256,10 @@ public class LibAlbumResourceImplTest {
     public void getAllLibLibrariesWithImages() throws Exception {
         // Initialize the database
 
-        libAlbumRepository.saveAndFlush(libAlbum.network(corNetwork).mainImage(corImageItem));
+        libAlbumRepository.saveAndFlush(libAlbum.channel(corChannel).mainImage(corImageItem));
 
         // Get all the libLibraryList
-        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/album?sort=id,desc", corNetwork.getShortcut()))
+        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/album?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(libAlbum.getId().intValue())))
@@ -266,10 +272,10 @@ public class LibAlbumResourceImplTest {
     @Transactional
     public void getLibAlbumWithImage() throws Exception {
         // Initialize the database
-        libAlbumRepository.saveAndFlush(libAlbum.network(corNetwork).mainImage(corImageItem));
+        libAlbumRepository.saveAndFlush(libAlbum.channel(corChannel).mainImage(corImageItem));
 
         // Get the libAlbum
-        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/album/{id}", corNetwork.getShortcut(), libAlbum.getId()))
+        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/album/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), libAlbum.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(libAlbum.getId().intValue()))
@@ -282,7 +288,7 @@ public class LibAlbumResourceImplTest {
     @Transactional
     public void getNonExistingLibAlbum() throws Exception {
         // Get the libAlbum
-        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/album/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restLibAlbumMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/album/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -290,7 +296,7 @@ public class LibAlbumResourceImplTest {
     @Transactional
     public void updateLibAlbum() throws Exception {
         // Initialize the database
-        libAlbumRepository.saveAndFlush(libAlbum.network(corNetwork));
+        libAlbumRepository.saveAndFlush(libAlbum.channel(corChannel));
         int databaseSizeBeforeUpdate = libAlbumRepository.findAll().size();
 
         // Update the libAlbum
@@ -300,7 +306,7 @@ public class LibAlbumResourceImplTest {
                 .description(UPDATED_DESCRIPTION);
         LibAlbumDTO libLibraryDTO = libAlbumMapper.DB2DTO((updatedLibAlbum));
 
-        restLibAlbumMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/library/album", corNetwork.getShortcut())
+        restLibAlbumMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/album", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isOk());
@@ -317,7 +323,7 @@ public class LibAlbumResourceImplTest {
     @Transactional
     public void updateLibAlbumWithImage() throws Exception {
         // Initialize the database
-        libAlbumRepository.saveAndFlush(libAlbum.network(corNetwork));
+        libAlbumRepository.saveAndFlush(libAlbum.channel(corChannel));
         int databaseSizeBeforeUpdate = libAlbumRepository.findAll().size();
 
         // Update the libAlbum
@@ -330,7 +336,7 @@ public class LibAlbumResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("libAlbumDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
-        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/library/album/{id}", corNetwork.getShortcut(), libAlbum.getId())
+        restLibAlbumMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/album/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), libAlbum.getId())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isOk());
@@ -352,7 +358,7 @@ public class LibAlbumResourceImplTest {
         LibAlbumDTO libLibraryDTO = libAlbumMapper.DB2DTO(libAlbum);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restLibAlbumMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/library/album", corNetwork.getShortcut())
+        restLibAlbumMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/album", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isCreated());
@@ -366,11 +372,11 @@ public class LibAlbumResourceImplTest {
     @Transactional
     public void deleteLibAlbum() throws Exception {
         // Initialize the database
-        libAlbumRepository.saveAndFlush(libAlbum.network(corNetwork));
+        libAlbumRepository.saveAndFlush(libAlbum.channel(corChannel));
         int databaseSizeBeforeDelete = libAlbumRepository.findAll().size();
 
         // Get the libAlbum
-        restLibAlbumMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/library/album/{id}", corNetwork.getShortcut(), libAlbum.getId())
+        restLibAlbumMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/album/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), libAlbum.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

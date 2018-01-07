@@ -6,11 +6,12 @@ import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.impl.CorDictionaryResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.api.dto.CorDictionaryDTO;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.core.repository.CorDictionaryRepository;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorChannelService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -57,7 +59,7 @@ public class CorDictionaryResourceTest {
     private CorDictionaryRepository corDictionaryRepository;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Autowired
     private CorDictionaryMapper corDictionaryMapper;
@@ -78,7 +80,9 @@ public class CorDictionaryResourceTest {
 
     private CorDictionary corDictionary;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
 
     /**
      * Create an entity for this test.
@@ -88,11 +92,11 @@ public class CorDictionaryResourceTest {
      */
     public static CorDictionary createEntity(EntityManager em) {
         CorDictionary corDictionary = new CorDictionary()
-            .name(DEFAULT_NAME)
-            .description(DEFAULT_DESCRIPTION)
-            .dictionaryType(TEST_TYPE)
-            .seqNumber(DEFAULT_SEQ_NUMBER)
-            .corModule(TEST_MODULE);
+                .name(DEFAULT_NAME)
+                .description(DEFAULT_DESCRIPTION)
+                .dictionaryType(TEST_TYPE)
+                .seqNumber(DEFAULT_SEQ_NUMBER)
+                .corModule(TEST_MODULE);
         return corDictionary;
     }
 
@@ -103,20 +107,22 @@ public class CorDictionaryResourceTest {
 
         ReflectionTestUtils.setField(corDictionaryResource, "corDictionaryRepository", corDictionaryRepository);
         ReflectionTestUtils.setField(corDictionaryResource, "corDictionaryMapper", corDictionaryMapper);
-        ReflectionTestUtils.setField(corDictionaryResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(corDictionaryResource, "corChannelService", corChannelService);
 
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
 
         this.restCorDictionaryMockMvc = MockMvcBuilders.standaloneSetup(corDictionaryResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
     public void initTest() {
-        corDictionary = createEntity(em).network(corNetwork);
+        corDictionary = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -127,10 +133,10 @@ public class CorDictionaryResourceTest {
         // Create the CorDictionary
         CorDictionaryDTO corDictionaryDTO = corDictionaryMapper.DB2DTO(corDictionary);
 
-        restCorDictionaryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}", corNetwork.getShortcut(), TEST_MODULE, TEST_TYPE)
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corDictionaryDTO)))
-            .andExpect(status().isCreated());
+        restCorDictionaryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/configuration/organization/dictionary/{module}/{type}", corOrganization.getShortcut(), corChannel.getShortcut(), TEST_MODULE, TEST_TYPE)
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corDictionaryDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the CorDictionary in the database
         List<CorDictionary> corDictionaryList = corDictionaryRepository.findAll();
@@ -154,10 +160,10 @@ public class CorDictionaryResourceTest {
         CorDictionaryDTO existingCorDictionaryDTO = corDictionaryMapper.DB2DTO(existingCorDictionary);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorDictionaryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}", corNetwork.getShortcut(), TEST_MODULE, TEST_TYPE)
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingCorDictionaryDTO)))
-            .andExpect(status().isBadRequest());
+        restCorDictionaryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/organization/dictionary/{module}/{type}", corOrganization.getShortcut(), corChannel.getShortcut(), TEST_MODULE, TEST_TYPE)
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(existingCorDictionaryDTO)))
+                .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
         List<CorDictionary> corDictionaryList = corDictionaryRepository.findAll();
@@ -168,61 +174,61 @@ public class CorDictionaryResourceTest {
     @Transactional
     public void getAllCorDictionaries() throws Exception {
         // Initialize the database
-        corDictionaryRepository.saveAndFlush(corDictionary.network(corNetwork));
+        corDictionaryRepository.saveAndFlush(corDictionary.channel(corChannel));
 
         // Get all the corDictionaryList
-        restCorDictionaryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}?sort=id,desc", corNetwork.getShortcut(), TEST_MODULE, TEST_TYPE))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(corDictionary.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].seqNumber").value(hasItem(DEFAULT_SEQ_NUMBER.intValue())));
+        restCorDictionaryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/organization/dictionary/{module}/{type}?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut(), TEST_MODULE, TEST_TYPE))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(corDictionary.getId().intValue())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+                .andExpect(jsonPath("$.[*].seqNumber").value(hasItem(DEFAULT_SEQ_NUMBER.intValue())));
     }
 
     @Test
     @Transactional
     public void getCorDictionary() throws Exception {
         // Initialize the database
-        corDictionaryRepository.saveAndFlush(corDictionary.network(corNetwork));
+        corDictionaryRepository.saveAndFlush(corDictionary.channel(corChannel));
 
         // Get the corDictionary
-        restCorDictionaryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}/{id}", corNetwork.getShortcut(), TEST_MODULE, TEST_TYPE, corDictionary.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(corDictionary.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.seqNumber").value(DEFAULT_SEQ_NUMBER.intValue()));
+        restCorDictionaryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/organization/dictionary/{module}/{type}/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), TEST_MODULE, TEST_TYPE, corDictionary.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(corDictionary.getId().intValue()))
+                .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+                .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+                .andExpect(jsonPath("$.seqNumber").value(DEFAULT_SEQ_NUMBER.intValue()));
     }
 
     @Test
     @Transactional
     public void getNonExistingCorDictionary() throws Exception {
         // Get the corDictionary
-        restCorDictionaryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}/{id}", corNetwork.getShortcut(), TEST_MODULE, TEST_TYPE, Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restCorDictionaryMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/organization/dictionary/{module}/{type}/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), TEST_MODULE, TEST_TYPE, Long.MAX_VALUE))
+                .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
     public void updateCorDictionary() throws Exception {
         // Initialize the database
-        corDictionaryRepository.saveAndFlush(corDictionary.network(corNetwork));
+        corDictionaryRepository.saveAndFlush(corDictionary.channel(corChannel));
         int databaseSizeBeforeUpdate = corDictionaryRepository.findAll().size();
 
         // Update the corDictionary
         CorDictionary updatedCorDictionary = corDictionaryRepository.findOne(corDictionary.getId());
         updatedCorDictionary
-            .name(UPDATED_NAME)
-            .description(UPDATED_DESCRIPTION)
-            .seqNumber(UPDATED_SEQ_NUMBER);
+                .name(UPDATED_NAME)
+                .description(UPDATED_DESCRIPTION)
+                .seqNumber(UPDATED_SEQ_NUMBER);
         CorDictionaryDTO corDictionaryDTO = corDictionaryMapper.DB2DTO(updatedCorDictionary);
 
-        restCorDictionaryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}", corNetwork.getShortcut(), TEST_MODULE, TEST_TYPE)
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corDictionaryDTO)))
-            .andExpect(status().isOk());
+        restCorDictionaryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/organization/dictionary/{module}/{type}", corOrganization.getShortcut(), corChannel.getShortcut(), TEST_MODULE, TEST_TYPE)
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corDictionaryDTO)))
+                .andExpect(status().isOk());
 
         // Validate the CorDictionary in the database
         List<CorDictionary> corDictionaryList = corDictionaryRepository.findAll();
@@ -245,10 +251,10 @@ public class CorDictionaryResourceTest {
         // Create the LibMediaLibrary, which fails.
         CorDictionaryDTO corDictionaryDTO = corDictionaryMapper.DB2DTO(corDictionary);
 
-        restCorDictionaryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}", corNetwork.getShortcut(), TEST_MODULE, TEST_TYPE)
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corDictionaryDTO)))
-            .andExpect(status().isBadRequest());
+        restCorDictionaryMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/organization/dictionary/{module}/{type}", corOrganization.getShortcut(), corChannel.getShortcut(), TEST_MODULE, TEST_TYPE)
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corDictionaryDTO)))
+                .andExpect(status().isBadRequest());
 
         List<CorDictionary> libLibraryList = corDictionaryRepository.findAll();
         assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
@@ -263,10 +269,10 @@ public class CorDictionaryResourceTest {
         CorDictionaryDTO corDictionaryDTO = corDictionaryMapper.DB2DTO(corDictionary);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorDictionaryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}", corNetwork.getShortcut(), TEST_MODULE, TEST_TYPE)
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(corDictionaryDTO)))
-            .andExpect(status().isCreated());
+        restCorDictionaryMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/organization/dictionary/{module}/{type}", corOrganization.getShortcut(), corChannel.getShortcut(), TEST_MODULE, TEST_TYPE)
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(corDictionaryDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the CorDictionary in the database
         List<CorDictionary> corDictionaryList = corDictionaryRepository.findAll();
@@ -277,13 +283,13 @@ public class CorDictionaryResourceTest {
     @Transactional
     public void deleteCorDictionary() throws Exception {
         // Initialize the database
-        corDictionaryRepository.saveAndFlush(corDictionary.network(corNetwork));
+        corDictionaryRepository.saveAndFlush(corDictionary.channel(corChannel));
         int databaseSizeBeforeDelete = corDictionaryRepository.findAll().size();
 
         // Get the corDictionary
-        restCorDictionaryMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/configuration/organization/dictionary/{module}/{type}/{id}", corNetwork.getShortcut(), TEST_MODULE, TEST_TYPE, corDictionary.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+        restCorDictionaryMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}//configuration/organization/dictionary/{module}/{type}/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), TEST_MODULE, TEST_TYPE, corDictionary.getId())
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
 
         // Validate the database is empty
         List<CorDictionary> corDictionaryList = corDictionaryRepository.findAll();

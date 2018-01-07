@@ -4,7 +4,6 @@ import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchBlockDTO;
 import io.protone.scheduler.api.dto.SchClockDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
@@ -45,13 +44,12 @@ public class SchClockMapperTest {
     private List<SchClock> clocks = new ArrayList<>();
 
     private List<SchClockDTO> clockDTOs = new ArrayList<>();
-    private CorNetwork network;
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         // Fill entity
         clock = factory.manufacturePojo(SchClock.class);
@@ -145,7 +143,7 @@ public class SchClockMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchClock entity = clockMapper.DTO2DB(clockDTO, network, corChannel);
+        SchClock entity = clockMapper.DTO2DB(clockDTO, corChannel);
 
         assertEquals(entity.getBlocks().size(), 3);
         assertEquals(entity.getEmissions().size(), 3);
@@ -159,13 +157,12 @@ public class SchClockMapperTest {
         assertNotNull(entity.getSequence());
 
         assertNotNull(entity.getClockCategory());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchClock> entities = clockMapper.DTOs2DBs(clockDTOs, network, corChannel);
+        List<SchClock> entities = clockMapper.DTOs2DBs(clockDTOs, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -182,7 +179,6 @@ public class SchClockMapperTest {
             assertNotNull(entity.getRelativeDelay());
             assertNotNull(entity.getSequence());
             assertNotNull(entity.getClockCategory());
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });
     }

@@ -1,9 +1,8 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.scheduler.domain.SchLogColumn;
 import io.protone.scheduler.repository.SchLogColumnRepostiory;
 import io.protone.scheduler.service.SchLogColumnService;
@@ -20,6 +19,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import javax.transaction.Transactional;
 import java.util.Set;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -38,16 +38,19 @@ public class SchLogColumnServiceTest {
     @Autowired
     private SchLogColumnRepostiory schLogColumnRepostiory;
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
+
+    private CorOrganization corOrganization;
+
 
     @Before
     public void setUp() throws Exception {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
+
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
     }
 
 
@@ -55,7 +58,6 @@ public class SchLogColumnServiceTest {
     public void shouldSaveColumnConfiguration() throws Exception {
         //when
         SchLogColumn schColumnConfiguration = factory.manufacturePojo(SchLogColumn.class);
-        schColumnConfiguration.setNetwork(corNetwork);
         schColumnConfiguration.setChannel(corChannel);
         Set<SchLogColumn> schLogColumnSet = Sets.newSet(schColumnConfiguration);
         //then
@@ -64,7 +66,6 @@ public class SchLogColumnServiceTest {
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.stream().findFirst().get().getId());
-        assertEquals(schColumnConfiguration.getNetwork(), fetchedEntity.stream().findFirst().get().getNetwork());
     }
 
     @Test
@@ -73,7 +74,6 @@ public class SchLogColumnServiceTest {
         long numberOfColumns = schLogColumnRepostiory.count();
 
         SchLogColumn schColumnConfiguration = factory.manufacturePojo(SchLogColumn.class);
-        schColumnConfiguration.setNetwork(corNetwork);
         schColumnConfiguration.setChannel(corChannel);
         schColumnConfiguration = schLogColumnRepostiory.saveAndFlush(schColumnConfiguration);
         Set<SchLogColumn> schLogColumnSet = Sets.newSet(schColumnConfiguration);

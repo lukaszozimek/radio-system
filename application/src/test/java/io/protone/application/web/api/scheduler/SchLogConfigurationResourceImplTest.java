@@ -2,14 +2,12 @@ package io.protone.application.web.api.scheduler;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.scheduler.impl.SchLogConfigurationResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.core.service.CorChannelService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.library.domain.LibFileLibrary;
 import io.protone.library.service.LibFileLibraryService;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
@@ -36,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.any;
@@ -70,9 +69,6 @@ public class SchLogConfigurationResourceImplTest {
     @Autowired
     private CorChannelService corChannelService;
 
-    @Autowired
-    private CorNetworkService corNetworkService;
-
     @Mock
     private LibFileLibraryService libFileLibraryService;
 
@@ -92,9 +88,10 @@ public class SchLogConfigurationResourceImplTest {
 
     private SchLogConfiguration schLogConfiguration;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
 
     private CorChannel corChannel;
+
 
     /**
      * Create an entity for this test.
@@ -118,7 +115,6 @@ public class SchLogConfigurationResourceImplTest {
         ReflectionTestUtils.setField(schLogConfigurationService, "libFileLibraryService", libFileLibraryService);
         ReflectionTestUtils.setField(schLogConfigurationResource, "schLogConfigurationService", schLogConfigurationService);
         ReflectionTestUtils.setField(schLogConfigurationResource, "schLogConfigurationMapper", schLogConfigurationMapper);
-        ReflectionTestUtils.setField(schLogConfigurationResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(schLogConfigurationResource, "corChannelService", corChannelService);
 
 
@@ -130,11 +126,12 @@ public class SchLogConfigurationResourceImplTest {
 
     @Before
     public void initTest() {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
-        schLogConfiguration = createEntity(em).network(corNetwork).channel(corChannel);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
+        schLogConfiguration = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -145,7 +142,7 @@ public class SchLogConfigurationResourceImplTest {
         // Create the SchLogConfiguration
         SchLogConfigurationDTO traPlaylistDTO = schLogConfigurationMapper.DB2DTO(schLogConfiguration);
 
-        restSchLogConfigurationMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchLogConfigurationMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -169,7 +166,7 @@ public class SchLogConfigurationResourceImplTest {
         SchLogConfigurationDTO existingSchLogConfigurationDTO = schLogConfigurationMapper.DB2DTO(existingSchLogConfiguration);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSchLogConfigurationMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchLogConfigurationMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingSchLogConfigurationDTO)))
                 .andExpect(status().isBadRequest());
@@ -183,10 +180,10 @@ public class SchLogConfigurationResourceImplTest {
     @Transactional
     public void getAllSchLogConfigurations() throws Exception {
         // Initialize the database
-        schLogConfigurationRepository.saveAndFlush(schLogConfiguration.network(corNetwork).channel(corChannel));
+        schLogConfigurationRepository.saveAndFlush(schLogConfiguration.channel(corChannel));
 
         // Get all the traPlaylistList
-        restSchLogConfigurationMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchLogConfigurationMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schLogConfiguration.getId().intValue())))
@@ -199,10 +196,10 @@ public class SchLogConfigurationResourceImplTest {
     @Transactional
     public void getSchLogConfiguration() throws Exception {
         // Initialize the database
-        schLogConfigurationRepository.saveAndFlush(schLogConfiguration.network(corNetwork).channel(corChannel));
+        schLogConfigurationRepository.saveAndFlush(schLogConfiguration.channel(corChannel));
 
         // Get the schLogConfiguration
-        restSchLogConfigurationMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), schLogConfiguration.getId()))
+        restSchLogConfigurationMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), schLogConfiguration.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(schLogConfiguration.getId().intValue()))
@@ -214,7 +211,7 @@ public class SchLogConfigurationResourceImplTest {
     @Transactional
     public void getNonExistingSchLogConfiguration() throws Exception {
 
-        restSchLogConfigurationMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
+        restSchLogConfigurationMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -222,7 +219,7 @@ public class SchLogConfigurationResourceImplTest {
     @Transactional
     public void updateSchLogConfiguration() throws Exception {
         // Initialize the database
-        schLogConfigurationRepository.saveAndFlush(schLogConfiguration.network(corNetwork).channel(corChannel));
+        schLogConfigurationRepository.saveAndFlush(schLogConfiguration.channel(corChannel));
         int databaseSizeBeforeUpdate = schLogConfigurationRepository.findAll().size();
 
         // Update the schLogConfiguration
@@ -231,7 +228,7 @@ public class SchLogConfigurationResourceImplTest {
                 .name(UPDATED_NAME);
         SchLogConfigurationDTO traPlaylistDTO = schLogConfigurationMapper.DB2DTO(updatedSchLogConfiguration);
 
-        restSchLogConfigurationMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchLogConfigurationMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isOk());
@@ -253,7 +250,7 @@ public class SchLogConfigurationResourceImplTest {
         SchLogConfigurationDTO traPlaylistDTO = schLogConfigurationMapper.DB2DTO(schLogConfiguration);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSchLogConfigurationMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchLogConfigurationMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -267,11 +264,11 @@ public class SchLogConfigurationResourceImplTest {
     @Transactional
     public void deleteSchLogConfiguration() throws Exception {
         // Initialize the database
-        schLogConfigurationRepository.saveAndFlush(schLogConfiguration.network(corNetwork).channel(corChannel));
+        schLogConfigurationRepository.saveAndFlush(schLogConfiguration.channel(corChannel));
         int databaseSizeBeforeDelete = schLogConfigurationRepository.findAll().size();
 
         // Get the schLogConfiguration
-        restSchLogConfigurationMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), schLogConfiguration.getId())
+        restSchLogConfigurationMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), schLogConfiguration.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

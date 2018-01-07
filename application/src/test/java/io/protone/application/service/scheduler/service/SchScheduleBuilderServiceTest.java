@@ -75,10 +75,9 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         LocalDate localDate = LocalDate.now();
         SchGrid schGrid = schGridRepository.saveAndFlush(buildGridForDay(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true));
         //then
-        SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());
+        SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corOrganization.getShortcut(), corChannel.getShortcut());
         //assert
         assertNotNull(schSchedule);
-        assertEquals(schSchedule.getNetwork(), schGrid.getNetwork());
         assertEquals(schSchedule.getChannel(), schGrid.getChannel());
         assertEquals(schSchedule.getDate(), localDate);
         assertTrue(schSchedule.getBlocks().isEmpty());
@@ -92,7 +91,7 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         schGridRepository.saveAndFlush(buildGridForDay(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), false));
 
         //then
-        schScheduleBuilderService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());
+        schScheduleBuilderService.buildDefaultSchedule(localDate, corOrganization.getShortcut(), corChannel.getShortcut());
     }
 
     @Test
@@ -102,11 +101,10 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         SchGrid schGrid = schGridRepository.saveAndFlush(buildGridForDayWitClock(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true));
 
         //then
-        SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());
+        SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(schSchedule);
-        assertEquals(schSchedule.getNetwork(), schGrid.getNetwork());
         assertEquals(schSchedule.getChannel(), schGrid.getChannel());
         assertEquals(schSchedule.getDate(), localDate);
         assertTrue(!schSchedule.getBlocks().isEmpty());
@@ -126,11 +124,10 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         SchGrid schGrid = schGridRepository.saveAndFlush(buildGridForDayWitClockWithNestedEvents(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true));
 
         //then
-        SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());
+        SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(schSchedule);
-        assertEquals(schSchedule.getNetwork(), schGrid.getNetwork());
         assertEquals(schSchedule.getChannel(), schGrid.getChannel());
         assertEquals(schSchedule.getDate(), localDate);
         assertTrue(!schSchedule.getBlocks().isEmpty());
@@ -145,7 +142,6 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         schSchedule.getBlocks().stream().findFirst().get().getChild().getBlocks().stream().forEach(block -> {
             assertEquals(1, block.getChild().getBlocks().size());
             assertNotNull(block.getChild().getChannel());
-            assertNotNull(block.getChild().getNetwork());
             block.getChild().getBlocks().stream().forEach(nestedBlock -> {
                 assertTrue(nestedBlock.getChild().getBlocks().isEmpty());
                 assertEquals(3, nestedBlock.getChild().getEmissions().size());
@@ -154,11 +150,9 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
                     assertNotNull(emissionsInNestedBlock.getMediaItem());
                     assertEquals(3, emissionsInNestedBlock.getAttachments().size());
                     assertNotNull(emissionsInNestedBlock.getChannel());
-                    assertNotNull(emissionsInNestedBlock.getNetwork());
                     emissionsInNestedBlock.getAttachments().stream().forEach(nestedAttachments -> {
                         assertNotNull(nestedAttachments);
                         assertNotNull(nestedAttachments.getSequence());
-                        assertNotNull(nestedAttachments.getNetwork());
                         assertNotNull(nestedAttachments.getChannel());
 
                     });
@@ -168,13 +162,11 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
             block.getChild().getEmissions().stream().forEach(emission -> {
                 assertNotNull(emission.getSequence());
                 assertNotNull(emission.getMediaItem());
-                assertNotNull(emission.getNetwork());
                 assertNotNull(emission.getChannel());
                 assertEquals(3, emission.getAttachments().size());
                 emission.getAttachments().stream().forEach(attachment -> {
                     assertNotNull(attachment);
                     assertNotNull(attachment.getSequence());
-                    assertNotNull(attachment.getNetwork());
                     assertNotNull(attachment.getChannel());
                 });
 
@@ -188,10 +180,10 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
     public void shouldBuildScheduleWithOneHourContainingEventsImportAndEmissionsGrid() throws IOException {
         //when
         ReflectionTestUtils.setField(parseLogService, "libFileItemService", libFileItemService);
-        LibFileItem schLogMusFile = libFileItemRepository.saveAndFlush(new LibFileItem().idx("log").name("MUSLOG").network(corNetwork).channel(corChannel));
-        LibFileItem schLogOprFile = libFileItemRepository.saveAndFlush(new LibFileItem().idx("log1").name("OPRLOG").network(corNetwork).channel(corChannel));
-        SchLog schLogMusic = schLogRepository.saveAndFlush(new SchLog().fileItem(schLogMusFile).schLogConfiguration(buildMusLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd"))));
-        SchLog schLogOpr = schLogRepository.saveAndFlush(new SchLog().fileItem(schLogOprFile).schLogConfiguration(buildOPRLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd"))));
+        LibFileItem schLogMusFile = libFileItemRepository.saveAndFlush(new LibFileItem().idx("log").name("MUSLOG").channel(corChannel));
+        LibFileItem schLogOprFile = libFileItemRepository.saveAndFlush(new LibFileItem().idx("log1").name("OPRLOG").channel(corChannel));
+        SchLog schLogMusic = schLogRepository.saveAndFlush(new SchLog().fileItem(schLogMusFile).schLogConfiguration(buildMusLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corChannel)).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd"))));
+        SchLog schLogOpr = schLogRepository.saveAndFlush(new SchLog().fileItem(schLogOprFile).schLogConfiguration(buildOPRLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corChannel)).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd"))));
         InputStream musLogStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/mapping/musicLog/20170826.MUS");
         InputStream oprLogStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/mapping/newsCollect/20170826.OPR");
         when(libFileItemService.download(schLogMusFile)).thenReturn(IOUtils.toByteArray(musLogStream));
@@ -200,9 +192,8 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         SchGrid schGrid = schGridRepository.saveAndFlush(buildGridForDayWitClockMusicAndImportEventsAndEmissionsConfiguration(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true));
 
         //then
-        SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());
+        SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corOrganization.getShortcut(), corChannel.getShortcut());
         assertNotNull(schSchedule);
-        assertEquals(schSchedule.getNetwork(), schGrid.getNetwork());
         assertEquals(schSchedule.getChannel(), schGrid.getChannel());
         assertEquals(schSchedule.getDate(), localDate);
         assertTrue(!schSchedule.getBlocks().isEmpty());
@@ -218,7 +209,6 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
                 assertEquals(8, block.getChild().getEmissions().size());
 
                 assertNotNull(block.getChild().getChannel());
-                assertNotNull(block.getChild().getNetwork());
             }
             if (block.getChild().getEventType() != null && block.getChild().getEventType().equals(EventTypeEnum.ET_MUSIC)) {
                 block.getChild().getBlocks().stream().forEach(nestedBlock -> {
@@ -227,7 +217,6 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
                         assertEquals(0, nestedBlock.getChild().getBlocks().size());
 
                         assertNotNull(nestedBlock.getChild().getChannel());
-                        assertNotNull(nestedBlock.getChild().getNetwork());
                     } else {
                         assertTrue(nestedBlock.getChild().getBlocks().isEmpty());
                         assertEquals(3, nestedBlock.getChild().getEmissions().size());
@@ -236,11 +225,10 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
                             assertNotNull(emissionsInNestedBlock.getMediaItem());
                             assertEquals(3, emissionsInNestedBlock.getAttachments().size());
                             assertNotNull(emissionsInNestedBlock.getChannel());
-                            assertNotNull(emissionsInNestedBlock.getNetwork());
+
                             emissionsInNestedBlock.getAttachments().stream().forEach(nestedAttachments -> {
                                 assertNotNull(nestedAttachments);
                                 assertNotNull(nestedAttachments.getSequence());
-                                assertNotNull(nestedAttachments.getNetwork());
                                 assertNotNull(nestedAttachments.getChannel());
 
                             });

@@ -33,18 +33,18 @@ public class CorNetworkService {
     @Inject
     private S3Client s3Client;
 
-    public Slice<CorNetwork> findAllNetworks(String organizationShortcut) {
-        return corNetworkRepository.findSliceByCorOrganization_Shortcut(organizationShortcut);
+    public List<CorNetwork> findAllNetworks(String organizationShortcut) {
+        return corNetworkRepository.findAllByOrganization_Shortcut(organizationShortcut);
     }
 
     public CorNetwork findNetwork(String shortcut, String organizationShortcut) {
-        CorNetwork corNetwork = corNetworkRepository.findOneByShortcutAndCorOrganization_Shortcut(shortcut, organizationShortcut);
+        CorNetwork corNetwork = corNetworkRepository.findOneByShortcutAndOrganization_Shortcut(shortcut, organizationShortcut);
         return corNetwork;
     }
 
     @Transactional
     public void deleteNetwork(String shortcut, String organizationShortcut) {
-        corNetworkRepository.deleteByShortcutAndCorOrganization_Shortcut(shortcut, organizationShortcut);
+        corNetworkRepository.deleteByShortcutAndOrganization_Shortcut(shortcut, organizationShortcut);
     }
 
     public CorNetwork save(CorNetwork network) {
@@ -59,7 +59,7 @@ public class CorNetworkService {
 
     public CorNetwork save(CorNetwork corNetwork, MultipartFile logo) throws IOException, TikaException, SAXException {
         log.debug("Persisting CorNetwork: {}", corNetwork);
-        CorImageItem corImageItem = corImageItemService.saveImageItem(logo, corNetwork.getCorOrganization());
+        CorImageItem corImageItem = corImageItemService.saveImageItem(logo, corNetwork.getOrganization());
         return corNetworkRepository.saveAndFlush(corNetwork.image(corImageItem));
     }
 }

@@ -2,13 +2,11 @@ package io.protone.application.web.api.scheduler;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.scheduler.impl.SchLogResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.service.CorChannelService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.library.domain.LibFileItem;
 import io.protone.library.repository.LibFileItemRepository;
 import io.protone.library.service.LibFileItemService;
@@ -42,6 +40,7 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.*;
@@ -84,9 +83,6 @@ public class SchLogResourceImplTest {
     private CorChannelService corChannelService;
 
     @Autowired
-    private CorNetworkService corNetworkService;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -104,7 +100,7 @@ public class SchLogResourceImplTest {
 
     private LibFileItem libFileItem;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
 
     private CorChannel corChannel;
 
@@ -126,12 +122,11 @@ public class SchLogResourceImplTest {
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
         SchLogResourceImpl schLogResource = new SchLogResourceImpl();
-        when(libFileItemService.uploadFileItemWithPredefinedContentType(anyString(), anyString(), anyObject(), anyString())).thenReturn(libFileItem);
+        when(libFileItemService.uploadFileItemWithPredefinedContentType(anyString(), anyString(), anyString(), anyObject(), anyString())).thenReturn(libFileItem);
         doNothing().when(libFileItemService).deleteFile(any(LibFileItem.class));
         ReflectionTestUtils.setField(schLogService, "libFileItemService", libFileItemService);
         ReflectionTestUtils.setField(schLogResource, "schLogService", schLogService);
         ReflectionTestUtils.setField(schLogResource, "schLogMapper", schLogMapper);
-        ReflectionTestUtils.setField(schLogResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(schLogResource, "corChannelService", corChannelService);
 
 
@@ -143,13 +138,13 @@ public class SchLogResourceImplTest {
 
     @Before
     public void initTest() {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
-        schLog = createEntity(em).network(corNetwork).channel(corChannel);
-        libFileItem = libFileItemRepository.saveAndFlush(new LibFileItem().idx("test").name("test").channel(corChannel).network(corNetwork));
-        schLogConfiguration = schLogConfigurationRepository.saveAndFlush(SchLogConfigurationResourceImplTest.createEntity(em).network(corNetwork).channel(corChannel));
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        schLog = createEntity(em).channel(corChannel);
+        libFileItem = libFileItemRepository.saveAndFlush(new LibFileItem().idx("test").name("test").channel(corChannel));
+        schLogConfiguration = schLogConfigurationRepository.saveAndFlush(SchLogConfigurationResourceImplTest.createEntity(em).channel(corChannel));
         schLog.schLogConfiguration(schLogConfiguration);
     }
 
@@ -158,16 +153,15 @@ public class SchLogResourceImplTest {
     public void createSchLog() throws Exception {
         int databaseSizeBeforeCreate = schLogRepository.findAll().size();
         libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
-        when(libFileItemService.uploadFileItem(anyString(), anyString(), any())).thenReturn(libFileItem);
+        when(libFileItemService.uploadFileItem(anyString(), anyString(), anyString(), any())).thenReturn(libFileItem);
         schLogConfiguration.setExtension("MUS");
         schLogConfiguration.setPattern("yyyyMMdd");
         schLogConfiguration.setChannel(corChannel);
-        schLogConfiguration.setNetwork(corNetwork);
         schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
 
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/withseparator/musicLog/20160703.MUS");
         MockMultipartFile multipartFile = new MockMultipartFile("files", "20160703.MUS", "application/octet-stream", inputStream);
-        restSchLogMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/{extension}", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getSchLogConfiguration().getExtension())
+        restSchLogMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/{extension}", corOrganization.getShortcut(), corChannel.getShortcut(), schLog.getSchLogConfiguration().getExtension())
                 .file(multipartFile))
                 .andExpect(status().isCreated());
 
@@ -183,10 +177,10 @@ public class SchLogResourceImplTest {
     @Transactional
     public void getAllSchLogs() throws Exception {
         // Initialize the database
-        schLogRepository.saveAndFlush(schLog.fileItem(libFileItem).schLogConfiguration(schLogConfiguration).network(corNetwork).channel(corChannel));
+        schLogRepository.saveAndFlush(schLog.fileItem(libFileItem).schLogConfiguration(schLogConfiguration).channel(corChannel));
 
         // Get all the traPlaylistList
-        restSchLogMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/{extension}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getSchLogConfiguration().getExtension()))
+        restSchLogMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/{extension}?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut(), schLog.getSchLogConfiguration().getExtension()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schLog.getId().intValue())))
@@ -200,11 +194,11 @@ public class SchLogResourceImplTest {
     @Transactional
     public void deleteSchLog() throws Exception {
         // Initialize the database
-        schLogRepository.saveAndFlush(schLog.fileItem(libFileItem).schLogConfiguration(schLogConfiguration).network(corNetwork).channel(corChannel));
+        schLogRepository.saveAndFlush(schLog.fileItem(libFileItem).schLogConfiguration(schLogConfiguration).channel(corChannel));
         int databaseSizeBeforeDelete = schLogRepository.findAll().size();
 
         // Get the schLog
-        restSchLogMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/{extension}/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getSchLogConfiguration().getExtension(), schLog.getDate())
+        restSchLogMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/log/{extension}/{date}", corOrganization.getShortcut(), corChannel.getShortcut(), schLog.getSchLogConfiguration().getExtension(), schLog.getDate())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

@@ -3,7 +3,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.library.api.dto.LibFileItemDTO;
 import io.protone.library.domain.LibFileItem;
@@ -50,7 +49,7 @@ public class TraMediaPlanMapperTest {
 
     private List<TraMediaPlan> traMediaPlans = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     private CrmAccount crmAccount;
     private TraCustomerThinDTO traCustomerThinDTO;
@@ -59,7 +58,6 @@ public class TraMediaPlanMapperTest {
 
     private LibFileItem libMediaItem;
 
-    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -81,7 +79,7 @@ public class TraMediaPlanMapperTest {
         traMediaPlanThinDTO.setTraCustomerThinDTO(traCustomerThinDTO);
         traMediaPlanThinDTO.setLibFileItemDTO(libMediaItemThinDTO);
         traMediaPlanThinDTOS.add(traMediaPlanThinDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
         corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
@@ -121,18 +119,17 @@ public class TraMediaPlanMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraMediaPlan entity = traMediaPlanMapper.DTO2DB(traMediaPlanDTO, corNetwork, corChannel);
+        TraMediaPlan entity = traMediaPlanMapper.DTO2DB(traMediaPlanDTO, corChannel);
         assertNotNull(entity.getId());
         assertNotNull(entity.getAccount());
         assertNotNull(entity.getName());
         assertNotNull(entity.getLibFileItem());
         assertNotNull(entity.getChannel());
-        assertNotNull(entity.getNetwork());
     }
 
     @Test
     public void TraMediaPlan() throws Exception {
-        List<TraMediaPlan> entities = traMediaPlanMapper.DTOs2DBs(traMediaPlanDTOS, corNetwork, corChannel);
+        List<TraMediaPlan> entities = traMediaPlanMapper.DTOs2DBs(traMediaPlanDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -142,7 +139,6 @@ public class TraMediaPlanMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getLibFileItem());
             assertNotNull(entity.getChannel());
-            assertNotNull(entity.getNetwork());
         });
     }
 

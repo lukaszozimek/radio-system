@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchScheduleDTO;
 import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.mapper.SchScheduleMapper;
@@ -36,14 +35,13 @@ public class SchScheduleMapperTest {
     private List<SchSchedule> schedules = new ArrayList<>();
 
     private List<SchScheduleDTO> scheduleDTOs = new ArrayList<>();
-    private CorNetwork network;
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         schedule = factory.manufacturePojo(SchSchedule.class);
         schedule.setBlocks(null);
@@ -75,7 +73,7 @@ public class SchScheduleMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchSchedule entity = scheduleMapper.DTO2DB(scheduleDTO, network, corChannel);
+        SchSchedule entity = scheduleMapper.DTO2DB(scheduleDTO, corChannel);
 
         assertNotNull(entity.getDate());
         //assertNotNull(dto.getSchClockDTOS()); //TODO: test media item instance mapping
@@ -83,14 +81,13 @@ public class SchScheduleMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchSchedule> entities = scheduleMapper.DTOs2DBs(scheduleDTOs, network, corChannel);
+        List<SchSchedule> entities = scheduleMapper.DTOs2DBs(scheduleDTOs, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getDate());
 
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
             //assertNotNull(dto.getSchClockDTOS()); //TODO: test media item instance mapping
         });

@@ -2,9 +2,8 @@ package io.protone.application.service.scheduler.service.time;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.service.scheduler.base.SchedulerBuildSchedulerBaseTest;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.library.domain.LibFileItem;
 import io.protone.library.repository.LibFileItemRepository;
 import io.protone.library.service.LibFileItemService;
@@ -38,6 +37,7 @@ import java.time.format.DateTimeFormatter;
 
 import static io.protone.application.service.scheduler.service.SchParseLogServiceTest.buildMusLogConfigurationWithSeparator;
 import static io.protone.application.service.scheduler.service.SchParseLogServiceTest.buildOPRLogConfigurationWithSeparator;
+import static io.protone.application.util.TestConstans.*;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -77,36 +77,39 @@ public class SchPlaylistDTOTimeCalculatorServiceTest extends SchedulerBuildSched
     @Autowired
     private SchScheduleServiceWrapper schScheduleService;
 
+    private CorChannel corChannel;
+
+    private CorOrganization corOrganization;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         super.setUp();
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
     }
 
     @Test
     public void shouldCalculateTimeForBlockNestedBlocks() throws IOException {
         //when
         ReflectionTestUtils.setField(parseLogService, "libFileItemService", libFileItemService);
-        LibFileItem schLogMusFile = libFileItemRepository.saveAndFlush(new LibFileItem().idx("log").name("MUSLOG").network(corNetwork).channel(corChannel));
-        LibFileItem schLogOprFile = libFileItemRepository.saveAndFlush(new LibFileItem().idx("log1").name("OPRLOG").network(corNetwork).channel(corChannel));
-        SchLog schLogMusic = schLogRepository.saveAndFlush(new SchLog().fileItem(schLogMusFile).schLogConfiguration(buildMusLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd"))));
-        SchLog schLogOpr = schLogRepository.saveAndFlush(new SchLog().fileItem(schLogOprFile).schLogConfiguration(buildOPRLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd"))));
+        LibFileItem schLogMusFile = libFileItemRepository.saveAndFlush(new LibFileItem().idx("log").name("MUSLOG").channel(corChannel));
+        LibFileItem schLogOprFile = libFileItemRepository.saveAndFlush(new LibFileItem().idx("log1").name("OPRLOG").channel(corChannel));
+        SchLog schLogMusic = schLogRepository.saveAndFlush(new SchLog().fileItem(schLogMusFile).schLogConfiguration(buildMusLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corChannel)).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd"))));
+        SchLog schLogOpr = schLogRepository.saveAndFlush(new SchLog().fileItem(schLogOprFile).schLogConfiguration(buildOPRLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corChannel)).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd"))));
         InputStream musLogStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/mapping/musicLog/20170826.MUS");
         InputStream oprLogStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/mapping/newsCollect/20170826.OPR");
         when(libFileItemService.download(schLogMusFile)).thenReturn(IOUtils.toByteArray(musLogStream));
         when(libFileItemService.download(schLogOprFile)).thenReturn(IOUtils.toByteArray(oprLogStream));
         LocalDate localDate = LocalDate.of(2017, 8, 26);
         schGridRepository.saveAndFlush(buildGridForDayWitClockMusicAndImportEventsAndEmissionsConfiguration(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true));
-        SchGrid schGrid = this.schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeekAndType(corNetwork.getShortcut(), corChannel.getShortcut(), true, corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), SchDiscriminators.GRID_TEMPLATE);
+        SchGrid schGrid = this.schGridRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeekAndType(corOrganization.getShortcut(), corChannel.getShortcut(), true, corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), SchDiscriminators.GRID_TEMPLATE);
 
         //then
-        SchSchedule schSchedule = schScheduleService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());
-        SchPlaylist schPlaylist = schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
+        SchSchedule schSchedule = schScheduleService.buildDefaultSchedule(localDate, corOrganization.getShortcut(), corChannel.getShortcut());
+        SchPlaylist schPlaylist = schPlaylistRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndDate(corOrganization.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
         SchPlaylistDTO resultDTO = schPlaylistDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schPlaylist);
         assertNotNull(resultDTO);
         assertEquals(22, resultDTO.getEmissions().size());

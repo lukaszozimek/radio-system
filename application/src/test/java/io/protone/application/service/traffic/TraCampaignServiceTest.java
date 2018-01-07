@@ -4,9 +4,9 @@ package io.protone.application.service.traffic;
 import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorChannelRepository;
-import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.repository.CorOrganizationRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.library.domain.LibMediaItem;
@@ -33,6 +33,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.junit.Assert.*;
 
 /**
@@ -43,11 +44,9 @@ import static org.junit.Assert.*;
 @Transactional
 public class TraCampaignServiceTest {
     private static final String TEST_SHORTNAME = "test";
-    @Autowired
-    private TraCampaignService traCampaignService;
 
     @Autowired
-    private CorNetworkRepository corNetworkRepository;
+    private TraCampaignService traCampaignService;
 
     @Autowired
     private TraCampaignRepository traCampaignRepository;
@@ -67,13 +66,16 @@ public class TraCampaignServiceTest {
     @Autowired
     private LibLibraryRepository libLibraryRepository;
 
-    private CorNetwork corNetwork;
+    @Autowired
+    private CorOrganizationRepository corOrganizationRepository;
 
     private CrmAccount crmAccount;
 
     private LibMediaLibrary libMediaLibrary;
 
     private CorChannel corChannel;
+
+    private CorOrganization corOrganization;
 
     private TraAdvertisement traAdvertisement;
 
@@ -82,32 +84,23 @@ public class TraCampaignServiceTest {
     @Before
     public void setUp() throws Exception {
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
         crmAccount = factory.manufacturePojo(CrmAccount.class);
-        crmAccount.setNetwork(corNetwork);
+        crmAccount.setChannel(corChannel);
         crmAccount = crmAccountRepository.save(crmAccount);
 
-        corChannel = factory.manufacturePojo(CorChannel.class);
-        corChannel.setId(null);
-        corChannel.setShortcut("HHH");
-        corChannel.network(corNetwork);
-        corChannelRepository.saveAndFlush(corChannel);
-
-        libMediaLibrary = factory.manufacturePojo(LibMediaLibrary.class);
-        libMediaLibrary.setShortcut("ppp");
-        libMediaLibrary.network(corNetwork);
-        libMediaLibrary.addChannel(corChannel);
-        libMediaLibrary = libLibraryRepository.saveAndFlush(libMediaLibrary);
+        libMediaLibrary = libLibraryRepository.findOne(2L);
         LibMediaItem libMediaItemToShuffle = factory.manufacturePojo(LibMediaItem.class);
-        libMediaItemToShuffle.setNetwork(corNetwork);
         libMediaItemToShuffle.setLibrary(libMediaLibrary);
         libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle);
 
         traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setCustomer(crmAccount);
-        traAdvertisement.setNetwork(corNetwork);
+        traAdvertisement.setChannel(corChannel);
         traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItemToShuffle));
         traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
 
@@ -117,18 +110,18 @@ public class TraCampaignServiceTest {
     public void shouldGetAllCampaign() throws Exception {
         //when
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
-        campaign.setNetwork(corNetwork);
+        campaign.setChannel(corChannel);
         campaign.setCustomer(crmAccount);
         campaign = traCampaignRepository.save(campaign);
 
         //then
-        Slice<TraCampaign> fetchedEntity = traCampaignService.getAllCampaign(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraCampaign> fetchedEntity = traCampaignService.getAllCampaign(corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(campaign.getId(), fetchedEntity.getContent().get(0).getId());
-        assertEquals(campaign.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+        assertEquals(campaign.getChannel(), fetchedEntity.getContent().get(0).getChannel());
     }
 
     @Test
@@ -137,7 +130,7 @@ public class TraCampaignServiceTest {
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
 
         campaign.setCustomer(crmAccount);
-        campaign.setNetwork(corNetwork);
+        campaign.setChannel(corChannel);
 
         //then
         TraCampaign fetchedEntity = traCampaignService.saveCampaign(campaign);
@@ -147,7 +140,7 @@ public class TraCampaignServiceTest {
         assertNotNull(fetchedEntity.getId());
         assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(true, fetchedEntity.getOrders().isEmpty());
-        assertEquals(campaign.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(campaign.getChannel(), fetchedEntity.getChannel());
     }
 
     @Test
@@ -157,11 +150,11 @@ public class TraCampaignServiceTest {
 
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setCustomer(crmAccount);
-        traOrder.setNetwork(corNetwork);
+        traOrder.setChannel(corChannel);
         traOrder.setAdvertisment(traAdvertisement);
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
         campaign.setCustomer(crmAccount);
-        campaign.setNetwork(corNetwork);
+        campaign.setChannel(corChannel);
         campaign.addOrders(traOrder);
 
         //then
@@ -171,7 +164,7 @@ public class TraCampaignServiceTest {
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
         assertNotNull(fetchedEntity.getCreatedBy());
-        assertEquals(campaign.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(campaign.getChannel(), fetchedEntity.getChannel());
 
         assertNotNull(fetchedEntity.getOrders());
         assertEquals(1, fetchedEntity.getOrders().size());
@@ -184,11 +177,11 @@ public class TraCampaignServiceTest {
         //when
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
         campaign.setCustomer(crmAccount);
-        campaign.setNetwork(corNetwork);
+        campaign.setChannel(corChannel);
         campaign = traCampaignRepository.save(campaign);
         //then
-        traCampaignService.deleteCampaign(campaign.getShortName(), corNetwork.getShortcut());
-        TraCampaign fetchedEntity = traCampaignService.getCampaign(campaign.getShortName(), corNetwork.getShortcut());
+        traCampaignService.deleteCampaign(campaign.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
+        TraCampaign fetchedEntity = traCampaignService.getCampaign(campaign.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(fetchedEntity);
@@ -199,17 +192,17 @@ public class TraCampaignServiceTest {
         //when
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
         campaign.setCustomer(crmAccount);
-        campaign.setNetwork(corNetwork);
+        campaign.setChannel(corChannel);
         campaign = traCampaignRepository.save(campaign);
 
         //then
-        TraCampaign fetchedEntity = traCampaignService.getCampaign(campaign.getShortName(), corNetwork.getShortcut());
+        TraCampaign fetchedEntity = traCampaignService.getCampaign(campaign.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(campaign.getId(), fetchedEntity.getId());
-        assertEquals(campaign.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(campaign.getChannel(), fetchedEntity.getChannel());
     }
 
     @Test
@@ -217,19 +210,19 @@ public class TraCampaignServiceTest {
 
         //when
         TraCampaign traCampaign = factory.manufacturePojo(TraCampaign.class);
-        traCampaign.setNetwork(corNetwork);
+        traCampaign.setChannel(corChannel);
         traCampaign.setCustomer(crmAccount);
         traCampaign = traCampaignRepository.save(traCampaign);
 
         //then
-        Slice<TraCampaign> fetchedEntity = traCampaignService.getCustomerCampaing(crmAccount.getShortName(), corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraCampaign> fetchedEntity = traCampaignService.getCustomerCampaing(crmAccount.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(traCampaign.getId(), fetchedEntity.getContent().get(0).getId());
         assertEquals(traCampaign.getCustomer(), fetchedEntity.getContent().get(0).getCustomer());
-        assertEquals(traCampaign.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+        assertEquals(traCampaign.getChannel(), fetchedEntity.getContent().get(0).getChannel());
     }
 
     @Test(expected = DataIntegrityViolationException.class)
@@ -238,11 +231,11 @@ public class TraCampaignServiceTest {
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
         campaign.setShortName(TEST_SHORTNAME);
         campaign.setCustomer(crmAccount);
-        campaign.setNetwork(corNetwork);
+        campaign.setChannel(corChannel);
         TraCampaign campaignSecond = factory.manufacturePojo(TraCampaign.class);
         campaignSecond.setShortName(TEST_SHORTNAME);
         campaignSecond.setCustomer(crmAccount);
-        campaignSecond.setNetwork(corNetwork);
+        campaignSecond.setChannel(corChannel);
 
 
         //then
@@ -255,20 +248,24 @@ public class TraCampaignServiceTest {
     @Test
     public void shouldSaveTwoTraCampaignWithSameShortNameInDifferentNetwork() {
         //given
-        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
-        corNetworkSecond.setId(null);
-        corNetworkSecond = corNetworkRepository.save(corNetworkSecond);
+        CorOrganization corOrganizationkSecond = factory.manufacturePojo(CorOrganization.class);
+        corOrganizationkSecond.setId(null);
+        corOrganizationkSecond = corOrganizationRepository.saveAndFlush(corOrganizationkSecond);
+        CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);
+        corChannelSecond.setId(null);
+        corChannelSecond.setOrganization(corOrganizationkSecond);
+        corChannelSecond = corChannelRepository.save(corChannelSecond);
 
         //when
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
         campaign.setShortName(TEST_SHORTNAME);
         campaign.setCustomer(crmAccount);
-        campaign.setNetwork(corNetwork);
+        campaign.setChannel(corChannel);
 
         TraCampaign campaignSecond = factory.manufacturePojo(TraCampaign.class);
         campaignSecond.setShortName(TEST_SHORTNAME);
         campaignSecond.setCustomer(crmAccount);
-        campaignSecond.setNetwork(corNetworkSecond);
+        campaignSecond.setChannel(corChannelSecond);
 
 
         //then

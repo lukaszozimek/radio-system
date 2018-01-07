@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchLogConfigurationColumnDTO;
 import io.protone.scheduler.domain.SchLogColumn;
 import io.protone.scheduler.domain.enumeration.LogColumnTypEnum;
@@ -41,13 +40,12 @@ public class SchLogColumnConfigurationMapperTest {
     private List<SchLogColumn> schLogColumns = new ArrayList<>();
 
     private List<SchLogConfigurationColumnDTO> schLogConfigurationColumnDTOS = new ArrayList<>();
-    private CorNetwork network;
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         schLogColumn = factory.manufacturePojo(SchLogColumn.class);
         schLogColumn.setName(LogColumnTypEnum.LCT_IDX);
@@ -81,17 +79,16 @@ public class SchLogColumnConfigurationMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchLogColumn entity = schLogColumnConfigurationMapper.DTO2DB(schLogConfigurationColumnDTO, network, corChannel);
+        SchLogColumn entity = schLogColumnConfigurationMapper.DTO2DB(schLogConfigurationColumnDTO, corChannel);
         assertNotNull(entity.getName());
         assertNotNull(entity.getColumnSequence());
         assertNotNull(entity.getLength());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchLogColumn> entities = schLogColumnConfigurationMapper.DTOs2DBs(schLogConfigurationColumnDTOS, network, corChannel);
+        List<SchLogColumn> entities = schLogColumnConfigurationMapper.DTOs2DBs(schLogConfigurationColumnDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -99,7 +96,6 @@ public class SchLogColumnConfigurationMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getColumnSequence());
             assertNotNull(entity.getLength());
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });
     }

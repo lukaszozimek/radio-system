@@ -3,13 +3,11 @@ package io.protone.application.web.api.scheduler;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.scheduler.impl.SchScheduleResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.service.CorChannelService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.scheduler.api.dto.SchScheduleDTO;
 import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.mapper.SchScheduleMapper;
@@ -35,6 +33,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -66,9 +65,6 @@ public class SchScheduleResourceImplTest {
     private CorChannelService corChannelService;
 
     @Autowired
-    private CorNetworkService corNetworkService;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -84,9 +80,10 @@ public class SchScheduleResourceImplTest {
 
     private SchSchedule schSchedule;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
 
     private CorChannel corChannel;
+
 
     /**
      * Create an entity for this test.
@@ -106,7 +103,6 @@ public class SchScheduleResourceImplTest {
         SchScheduleResourceImpl schScheduleResource = new SchScheduleResourceImpl();
         ReflectionTestUtils.setField(schScheduleResource, "schScheduleService", schScheduleService);
         ReflectionTestUtils.setField(schScheduleResource, "schScheduleMapper", schScheduleMapper);
-        ReflectionTestUtils.setField(schScheduleResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(schScheduleResource, "corChannelService", corChannelService);
 
 
@@ -118,11 +114,11 @@ public class SchScheduleResourceImplTest {
 
     @Before
     public void initTest() {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
-        schSchedule = createEntity(em).network(corNetwork).channel(corChannel);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        schSchedule = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -133,7 +129,7 @@ public class SchScheduleResourceImplTest {
         // Create the SchSchedule
         SchScheduleDTO traPlaylistDTO = schScheduleMapper.DB2DTO(schSchedule);
 
-        restSchScheduleMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -156,7 +152,7 @@ public class SchScheduleResourceImplTest {
         SchScheduleDTO existingSchScheduleDTO = schScheduleMapper.DB2DTO(existingSchSchedule);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSchScheduleMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingSchScheduleDTO)))
                 .andExpect(status().isBadRequest());
@@ -170,10 +166,10 @@ public class SchScheduleResourceImplTest {
     @Transactional
     public void getAllSchSchedules() throws Exception {
         // Initialize the database
-        schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
+        schScheduleRepository.saveAndFlush(schSchedule.channel(corChannel));
 
         // Get all the schSchedules
-        restSchScheduleMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchScheduleMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schSchedule.getId().intValue())))
@@ -184,10 +180,10 @@ public class SchScheduleResourceImplTest {
     @Transactional
     public void getAllSchSchedulesForDate() throws Exception {
         // Initialize the database
-        schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
+        schScheduleRepository.saveAndFlush(schSchedule.channel(corChannel));
 
         // Get all the schSchedules
-        restSchScheduleMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/from/{from}/to/{to}", corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate(), LocalDate.now().plusYears(1)))
+        restSchScheduleMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/from/{from}/to/{to}", corOrganization.getShortcut(), corChannel.getShortcut(), schSchedule.getDate(), LocalDate.now().plusYears(1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schSchedule.getId().intValue())))
@@ -198,10 +194,10 @@ public class SchScheduleResourceImplTest {
     @Transactional
     public void getSchSchedule() throws Exception {
         // Initialize the database
-        schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
+        schScheduleRepository.saveAndFlush(schSchedule.channel(corChannel));
 
         // Get the schSchedule
-        restSchScheduleMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
+        restSchScheduleMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corOrganization.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(schSchedule.getId().intValue()))
@@ -213,7 +209,7 @@ public class SchScheduleResourceImplTest {
     public void getNonExistingSchSchedule() throws Exception {
         // Get the schSchedule
         LocalDate localDate = LocalDate.now();
-        restSchScheduleMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), localDate))
+        restSchScheduleMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corOrganization.getShortcut(), corChannel.getShortcut(), localDate))
                 .andExpect(status().isNotFound());
     }
 
@@ -221,7 +217,7 @@ public class SchScheduleResourceImplTest {
     @Transactional
     public void updateSchSchedule() throws Exception {
         // Initialize the database
-        schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
+        schScheduleRepository.saveAndFlush(schSchedule.channel(corChannel));
         int databaseSizeBeforeUpdate = schScheduleRepository.findAll().size();
 
         // Update the schSchedule
@@ -230,7 +226,7 @@ public class SchScheduleResourceImplTest {
                 .date(UPDATED_PLAYLIST_DATE);
         SchScheduleDTO traPlaylistDTO = schScheduleMapper.DB2DTO(updatedSchSchedule);
 
-        restSchScheduleMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isOk());
@@ -250,7 +246,7 @@ public class SchScheduleResourceImplTest {
         SchScheduleDTO schScheduleDTO = schScheduleMapper.DB2DTO(schSchedule);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSchScheduleMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schScheduleDTO)))
                 .andExpect(status().isCreated());
@@ -264,11 +260,11 @@ public class SchScheduleResourceImplTest {
     @Transactional
     public void deleteSchSchedule() throws Exception {
         // Initialize the database
-        schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
+        schScheduleRepository.saveAndFlush(schSchedule.channel(corChannel));
         int databaseSizeBeforeDelete = schScheduleRepository.findAll().size();
 
         // Get the schSchedule
-        restSchScheduleMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
+        restSchScheduleMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corOrganization.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
@@ -281,7 +277,7 @@ public class SchScheduleResourceImplTest {
     @Test
     @Transactional
     public void checkDateIsRequired() throws Exception {
-        schSchedule = createEntity(em).network(corNetwork).channel(corChannel);
+        schSchedule = createEntity(em).channel(corChannel);
 
         int databaseSizeBeforeTest = schScheduleRepository.findAll().size();
         // set the field null
@@ -289,7 +285,7 @@ public class SchScheduleResourceImplTest {
         // Create the TraOrder, which fails.
         SchScheduleDTO schScheduleDTO = schScheduleMapper.DB2DTO(schSchedule);
 
-        restSchScheduleMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/scheduler/schedule", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schScheduleDTO)))
                 .andExpect(status().isBadRequest());

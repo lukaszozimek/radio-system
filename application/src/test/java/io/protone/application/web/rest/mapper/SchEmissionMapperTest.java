@@ -3,7 +3,6 @@ package io.protone.application.web.rest.mapper;
 import com.google.common.collect.Lists;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchAttachmentDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.domain.SchAttachment;
@@ -39,14 +38,13 @@ public class SchEmissionMapperTest {
     private List<SchEmission> emissions = new ArrayList<>();
 
     private List<SchEmissionDTO> emissionDTOs = new ArrayList<>();
-    private CorNetwork network;
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         // Fill entity instance
         emission = factory.manufacturePojo(SchEmission.class);
@@ -94,7 +92,7 @@ public class SchEmissionMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchEmission entity = emissionMapper.DTO2DB(emissionDTO, network, corChannel);
+        SchEmission entity = emissionMapper.DTO2DB(emissionDTO, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getSequence());
@@ -102,15 +100,13 @@ public class SchEmissionMapperTest {
         assertNotNull(entity.getEndTime());
         assertNotNull(entity.getRelativeDelay());
         assertNotNull(entity.getSequence());
-
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getAttachments());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchEmission> entities = emissionMapper.DTOs2DBs(emissionDTOs, network, corChannel);
+        List<SchEmission> entities = emissionMapper.DTOs2DBs(emissionDTOs, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -121,7 +117,6 @@ public class SchEmissionMapperTest {
             assertNotNull(entity.getEndTime());
             assertNotNull(entity.getRelativeDelay());
             assertNotNull(entity.getSequence());
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getAttachments());
         });

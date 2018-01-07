@@ -1,9 +1,8 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
 import io.protone.scheduler.domain.SchPlaylist;
 import io.protone.scheduler.repository.SchPlaylistRepository;
@@ -21,6 +20,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 
+import static io.protone.application.util.TestConstans.*;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -40,34 +40,35 @@ public class SchPlaylistServiceTest {
     @Autowired
     private SchPlaylistRepository schPlaylistRepository;
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
+
+    private CorOrganization corOrganization;
+
 
     @Before
     public void setUp() throws Exception {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
+
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
     }
 
     @Test
     public void shouldGetPlaylists() throws Exception {
         //when
         SchPlaylist SchPlaylist = factory.manufacturePojo(SchPlaylist.class);
-        SchPlaylist.setNetwork(corNetwork);
         SchPlaylist.setChannel(corChannel);
         SchPlaylist = schPlaylistRepository.save(SchPlaylist);
 
         //then
-        Slice<SchPlaylist> fetchedEntity = schPlaylistService.findSchPlaylistForNetworkAndChannel(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+        Slice<SchPlaylist> fetchedEntity = schPlaylistService.findSchPlaylistForNetworkAndChannel(corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(SchPlaylist.getId(), fetchedEntity.getContent().get(0).getId());
-        assertEquals(SchPlaylist.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
 
@@ -75,7 +76,6 @@ public class SchPlaylistServiceTest {
     public void shouldSavePlaylist() throws Exception {
         //when
         SchPlaylist SchPlaylist = factory.manufacturePojo(SchPlaylist.class);
-        SchPlaylist.setNetwork(corNetwork);
         SchPlaylist.setChannel(corChannel);
         //then
         SchPlaylist fetchedEntity = schPlaylistService.saveSchPlaylist(SchPlaylist);
@@ -83,19 +83,17 @@ public class SchPlaylistServiceTest {
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
-        assertEquals(SchPlaylist.getNetwork(), fetchedEntity.getNetwork());
     }
 
     @Test
     public void shouldDeletePlaylist() throws Exception {
         //when
         SchPlaylist SchPlaylist = factory.manufacturePojo(SchPlaylist.class);
-        SchPlaylist.setNetwork(corNetwork);
         SchPlaylist.setChannel(corChannel);
         SchPlaylist = schPlaylistRepository.saveAndFlush(SchPlaylist);
         //then
-        schPlaylistService.deleteSchPlaylistByNetworkAndChannelAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), SchPlaylist.getDate());
-        SchPlaylist fetchedEntity = schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), SchPlaylist.getDate());
+        schPlaylistService.deleteSchPlaylistByNetworkAndChannelAndDate(corOrganization.getShortcut(), corChannel.getShortcut(), SchPlaylist.getDate());
+        SchPlaylist fetchedEntity = schPlaylistRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndDate(corOrganization.getShortcut(), corChannel.getShortcut(), SchPlaylist.getDate());
 
         //assert
         assertNull(fetchedEntity);
@@ -105,12 +103,11 @@ public class SchPlaylistServiceTest {
     public void shouldGetPlaylist() throws Exception {
         //when
         SchPlaylist SchPlaylist = factory.manufacturePojo(SchPlaylist.class);
-        SchPlaylist.setNetwork(corNetwork);
         SchPlaylist.setChannel(corChannel);
         SchPlaylist = schPlaylistRepository.save(SchPlaylist);
 
         //then
-        SchPlaylistDTO fetchedEntity = schPlaylistService.findSchPlaylistForNetworkAndChannelAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), SchPlaylist.getDate());
+        SchPlaylistDTO fetchedEntity = schPlaylistService.findSchPlaylistForNetworkAndChannelAndDate(corOrganization.getShortcut(), corChannel.getShortcut(), SchPlaylist.getDate());
 
         //assert
         assertNotNull(fetchedEntity);

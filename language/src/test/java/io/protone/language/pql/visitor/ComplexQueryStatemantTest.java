@@ -21,8 +21,8 @@ public class ComplexQueryStatemantTest {
 
     @Test
     public void simpleCorPersonQuery() throws IOException {
-        String simpleQuery = "Core Person AND id=1 AND name='eetest' AND network.shortcut='test' OR id=1 ORDER BY id DESC";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson p WHERE p.id=1 AND p.name='eetest' AND p.network.shortcut='test' OR p.id=1 ORDER BY p.id DESC";
+        String simpleQuery = "Core Person AND id=1 AND name='eetest' AND organization.shortcut='test' OR id=1 ORDER BY id DESC";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson p WHERE p.id=1 AND p.name='eetest' AND p.organization.shortcut='test' OR p.id=1 ORDER BY p.id DESC";
 
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));

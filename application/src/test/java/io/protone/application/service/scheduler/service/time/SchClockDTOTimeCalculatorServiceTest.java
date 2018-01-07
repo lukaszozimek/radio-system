@@ -2,9 +2,8 @@ package io.protone.application.service.scheduler.service.time;
 
 import com.google.common.collect.Lists;
 import io.protone.application.ProtoneApp;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.domain.LibMediaLibrary;
@@ -25,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 import static io.protone.application.service.scheduler.base.SchedulerBaseTest.*;
+import static io.protone.application.util.TestConstans.*;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
@@ -48,19 +48,18 @@ public class SchClockDTOTimeCalculatorServiceTest {
 
     private LibMediaLibrary libMediaLibrary;
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
 
+    private CorOrganization corOrganization;
     @Before
     public void setUp() throws Exception {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
         libMediaLibrary = new LibMediaLibrary();
         libMediaLibrary.setId(LIBRARY_ID);
-        libMediaItem = new LibMediaItem().name(String.valueOf(new Random().nextLong())).library(libMediaLibrary).idx(String.valueOf(new Random().nextLong())).length(40.0).network(corNetwork);
+        libMediaItem = new LibMediaItem().name(String.valueOf(new Random().nextLong())).library(libMediaLibrary).idx(String.valueOf(new Random().nextLong())).length(40.0).channel(corChannel);
 
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
         libMediaItemThinDTO = libMediaItemThinMapper.DB2DTO(libMediaItem);

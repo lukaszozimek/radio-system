@@ -4,7 +4,7 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CoreAddressDTO;
 import io.protone.core.domain.CorAddress;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.mapper.CorAddressMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +39,8 @@ public class CorAddressMapperTest {
     private List<CoreAddressDTO> coreAddressDTOS = new ArrayList<>();
 
     private List<CorAddress> corAddresses = new ArrayList<>();
-    private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -49,7 +50,7 @@ public class CorAddressMapperTest {
         coreAddressDTO = factory.manufacturePojo(CoreAddressDTO.class);
         coreAddressDTOS.add(coreAddressDTO);
 
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
     @Test
@@ -84,7 +85,7 @@ public class CorAddressMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorAddress entity = corAddressMapper.DTO2DB(coreAddressDTO, corNetwork);
+        CorAddress entity = corAddressMapper.DTO2DB(coreAddressDTO, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getStreet());
@@ -93,13 +94,13 @@ public class CorAddressMapperTest {
         assertNotNull(entity.getCity());
         assertNotNull(entity.getCountry());
 
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
 
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorAddress> entities = corAddressMapper.DTOs2DBs(coreAddressDTOS, corNetwork);
+        List<CorAddress> entities = corAddressMapper.DTOs2DBs(coreAddressDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -111,7 +112,7 @@ public class CorAddressMapperTest {
             assertNotNull(entity.getCity());
             assertNotNull(entity.getCountry());
 
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
         });
     }
 

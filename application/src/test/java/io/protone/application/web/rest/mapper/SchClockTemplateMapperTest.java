@@ -4,7 +4,6 @@ import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchClockTemplateDTO;
 import io.protone.scheduler.api.dto.SchEmissionTemplateDTO;
 import io.protone.scheduler.api.dto.SchEventTemplateDTO;
@@ -48,14 +47,12 @@ public class SchClockTemplateMapperTest {
 
     private List<SchClockTemplateDTO> schClockTemplateDTOS = new ArrayList<>();
 
-    private CorNetwork network;
-
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         clockConfiguration = factory.manufacturePojo(SchClockTemplate.class);
         clockConfiguration.setEmissions(Lists.newArrayList(factory.manufacturePojo(SchEmissionTemplate.class)));
         clockConfiguration.setSchEventTemplates(Lists.newArrayList(factory.manufacturePojo(SchEventTemplateEvnetTemplate.class)));
@@ -102,12 +99,11 @@ public class SchClockTemplateMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchClockTemplate entity = schClockTemplateMapper.DTO2DB(schClockTemplateDTO, network, corChannel);
+        SchClockTemplate entity = schClockTemplateMapper.DTO2DB(schClockTemplateDTO, corChannel);
 
         assertNotNull(entity.getName());
         assertNotNull(entity.getShortName());
         assertNotNull(entity.getEmissions());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getLength());
         assertNotNull(entity.getClockCategory());
@@ -115,7 +111,7 @@ public class SchClockTemplateMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchClockTemplate> entities = schClockTemplateMapper.DTOs2DBs(schClockTemplateDTOS, network, corChannel);
+        List<SchClockTemplate> entities = schClockTemplateMapper.DTOs2DBs(schClockTemplateDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -125,7 +121,6 @@ public class SchClockTemplateMapperTest {
             assertNotNull(entity.getSchEventTemplates());
             assertNotNull(entity.getEmissions());
             assertNotNull(entity.getLength());
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getClockCategory());
         });

@@ -58,7 +58,7 @@ public class CorNetwork extends AbstractAuditingEntity implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @PodamExclude
     @JsonIgnore
-    private CorOrganization corOrganization;
+    private CorOrganization organization;
 
     @ManyToOne
     @PodamExclude
@@ -207,16 +207,16 @@ public class CorNetwork extends AbstractAuditingEntity implements Serializable {
     }
 
 
-    public CorOrganization getCorOrganization() {
-        return corOrganization;
+    public CorOrganization getOrganization() {
+        return organization;
     }
 
-    public void setCorOrganization(CorOrganization corOrganization) {
-        this.corOrganization = corOrganization;
+    public void setOrganization(CorOrganization organization) {
+        this.organization = organization;
     }
 
     public CorNetwork organization(CorOrganization corOrganization) {
-        this.corOrganization = corOrganization;
+        this.organization = corOrganization;
         return this;
     }
 }

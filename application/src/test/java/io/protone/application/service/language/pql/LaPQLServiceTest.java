@@ -5,9 +5,8 @@ import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorFilter;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorChannelRepository;
-import io.protone.core.repository.CorNetworkRepository;
 import io.protone.language.service.pql.LaPQLService;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +17,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 import java.util.List;
+
+import static io.protone.application.util.TestConstans.TEST_ORGANIZATION_ID;
+import static io.protone.application.util.TestConstans.TEST_ORGANIZATION_SHORTCUT;
 
 /**
  * Created by lukaszozimek on 29.04.2017.
@@ -37,14 +39,13 @@ public class LaPQLServiceTest {
     @Autowired
     private CorChannelRepository corChannelRepository;
 
-    @Autowired
-    private CorNetworkRepository corNetworkRepository;
+    private CorOrganization corOrganization;
 
     @Before
     public void setUp() throws Exception {
-        CorNetwork corNetwork = new CorNetwork().shortcut(SAMPLE_NET).name(SAMPLE_NET);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
-        CorChannel corChannel = new CorChannel().shortcut(SAMPLE_SHORTCUT).name(SAMPLE).network(corNetwork);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        CorChannel corChannel = new CorChannel().shortcut(SAMPLE_SHORTCUT).name(SAMPLE).organization(corOrganization);
         corChannelRepository.saveAndFlush(corChannel);
 
     }
@@ -79,7 +80,7 @@ public class LaPQLServiceTest {
 
     @Test
     public void shouldReturnCorObjectRequestedInQueryWithComplexPredicate() throws Exception {
-        CorFilter corFilter = new CorFilter().value("Core Channel AND name='sample' AND network.shortcut='net'");
+        CorFilter corFilter = new CorFilter().value("Core Channel AND name='sample' AND organization.shortcut='test'");
         List list = pqlService.getObjectList(corFilter);
         Assert.notNull(list);
         List<CorChannel> listChannel = (List<CorChannel>) list;
@@ -88,8 +89,8 @@ public class LaPQLServiceTest {
     }
 
     @Test
-    public void shouldReturnListCorObjectRequestedInComplexPrediactQuery() throws Exception{
-        CorFilter corFilter = new CorFilter().value("Core Channel AND ( name='xx' AND network.shortcut='xx' ) OR network.shortcut='net'");
+    public void shouldReturnListCorObjectRequestedInComplexPrediactQuery() throws Exception {
+        CorFilter corFilter = new CorFilter().value("Core Channel AND ( name='xx' AND organization.shortcut='xx' ) OR organization.shortcut='test'");
         List list = pqlService.getObjectList(corFilter);
         Assert.notNull(list);
         List<CorChannel> listChannel = (List<CorChannel>) list;
@@ -97,13 +98,14 @@ public class LaPQLServiceTest {
     }
 
     @Test
-    public void shouldReturnListCorObjectRequestedInQueryMulitiPredicateQuery() throws Exception{
-        CorFilter corFilter = new CorFilter().value("Core Channel AND ( name='xx' AND network.shortcut='xx' ) OR (network.shortcut='net' AND name='sample') OR  name='x'");
+    public void shouldReturnListCorObjectRequestedInQueryMulitiPredicateQuery() throws Exception {
+        CorFilter corFilter = new CorFilter().value("Core Channel AND ( name='xx' AND organization.shortcut='xx' ) OR ( organization.shortcut='test' AND name='sample') OR  name='x'");
         List list = pqlService.getObjectList(corFilter);
         Assert.notNull(list);
         List<CorChannel> listChannel = (List<CorChannel>) list;
         Assert.notEmpty(list);
     }
+
     //TODO: Implement Test
     @Test
     public void shouldReturnListWithLimitationAndGroupedByObjectRequestedInQuery() {

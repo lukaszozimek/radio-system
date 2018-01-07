@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.traffic.api.dto.TraMediaPlanPlaylistDateDTO;
 import io.protone.traffic.domain.TraMediaPlanPlaylistDate;
 import io.protone.traffic.mapper.TraMediaPlanPlaylistDateMapper;
@@ -39,22 +38,20 @@ public class TraMediaPlanPlaylistDateMapperTest {
 
     private List<TraMediaPlanPlaylistDateDTO> traMediaPlanPlaylistDateDTOS = new ArrayList<>();
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
 
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
         corChannel = factory.manufacturePojo(CorChannel.class);
         traMediaPlanPlaylistDateDTO = factory.manufacturePojo(TraMediaPlanPlaylistDateDTO.class);
         traMediaPlanPlaylistDateDTOS.add(traMediaPlanPlaylistDateDTO);
         traMediaPlanPlaylistDate = factory.manufacturePojo(TraMediaPlanPlaylistDate.class);
         traMediaPlanPlaylistDate.setId(1L);
         traMediaPlanPlaylistDate.setChannel(corChannel);
-        traMediaPlanPlaylistDate.setNetwork(corNetwork);
         traMediaPlanPlaylistDates.add(traMediaPlanPlaylistDate);
     }
 
@@ -86,17 +83,16 @@ public class TraMediaPlanPlaylistDateMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraMediaPlanPlaylistDate entity = traMediaPlanPlaylistDateMapper.DTO2DB(traMediaPlanPlaylistDateDTO, corNetwork, corChannel);
+        TraMediaPlanPlaylistDate entity = traMediaPlanPlaylistDateMapper.DTO2DB(traMediaPlanPlaylistDateDTO, corChannel);
         assertNotNull(entity.getId());
         assertNotNull(entity.getPlaylistDate());
         assertNotNull(entity.getChannel());
-        assertNotNull(entity.getNetwork());
 
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraMediaPlanPlaylistDate> entities = traMediaPlanPlaylistDateMapper.DTOs2DBs(traMediaPlanPlaylistDateDTOS, corNetwork, corChannel);
+        List<TraMediaPlanPlaylistDate> entities = traMediaPlanPlaylistDateMapper.DTOs2DBs(traMediaPlanPlaylistDateDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -104,7 +100,6 @@ public class TraMediaPlanPlaylistDateMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getPlaylistDate());
             assertNotNull(entity.getChannel());
-            assertNotNull(entity.getNetwork());
 
         });
     }

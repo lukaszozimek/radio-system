@@ -3,7 +3,7 @@ package io.protone.application.service.traffic;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.traffic.domain.TraBlockConfiguration;
@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -22,7 +21,9 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static io.protone.application.util.TestConstans.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by lukaszozimek on 16/05/2017.
@@ -44,41 +45,36 @@ public class TraBlockConfigurationServiceTest {
     @Autowired
     private TraBlockConfigurationRepository traBlockRepository;
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
+
+    private CorOrganization corOrganization;
 
     private PodamFactory factory;
 
     @Before
     public void setUp() throws Exception {
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
-
-        corChannel = factory.manufacturePojo(CorChannel.class);
-        corChannel.setId(null);
-        corChannel = corChannelRepository.save(corChannel);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.setOrganization(corOrganization);
 
     }
 
     @Test
     public void shouldGetBlocksConfiguration() throws Exception {
+
         //when
         TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
-        traBlockConfiguration.setNetwork(corNetwork);
         traBlockConfiguration.setChannel(corChannel);
-        traBlockConfiguration = traBlockRepository.save(traBlockConfiguration);
+        traBlockRepository.save(traBlockConfiguration);
 
         //then
-        List<TraBlockConfiguration> fetchedEntity = traBlockConfigurationService.getAllBlockConfigurations(corNetwork.getShortcut(), corChannel.getShortcut());
+        List<TraBlockConfiguration> fetchedEntity = traBlockConfigurationService.getAllBlockConfigurations(corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(traBlockConfiguration.getId(), fetchedEntity.get(0).getId());
-        assertEquals(traBlockConfiguration.getNetwork(), fetchedEntity.get(0).getNetwork());
 
     }
 
@@ -87,7 +83,6 @@ public class TraBlockConfigurationServiceTest {
         //when
         TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
         traBlockConfiguration.setChannel(corChannel);
-        traBlockConfiguration.setNetwork(corNetwork);
 
         //then
         TraBlockConfiguration fetchedEntity = traBlockConfigurationService.saveBlockConfiguration(traBlockConfiguration);
@@ -97,7 +92,6 @@ public class TraBlockConfigurationServiceTest {
         assertNotNull(fetchedEntity.getId());
         assertNotNull(fetchedEntity.getCreatedBy());
         assertNotNull(fetchedEntity.getName(), traBlockConfiguration.getName());
-        assertEquals(traBlockConfiguration.getNetwork(), fetchedEntity.getNetwork());
     }
 
     @Test
@@ -105,11 +99,10 @@ public class TraBlockConfigurationServiceTest {
         //when
         TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
         traBlockConfiguration.setChannel(corChannel);
-        traBlockConfiguration.setNetwork(corNetwork);
         traBlockConfiguration = traBlockRepository.save(traBlockConfiguration);
         //then
-        traBlockConfigurationService.deleteBlockConfiguration(traBlockConfiguration.getId(), corNetwork.getShortcut());
-        TraBlockConfiguration fetchedEntity = traBlockConfigurationService.findConfigurationBlock(traBlockConfiguration.getId(), corNetwork.getShortcut());
+        traBlockConfigurationService.deleteBlockConfiguration(traBlockConfiguration.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
+        TraBlockConfiguration fetchedEntity = traBlockConfigurationService.findConfigurationBlock(traBlockConfiguration.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(fetchedEntity);
@@ -120,17 +113,13 @@ public class TraBlockConfigurationServiceTest {
         //when
         TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
         traBlockConfiguration.setChannel(corChannel);
-        traBlockConfiguration.setNetwork(corNetwork);
         traBlockConfiguration = traBlockRepository.save(traBlockConfiguration);
 
         //then
-        List<TraBlockConfiguration> fetchedEntity = traBlockConfigurationService.getAllBlockConfigurationsByDay(corNetwork.getShortcut(), traBlockConfiguration.getDay());
+        List<TraBlockConfiguration> fetchedEntity = traBlockConfigurationService.getAllBlockConfigurationsByDay(corOrganization.getShortcut(), corChannel.getShortcut(), traBlockConfiguration.getDay());
 
         //assert
         assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(traBlockConfiguration.getId(), fetchedEntity.get(0).getId());
-        assertEquals(traBlockConfiguration.getNetwork(), fetchedEntity.get(0).getNetwork());
 
     }
 

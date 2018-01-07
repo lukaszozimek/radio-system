@@ -3,8 +3,8 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CoreContactDTO;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorContact;
-import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorContactMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class CorContactMapperTest {
 
     private Set<CorContact> corContacts = new HashSet<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -51,7 +51,7 @@ public class CorContactMapperTest {
         corContacts.add(corContact);
         coreContactDTO = factory.manufacturePojo(CoreContactDTO.class);
         coreContactDTOS.add(coreContactDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
 
     }
 
@@ -81,19 +81,19 @@ public class CorContactMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorContact corContact = corContactMapper.DTO2DB(coreContactDTO, corNetwork);
+        CorContact corContact = corContactMapper.DTO2DB(coreContactDTO, corChannel);
 
         assertNotNull(corContact.getId());
         assertNotNull(corContact.getContact());
         assertNotNull(corContact.getContactType());
 
-        assertNotNull(corContact.getNetwork());
+        assertNotNull(corContact.getChannel());
 
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorContact> entities = corContactMapper.DTOs2DBs(coreContactDTOS, corNetwork);
+        List<CorContact> entities = corContactMapper.DTOs2DBs(coreContactDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -102,7 +102,7 @@ public class CorContactMapperTest {
             assertNotNull(entity.getContact());
             assertNotNull(entity.getContactType());
 
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }

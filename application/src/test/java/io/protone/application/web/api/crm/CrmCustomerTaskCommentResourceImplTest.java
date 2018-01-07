@@ -3,8 +3,9 @@ package io.protone.application.web.api.crm;
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.crm.impl.CrmCustomerTaskCommentResourceImpl;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.service.CorNetworkService;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
+import io.protone.core.service.CorChannelService;
 import io.protone.crm.api.dto.CrmTaskCommentDTO;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.domain.CrmTask;
@@ -18,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
@@ -32,7 +34,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static io.protone.application.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -60,8 +62,8 @@ public class CrmCustomerTaskCommentResourceImplTest {
     @Inject
     private CrmTaskRepository crmTaskRepository;
 
-    @Inject
-    private CorNetworkService corNetworkService;
+    @Autowired
+    private CorChannelService corChannelService;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -77,7 +79,9 @@ public class CrmCustomerTaskCommentResourceImplTest {
 
     private CrmTask crmTask;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
 
     private CrmAccount crmAccount;
 
@@ -102,10 +106,12 @@ public class CrmCustomerTaskCommentResourceImplTest {
         MockitoAnnotations.initMocks(this);
         CrmCustomerTaskCommentResourceImpl crmTaskCommentResource = new CrmCustomerTaskCommentResourceImpl();
         ReflectionTestUtils.setField(crmTaskCommentResource, "crmCustomerService", crmCustomerService);
-        ReflectionTestUtils.setField(crmTaskCommentResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(crmTaskCommentResource, "corChannelService", corChannelService);
         ReflectionTestUtils.setField(crmTaskCommentResource, "crmTaskCommentMapper", crmTaskCommentMapper);
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
 
         this.restCrmTaskCommentMockMvc = MockMvcBuilders.standaloneSetup(crmTaskCommentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -115,7 +121,7 @@ public class CrmCustomerTaskCommentResourceImplTest {
 
     @Before
     public void initTest() {
-        crmAccount = CrmCustomerResourceImplTest.createEntity(em).network(corNetwork);
+        crmAccount = CrmCustomerResourceImplTest.createEntity(em).channel(corChannel);
         crmTask = CrmLeadTaskResourceImplTest.createEntity(em);
         crmTaskComment = createEntity(em);
     }
@@ -126,15 +132,15 @@ public class CrmCustomerTaskCommentResourceImplTest {
         crmTaskRepository.deleteAll();
         crmAccountRepository.deleteAll();
 
-        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
-        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).account(crmAccount));
+        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.channel(corChannel));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.channel(corChannel).account(crmAccount));
 
         int databaseSizeBeforeCreate = crmTaskCommentRepository.findAll().size();
 
         // Create the CrmTaskComment
         CrmTaskCommentDTO crmTaskCommentDTO = crmTaskCommentMapper.DB2DTO(crmTaskComment);
 
-        restCrmTaskCommentMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment", corNetwork.getShortcut(), crmAccount.getShortName(), crmTask.getId())
+        restCrmTaskCommentMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName(), crmTask.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskCommentDTO)))
             .andExpect(status().isCreated());
@@ -152,8 +158,8 @@ public class CrmCustomerTaskCommentResourceImplTest {
         crmTaskRepository.deleteAll();
         crmAccountRepository.deleteAll();
 
-        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
-        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).account(crmAccount));
+        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.channel(corChannel));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.channel(corChannel).account(crmAccount));
 
         int databaseSizeBeforeCreate = crmTaskCommentRepository.findAll().size();
 
@@ -163,7 +169,7 @@ public class CrmCustomerTaskCommentResourceImplTest {
         CrmTaskCommentDTO existingCrmTaskCommentDTO = crmTaskCommentMapper.DB2DTO(existingCrmTaskComment);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmTaskCommentMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment", corNetwork.getShortcut(), crmAccount.getShortName(), crmTask.getId())
+        restCrmTaskCommentMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName(), crmTask.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCrmTaskCommentDTO)))
             .andExpect(status().isBadRequest());
@@ -179,14 +185,14 @@ public class CrmCustomerTaskCommentResourceImplTest {
         crmTaskRepository.deleteAll();
         crmAccountRepository.deleteAll();
 
-        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
-        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).account(crmAccount));
+        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.channel(corChannel));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.channel(corChannel).account(crmAccount));
 
         // Initialize the database
-        crmTaskCommentRepository.saveAndFlush(crmTaskComment.network(corNetwork).taskComment(crmTask));
+        crmTaskCommentRepository.saveAndFlush(crmTaskComment.channel(corChannel).taskComment(crmTask));
 
         // Get all the crmTaskCommentList
-        restCrmTaskCommentMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName(), crmTask.getId()))
+        restCrmTaskCommentMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName(), crmTask.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(crmTaskComment.getId().intValue())))
@@ -199,14 +205,14 @@ public class CrmCustomerTaskCommentResourceImplTest {
         crmTaskRepository.deleteAll();
         crmAccountRepository.deleteAll();
 
-        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
-        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).account(crmAccount));
+        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.channel(corChannel));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.channel(corChannel).account(crmAccount));
 
         // Initialize the database
-        crmTaskCommentRepository.saveAndFlush(crmTaskComment.network(corNetwork).taskComment(crmTask));
+        crmTaskCommentRepository.saveAndFlush(crmTaskComment.channel(corChannel).taskComment(crmTask));
 
         // Get the crmTaskComment
-        restCrmTaskCommentMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment/{id}", corNetwork.getShortcut(), crmAccount.getShortName(), crmTask.getId(), crmTaskComment.getId()))
+        restCrmTaskCommentMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName(), crmTask.getId(), crmTaskComment.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmTaskComment.getId().intValue()))
@@ -217,7 +223,7 @@ public class CrmCustomerTaskCommentResourceImplTest {
     @Transactional
     public void getNonExistingCrmTaskComment() throws Exception {
         // Get the crmTaskComment
-        restCrmTaskCommentMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment/{id}", corNetwork.getShortcut(), crmAccount.getShortName(), crmTask.getId(), Long.MAX_VALUE))
+        restCrmTaskCommentMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName(), crmTask.getId(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -227,11 +233,11 @@ public class CrmCustomerTaskCommentResourceImplTest {
         crmTaskRepository.deleteAll();
         crmAccountRepository.deleteAll();
 
-        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
-        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).account(crmAccount));
+        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.channel(corChannel));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.channel(corChannel).account(crmAccount));
 
         // Initialize the database
-        crmTaskCommentRepository.saveAndFlush(crmTaskComment.network(corNetwork).taskComment(crmTask));
+        crmTaskCommentRepository.saveAndFlush(crmTaskComment.channel(corChannel).taskComment(crmTask));
         int databaseSizeBeforeUpdate = crmTaskCommentRepository.findAll().size();
 
         // Update the crmTaskComment
@@ -240,7 +246,7 @@ public class CrmCustomerTaskCommentResourceImplTest {
             .comment(UPDATED_COMMENT);
         CrmTaskCommentDTO crmTaskCommentDTO = crmTaskCommentMapper.DB2DTO(updatedCrmTaskComment);
 
-        restCrmTaskCommentMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment", corNetwork.getShortcut(), crmAccount.getShortName(), crmTask.getId())
+        restCrmTaskCommentMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName(), crmTask.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskCommentDTO)))
             .andExpect(status().isOk());
@@ -258,8 +264,8 @@ public class CrmCustomerTaskCommentResourceImplTest {
         crmTaskRepository.deleteAll();
         crmAccountRepository.deleteAll();
 
-        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
-        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).account(crmAccount));
+        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.channel(corChannel));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.channel(corChannel).account(crmAccount));
 
         int databaseSizeBeforeUpdate = crmTaskCommentRepository.findAll().size();
 
@@ -267,7 +273,7 @@ public class CrmCustomerTaskCommentResourceImplTest {
         CrmTaskCommentDTO crmTaskCommentDTO = crmTaskCommentMapper.DB2DTO(crmTaskComment);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCrmTaskCommentMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment", corNetwork.getShortcut(), crmAccount.getShortName(), crmTask.getId())
+        restCrmTaskCommentMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName(), crmTask.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskCommentDTO)))
             .andExpect(status().isCreated());
@@ -283,15 +289,15 @@ public class CrmCustomerTaskCommentResourceImplTest {
         crmTaskRepository.deleteAll();
         crmAccountRepository.deleteAll();
 
-        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
-        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).account(crmAccount));
+        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.channel(corChannel));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.channel(corChannel).account(crmAccount));
 
         // Initialize the database
-        crmTaskCommentRepository.saveAndFlush(crmTaskComment.network(corNetwork).taskComment(crmTask));
+        crmTaskCommentRepository.saveAndFlush(crmTaskComment.channel(corChannel).taskComment(crmTask));
         int databaseSizeBeforeDelete = crmTaskCommentRepository.findAll().size();
 
         // Get the crmTaskComment
-        restCrmTaskCommentMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/crm/customer/{shortName}/task/{taskId}/comment/{id}", corNetwork.getShortcut(), crmAccount.getShortName(), crmTask.getId(), crmTaskComment.getId())
+        restCrmTaskCommentMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/customer/{shortName}/task/{taskId}/comment/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), crmAccount.getShortName(), crmTask.getId(), crmTaskComment.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

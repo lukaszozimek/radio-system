@@ -3,9 +3,11 @@ package io.protone.application.service.crm;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorAddress;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.CorPerson;
-import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.repository.CorChannelRepository;
+import io.protone.core.repository.CorOrganizationRepository;
 import io.protone.core.s3.S3Client;
 import io.protone.core.service.CorImageItemService;
 import io.protone.crm.domain.CrmContact;
@@ -38,6 +40,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import javax.transaction.Transactional;
 import java.io.IOException;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
@@ -58,7 +61,7 @@ public class CrmContactServiceTest {
     private CrmContactService crmContactService;
 
     @Autowired
-    private CorNetworkRepository corNetworkRepository;
+    private CorChannelRepository corChannelRepository;
 
     @Autowired
     private CrmContactRepository crmContactRepository;
@@ -69,10 +72,16 @@ public class CrmContactServiceTest {
     @Autowired
     private CrmLeadRepository crmLeadRepository;
 
+    @Autowired
+    private CorOrganizationRepository corOrganizationRepository;
+
     @Mock
     private S3Client s3Client;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
+
 
     private PodamFactory factory;
 
@@ -80,16 +89,18 @@ public class CrmContactServiceTest {
     public void setUp() throws Exception {
         factory = new PodamFactoryImpl();
         MockitoAnnotations.initMocks(this);
-        doNothing().when(s3Client).upload(anyString(),anyString(), anyString(), anyObject(), anyString());
-        when(s3Client.getCover(anyString(),anyString(), anyString())).thenReturn("test");
+        doNothing().when(s3Client).upload(anyString(), anyString(), anyString(), anyObject(), anyString());
+        when(s3Client.getCover(anyString(), anyString(), anyString())).thenReturn("test");
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
         ReflectionTestUtils.setField(corImageItemService, "s3Client", s3Client);
         ReflectionTestUtils.setField(crmContactService, "corImageItemService", corImageItemService);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.setOrganization(corOrganization);
 
     }
 
@@ -98,11 +109,11 @@ public class CrmContactServiceTest {
         //when
         CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
         crmContact.setId(null);
-        crmContact.setNetwork(corNetwork);
+        crmContact.setChannel(corChannel);
         crmContactRepository.saveAndFlush(crmContact);
 
         //then
-        Slice<CrmContact> crmContactList = crmContactService.getAllContact(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<CrmContact> crmContactList = crmContactService.getAllContact(corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(crmContactList.getContent());
@@ -116,12 +127,12 @@ public class CrmContactServiceTest {
         //when
         CrmContact localCrmContact = factory.manufacturePojo(CrmContact.class);
         localCrmContact.setId(null);
-        localCrmContact.setNetwork(corNetwork);
+        localCrmContact.setChannel(corChannel);
         localCrmContact.setPerson(factory.manufacturePojo(CorPerson.class));
-        localCrmContact.getPerson().setNetwork(corNetwork);
-        localCrmContact.getPerson().getContacts().stream().forEach(corContact -> corContact.setNetwork(corNetwork));
+        localCrmContact.getPerson().setChannel(corChannel);
+        localCrmContact.getPerson().getContacts().stream().forEach(corContact -> corContact.setChannel(corChannel));
         localCrmContact.setAddres(factory.manufacturePojo(CorAddress.class));
-        localCrmContact.getAddres().setNetwork(corNetwork);
+        localCrmContact.getAddres().setChannel(corChannel);
 
         //then
         localCrmContact = crmContactService.saveContact(localCrmContact);
@@ -145,10 +156,10 @@ public class CrmContactServiceTest {
         //when
         CrmContact localCrmContact = factory.manufacturePojo(CrmContact.class);
         localCrmContact.setId(null);
-        localCrmContact.setNetwork(corNetwork);
+        localCrmContact.setChannel(corChannel);
         localCrmContact.setPerson(factory.manufacturePojo(CorPerson.class));
-        localCrmContact.getPerson().setNetwork(corNetwork);
-        localCrmContact.getPerson().getContacts().stream().forEach(corContact -> corContact.setNetwork(corNetwork));
+        localCrmContact.getPerson().setChannel(corChannel);
+        localCrmContact.getPerson().getContacts().stream().forEach(corContact -> corContact.setChannel(corChannel));
 
         //then
         localCrmContact = crmContactService.saveContact(localCrmContact);
@@ -172,7 +183,7 @@ public class CrmContactServiceTest {
         //when
         CrmContact localCrmContact = factory.manufacturePojo(CrmContact.class);
         localCrmContact.setId(null);
-        localCrmContact.setNetwork(corNetwork);
+        localCrmContact.setChannel(corChannel);
 
         //then
         localCrmContact = crmContactService.saveContact(localCrmContact);
@@ -191,12 +202,12 @@ public class CrmContactServiceTest {
         //when
         CrmContact localCrmContact = factory.manufacturePojo(CrmContact.class);
         localCrmContact.setId(null);
-        localCrmContact.setNetwork(corNetwork);
+        localCrmContact.setChannel(corChannel);
         localCrmContact.setPerson(factory.manufacturePojo(CorPerson.class));
-        localCrmContact.getPerson().setNetwork(corNetwork);
+        localCrmContact.getPerson().setChannel(corChannel);
         localCrmContact.getPerson().setContacts(null);
         localCrmContact.setAddres(factory.manufacturePojo(CorAddress.class));
-        localCrmContact.getAddres().setNetwork(corNetwork);
+        localCrmContact.getAddres().setChannel(corChannel);
 
         //then
         localCrmContact = crmContactService.saveContact(localCrmContact);
@@ -216,11 +227,11 @@ public class CrmContactServiceTest {
         //when
         CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
         crmContact.setId(null);
-        crmContact.setNetwork(corNetwork);
+        crmContact.setChannel(corChannel);
         crmContact = crmContactRepository.saveAndFlush(crmContact);
 
         //then
-        crmContactService.getContact(crmContact.getShortName(), crmContact.getNetwork().getShortcut());
+        crmContactService.getContact(crmContact.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
         CrmContact localCrmContact = crmContactRepository.findOne(crmContact.getId());
 
         //assert
@@ -232,16 +243,16 @@ public class CrmContactServiceTest {
         //when
         CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
         crmContact.setId(null);
-        crmContact.setNetwork(corNetwork);
+        crmContact.setChannel(corChannel);
         crmContact = crmContactRepository.saveAndFlush(crmContact);
 
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         //then
-        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
-        CrmContact localContact = crmContactService.getContact(crmContact.getShortName(), crmContact.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
+        CrmContact localContact = crmContactService.getContact(crmContact.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(crmTask1);
@@ -260,10 +271,10 @@ public class CrmContactServiceTest {
         //when
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         //then
-        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, "", corNetwork.getShortcut());
+        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, "", corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(crmTask1);
@@ -274,17 +285,17 @@ public class CrmContactServiceTest {
         //when
         CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
         crmContact.setId(null);
-        crmContact.setNetwork(corNetwork);
+        crmContact.setChannel(corChannel);
 
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         crmContact = crmContactRepository.saveAndFlush(crmContact);
-        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //then
-        Slice<CrmTask> localTask = crmContactService.getTasksAssociatedWithContact(crmContact.getShortName(), crmContact.getNetwork().getShortcut(), new PageRequest(0, 10));
+        Slice<CrmTask> localTask = crmContactService.getTasksAssociatedWithContact(crmContact.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(localTask.getContent());
@@ -297,17 +308,17 @@ public class CrmContactServiceTest {
         //when
         CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
         crmContact.setId(null);
-        crmContact.setNetwork(corNetwork);
+        crmContact.setChannel(corChannel);
 
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         crmContact = crmContactRepository.saveAndFlush(crmContact);
-        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //then
-        CrmTask localTask = crmContactService.getTaskAssociatedWithContact(crmTask1.getId(), crmContact.getNetwork().getShortcut());
+        CrmTask localTask = crmContactService.getTaskAssociatedWithContact(crmTask1.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(localTask);
@@ -320,20 +331,20 @@ public class CrmContactServiceTest {
         //when
         CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
         crmContact.setId(null);
-        crmContact.setNetwork(corNetwork);
+        crmContact.setChannel(corChannel);
 
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         crmContact = crmContactRepository.saveAndFlush(crmContact);
-        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         // then
-        crmContactService.deleteContactTask(crmContact.getShortName(), crmTask1.getId(), crmContact.getNetwork().getShortcut());
+        crmContactService.deleteContactTask(crmContact.getShortName(), crmTask1.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
-        CrmTask localTask = crmContactService.getTaskAssociatedWithContact(crmTask1.getId(), crmContact.getNetwork().getShortcut());
-        CrmContact localContact = crmContactService.getContact(crmContact.getShortName(), crmContact.getNetwork().getShortcut());
+        CrmTask localTask = crmContactService.getTaskAssociatedWithContact(crmTask1.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
+        CrmContact localContact = crmContactService.getContact(crmContact.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(localTask);
@@ -347,11 +358,11 @@ public class CrmContactServiceTest {
         //when
         CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
         crmContact.setId(null);
-        crmContact.setNetwork(corNetwork);
+        crmContact.setChannel(corChannel);
         crmContact = crmContactRepository.saveAndFlush(crmContact);
 
         //then
-        crmContactService.deleteContact(crmContact.getShortName(), crmContact.getNetwork().getShortcut());
+        crmContactService.deleteContact(crmContact.getShortName(), corOrganization.getShortcut(), corChannel.getShortcut());
         CrmContact localContact = crmContactRepository.findOne(crmContact.getId());
 
         //assert
@@ -365,11 +376,11 @@ public class CrmContactServiceTest {
         CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
         crmContact.setId(null);
         crmContact.setShortName(TEST_SHORTNAME);
-        crmContact.setNetwork(corNetwork);
+        crmContact.setChannel(corChannel);
         CrmContact crmContact1 = factory.manufacturePojo(CrmContact.class);
         crmContact1.setId(null);
         crmContact1.setShortName(TEST_SHORTNAME);
-        crmContact1.setNetwork(corNetwork);
+        crmContact1.setChannel(corChannel);
 
         crmContact = crmContactService.saveContact(crmContact);
         crmContact1 = crmContactService.saveContact(crmContact1);
@@ -380,19 +391,23 @@ public class CrmContactServiceTest {
     @Test
     public void shouldSaveTwoContactWithSameShortNameInDifferentNetwork() {
         //given
-        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
-        corNetworkSecond.setId(null);
-        corNetworkSecond = corNetworkRepository.save(corNetworkSecond);
+        CorOrganization corOrganizationkSecond = factory.manufacturePojo(CorOrganization.class);
+        corOrganizationkSecond.setId(null);
+        corOrganizationkSecond = corOrganizationRepository.saveAndFlush(corOrganizationkSecond);
+        CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);
+        corChannelSecond.setId(null);
+        corChannelSecond.setOrganization(corOrganizationkSecond);
+        corChannelSecond = corChannelRepository.save(corChannelSecond);
 
         ///when
         CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
         crmContact.setId(null);
         crmContact.setShortName(TEST_SHORTNAME);
-        crmContact.setNetwork(corNetwork);
+        crmContact.setChannel(corChannel);
         CrmContact crmContact1 = factory.manufacturePojo(CrmContact.class);
         crmContact1.setId(null);
         crmContact1.setShortName(TEST_SHORTNAME);
-        crmContact1.setNetwork(corNetworkSecond);
+        crmContact1.setChannel(corChannelSecond);
 
         //then
         crmContact = crmContactService.saveContact(crmContact);
@@ -403,7 +418,7 @@ public class CrmContactServiceTest {
     @Test
     public void shoudlConvertLeadToContact() {
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
-        crmLead.network(corNetwork);
+        crmLead.channel(corChannel);
         CrmLead crmLeadEntity = crmLeadRepository.saveAndFlush(crmLead);
         CrmContact crmContact = crmContactService.convertCrmLeadToContact(crmLeadEntity);
 
@@ -421,12 +436,12 @@ public class CrmContactServiceTest {
         //when
         CrmContact localCrmContact = factory.manufacturePojo(CrmContact.class);
         localCrmContact.setId(null);
-        localCrmContact.setNetwork(corNetwork);
+        localCrmContact.setChannel(corChannel);
         localCrmContact.setPerson(factory.manufacturePojo(CorPerson.class));
-        localCrmContact.getPerson().setNetwork(corNetwork);
-        localCrmContact.getPerson().getContacts().stream().forEach(corContact -> corContact.setNetwork(corNetwork));
+        localCrmContact.getPerson().setChannel(corChannel);
+        localCrmContact.getPerson().getContacts().stream().forEach(corContact -> corContact.setChannel(corChannel));
         localCrmContact.setAddres(factory.manufacturePojo(CorAddress.class));
-        localCrmContact.getAddres().setNetwork(corNetwork);
+        localCrmContact.getAddres().setChannel(corChannel);
 
         //then
         localCrmContact = crmContactService.saveContactWithImage(localCrmContact, logo);

@@ -1,7 +1,7 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.traffic.api.dto.TraCompanyDTO;
 import io.protone.traffic.domain.TraCompany;
 import io.protone.traffic.mapper.TraCompanyMapper;
@@ -38,7 +38,7 @@ public class TraCompanyMapperTest {
 
     private List<TraCompany> traCompanies = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -48,7 +48,7 @@ public class TraCompanyMapperTest {
         traCompanies.add(traCompany);
         traCompanyDTO = factory.manufacturePojo(TraCompanyDTO.class);
         traCompanyDTOS.add(traCompanyDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
     @Test
@@ -83,18 +83,18 @@ public class TraCompanyMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraCompany entity = customTraDiscountMapper.DTO2DB(traCompanyDTO, corNetwork);
+        TraCompany entity = customTraDiscountMapper.DTO2DB(traCompanyDTO, corChannel);
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getTaxId1());
         assertNotNull(entity.getTaxId2());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraCompany> entities = customTraDiscountMapper.DTOs2DBs(traCompanyDTOS, corNetwork);
+        List<TraCompany> entities = customTraDiscountMapper.DTOs2DBs(traCompanyDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -104,7 +104,7 @@ public class TraCompanyMapperTest {
             assertNotNull(entity.getDescription());
             assertNotNull(entity.getTaxId1());
             assertNotNull(entity.getTaxId2());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
         });
     }

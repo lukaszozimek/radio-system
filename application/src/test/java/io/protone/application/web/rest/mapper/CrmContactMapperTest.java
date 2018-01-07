@@ -40,7 +40,7 @@ public class CrmContactMapperTest {
 
     private CrmContactDTO crmContactDTO;
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     private List<CrmContactDTO> crmContactDTOS = new ArrayList<>();
 
@@ -65,11 +65,11 @@ public class CrmContactMapperTest {
         crmContact.setName("fwafwafwa");
         crmContact.setVatNumber("fwafwa");
         crmContact.setTasks(Sets.newLinkedHashSet(factory.manufacturePojo(CrmTask.class)));
-        crmContact.setNetwork(factory.manufacturePojo(CorNetwork.class));
+        crmContact.setChannel(factory.manufacturePojo(CorChannel.class));
         crmContacts.add(crmContact);
         crmContactDTO = factory.manufacturePojo(CrmContactDTO.class);
         crmContactDTOS.add(crmContactDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
     @Test
@@ -131,7 +131,7 @@ public class CrmContactMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CrmContact> entities = customCrmContactMapper.DTOs2DBs(crmContactDTOS, corNetwork);
+        List<CrmContact> entities = customCrmContactMapper.DTOs2DBs(crmContactDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -151,13 +151,13 @@ public class CrmContactMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getVatNumber());
             assertNotNull(entity.getTasks());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
         });
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmContact entity = customCrmContactMapper.DTO2DB(crmContactDTO, corNetwork);
+        CrmContact entity = customCrmContactMapper.DTO2DB(crmContactDTO, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getArea());
@@ -173,7 +173,7 @@ public class CrmContactMapperTest {
         assertNotNull(entity.getName());
         assertNotNull(entity.getVatNumber());
         assertNotNull(entity.getTasks());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test

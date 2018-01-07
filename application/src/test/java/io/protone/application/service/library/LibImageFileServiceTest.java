@@ -51,16 +51,15 @@ public class LibImageFileServiceTest extends LibFileServiceBaseTest {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libImageFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
+        LibMediaItem libMediaItem = libImageFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary, corChannel);
         List<LibImageObject> libImageObjects = libImageObjectRepository.findByMediaItem(libMediaItem);
         //assert
         Assert.notNull(libMediaItem);
         Assert.notNull(libMediaItem.getId());
         Assert.notNull(libMediaItem.getIdx());
         Assert.notNull(libMediaItem.getProperites());
-        Assert.notNull(libMediaItem.getNetwork());
+        Assert.notNull(libMediaItem.getChannel());
         Assert.isTrue(libMediaItem.getLibrary().getName().equals(libMediaLibrary.getName()));
-        Assert.isTrue(libMediaItem.getNetwork().getName().equals(corNetwork.getName()));
         Assert.isTrue(libMediaItem.getItemType().equals(LibItemTypeEnum.IT_IMAGE));
         Assert.isTrue(libMediaItem.getProperites().size() > 1);
         Assert.isTrue(libImageObjects.size() == 1);
@@ -70,14 +69,14 @@ public class LibImageFileServiceTest extends LibFileServiceBaseTest {
     @Test
     public void shoulDownloadImageFile() throws Exception {
         //when
-        when(s3Client.download(anyString(),anyString(),anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/sample_image.png"));
+        when(s3Client.download(anyString(), anyString(), anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/sample_image.png"));
         ReflectionTestUtils.setField(libImageFileService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libImageFileService, "corUserService", corUserService);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libImageFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
+        LibMediaItem libMediaItem = libImageFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary, corChannel);
         byte[] bytes = libImageFileService.download(libMediaItem);
 
         //assert
@@ -94,7 +93,7 @@ public class LibImageFileServiceTest extends LibFileServiceBaseTest {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libImageFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
+        LibMediaItem libMediaItem = libImageFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary, corChannel);
         libImageFileService.deleteFile(libMediaItem);
         List<LibImageObject> audioObjectList = libImageObjectRepository.findByMediaItem(libMediaItem);
 

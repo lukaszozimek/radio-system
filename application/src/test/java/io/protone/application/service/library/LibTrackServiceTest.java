@@ -2,7 +2,8 @@ package io.protone.application.service.library;
 
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.library.domain.LibAlbum;
 import io.protone.library.domain.LibTrack;
@@ -21,6 +22,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
@@ -43,28 +45,32 @@ public class LibTrackServiceTest {
     @Autowired
     private LibAlbumRepository libAlbumRepository;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
+
 
     private PodamFactory factory;
 
     @Before
     public void setUp() throws Exception {
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = networkRepository.saveAndFlush(corNetwork);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
 
     }
 
     @Test
     public void shoudlSaveLibTrack() throws Exception {
-        LibAlbum libAlbum = factory.manufacturePojo(LibAlbum.class).network(corNetwork);
+        LibAlbum libAlbum = factory.manufacturePojo(LibAlbum.class).channel(corChannel);
         libAlbum.setArtist(null);
         libAlbum.setCover(null);
         libAlbum.setLabel(null);
         libAlbum = libAlbumRepository.save(libAlbum);
         LibTrack libTrack = factory.manufacturePojo(LibTrack.class);
-        libTrack.network(corNetwork);
         libTrack.setId(null);
         libTrack.album(libAlbum);
         libTrack.artist(null);

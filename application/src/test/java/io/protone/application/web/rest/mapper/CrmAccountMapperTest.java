@@ -43,7 +43,7 @@ public class CrmAccountMapperTest {
 
     private List<CrmAccount> crmAccounts = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -64,11 +64,11 @@ public class CrmAccountMapperTest {
         crmAccount.setName("fwafwafwa");
         crmAccount.setVatNumber("fwafwa");
         crmAccount.setTasks(Sets.newLinkedHashSet(factory.manufacturePojo(CrmTask.class)));
-        crmAccount.setNetwork(factory.manufacturePojo(CorNetwork.class));
+        crmAccount.setChannel(factory.manufacturePojo(CorChannel.class));
         crmAccounts.add(crmAccount);
         crmAccountDTO = factory.manufacturePojo(CrmAccountDTO.class);
         crmAccountDTOS.add(crmAccountDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
 
     }
 
@@ -131,7 +131,7 @@ public class CrmAccountMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CrmAccount> entities = customCrmAccountMapper.DTOs2DBs(crmAccountDTOS, corNetwork);
+        List<CrmAccount> entities = customCrmAccountMapper.DTOs2DBs(crmAccountDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -151,7 +151,7 @@ public class CrmAccountMapperTest {
             assertNotNull(entity.getVatNumber());
             assertNotNull(entity.getPaymentDelay());
             assertNotNull(entity.getTasks());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
 
 
         });
@@ -159,7 +159,7 @@ public class CrmAccountMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmAccount entity = customCrmAccountMapper.DTO2DB(crmAccountDTO, corNetwork);
+        CrmAccount entity = customCrmAccountMapper.DTO2DB(crmAccountDTO, corChannel);
 
 
         assertNotNull(entity.getArea());
@@ -176,7 +176,7 @@ public class CrmAccountMapperTest {
         assertNotNull(entity.getVatNumber());
         assertNotNull(entity.getPaymentDelay());
         assertNotNull(entity.getTasks());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test

@@ -21,8 +21,8 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraAdvertisementQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Advertisement GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM TraAdvertisement a GROUP BY a.network";
+        String simpleQuery = "Traffic Advertisement GROUP BY organization";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM TraAdvertisement a GROUP BY a.organization";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -42,8 +42,8 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraCampaignQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Campaign GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM TraCampaign c GROUP BY c.network";
+        String simpleQuery = "Traffic Campaign GROUP BY organization";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM TraCampaign c GROUP BY c.organization";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -62,8 +62,8 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraInvoiceQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Invoice GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT i FROM TraInvoice i GROUP BY i.network";
+        String simpleQuery = "Traffic Invoice GROUP BY organization";
+        final String EXPECTED_JPA_QUERY = "SELECT i FROM TraInvoice i GROUP BY i.organization";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -82,8 +82,8 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraMediaPlanQuerry() throws IOException {
 
-        String simpleQuery = "Traffic MediaPlan GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT m FROM TraMediaPlan m GROUP BY m.network";
+        String simpleQuery = "Traffic MediaPlan GROUP BY organization";
+        final String EXPECTED_JPA_QUERY = "SELECT m FROM TraMediaPlan m GROUP BY m.organization";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -102,8 +102,8 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraOrderQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Order GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT o FROM TraOrder o GROUP BY o.network";
+        String simpleQuery = "Traffic Order GROUP BY organization";
+        final String EXPECTED_JPA_QUERY = "SELECT o FROM TraOrder o GROUP BY o.organization";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -123,8 +123,8 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraPlaylistQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Playlist GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM TraPlaylist p GROUP BY p.network";
+        String simpleQuery = "Traffic Playlist GROUP BY organization";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM TraPlaylist p GROUP BY p.organization";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

@@ -3,14 +3,14 @@ package io.protone.application.web.api.crm;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.crm.impl.CrmContactResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorImageItem;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorImageItemRepository;
+import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorImageItemService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.crm.api.dto.CrmContactDTO;
 import io.protone.crm.domain.CrmContact;
 import io.protone.crm.mapper.CrmContactMapper;
@@ -42,9 +42,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -79,7 +81,7 @@ public class CrmContactResourceImplTest {
     private static final String UPDATED_VAT_NUMBER = "BBBBBBBBBB";
     private static final String PUBLIC_URL_STRING = "test";
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Autowired
     private CrmContactRepository crmContactRepository;
@@ -112,7 +114,11 @@ public class CrmContactResourceImplTest {
 
     private CrmContact crmContact;
 
-    private CorNetwork corNetwork;
+
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
+
     private CorImageItem corImageItem;
 
     /**
@@ -137,16 +143,19 @@ public class CrmContactResourceImplTest {
     public void setup() throws IOException, TikaException, SAXException {
         MockitoAnnotations.initMocks(this);
         CrmContactResourceImpl crmContactResource = new CrmContactResourceImpl();
-        corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test").network(corNetwork);
+        corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test");
         corImageItemRepository.saveAndFlush(corImageItem);
-        when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(corImageItem);
         ReflectionTestUtils.setField(crmContactService, "corImageItemService", corImageItemService);
         ReflectionTestUtils.setField(crmContactResource, "crmContactService", crmContactService);
         ReflectionTestUtils.setField(crmContactResource, "crmContactMapper", crmContactMapper);
-        ReflectionTestUtils.setField(crmContactResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(crmContactResource, "corChannelService", corChannelService);
 
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
         crmContactRepository.deleteAllInBatch();
         this.restCrmContactMockMvc = MockMvcBuilders.standaloneSetup(crmContactResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -156,7 +165,7 @@ public class CrmContactResourceImplTest {
 
     @Before
     public void initTest() {
-        crmContact = createEntity(em).network(corNetwork);
+        crmContact = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -170,7 +179,7 @@ public class CrmContactResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(crmContactDTO));
 
-        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/contact", corNetwork.getShortcut())
+        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
@@ -202,7 +211,7 @@ public class CrmContactResourceImplTest {
                 "application/json", TestUtil.convertObjectToJsonBytes(crmContactDTO));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/contact", corNetwork.getShortcut())
+        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isBadRequest());
 
@@ -224,7 +233,7 @@ public class CrmContactResourceImplTest {
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.gif"));
         MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(crmContactDTO));
-        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/contact", corNetwork.getShortcut())
+        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isBadRequest());
 
@@ -246,7 +255,7 @@ public class CrmContactResourceImplTest {
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.gif"));
         MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(existingCrmContactDTO));
-        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/contact", corNetwork.getShortcut())
+        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact", corOrganization.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isBadRequest());
 
@@ -261,10 +270,10 @@ public class CrmContactResourceImplTest {
         when(corImageItemService.getValidLinkToResource(any())).thenReturn(null);
 
         // Initialize the database
-        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
+        crmContactRepository.saveAndFlush(crmContact.channel(corChannel));
 
         // Get all the crmContactList
-        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact?sort=id,desc", corNetwork.getShortcut()))
+        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(crmContact.getId().intValue())))
@@ -281,10 +290,10 @@ public class CrmContactResourceImplTest {
     public void getAllCrmContactsWithImage() throws Exception {
 
         // Initialize the database
-        crmContactRepository.saveAndFlush(crmContact.avatar(corImageItem).network(corNetwork));
+        crmContactRepository.saveAndFlush(crmContact.avatar(corImageItem).channel(corChannel));
 
         // Get all the crmContactList
-        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact?sort=id,desc", corNetwork.getShortcut()))
+        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(crmContact.getId().intValue())))
@@ -304,10 +313,10 @@ public class CrmContactResourceImplTest {
         // Initialize the database
         when(corImageItemService.getValidLinkToResource(any())).thenReturn(null);
 
-        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
+        crmContactRepository.saveAndFlush(crmContact.channel(corChannel));
 
         // Get the crmContact
-        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName()))
+        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), crmContact.getShortName()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(crmContact.getId().intValue()))
@@ -323,10 +332,10 @@ public class CrmContactResourceImplTest {
     @Transactional
     public void getCrmContactWithImage() throws Exception {
         // Initialize the database
-        crmContactRepository.saveAndFlush(crmContact.avatar(corImageItem).network(corNetwork));
+        crmContactRepository.saveAndFlush(crmContact.avatar(corImageItem).channel(corChannel));
 
         // Get the crmContact
-        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName()))
+        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), crmContact.getShortName()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(crmContact.getId().intValue()))
@@ -343,16 +352,16 @@ public class CrmContactResourceImplTest {
     @Transactional
     public void getNonExistingCrmContact() throws Exception {
         // Get the crmContact
-        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName(), Long.MAX_VALUE))
+        restCrmContactMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), crmContact.getShortName(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
     public void updateCrmContact() throws Exception {
-        when(corImageItemService.saveImageItem(any())).thenReturn(null);
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(null);
         // Initialize the database
-        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
+        crmContactRepository.saveAndFlush(crmContact.channel(corChannel));
         int databaseSizeBeforeUpdate = crmContactRepository.findAll().size();
 
         // Update the crmContact
@@ -367,7 +376,7 @@ public class CrmContactResourceImplTest {
                 .vatNumber(UPDATED_VAT_NUMBER);
         CrmContactDTO crmContactDTO = crmContactMapper.DB2DTO(updatedCrmContact);
 
-        restCrmContactMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/contact", corNetwork.getShortcut())
+        restCrmContactMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(crmContactDTO)))
                 .andExpect(status().isOk());
@@ -386,7 +395,7 @@ public class CrmContactResourceImplTest {
     @Test
     public void updateContactWithAvatar() throws Exception {
         // Initialize the database
-        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
+        crmContactRepository.saveAndFlush(crmContact.channel(corChannel));
         int databaseSizeBeforeUpdate = crmContactRepository.findAll().size();
 
         // Update the crmContact
@@ -404,7 +413,7 @@ public class CrmContactResourceImplTest {
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.gif"));
         MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(crmContactDTO));
-        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName())
+        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), crmContact.getShortName())
                 .file(emptyFile)
                 .file(jsonFile)).andExpect(status().isOk());
 
@@ -423,14 +432,14 @@ public class CrmContactResourceImplTest {
     @Test
     @Transactional
     public void updateNonExistingCrmContact() throws Exception {
-        when(corImageItemService.saveImageItem(any())).thenReturn(null);
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(null);
         int databaseSizeBeforeUpdate = crmContactRepository.findAll().size();
 
         // Create the CrmContact
         CrmContactDTO crmContactDTO = crmContactMapper.DB2DTO(crmContact);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCrmContactMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/crm/contact", corNetwork.getShortcut())
+        restCrmContactMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(crmContactDTO)))
                 .andExpect(status().isCreated());
@@ -444,11 +453,11 @@ public class CrmContactResourceImplTest {
     @Transactional
     public void deleteCrmContact() throws Exception {
         // Initialize the database
-        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
+        crmContactRepository.saveAndFlush(crmContact.channel(corChannel));
         int databaseSizeBeforeDelete = crmContactRepository.findAll().size();
 
         // Get the crmContact
-        restCrmContactMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName())
+        restCrmContactMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/crm/contact/{shortName}", corOrganization.getShortcut(), corChannel.getShortcut(), crmContact.getShortName())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

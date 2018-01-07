@@ -1,7 +1,7 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.library.api.dto.LibMarkerConfigurationDTO;
 import io.protone.library.domain.LibMarkerConfiguration;
 import io.protone.library.mapper.LibMarkerConfigurationMapper;
@@ -39,7 +39,7 @@ public class LibMarkerConfigurationMapperTest {
 
     private List<LibMarkerConfiguration> cfgMarkerConfigurations = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
@@ -49,7 +49,7 @@ public class LibMarkerConfigurationMapperTest {
         libMarkerConfigurationDTO = factory.manufacturePojo(LibMarkerConfigurationDTO.class);
         libMarkerConfigurationDTOList.add(libMarkerConfigurationDTO);
 
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
 
     }
 
@@ -81,23 +81,21 @@ public class LibMarkerConfigurationMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibMarkerConfiguration entity = cfgMarkerConfigurationMapper.DTO2DB(libMarkerConfigurationDTO, corNetwork);
+        LibMarkerConfiguration entity = cfgMarkerConfigurationMapper.DTO2DB(libMarkerConfigurationDTO, corChannel);
         assertNotNull(entity.getColor());
         assertNotNull(entity.getDisplayName());
         assertNotNull(entity.getId());
         assertNotNull(entity.getKeyboardShortcut());
         assertNotNull(entity.getName());
         assertNotNull(entity.getType());
-
-        assertNotNull(entity.getNetwork());
-
-        assertEquals(entity.getNetwork().getShortcut(), corNetwork.getShortcut());
+        assertNotNull(entity.getChannel());
+        assertEquals(entity.getChannel().getShortcut(), corChannel.getShortcut());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
 
-        List<LibMarkerConfiguration> entities = cfgMarkerConfigurationMapper.DTOs2DBs(libMarkerConfigurationDTOList, corNetwork);
+        List<LibMarkerConfiguration> entities = cfgMarkerConfigurationMapper.DTOs2DBs(libMarkerConfigurationDTOList, corChannel);
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
@@ -107,8 +105,8 @@ public class LibMarkerConfigurationMapperTest {
             assertNotNull(entity.getKeyboardShortcut());
             assertNotNull(entity.getName());
             assertNotNull(entity.getType());
-            assertNotNull(entity.getNetwork());
-            assertEquals(entity.getNetwork().getShortcut(), corNetwork.getShortcut());
+            assertNotNull(entity.getChannel());
+            assertEquals(entity.getChannel().getShortcut(), corChannel.getShortcut());
         });
     }
 

@@ -2,7 +2,6 @@ package io.protone.application.web.rest.mapper;
 
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
 import io.protone.library.api.dto.LibTrackDTO;
 import io.protone.library.domain.LibTrack;
 import io.protone.library.mapper.LibTrackMapper;
@@ -39,7 +38,7 @@ public class LibTrackMapperTest {
     private List<LibTrackDTO> libTrackDTOS = new ArrayList<>();
 
     private List<LibTrack> libTracks = new ArrayList<>();
-    private CorNetwork corNetwork;
+
 
 
     @Before
@@ -49,7 +48,6 @@ public class LibTrackMapperTest {
         libTracks.add(libTrack);
         libTrackDTO = factory.manufacturePojo(LibTrackDTO.class);
         libTrackDTOS.add(libTrackDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
 
@@ -94,7 +92,7 @@ public class LibTrackMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibTrack entity = customLibTrackMapperExt.DTO2DB(libTrackDTO, corNetwork);
+        LibTrack entity = customLibTrackMapperExt.DTO2DB(libTrackDTO);
 
         assertNotNull(entity.getAlbum());
         assertNotNull(entity.getArtist());
@@ -104,12 +102,11 @@ public class LibTrackMapperTest {
         assertNotNull(entity.getLength());
         assertNotNull(entity.getName());
         assertNotNull(entity.getTrackNo());
-        assertNotNull(entity.getNetwork());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibTrack> entities = customLibTrackMapperExt.DTOs2DBs(libTrackDTOS, corNetwork);
+        List<LibTrack> entities = customLibTrackMapperExt.DTOs2DBs(libTrackDTOS);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -122,7 +119,6 @@ public class LibTrackMapperTest {
             assertNotNull(entity.getLength());
             assertNotNull(entity.getName());
             assertNotNull(entity.getTrackNo());
-            assertNotNull(entity.getNetwork());
         });
     }
 

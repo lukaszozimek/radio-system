@@ -2,7 +2,7 @@ package io.protone.application.web.rest.mapper;
 
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
 import io.protone.library.api.dto.LibLabelDTO;
 import io.protone.library.domain.LibLabel;
 import io.protone.library.mapper.LibLabelMapper;
@@ -38,7 +38,9 @@ public class LibLabelMapperTest {
     private List<LibLabelDTO> libLabelDTOS = new ArrayList<>();
 
     private List<LibLabel> libLabels = new ArrayList<>();
-    private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
@@ -48,7 +50,7 @@ public class LibLabelMapperTest {
         libLabelDTO = factory.manufacturePojo(LibLabelDTO.class);
         libLabelDTOS.add(libLabelDTO);
 
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
     @Test
@@ -76,18 +78,18 @@ public class LibLabelMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibLabel entity = customLibLabelMapperExt.DTO2DB(libLabelDTO, corNetwork);
+        LibLabel entity = customLibLabelMapperExt.DTO2DB(libLabelDTO, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
         assertNotNull(entity.getDescription());
 
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibLabel> entities = customLibLabelMapperExt.DTOs2DBs(libLabelDTOS, corNetwork);
+        List<LibLabel> entities = customLibLabelMapperExt.DTOs2DBs(libLabelDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -96,7 +98,7 @@ public class LibLabelMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getDescription());
 
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
         });
 
     }

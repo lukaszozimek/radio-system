@@ -1,10 +1,9 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.scheduler.domain.SchDiscriminators;
 import io.protone.scheduler.domain.SchEventTemplate;
 import io.protone.scheduler.repository.SchEventTemplateRepository;
@@ -20,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+import static io.protone.application.util.TestConstans.*;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -41,16 +41,20 @@ public class SchEventTemplateServiceTest {
     @Autowired
     private SchEventTemplateRepository schEventTemplateRepository;
 
-    private CorNetwork corNetwork;
 
     private CorChannel corChannel;
 
+    private CorOrganization corOrganization;
+
+
     @Before
     public void setUp() throws Exception {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
+        factory = new PodamFactoryImpl();
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
     }
 
 
@@ -58,18 +62,16 @@ public class SchEventTemplateServiceTest {
     public void shouldGetEventConfigurations() throws Exception {
         //when
         SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class).instance(false);
-        schEventConfiguration.setNetwork(corNetwork);
         schEventConfiguration.setChannel(corChannel);
         schEventConfiguration = schEventTemplateRepository.save(schEventConfiguration);
 
         //then
-        Slice<SchEventTemplate> fetchedEntity = schEventTemplateService.findSchEventTemplatesForNetworkAndChannel(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+        Slice<SchEventTemplate> fetchedEntity = schEventTemplateService.findSchEventTemplatesForNetworkAndChannel(corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(schEventConfiguration.getId(), fetchedEntity.getContent().get(0).getId());
-        assertEquals(schEventConfiguration.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
 
@@ -78,7 +80,6 @@ public class SchEventTemplateServiceTest {
     public void shouldGetEventConfigurationsGroupedByType() throws Exception {
         //when
         SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class).instance(false);
-        schEventConfiguration.setNetwork(corNetwork);
         schEventConfiguration.setChannel(corChannel);
         CorDictionary corDictionary = new CorDictionary();
         corDictionary.setId(43L);
@@ -86,13 +87,12 @@ public class SchEventTemplateServiceTest {
         schEventConfiguration = schEventTemplateRepository.save(schEventConfiguration);
 
         //then
-        Slice<SchEventTemplate> fetchedEntity = schEventTemplateService.findAllEventsByCategoryName(corNetwork.getShortcut(), corChannel.getShortcut(), TEST_EVENT_CATEGORY, new PageRequest(0, 10));
+        Slice<SchEventTemplate> fetchedEntity = schEventTemplateService.findAllEventsByCategoryName(corOrganization.getShortcut(), corChannel.getShortcut(), TEST_EVENT_CATEGORY, new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(schEventConfiguration.getId(), fetchedEntity.getContent().get(0).getId());
-        assertEquals(schEventConfiguration.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
 
@@ -100,7 +100,6 @@ public class SchEventTemplateServiceTest {
     public void shouldSaveEventConfiguration() throws Exception {
         //when
         SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class).instance(false);
-        schEventConfiguration.setNetwork(corNetwork);
         schEventConfiguration.setChannel(corChannel);
         //then
         SchEventTemplate fetchedEntity = schEventTemplateService.saveEventConfiguration(schEventConfiguration);
@@ -108,19 +107,18 @@ public class SchEventTemplateServiceTest {
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
-        assertEquals(schEventConfiguration.getNetwork(), fetchedEntity.getNetwork());
     }
 
     @Test
     public void shouldDeleteEventConfiguration() throws Exception {
         //when
         SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class).instance(false);
-        schEventConfiguration.setNetwork(corNetwork);
+        schEventConfiguration.setChannel(corChannel);
         schEventConfiguration.setChannel(corChannel);
         schEventConfiguration = schEventTemplateRepository.saveAndFlush(schEventConfiguration);
         //then
-        schEventTemplateService.deleteSchEventTemplateByNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName());
-        SchEventTemplate fetchedEntity = schEventTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndInstanceAndType(corNetwork.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName(), false, SchDiscriminators.EVENT_TEMPLATE);
+        schEventTemplateService.deleteSchEventTemplateByNetworkAndChannelAndShortName(corOrganization.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName());
+        SchEventTemplate fetchedEntity = schEventTemplateRepository.findOneByChannel_Organization_ShortcutAndChannel_ShortcutAndShortNameAndInstanceAndType(corOrganization.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName(), false, SchDiscriminators.EVENT_TEMPLATE);
 
         //assert
         assertNull(fetchedEntity);
@@ -136,17 +134,17 @@ public class SchEventTemplateServiceTest {
     public void shouldGetEventConfiguration() throws Exception {
         //when
         SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class).instance(false);
-        schEventConfiguration.setNetwork(corNetwork);
+        schEventConfiguration.setChannel(corChannel);
         schEventConfiguration.setChannel(corChannel);
         schEventConfiguration = schEventTemplateRepository.save(schEventConfiguration);
 
         //then
-        SchEventTemplate fetchedEntity = schEventTemplateService.findSchEventTemplatesForNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName());
+        SchEventTemplate fetchedEntity = schEventTemplateService.findSchEventTemplatesForNetworkAndChannelAndShortName(corOrganization.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName());
         //assert
         assertNotNull(fetchedEntity);
         assertEquals(schEventConfiguration.getId(), fetchedEntity.getId());
 
-        assertEquals(schEventConfiguration.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(schEventConfiguration.getChannel(), fetchedEntity.getChannel());
 
     }
 

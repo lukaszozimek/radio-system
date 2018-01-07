@@ -3,7 +3,6 @@ package io.protone.application.web.rest.mapper;
 import com.google.common.collect.Lists;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchAttachmentTemplateDTO;
 import io.protone.scheduler.api.dto.SchEmissionTemplateDTO;
 import io.protone.scheduler.domain.SchAttachmentTemplate;
@@ -39,14 +38,13 @@ public class SchEmissionTemplateMapperTest {
     private List<SchEmissionTemplate> emissions = new ArrayList<>();
 
     private List<SchEmissionTemplateDTO> emissionDTOs = new ArrayList<>();
-    private CorNetwork network;
     private CorChannel corChannel;
+
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         corChannel = factory.manufacturePojo(CorChannel.class);
-        network = factory.manufacturePojo(CorNetwork.class);
         emission = factory.manufacturePojo(SchEmissionTemplate.class);
         emission.setAttachments(Lists.newArrayList(factory.manufacturePojo(SchAttachmentTemplate.class)));
         emissions.add(emission);
@@ -87,7 +85,7 @@ public class SchEmissionTemplateMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchEmissionTemplate entity = emissionMapper.DTO2DB(emissionDTO, network, corChannel);
+        SchEmissionTemplate entity = emissionMapper.DTO2DB(emissionDTO, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getSequence());
@@ -95,15 +93,13 @@ public class SchEmissionTemplateMapperTest {
         assertNotNull(entity.getLength());
         assertNotNull(entity.getRelativeDelay());
         assertNotNull(entity.getSequence());
-
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getAttachments());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchEmissionTemplate> entities = emissionMapper.DTOs2DBs(emissionDTOs, network, corChannel);
+        List<SchEmissionTemplate> entities = emissionMapper.DTOs2DBs(emissionDTOs, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -113,7 +109,6 @@ public class SchEmissionTemplateMapperTest {
             assertNotNull(entity.getLength());
             assertNotNull(entity.getRelativeDelay());
             assertNotNull(entity.getSequence());
-            assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getAttachments());
         });

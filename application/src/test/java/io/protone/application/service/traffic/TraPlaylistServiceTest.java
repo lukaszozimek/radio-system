@@ -3,9 +3,9 @@ package io.protone.application.service.traffic;
 import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorChannelRepository;
-import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.repository.CorOrganizationRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.library.domain.LibMediaItem;
@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.junit.Assert.*;
 
 /**
@@ -47,7 +48,7 @@ public class TraPlaylistServiceTest {
     private TraPlaylistService traPlaylistService;
 
     @Autowired
-    private CorNetworkRepository corNetworkRepository;
+    private CorOrganizationRepository corOrganizationRepository;
 
 
     @Autowired
@@ -68,9 +69,9 @@ public class TraPlaylistServiceTest {
     @Autowired
     private TraOrderRepository traOrderRepository;
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
+
+    private CorOrganization corOrganization;
 
     private PodamFactory factory;
 
@@ -78,16 +79,12 @@ public class TraPlaylistServiceTest {
     @Before
     public void setUp() throws Exception {
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
 
-        corChannel = factory.manufacturePojo(CorChannel.class);
-        corChannel.setId(null);
-        corChannel.setShortcut("HHH");
-        corChannel.network(corNetwork);
-        corChannelRepository.saveAndFlush(corChannel);
-
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.setOrganization(corOrganization);
     }
 
 
@@ -95,19 +92,19 @@ public class TraPlaylistServiceTest {
     public void shouldGetPlaylists() throws Exception {
         //when
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
-        traPlaylist.setNetwork(corNetwork);
+
         traPlaylist.setChannel(corChannel);
         traPlaylist = traPlaylistRepository.save(traPlaylist);
 
         //then
-        Slice<TraPlaylist> fetchedEntity = traPlaylistService.getAllPlaylistList(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+        Slice<TraPlaylist> fetchedEntity = traPlaylistService.getAllPlaylistList(corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(traPlaylist.getId(), fetchedEntity.getContent().get(0).getId());
         assertEquals(traPlaylist.getPlaylistDate(), fetchedEntity.getContent().get(0).getPlaylistDate());
-        assertEquals(traPlaylist.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+        assertEquals(traPlaylist.getChannel(), fetchedEntity.getContent().get(0).getChannel());
 
     }
 
@@ -115,7 +112,6 @@ public class TraPlaylistServiceTest {
     public void shouldSavePlaylist() throws Exception {
         //when
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
-        traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
         //then
         TraPlaylist fetchedEntity = traPlaylistService.savePlaylist(traPlaylist);
@@ -124,19 +120,18 @@ public class TraPlaylistServiceTest {
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
         assertNotNull(fetchedEntity.getPlaylistDate().toString(), traPlaylist.getPlaylistDate().toString());
-        assertEquals(traPlaylist.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(traPlaylist.getChannel(), fetchedEntity.getChannel());
     }
 
     @Test
     public void shouldDeletePlaylist() throws Exception {
         //when
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
-        traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
         traPlaylist = traPlaylistRepository.saveAndFlush(traPlaylist);
         //then
-        traPlaylistService.deleteOneTraPlaylistList(traPlaylist.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
-        TraPlaylist fetchedEntity = traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(traPlaylist.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
+        traPlaylistService.deleteOneTraPlaylistList(traPlaylist.getPlaylistDate(), corOrganization.getShortcut(), corChannel.getShortcut());
+        TraPlaylist fetchedEntity = traPlaylistRepository.findOneByPlaylistDateAndChannel_Organization_ShortcutAndChannel_Shortcut(traPlaylist.getPlaylistDate(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(fetchedEntity);
@@ -146,18 +141,17 @@ public class TraPlaylistServiceTest {
     public void shouldGetPlaylist() throws Exception {
         //when
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
-        traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
         traPlaylist = traPlaylistRepository.save(traPlaylist);
 
         //then
-        TraPlaylist fetchedEntity = traPlaylistService.getTraPlaylistList(traPlaylist.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
+        TraPlaylist fetchedEntity = traPlaylistService.getTraPlaylistList(traPlaylist.getPlaylistDate(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(fetchedEntity);
         assertEquals(traPlaylist.getId(), fetchedEntity.getId());
         assertEquals(traPlaylist.getPlaylistDate(), fetchedEntity.getPlaylistDate());
-        assertEquals(traPlaylist.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(traPlaylist.getChannel(), fetchedEntity.getChannel());
 
     }
 
@@ -166,18 +160,16 @@ public class TraPlaylistServiceTest {
         //when
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
         traPlaylist.setPlaylistDate(LocalDate.now());
-        traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
         traPlaylist = traPlaylistRepository.save(traPlaylist);
 
         TraPlaylist traPlaylist1 = factory.manufacturePojo(TraPlaylist.class);
         traPlaylist1.setPlaylistDate(LocalDate.now().plusDays(2));
-        traPlaylist1.setNetwork(corNetwork);
         traPlaylist1.setChannel(corChannel);
         traPlaylist1 = traPlaylistRepository.save(traPlaylist1);
 
         //then
-        List<TraPlaylist> fetchedEntity = traPlaylistService.getTraPlaylistListInRange(traPlaylist.getPlaylistDate(), traPlaylist1.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
+        List<TraPlaylist> fetchedEntity = traPlaylistService.getTraPlaylistListInRange(traPlaylist.getPlaylistDate(), traPlaylist1.getPlaylistDate(), corOrganization.getShortcut(), corChannel.getShortcut());
 
 
         //assert
@@ -189,16 +181,15 @@ public class TraPlaylistServiceTest {
     @Test
     public void shouldSaveBlockWithEmissions() throws Exception {
         //when
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
         LibMediaLibrary libMediaLibrary = new LibMediaLibrary();
         libMediaLibrary.setId(1L);
         libMediaLibrary.setShortcut("tes");
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
-        libMediaItem.setNetwork(corNetwork);
+
         libMediaItem.setLibrary(libMediaLibrary);
         libMediaItem = libMediaItemRepository.save(libMediaItem);
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
-        traAdvertisement.setNetwork(corNetwork);
+        traAdvertisement.setChannel(corChannel);
 
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
         TraEmission traEmission = factory.manufacturePojo(TraEmission.class);
@@ -212,22 +203,19 @@ public class TraPlaylistServiceTest {
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setAdvertisment(traAdvertisement);
         traOrder.setCustomer(crmAccount);
-        traOrder.network(corNetwork);
+        traOrder.channel(corChannel);
 
         traOrder = traOrderRepository.saveAndFlush(traOrder);
 
         traEmission.setChannel(corChannel);
-        traEmission.setNetwork(corNetwork);
         traEmission.setAdvertiment(libMediaItem);
         traEmission.setOrder(traOrder);
 
         TraBlock traBlock = factory.manufacturePojo(TraBlock.class)
-            .emissions(Sets.newHashSet(traEmission))
-            .channel(corChannel)
-            .network(corNetwork);
+                .emissions(Sets.newHashSet(traEmission))
+                .channel(corChannel);
         traPlaylist.setPlaylistDate(LocalDate.now());
         traPlaylist.setPlaylists(Sets.newHashSet(traBlock));
-        traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
         traPlaylist = traPlaylistRepository.save(traPlaylist);
 
@@ -235,7 +223,7 @@ public class TraPlaylistServiceTest {
         //then
         traPlaylistService.savePlaylist(traPlaylist);
 
-        TraPlaylist fetchedEntity = traPlaylistService.getTraPlaylistList(traPlaylist.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
+        TraPlaylist fetchedEntity = traPlaylistService.getTraPlaylistList(traPlaylist.getPlaylistDate(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(fetchedEntity);
@@ -258,15 +246,14 @@ public class TraPlaylistServiceTest {
         libMediaLibrary.setId(1L);
         libMediaLibrary.setShortcut("tes");
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
-        libMediaItem.setNetwork(corNetwork);
+        libMediaItem.setChannel(corChannel);
         libMediaItem.setLibrary(libMediaLibrary);
         libMediaItem = libMediaItemRepository.save(libMediaItem);
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
-        traAdvertisement.setNetwork(corNetwork);
+        traAdvertisement.setChannel(corChannel);
 
         CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount = crmAccountRepository.save(crmAccount);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
         traAdvertisement.customer(crmAccount);
         traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
@@ -274,7 +261,7 @@ public class TraPlaylistServiceTest {
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setAdvertisment(traAdvertisement);
         traOrder.setCustomer(crmAccount);
-        traOrder.network(corNetwork);
+        traOrder.channel(corChannel);
 
         traOrder = traOrderRepository.saveAndFlush(traOrder);
         Set<TraBlock> traBlockSet = new HashSet<>();
@@ -286,20 +273,17 @@ public class TraPlaylistServiceTest {
             traEmission.setChannel(corChannel);
             traEmission.setOrder(traOrder);
             traEmission.setAdvertiment(libMediaItem);
-            traEmission.setNetwork(corNetwork);
             traEmissionSet.add(traEmission);
         }
         for (int i = 0; i < 3; i++) {
 
             TraBlock traBlock = factory.manufacturePojo(TraBlock.class)
-                .emissions(traEmissionSet)
-                .channel(corChannel)
-                .network(corNetwork);
+                    .emissions(traEmissionSet)
+                    .channel(corChannel);
             traBlockSet.add(traBlock);
         }
         traPlaylist.setPlaylistDate(LocalDate.now());
         traPlaylist.setPlaylists(traBlockSet);
-        traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
         traPlaylist = traPlaylistRepository.save(traPlaylist);
 
@@ -307,7 +291,7 @@ public class TraPlaylistServiceTest {
         //then
         traPlaylistService.savePlaylist(traPlaylist);
 
-        TraPlaylist fetchedEntity = traPlaylistService.getTraPlaylistList(traPlaylist.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
+        TraPlaylist fetchedEntity = traPlaylistService.getTraPlaylistList(traPlaylist.getPlaylistDate(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(fetchedEntity);
@@ -330,13 +314,11 @@ public class TraPlaylistServiceTest {
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
         traPlaylist.setId(null);
         traPlaylist.setPlaylistDate(localDate);
-        traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
 
         TraPlaylist traPlaylist1 = factory.manufacturePojo(TraPlaylist.class);
         traPlaylist1.setId(null);
         traPlaylist1.setPlaylistDate(localDate);
-        traPlaylist1.setNetwork(corNetwork);
         traPlaylist1.setChannel(corChannel);
 
         //then
@@ -352,19 +334,17 @@ public class TraPlaylistServiceTest {
         CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);
         corChannelSecond.setId(null);
         corChannelSecond.setShortcut("YYY");
-        corChannelSecond.network(corNetwork);
+        corChannelSecond.setOrganization(corOrganization);
         corChannelRepository.saveAndFlush(corChannelSecond);
         //when
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
         traPlaylist.setId(null);
         traPlaylist.setPlaylistDate(localDate);
-        traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
 
         TraPlaylist traPlaylist1 = factory.manufacturePojo(TraPlaylist.class);
         traPlaylist1.setId(null);
         traPlaylist1.setPlaylistDate(localDate);
-        traPlaylist1.setNetwork(corNetwork);
         traPlaylist1.setChannel(corChannelSecond);
 
         //then
@@ -378,25 +358,23 @@ public class TraPlaylistServiceTest {
         //given
         LocalDate localDate = LocalDate.now();
 
-        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
-        corNetworkSecond.setId(null);
-        corNetworkSecond = corNetworkRepository.saveAndFlush(corNetworkSecond);
+        CorOrganization corOrganizationkSecond = factory.manufacturePojo(CorOrganization.class);
+        corOrganizationkSecond.setId(null);
+        corOrganizationkSecond = corOrganizationRepository.saveAndFlush(corOrganizationkSecond);
         CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);
         corChannelSecond.setId(null);
         corChannelSecond.setShortcut("XXT");
-        corChannelSecond.network(corNetworkSecond);
+        corChannelSecond.setOrganization(corOrganization);
         corChannelRepository.saveAndFlush(corChannelSecond);
         //when
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
         traPlaylist.setId(null);
         traPlaylist.setPlaylistDate(localDate);
-        traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
 
         TraPlaylist traPlaylist1 = factory.manufacturePojo(TraPlaylist.class);
         traPlaylist1.setId(null);
         traPlaylist1.setPlaylistDate(localDate);
-        traPlaylist1.setNetwork(corNetworkSecond);
         traPlaylist1.setChannel(corChannelSecond);
 
         //then

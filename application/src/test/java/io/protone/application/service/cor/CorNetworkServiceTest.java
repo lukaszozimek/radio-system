@@ -1,7 +1,9 @@
 package io.protone.application.service.cor;
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.s3.S3Client;
 import io.protone.core.s3.exceptions.S3Exception;
@@ -29,6 +31,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import javax.transaction.Transactional;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
@@ -60,35 +63,43 @@ public class CorNetworkServiceTest {
 
     private PodamFactory factory;
 
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
+
     @Before
     public void initPojos() throws UploadException, S3Exception, UrlGenerationResourceException {
         MockitoAnnotations.initMocks(this);
         doNothing().when(s3Client).upload(anyString(), anyString(), anyString(), anyObject(), anyString());
-        when(s3Client.getCover(anyString(),anyString(), anyString())).thenReturn("test");
+        when(s3Client.getCover(anyString(), anyString(), anyString())).thenReturn("test");
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
         ReflectionTestUtils.setField(corImageItemService, "s3Client", s3Client);
         ReflectionTestUtils.setField(corNetworkService, "corImageItemService", corImageItemService);
-
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+        corChannel.setOrganization(corOrganization);
         factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
+        corNetwork.setOrganization(corOrganization);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
     }
 
     @Test
     public void findAllNetworks() throws Exception {
-        List<CorNetwork> corNetworkList = corNetworkService.findAllNetworks();
+        List<CorNetwork> corNetworkList = corNetworkService.findAllNetworks(corOrganization.getShortcut());
         assertNotNull(corNetworkList);
         assertFalse(corNetworkList.isEmpty());
-        assertEquals(2, corNetworkList.size());
 
     }
 
     @Test
     public void findNetwork() throws Exception {
-        CorNetwork local = corNetworkService.findNetwork(corNetwork.getShortcut());
+        CorNetwork local = corNetworkService.findNetwork(corNetwork.getShortcut(), corOrganization.getShortcut());
         assertNotNull(local);
         assertEquals(corNetwork.getId(), local.getId());
 
@@ -109,8 +120,8 @@ public class CorNetworkServiceTest {
 
     @Test
     public void deleteNetwork() throws Exception {
-        corNetworkService.deleteNetwork(corNetwork.getShortcut());
-        CorNetwork local = corNetworkService.findNetwork(corNetwork.getShortcut());
+        corNetworkService.deleteNetwork(corNetwork.getShortcut(), corOrganization.getShortcut());
+        CorNetwork local = corNetworkService.findNetwork(corNetwork.getShortcut(), corOrganization.getShortcut());
         assertNull(local);
 
     }

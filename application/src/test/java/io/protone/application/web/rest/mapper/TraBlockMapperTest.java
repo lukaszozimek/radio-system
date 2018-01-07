@@ -3,7 +3,6 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
 import io.protone.traffic.api.dto.TraBlockDTO;
 import io.protone.traffic.api.dto.TraEmissionDTO;
 import io.protone.traffic.domain.TraBlock;
@@ -42,8 +41,6 @@ public class TraBlockMapperTest {
 
     private List<TraBlock> traBlocks = new ArrayList<>();
 
-    private CorNetwork corNetwork;
-
     private CorChannel corChannel;
 
     @Before
@@ -60,7 +57,7 @@ public class TraBlockMapperTest {
         TraEmissionDTO traEmissionDTO = factory.manufacturePojo(TraEmissionDTO.class);
         traBlockDTO.addEmissionsItem(traEmissionDTO);
         traBlockDTOS.add(traBlockDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
         corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
@@ -101,19 +98,18 @@ public class TraBlockMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraBlock entity = traBlockMapper.DTO2DB(traBlockDTO, corNetwork, corChannel);
+        TraBlock entity = traBlockMapper.DTO2DB(traBlockDTO, corChannel);
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
         assertNotNull(entity.getEmissions());
         assertNotEquals(0, entity.getEmissions().size());
         assertNotNull(entity.getChannel());
-        assertNotNull(entity.getNetwork());
         assertNotNull(entity.getSequence());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraBlock> entities = traBlockMapper.DTOs2DBs(traBlockDTOS, corNetwork, corChannel);
+        List<TraBlock> entities = traBlockMapper.DTOs2DBs(traBlockDTOS, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -124,7 +120,7 @@ public class TraBlockMapperTest {
             assertNotNull(entity.getSequence());
             assertNotEquals(0, entity.getEmissions().size());
             assertNotNull(entity.getChannel());
-            assertNotNull(entity.getNetwork());
+
 
         });
     }

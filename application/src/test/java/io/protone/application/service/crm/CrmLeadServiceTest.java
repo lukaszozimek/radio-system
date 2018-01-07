@@ -3,9 +3,11 @@ package io.protone.application.service.crm;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorAddress;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.domain.CorPerson;
-import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.repository.CorChannelRepository;
+import io.protone.core.repository.CorOrganizationRepository;
 import io.protone.crm.domain.CrmLead;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.repostiory.CrmLeadRepository;
@@ -23,8 +25,8 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static org.junit.Assert.*;
 
 /**
@@ -39,21 +41,26 @@ public class CrmLeadServiceTest {
     private CrmLeadService crmLeadService;
 
     @Autowired
-    private CorNetworkRepository corNetworkRepository;
+    private CorChannelRepository corChannelRepository;
 
     @Autowired
     private CrmLeadRepository crmLeadRepository;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
 
     private PodamFactory factory;
+    @Autowired
+    private CorOrganizationRepository corOrganizationRepository;
 
     @Before
     public void setUp() throws Exception {
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
 
     }
 
@@ -62,11 +69,11 @@ public class CrmLeadServiceTest {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
         crmLeadRepository.saveAndFlush(crmLead);
 
         //then
-        Slice<CrmLead> allCustomers = crmLeadService.getAllLeads(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<CrmLead> allCustomers = crmLeadService.getAllLeads(corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(allCustomers.getContent());
@@ -79,12 +86,12 @@ public class CrmLeadServiceTest {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
         crmLead.setPerson(factory.manufacturePojo(CorPerson.class));
-        crmLead.getPerson().setNetwork(corNetwork);
-        crmLead.getPerson().getContacts().stream().forEach(corContact -> corContact.setNetwork(corNetwork));
+        crmLead.getPerson().setChannel(corChannel);
+        crmLead.getPerson().getContacts().stream().forEach(corContact -> corContact.setChannel(corChannel));
         crmLead.setAddres(factory.manufacturePojo(CorAddress.class));
-        crmLead.getAddres().setNetwork(corNetwork);
+        crmLead.getAddres().setChannel(corChannel);
 
         //then
         crmLead = crmLeadService.saveLead(crmLead);
@@ -112,10 +119,10 @@ public class CrmLeadServiceTest {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
         crmLead.setPerson(factory.manufacturePojo(CorPerson.class));
-        crmLead.getPerson().setNetwork(corNetwork);
-        crmLead.getPerson().getContacts().stream().forEach(corContact -> corContact.setNetwork(corNetwork));
+        crmLead.getPerson().setChannel(corChannel);
+        crmLead.getPerson().getContacts().stream().forEach(corContact -> corContact.setChannel(corChannel));
 
         //then
         crmLead = crmLeadService.saveLead(crmLead);
@@ -139,7 +146,7 @@ public class CrmLeadServiceTest {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
 
         //then
         crmLead = crmLeadService.saveLead(crmLead);
@@ -157,12 +164,12 @@ public class CrmLeadServiceTest {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
         crmLead.setPerson(factory.manufacturePojo(CorPerson.class));
-        crmLead.getPerson().setNetwork(corNetwork);
+        crmLead.getPerson().setChannel(corChannel);
         crmLead.getPerson().setContacts(null);
         crmLead.setAddres(factory.manufacturePojo(CorAddress.class));
-        crmLead.getAddres().setNetwork(corNetwork);
+        crmLead.getAddres().setChannel(corChannel);
 
         //then
         crmLead = crmLeadService.saveLead(crmLead);
@@ -180,11 +187,11 @@ public class CrmLeadServiceTest {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
         crmLead = crmLeadRepository.saveAndFlush(crmLead);
 
         //then
-        crmLeadService.getLead(crmLead.getShortname(), crmLead.getNetwork().getShortcut());
+        crmLeadService.getLead(crmLead.getShortname(), corOrganization.getShortcut(), corChannel.getShortcut());
         CrmLead localCrmLead = crmLeadRepository.findOne(crmLead.getId());
 
         //assert
@@ -196,16 +203,16 @@ public class CrmLeadServiceTest {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
         crmLead = crmLeadRepository.saveAndFlush(crmLead);
 
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         //then
-        CrmTask crmTask1 = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(crmTask, crmLead.getShortname(), crmLead.getNetwork().getShortcut());
-        CrmLead lead = crmLeadService.getLead(crmLead.getShortname(), crmLead.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(crmTask, crmLead.getShortname(), corOrganization.getShortcut(), corChannel.getShortcut());
+        CrmLead lead = crmLeadService.getLead(crmLead.getShortname(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(crmTask1);
@@ -224,10 +231,10 @@ public class CrmLeadServiceTest {
         //when
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         //then
-        CrmTask crmTask1 = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(crmTask, "xxx", corNetwork.getShortcut());
+        CrmTask crmTask1 = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(crmTask, "xxx", corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(crmTask1);
@@ -238,17 +245,17 @@ public class CrmLeadServiceTest {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
 
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         crmLead = crmLeadRepository.saveAndFlush(crmLead);
-        CrmTask crmTask1 = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(crmTask, crmLead.getShortname(), crmLead.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(crmTask, crmLead.getShortname(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //then
-        Slice<CrmTask> localTask = crmLeadService.getTasksAssociatedWithLead(crmLead.getShortname(), crmLead.getNetwork().getShortcut(), new PageRequest(0, 10));
+        Slice<CrmTask> localTask = crmLeadService.getTasksAssociatedWithLead(crmLead.getShortname(), corOrganization.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(localTask.getContent());
@@ -261,17 +268,17 @@ public class CrmLeadServiceTest {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
 
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         crmLead = crmLeadRepository.saveAndFlush(crmLead);
-        CrmTask crmTask1 = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(crmTask, crmLead.getShortname(), crmLead.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(crmTask, crmLead.getShortname(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //then
-        CrmTask localTask = crmLeadService.getTaskAssociatedWithLead(crmTask1.getId(), crmLead.getNetwork().getShortcut());
+        CrmTask localTask = crmLeadService.getTaskAssociatedWithLead(crmTask1.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(localTask);
@@ -284,20 +291,20 @@ public class CrmLeadServiceTest {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
 
         CrmTask crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setId(null);
-        crmTask.setNetwork(corNetwork);
+        crmTask.setChannel(corChannel);
 
         crmLead = crmLeadRepository.saveAndFlush(crmLead);
-        CrmTask crmTask1 = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(crmTask, crmLead.getShortname(), crmLead.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(crmTask, crmLead.getShortname(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         // then
-        crmLeadService.deleteLeadTask(crmLead.getShortname(), crmTask1.getId(), crmLead.getNetwork().getShortcut());
+        crmLeadService.deleteLeadTask(crmLead.getShortname(), crmTask1.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
 
-        CrmTask localTask = crmLeadService.getTaskAssociatedWithLead(crmTask1.getId(), crmLead.getNetwork().getShortcut());
-        CrmLead localContact = crmLeadService.getLead(crmLead.getShortname(), crmLead.getNetwork().getShortcut());
+        CrmTask localTask = crmLeadService.getTaskAssociatedWithLead(crmTask1.getId(), corOrganization.getShortcut(), corChannel.getShortcut());
+        CrmLead localContact = crmLeadService.getLead(crmLead.getShortname(), corOrganization.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(localTask);
@@ -311,11 +318,11 @@ public class CrmLeadServiceTest {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
         crmLead = crmLeadRepository.saveAndFlush(crmLead);
 
         //then
-        crmLeadService.deleteLead(crmLead.getShortname(), crmLead.getNetwork().getShortcut());
+        crmLeadService.deleteLead(crmLead.getShortname(), corOrganization.getShortcut(), corChannel.getShortcut());
         CrmLead localContact = crmLeadRepository.findOne(crmLead.getId());
 
         //assert
@@ -329,11 +336,11 @@ public class CrmLeadServiceTest {
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
         crmLead.setShortname(TEST_SHORTNAME);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
         CrmLead crmLead1 = factory.manufacturePojo(CrmLead.class);
         crmLead1.setId(null);
         crmLead1.setShortname(TEST_SHORTNAME);
-        crmLead1.setNetwork(corNetwork);
+        crmLead1.setChannel(corChannel);
 
         crmLead = crmLeadService.saveLead(crmLead);
         crmLead1 = crmLeadService.saveLead(crmLead1);
@@ -344,19 +351,23 @@ public class CrmLeadServiceTest {
     @Test
     public void shouldSaveTwoOpportunityWithSameShortNameInDifferentNetwork() {
         //given
-        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
-        corNetworkSecond.setId(null);
-        corNetworkSecond = corNetworkRepository.save(corNetworkSecond);
+        CorOrganization corOrganizationkSecond = factory.manufacturePojo(CorOrganization.class);
+        corOrganizationkSecond.setId(null);
+        corOrganizationkSecond = corOrganizationRepository.saveAndFlush(corOrganizationkSecond);
+        CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);
+        corChannelSecond.setId(null);
+        corChannelSecond.setOrganization(corOrganizationkSecond);
+        corChannelSecond = corChannelRepository.save(corChannelSecond);
 
         ///when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
         crmLead.setId(null);
         crmLead.setShortname(TEST_SHORTNAME);
-        crmLead.setNetwork(corNetwork);
+        crmLead.setChannel(corChannel);
         CrmLead crmLead1 = factory.manufacturePojo(CrmLead.class);
         crmLead1.setId(null);
         crmLead1.setShortname(TEST_SHORTNAME);
-        crmLead1.setNetwork(corNetworkSecond);
+        crmLead1.setChannel(corChannelSecond);
 
         //then
         crmLead = crmLeadService.saveLead(crmLead);

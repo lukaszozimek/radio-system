@@ -4,7 +4,7 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorCurrencyDTO;
 import io.protone.core.domain.CorCurrency;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.mapper.CorCurrencyMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class CorCurrencyMapperTest {
 
     private List<CorCurrency> corCurrencies = new ArrayList<>();
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
 
 
     @Before
@@ -50,19 +50,19 @@ public class CorCurrencyMapperTest {
         corCurrencies.add(corCurrency);
         corCurrencyDTO = factory.manufacturePojo(CorCurrencyDTO.class);
         corCurrencyDTOS.add(corCurrencyDTO);
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corOrganization = factory.manufacturePojo(CorOrganization.class);
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CorCurrency entity = corCurrencyMapper.DTO2DB(corCurrencyDTO, corNetwork);
+        CorCurrency entity = corCurrencyMapper.DTO2DB(corCurrencyDTO, corOrganization);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
         assertNotNull(entity.getSymbol());
         assertNotNull(entity.getDelimiter());
         assertNotNull(entity.getShortName());
-        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getOrganization());
     }
 
     @Test
@@ -94,7 +94,7 @@ public class CorCurrencyMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorCurrency> entities = corCurrencyMapper.DTOs2DBs(corCurrencyDTOS, corNetwork);
+        List<CorCurrency> entities = corCurrencyMapper.DTOs2DBs(corCurrencyDTOS, corOrganization);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -104,7 +104,7 @@ public class CorCurrencyMapperTest {
             assertNotNull(entity.getSymbol());
             assertNotNull(entity.getDelimiter());
             assertNotNull(entity.getShortName());
-            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getOrganization());
 
         });
     }

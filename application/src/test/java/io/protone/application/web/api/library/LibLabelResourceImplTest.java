@@ -2,15 +2,15 @@ package io.protone.application.web.api.library;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
-import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.library.impl.LibLabelResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorImageItem;
-import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorOrganization;
 import io.protone.core.repository.CorImageItemRepository;
 import io.protone.core.s3.S3Client;
+import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorImageItemService;
-import io.protone.core.service.CorNetworkService;
 import io.protone.library.api.dto.LibLabelDTO;
 import io.protone.library.domain.LibLabel;
 import io.protone.library.mapper.LibLabelMapper;
@@ -35,11 +35,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static io.protone.application.util.TestConstans.*;
 import static io.protone.core.constans.MinioFoldersConstants.MEDIA_ITEM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -70,7 +70,7 @@ public class LibLabelResourceImplTest {
     private S3Client s3Client;
 
     @Autowired
-    private CorNetworkService corNetworkService;
+    private CorChannelService corChannelService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -94,7 +94,9 @@ public class LibLabelResourceImplTest {
 
     private LibLabel libLibrary;
 
-    private CorNetwork corNetwork;
+    private CorOrganization corOrganization;
+
+    private CorChannel corChannel;
 
     private CorImageItem corImageItem;
 
@@ -115,16 +117,19 @@ public class LibLabelResourceImplTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         LibLabelResourceImpl libLibraryResource = new LibLabelResourceImpl();
-        corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test").network(corNetwork);
+        corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test");
         corImageItemRepository.saveAndFlush(corImageItem);
-        when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(corImageItem);
         ReflectionTestUtils.setField(libLibraryResource, "libLabelService", libLabelService);
         ReflectionTestUtils.setField(libLibraryResource, "libLabelMapper", libLabelMapper);
-        ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(libLibraryResource, "corChannelService", corChannelService);
 
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        when(s3Client.makeBucket(anyString(), anyString())).thenReturn(corNetwork.getShortcut() + MEDIA_ITEM + "testBucket");
+        corOrganization = new CorOrganization().shortcut(TEST_ORGANIZATION_SHORTCUT);
+        corOrganization.setId(TEST_ORGANIZATION_ID);
+        corChannel = new CorChannel().shortcut(TEST_CHANNEL_SHORTCUT);
+        corChannel.setId(TEST_CHANNEL_ID);
+
+        when(s3Client.makeBucket(anyString(), anyString())).thenReturn(corChannel.getShortcut() + MEDIA_ITEM + "testBucket");
         this.restLibLabelMockMvc = MockMvcBuilders.standaloneSetup(libLibraryResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
                 .setControllerAdvice(exceptionTranslator)
@@ -133,7 +138,7 @@ public class LibLabelResourceImplTest {
 
     @Before
     public void initTest() {
-        libLibrary = createEntity(em).network(corNetwork);
+        libLibrary = createEntity(em).channel(corChannel);
     }
 
     @Test
@@ -145,7 +150,7 @@ public class LibLabelResourceImplTest {
         LibLabelDTO libLibraryDTO = libLabelMapper.DB2DTO(libLibrary);
 
 
-        restLibLabelMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/library/label", corNetwork.getShortcut())
+        restLibLabelMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)));
 
@@ -166,7 +171,7 @@ public class LibLabelResourceImplTest {
         LibLabel existingLibLabel = new LibLabel();
         existingLibLabel.setId(1L);
         LibLabelDTO existingLibLabelDTO = libLabelMapper.DB2DTO(existingLibLabel);
-        restLibLabelMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/library/label", corNetwork.getShortcut())
+        restLibLabelMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingLibLabelDTO)))
                 .andExpect(status().isBadRequest());
@@ -188,7 +193,7 @@ public class LibLabelResourceImplTest {
         // Create the LibLabel, which fails.
         LibLabelDTO libLibraryDTO = libLabelMapper.DB2DTO(libLibrary);
 
-        restLibLabelMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/library/label", corNetwork.getShortcut())
+        restLibLabelMockMvc.perform(post("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isBadRequest());
@@ -203,11 +208,11 @@ public class LibLabelResourceImplTest {
     @Transactional
     public void getAllLibLibraries() throws Exception {
         // Initialize the database
-        when(corImageItemService.saveImageItem(any())).thenReturn(null);
-        libLabelRepository.saveAndFlush(libLibrary.network(corNetwork));
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(null);
+        libLabelRepository.saveAndFlush(libLibrary.channel(corChannel));
 
         // Get all the libLibraryList
-        restLibLabelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/label?sort=id,desc", corNetwork.getShortcut()))
+        restLibLabelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label?sort=id,desc", corOrganization.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(libLibrary.getId().intValue())))
@@ -219,11 +224,11 @@ public class LibLabelResourceImplTest {
     @Transactional
     public void getLibLabel() throws Exception {
         // Initialize the database
-        when(corImageItemService.saveImageItem(any())).thenReturn(null);
-        libLabelRepository.saveAndFlush(libLibrary.network(corNetwork));
+        when(corImageItemService.saveImageItem(any(), anyObject())).thenReturn(null);
+        libLabelRepository.saveAndFlush(libLibrary.channel(corChannel));
 
         // Get the libMediaLibrary
-        restLibLabelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/label/{id}", corNetwork.getShortcut(), libLibrary.getId()))
+        restLibLabelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), libLibrary.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(libLibrary.getId().intValue()))
@@ -236,7 +241,7 @@ public class LibLabelResourceImplTest {
     @Transactional
     public void getNonExistingLibLabel() throws Exception {
         // Get the libMediaLibrary
-        restLibLabelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/library/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restLibLabelMockMvc.perform(get("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -244,7 +249,7 @@ public class LibLabelResourceImplTest {
     @Transactional
     public void updateLibLabel() throws Exception {
         // Initialize the database
-        libLabelRepository.saveAndFlush(libLibrary.network(corNetwork));
+        libLabelRepository.saveAndFlush(libLibrary.channel(corChannel));
         int databaseSizeBeforeUpdate = libLabelRepository.findAll().size();
 
         // Update the libMediaLibrary
@@ -254,7 +259,7 @@ public class LibLabelResourceImplTest {
                 .description(UPDATED_DESCRIPTION);
         LibLabelDTO libLibraryDTO = libLabelMapper.DB2DTO((updatedLibLabel));
 
-        restLibLabelMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/library/label", corNetwork.getShortcut())
+        restLibLabelMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isOk());
@@ -277,7 +282,7 @@ public class LibLabelResourceImplTest {
         LibLabelDTO libLibraryDTO = libLabelMapper.DB2DTO(libLibrary);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restLibLabelMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/library/label", corNetwork.getShortcut())
+        restLibLabelMockMvc.perform(put("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label", corOrganization.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
                 .andExpect(status().isCreated());
@@ -291,11 +296,11 @@ public class LibLabelResourceImplTest {
     @Transactional
     public void deleteLibLabel() throws Exception {
         // Initialize the database
-        libLabelRepository.saveAndFlush(libLibrary.network(corNetwork));
+        libLabelRepository.saveAndFlush(libLibrary.channel(corChannel));
         int databaseSizeBeforeDelete = libLabelRepository.findAll().size();
 
         // Get the libMediaLibrary
-        restLibLabelMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/library/label/{id}", corNetwork.getShortcut(), libLibrary.getId())
+        restLibLabelMockMvc.perform(delete("/api/v1/organization/{organizationShortcut}/channel/{channelShortcut}/library/label/{id}", corOrganization.getShortcut(), corChannel.getShortcut(), libLibrary.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

@@ -5,7 +5,6 @@ import io.protone.core.api.dto.CorOrganizationDTO;
 import io.protone.core.api.dto.CorUserDTO;
 import io.protone.core.domain.*;
 import io.protone.core.mapper.CorChannelMapper;
-import io.protone.core.mapper.CorNetworkMapper;
 import io.protone.core.mapper.CorOrganizationMapper;
 import io.protone.core.repository.CorAuthorityRepository;
 import io.protone.core.repository.CorChannelRepository;
@@ -62,7 +61,7 @@ public class CorUserService {
 
 
     @Autowired
-    private CorOrganizationMapper corNetworkMapper;
+    private CorOrganizationMapper corOrganizationMapper;
 
     @Autowired
     private CorChannelMapper corChannelMapper;
@@ -119,7 +118,7 @@ public class CorUserService {
                               String langKey, CorOrganizationDTO organizationDTO) {
 
         CorUser newUser = new CorUser();
-        CorOrganization organization = corOrganizationService.save(corNetworkMapper.DTO2DB(organizationDTO));
+        CorOrganization organization = corOrganizationService.save(corOrganizationMapper.DTO2DB(organizationDTO));
         CorAuthority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<CorAuthority> authorities = new HashSet<>();
 
@@ -159,6 +158,7 @@ public class CorUserService {
         user.setLastname(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setCorImageItem(corImageItem);
+        user.organization(corOrganizationMapper.DTO2DB(userDTO.getOrganizationDTO()));
         user.addNetwork(userCreator.getNetworks().stream().findFirst().get());
         if (userDTO.getChannel() != null && !userDTO.getChannel().isEmpty()) {
             userDTO.getChannel().stream().forEach(coreChannelPT -> {
