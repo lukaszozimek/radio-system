@@ -1,0 +1,33 @@
+{
+    "protoneApp": {
+        "crmLead" : {
+            "home": {
+                "title": "Crm Leads",
+                "createLabel": "Create a new Crm Lead",
+                "createOrEditLabel": "Create or edit a Crm Lead",
+                "search": "Search for Crm Lead"
+            },
+            "created": "A new Crm Lead is created with identifier {{ param }}",
+            "updated": "A Crm Lead is updated with identifier {{ param }}",
+            "deleted": "A Crm Lead is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Crm Lead {{ id }}?"
+            },
+            "detail": {
+                "title": "Crm Lead"
+            },
+            "name": "Name",
+            "shortname": "Shortname",
+            "description": "Description",
+            "person": "Person",
+            "addres": "Addres",
+            "leadStatus": "Lead Status",
+            "leadSource": "Lead Source",
+            "keeper": "Keeper",
+            "industry": "Industry",
+            "area": "Area",
+            "network": "Network",
+            "tasks": "Tasks"
+        }
+    }
+}

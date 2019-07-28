@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "corSize" : {
+            "home": {
+                "title": "Cor Sizes",
+                "createLabel": "Dodaj Cor Size",
+                "createOrEditLabel": "Dodaj lub edytuj: Cor Size",
+                "search": "Search for Cor Size"
+            },
+            "created": "A new Cor Size is created with identifier {{ param }}",
+            "updated": "A Cor Size is updated with identifier {{ param }}",
+            "deleted": "A Cor Size is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Cor Size {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Size"
+            },
+            "name": "Name",
+            "description": "Description",
+            "network": "Network"
+        }
+    }
+}

@@ -1,0 +1,5 @@
+id;prefix;shortcut;name;counter;description;network_id;created_by_id;last_modified_by_id
+1;m;mus;Muzyka;1;Muzyka;1;1;1
+2;c;com;Reklama;1;Biblioteka Reklam;1;1;1
+3;o;opr;Oprawa;1;Oprawa Stacji;1;1;1
+4;h;mpl;MediaPlany;1;Biblioteka Media Planów;1;1;1

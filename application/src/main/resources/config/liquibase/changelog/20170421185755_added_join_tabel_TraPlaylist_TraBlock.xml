@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity LibMediaItem.
+    -->
+    <changeSet id="20170421185755-1" author="jhipster">
+        <createTable tableName="tra_playlist_tra_block">
+
+                <column name="tra_playlist_id" type="bigint">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="tra_block_id" type="bigint">
+                    <constraints nullable="false"/>
+                </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        <addPrimaryKey columnNames="tra_playlist_id, tra_block_id" tableName="tra_playlist_tra_block"/>
+        <addForeignKeyConstraint baseColumnNames="tra_playlist_id   "
+                                 baseTableName="tra_playlist_tra_block"
+                                 constraintName="fk_tra_playlist_tra_block_tra_playlist_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_playlist"/>
+
+
+        <addForeignKeyConstraint baseColumnNames="tra_block_id"
+                                 baseTableName="tra_playlist_tra_block"
+                                 constraintName="fk_tra_playlist_tra_block_tra_block_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_block"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entTraMediaPlanPlaylistDatelist.
+    -->
+    <changeSet id="20170609195122-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="media_plan_id"
+                                 baseTableName="tra_media_plan_playlist_date"
+                                 constraintName="fk_tra_media_plan_playlist_date_media_plan_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_media_plan"/>
+
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="tra_media_plan_playlist_date"
+                                 constraintName="fk_tra_media_plan_playlist_date_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="tra_media_plan_playlist_date"
+                                 constraintName="fk_tra_media_plan_playlist_date_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="tra_media_plan_playlist_date"
+                                 constraintName="fk_tra_media_plan_playlist_date_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="tra_media_plan_playlist_date"
+                                 constraintName="fk_tra_media_plan_playlist_date_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+    </changeSet>
+</databaseChangeLog>

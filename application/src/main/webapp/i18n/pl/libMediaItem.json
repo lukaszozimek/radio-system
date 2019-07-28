@@ -1,0 +1,33 @@
+{
+    "protoneApp": {
+        "libMediaItem" : {
+            "home": {
+                "title": "Lib Media Items",
+                "createLabel": "Dodaj Lib Media Item",
+                "createOrEditLabel": "Dodaj lub edytuj: Lib Media Item",
+                "search": "Search for Lib Media Item"
+            },
+            "created": "A new Lib Media Item is created with identifier {{ param }}",
+            "updated": "A Lib Media Item is updated with identifier {{ param }}",
+            "deleted": "A Lib Media Item is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Lib Media Item {{ id }}?"
+            },
+            "detail": {
+                "title": "Lib Media Item"
+            },
+            "idx": "Idx",
+            "name": "Name",
+            "itemType": "Item Type",
+            "length": "Length",
+            "state": "State",
+            "command": "Command",
+            "description": "Description",
+            "library": "Library",
+            "label": "Label",
+            "artist": "Artist",
+            "album": "Album",
+            "track": "Track"
+        }
+    }
+}

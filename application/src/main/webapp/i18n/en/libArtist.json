@@ -1,0 +1,25 @@
+{
+    "protoneApp": {
+        "libArtist" : {
+            "home": {
+                "title": "Lib Artists",
+                "createLabel": "Create a new Lib Artist",
+                "createOrEditLabel": "Create or edit a Lib Artist",
+                "search": "Search for Lib Artist"
+            },
+            "created": "A new Lib Artist is created with identifier {{ param }}",
+            "updated": "A Lib Artist is updated with identifier {{ param }}",
+            "deleted": "A Lib Artist is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Lib Artist {{ id }}?"
+            },
+            "detail": {
+                "title": "Lib Artist"
+            },
+            "name": "Name",
+            "type": "Type",
+            "description": "Description",
+            "network": "Network"
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "protoneApp": {
+        "LibAlbumTypeEnum" : {
+            "null": "",
+            "AT_ALBUM": "AT_ALBUM",
+            "AT_SINGLE": "AT_SINGLE",
+            "AT_COMPILATION": "AT_COMPILATION",
+            "AT_OTHER": "AT_OTHER"
+        }
+    }
+}

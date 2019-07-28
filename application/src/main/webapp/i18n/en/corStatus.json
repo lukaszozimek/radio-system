@@ -1,0 +1,23 @@
+{
+    "protoneApp": {
+        "corStatus" : {
+            "home": {
+                "title": "Cor Statuses",
+                "createLabel": "Create a new Cor Status",
+                "createOrEditLabel": "Create or edit a Cor Status",
+                "search": "Search for Cor Status"
+            },
+            "created": "A new Cor Status is created with identifier {{ param }}",
+            "updated": "A Cor Status is updated with identifier {{ param }}",
+            "deleted": "A Cor Status is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Cor Status {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Status"
+            },
+            "name": "Name",
+            "description": "Description"
+        }
+    }
+}

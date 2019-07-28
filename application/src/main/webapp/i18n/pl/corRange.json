@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "corRange" : {
+            "home": {
+                "title": "Cor Ranges",
+                "createLabel": "Dodaj Cor Range",
+                "createOrEditLabel": "Dodaj lub edytuj: Cor Range",
+                "search": "Search for Cor Range"
+            },
+            "created": "A new Cor Range is created with identifier {{ param }}",
+            "updated": "A Cor Range is updated with identifier {{ param }}",
+            "deleted": "A Cor Range is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Cor Range {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Range"
+            },
+            "name": "Name",
+            "description": "Description",
+            "network": "Network"
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "protoneApp": {
+        "LibCounterTypeEnum" : {
+            "null": "",
+            "CT_COUNTER": "CT_COUNTER",
+            "CT_PREFIX_COUNTER": "CT_PREFIX_COUNTER",
+            "CT_SHORTCUT_COUNTER": "CT_SHORTCUT_COUNTER"
+        }
+    }
+}

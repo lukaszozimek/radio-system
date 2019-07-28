@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity LibMediaItem.
+    -->
+    <changeSet id="20170421185755-2" author="jhipster">
+
+
+        <addUniqueConstraint columnNames="idx,library_id, network_id"
+                             constraintName="composite_key_constrain_lib_media_item_idx_network_id"
+                             tableName="lib_media_item"
+        />
+
+
+    </changeSet>
+</databaseChangeLog>

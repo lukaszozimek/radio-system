@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "traIndustry" : {
+            "home": {
+                "title": "Tra Industries",
+                "createLabel": "Dodaj Tra Industry",
+                "createOrEditLabel": "Dodaj lub edytuj: Tra Industry",
+                "search": "Search for Tra Industry"
+            },
+            "created": "A new Tra Industry is created with identifier {{ param }}",
+            "updated": "A Tra Industry is updated with identifier {{ param }}",
+            "deleted": "A Tra Industry is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Tra Industry {{ id }}?"
+            },
+            "detail": {
+                "title": "Tra Industry"
+            },
+            "name": "Name",
+            "description": "Description",
+            "network": "Network"
+        }
+    }
+}

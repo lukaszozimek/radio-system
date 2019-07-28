@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity LibMediaItem.
+    -->
+    <changeSet id="20170421185755-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="library_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_media_item_library_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_media_library"/>
+
+        <addForeignKeyConstraint baseColumnNames="label_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_media_item_label_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_label"/>
+
+        <addForeignKeyConstraint baseColumnNames="artist_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_media_item_artist_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_artist"/>
+
+        <addForeignKeyConstraint baseColumnNames="album_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_media_item_album_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_album"/>
+
+        <addForeignKeyConstraint baseColumnNames="track_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_media_item_track_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_track"/>
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_media_item_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_media_item_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_media_item_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_media_item_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,23 @@
+{
+    "protoneApp": {
+        "crmLeadStatus" : {
+            "home": {
+                "title": "Crm Lead Statuses",
+                "createLabel": "Dodaj Crm Lead Status",
+                "createOrEditLabel": "Dodaj lub edytuj: Crm Lead Status",
+                "search": "Search for Crm Lead Status"
+            },
+            "created": "A new Crm Lead Status is created with identifier {{ param }}",
+            "updated": "A Crm Lead Status is updated with identifier {{ param }}",
+            "deleted": "A Crm Lead Status is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Crm Lead Status {{ id }}?"
+            },
+            "detail": {
+                "title": "Crm Lead Status"
+            },
+            "name": "Name",
+            "network": "Network"
+        }
+    }
+}

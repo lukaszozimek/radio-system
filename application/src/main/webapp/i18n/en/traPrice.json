@@ -1,0 +1,29 @@
+{
+    "protoneApp": {
+        "traPrice" : {
+            "home": {
+                "title": "Tra Prices",
+                "createLabel": "Create a new Tra Price",
+                "createOrEditLabel": "Create or edit a Tra Price",
+                "search": "Search for Tra Price"
+            },
+            "created": "A new Tra Price is created with identifier {{ param }}",
+            "updated": "A Tra Price is updated with identifier {{ param }}",
+            "deleted": "A Tra Price is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Tra Price {{ id }}?"
+            },
+            "detail": {
+                "title": "Tra Price"
+            },
+            "name": "Name",
+            "validFrom": "Valid From",
+            "validTo": "Valid To",
+            "price": "Price",
+            "baseLength": "Base Length",
+            "priceAlternative": "Price Alternative",
+            "currency": "Currency",
+            "network": "Network"
+        }
+    }
+}

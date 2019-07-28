@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity CrmTask.
+    -->
+    <changeSet id="20170421185755-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="crm_task"
+                                 constraintName="fk_crm_task_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="crm_task"
+                                 constraintName="fk_crm_task_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="assigned_to_id"
+                                 baseTableName="crm_task"
+                                 constraintName="fk_crm_task_assigned_to_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="status_id"
+                                 baseTableName="crm_task"
+                                 constraintName="fk_crm_task_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_dictionary"/>
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="crm_task"
+                                 constraintName="fk_crm_task_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="opportunity_id"
+                                 baseTableName="crm_task"
+                                 constraintName="fk_crm_task_opportunity_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="crm_opportunity"/>
+
+        <addForeignKeyConstraint baseColumnNames="contact_id"
+                                 baseTableName="crm_task"
+                                 constraintName="fk_crm_task_contact_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="crm_contact"/>
+
+        <addForeignKeyConstraint baseColumnNames="account_id"
+                                 baseTableName="crm_task"
+                                 constraintName="fk_crm_task_account_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="crm_account"/>
+
+        <addForeignKeyConstraint baseColumnNames="lead_id"
+                                 baseTableName="crm_task"
+                                 constraintName="fk_crm_task_lead_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="crm_lead"/>
+
+        <addForeignKeyConstraint baseColumnNames="tasks_id"
+                                 baseTableName="crm_task"
+                                 constraintName="fk_crm_task_tasks_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="crm_task"/>
+
+    </changeSet>
+</databaseChangeLog>

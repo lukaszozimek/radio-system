@@ -1,0 +1,28 @@
+{
+    "protoneApp": {
+        "traInvoice" : {
+            "home": {
+                "title": "Tra Invoices",
+                "createLabel": "Dodaj Tra Invoice",
+                "createOrEditLabel": "Dodaj lub edytuj: Tra Invoice",
+                "search": "Search for Tra Invoice"
+            },
+            "created": "A new Tra Invoice is created with identifier {{ param }}",
+            "updated": "A Tra Invoice is updated with identifier {{ param }}",
+            "deleted": "A Tra Invoice is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Tra Invoice {{ id }}?"
+            },
+            "detail": {
+                "title": "Tra Invoice"
+            },
+            "paid": "Paid",
+            "price": "Price",
+            "paymentDay": "Payment Day",
+            "customer": "Customer",
+            "network": "Network",
+            "status": "Status",
+            "orders": "Orders"
+        }
+    }
+}

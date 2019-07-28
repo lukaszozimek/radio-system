@@ -1,0 +1,15 @@
+{
+    "protoneApp": {
+        "SchBlockTypeEnum" : {
+            "null": "",
+            "BT_DAY": "BT_DAY",
+            "BT_BAND": "BT_BAND",
+            "BT_HOUR": "BT_HOUR",
+            "BT_NEWS": "BT_NEWS",
+            "BT_COMMERCIAL": "BT_COMMERCIAL",
+            "BT_PROGRAM": "BT_PROGRAM",
+            "BT_LIVE": "BT_LIVE",
+            "BT_OTHER": "BT_OTHER"
+        }
+    }
+}

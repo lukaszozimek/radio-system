@@ -1,0 +1,776 @@
+~00:00:00                  LMS PK                                      00:00   X
+~00:00:00                  LMS       Pn 28 sierpnia00:00:00            00:00   X
+>00:00:00     POZKLA_V02   AUD Jingiel 2           Pozycje Klasyczne   00:0300 X
+>00:00:03     M-3907           Animal instinct     The Cranberries     03:2712DX
+>00:03:30     JINROCK_04   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>00:03:40     RE_0013          Twarz¹ w twarz      Proletaryat         02:5218CX
+>00:06:32     POZKLA_V03   AUD Jingiel 3           Pozycje Klasyczne   00:0500 X
+>00:06:37     9940T16          Can't get you out ofMakowiecki Band     07:2825LX
+>00:14:05     JINROCK_06   AUD Najwiêcej Rocka w MiJINGLE NAJWIÊCEJ ROC00:05   X
+>00:14:10     RCB0332          Celebrity skin      Hole                02:3800CX
+>00:16:48     POZKLA_V04   AUD Jingiel 4           Pozycje Klasyczne   00:0400 X
+>00:16:52     RCA0176          Girl, you'll be a woUrge Overkill       02:5400FX
+>00:19:46     JINVO_02     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>00:19:49     RCA0208          Nie sta³o siê nic   Robert Gawliñski    03:0316CX
+>00:22:52     POZKLA_V01   AUD Jingiel 1           Pozycje Klasyczne   00:0600 X
+>00:22:58     RCB0447          Last kiss           Pearl Jam           03:1000DX
+>00:26:08     JINROCK_12   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>00:26:18     0B36T12          My Sharona          The Knack           03:5719CX
+>00:30:15     POZKLA_V05   AUD Jingiel 5           Pozycje Klasyczne   00:0400 X
+>00:30:19     M-2185           Hail hail Rock 'N' RGarland Jeffreys    03:4600FX
+>00:34:05     JINVO_14     AUD Radio Centrum       SWEEP BEZ LINERA    00:01   X
+>00:34:06     0148P01          Tak kochaæ tylko CieKostek Yoriadis     04:0511FX
+>00:38:11     POZKLA_V06   AUD Jingiel 6           Pozycje Klasyczne   00:0300 X
+>00:38:14     2769Z01          Viva                Tin Star            03:0725CX
+>00:41:21     JINVO_04     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>00:41:24     DJA4-02          Breakfast at TiffanyDeep Blue Something 04:0608DX
+>00:45:30     POZKLA_V02   AUD Jingiel 2           Pozycje Klasyczne   00:0300 X
+>00:45:33     RE_0022          Paragwaj            Lech Janerka        04:4008CX
+>00:50:13     JINVO_05     AUD Akademickie Radio CeSWEEP BEZ LINERA    00:03   X
+>00:50:16     RCC0603          Ona jest ze snu     Artur Gadowski      03:4635FX
+>00:54:02     JINROCK_05   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>00:54:12     M-0998           Inbetween Days      The Cure            02:5238DX
+~01:00:00                  LMS Noc                                     00:00   X
+~01:00:00                  LMS       Pn 28 sierpnia01:00:00            00:00   X
+>01:00:00     JINVO_01     AUD Radio Centrum       SWEEP BEZ LINERA    00:02   X
+>01:00:02     RCC0964          Jedna taka szansa naStrachy Na Lachy    03:3921CX
+>01:03:41     M-4143           Call the police     LCD Soundsystem     06:4012DX
+>01:10:21     JINVO_06     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>01:10:24     NE_0296          Go on               Billy the Kill      03:1307DX
+>01:13:37     JINVO_07     AUD 98,2 FM. Radio CentrSWEEP BEZ LINERA    00:03   X
+>01:13:40     NE_0102          Czarne s³oñca [MTV UKult                04:1846LX
+>01:17:58     RCA0039          Enjoy the silence   Depeche Mode        04:0226FX
+>01:22:00     M-4180           Go to war           Nothing More        03:5900DX
+>01:25:59     JINVO_08     AUD 98,2 FM. Radio CentrSWEEP BEZ LINERA    00:03   X
+>01:26:02     NE_0313          Don't stop          Electric Touch      02:5511DX
+>01:28:57     M-4116           The violence        Rise Against        03:4411DX
+>01:32:41     JINVO_15     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>01:32:44     09B0B03          Only happy when it rGarbage             03:4100FX
+>01:36:25     JINROCK_07   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>01:36:35     M-4185           Talking to myself   Linkin Park         03:4623DX
+>01:40:21     JINROCK_08   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>01:40:31     RCA0075          Where did all the loKasabian            04:1414FX
+>01:44:45     JINROCK_09   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:04   X
+>01:44:49     M-4175           Don't stop          Nothing More        04:0721DX
+>01:48:56     JINROCK_10   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:06   X
+>01:49:02     NE_0314          Simple song         Shins               03:5509DX
+>01:52:57     M-3739           State of my head    Shinedown           03:2309CX
+>01:56:20     JINVO_03     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>01:56:23     RCB0460          Imitation of life   R.E.M.              03:5114DX
+>01:60:14     JINROCK_13   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>01:60:24     M-4158           Wstrzymaj konia     Z³e Psy             03:5322CX
+>01:64:17     JINROCK_11   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:06   X
+>01:64:23     NE_0331          Baby come home      Bush                03:3616CX
+~02:00:00                  LMS Noc                                     00:00   X
+~02:00:00                  LMS       Pn 28 sierpnia02:00:00            00:00   X
+>02:00:00     JINROCK_02   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>02:00:10     RCAB125          America (bez outro) Razorlight          03:3522/X
+>02:03:45     M-4156           The Man [radio edit]The Killers         03:3912CX
+>02:07:24     JINVO_09     AUD Akademickie Radio CeSWEEP BEZ LINERA    00:03   X
+>02:07:27     NE_0327          Took a hit          Racoon              03:4222CX
+>02:11:09     JINVO_16     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:04   X
+>02:11:13     M-3894           Dark necessities [raRed Hot Chili Pepper04:0021DX
+>02:15:13     RCA0030          In my place         Coldplay            03:4333DX
+>02:18:56     JINROCK_01   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>02:19:06     M-4168           Alone               I Prevail           03:3316DX
+>02:22:39     JINVO_10     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>02:22:42     0189Y07          Second nature       Electronic          04:4918FX
+>02:27:31     M-4164           Alone [live]        Ray Wilson          06:4713LX
+>02:34:18     JINROCK_03   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>02:34:28     RCA0083          Behind Blue Eyes    Limp Bizkit         04:2515CX
+>02:38:53     JINVO_12     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>02:38:56     M-4167           In and out          Beth Ditto          03:377 DX
+>02:42:33     JINROCK_04   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>02:42:43     NE_0167          Monster you made    Pop Evil            03:3910DX
+>02:46:22     JINVO_13     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>02:46:25     M-4160           Creature comfort    Arcade Fire         04:3346CX
+>02:50:58     JINVO_11     AUD 98,2 FM. Tu Radio CeSWEEP BEZ LINERA    00:03   X
+>02:51:01     NE_0326          Undisclosed Rolling Electrosound        04:0917CX
+>02:55:10     M-3698           Uncool as me        The Bloodhound Gang 03:3807CX
+>02:58:48     JINROCK_06   AUD Najwiêcej Rocka w MiJINGLE NAJWIÊCEJ ROC00:05   X
+>02:58:53     RCB0358          Dziewczyny          Kazik Na ¯ywo       03:1226CX
+>02:62:05     JINROCK_12   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>02:62:15     M-4123           I need you          Acute Mind          03:3910DX
+>02:65:54     JINVO_02     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>02:65:57     NE_0322          Little talks        Of Monsters And Men 04:1919DX
+~03:00:00                  LMS Noc                                     00:00   X
+~03:00:00                  LMS       Pn 28 sierpnia03:00:00            00:00   X
+>03:00:00     JINVO_14     AUD Radio Centrum       SWEEP BEZ LINERA    00:01   X
+>03:00:01     NE_0008          Sing                My Chemical Romance 03:583 DX
+>03:03:59     M-4157           Walking the wire    Imagine Dragons     03:4704DX
+>03:07:46     JINVO_04     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>03:07:49     M-3130           Whore               In This Moment      04:0010DX
+>03:11:49     JINROCK_05   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>03:11:59     M-3972           Ch³opcy             Lipali              03:2362DX
+>03:15:22     0A91B19          Born to be wild     INXS                03:4613CX
+>03:19:08     JINROCK_07   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>03:19:18     M-4183           Freeze me           Death From Above    03:0829CX
+>03:22:26     JINVO_05     AUD Akademickie Radio CeSWEEP BEZ LINERA    00:03   X
+>03:22:29     NE_0323          AKA... What a life  Noel Gallagher's Hig04:2121DX
+>03:26:50     M-4128           Revolution          Rat Boy             03:2600DX
+>03:30:16     JINROCK_08   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>03:30:26     9883Y09          Can't Stand Losing YThe Police          02:4906FX
+>03:33:15     JINVO_01     AUD Radio Centrum       SWEEP BEZ LINERA    00:02   X
+>03:33:17     M-4165           Supercharge         Enter Shikari feat. 03:3117CX
+>03:36:48     JINVO_06     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>03:36:51     NE_0275          Lonely boy          The Black Keys      03:1138CX
+>03:40:02     JINVO_07     AUD 98,2 FM. Radio CentrSWEEP BEZ LINERA    00:03   X
+>03:40:05     M-4163           I just wanna live [GYankee [Chonabibe]  02:3309DX
+>03:42:38     JINROCK_09   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:04   X
+>03:42:42     NE_0263          These days          Foo Fighters        04:5708DX
+>03:47:39     M-3758           Throne              Bring Me The Horizon05:5025CX
+>03:53:29     JINVO_08     AUD 98,2 FM. Radio CentrSWEEP BEZ LINERA    00:03   X
+>03:53:32     1439P03          Son of the blue sky Wilki               04:0311DX
+>03:57:35     JINROCK_10   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:06   X
+>03:57:41     M-4122           Sick of me          Beartooth           03:1317CX
+>03:60:54     JINVO_15     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>03:60:57     M-3151           Another toe in the oThe Pixies          03:4000FX
+~04:00:00                  LMS Noc                                     00:00   X
+~04:00:00                  LMS       Pn 28 sierpnia04:00:00            00:00   X
+>04:00:00     JINROCK_13   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>04:00:10     RCC1066          Teenage dirtbag     Wheatus             03:5015DX
+>04:04:00     M-4130           Broken love         Imminence           03:5114DX
+>04:07:51     JINVO_03     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>04:07:54     M-3150           Coming home         Kaiser Chiefs       04:1510DX
+>04:12:09     JINROCK_11   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:06   X
+>04:12:15     M-3767           Woman woman         AWOLnation          03:368 CX
+>04:15:51     M-2416           Espana forever      Maanam              04:2600tX
+>04:20:17     JINROCK_02   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>04:20:27     M-4202           Betray and degrade  Seether             04:0000CX
+>04:24:27     JINVO_09     AUD Akademickie Radio CeSWEEP BEZ LINERA    00:03   X
+>04:24:30     0164Y01          Calleth you, cometh The Ark             03:5218FX
+>04:28:22     M-4107           Can I sit next to yoSpoon               03:5304CX
+>04:32:15     JINROCK_01   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>04:32:25     RCA0095          The unforgiven      Metallica           06:0555FX
+>04:38:30     JINROCK_03   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>04:38:40     M-4177           Cali                Ride                03:2621DX
+>04:42:06     JINVO_16     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:04   X
+>04:42:10     NE_0033          Good Life           One Republic        03:57  FX
+>04:46:07     JINVO_10     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>04:46:10     M-4153           Blada               T.Love              02:5919CX
+>04:49:09     JINVO_12     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>04:49:12     NE_0337          Tongue Tied         Grouplove           03:3616DX
+>04:52:48     M-3923           Historie            Hey                 04:0616DX
+>04:56:54     JINROCK_04   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>04:57:04     RCC0615          (You gotta) Fight foBeastie Boys        03:1214DX
+>04:60:16     JINROCK_06   AUD Najwiêcej Rocka w MiJINGLE NAJWIÊCEJ ROC00:05   X
+>04:60:21     M-4137           Cheaper to drink aloBlack Stone Cherry  03:3718FX
+>04:63:58     JINVO_13     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>04:64:01     9988Y03          Everything is new   Jack Penate         03:4017CX
+~05:00:00                  LMS Noc                                     00:00   X
+~05:00:00                  LMS       Pn 28 sierpnia05:00:00            00:00   X
+>05:00:00     JINROCK_12   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>05:00:10     M-2339           We're glad that you Neo Retros          02:3513DX
+>05:02:45     M-4140           I need somebody [radGlasspop            03:3700DX
+>05:06:22     JINVO_11     AUD 98,2 FM. Tu Radio CeSWEEP BEZ LINERA    00:03   X
+>05:06:25     NE_0359          Without you         Skambomambo         02:2128CX
+>05:08:46     JINROCK_05   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>05:08:56     M-4090           85 videos           Mew                 03:4521DX
+>05:12:41     M-3589           Like a rolling stoneBob Dylan           06:0410FX
+>05:18:45     JINROCK_07   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>05:18:55     M-4186           Streambreather      Mastodon            04:3228CX
+>05:23:27     JINVO_02     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>05:23:30     M-2119           In Cythera          Killing Joke        04:2920DX
+>05:27:59     M-4124           Believe             Kaiser Franz Josef  03:0713CX
+>05:31:06     JINVO_14     AUD Radio Centrum       SWEEP BEZ LINERA    00:01   X
+>05:31:07     0211Y06          Shiny happy people  R.E.M.              03:3624FX
+>05:34:43     JINROCK_08   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>05:34:53     M-4176           Living on the 110   Prophets Of Rage    03:3832DX
+>05:38:31     JINVO_04     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>05:38:34     M-3232           Poniedzia³ek        Power Of Trinity    02:4119CX
+>05:41:15     JINROCK_09   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:04   X
+>05:41:19     M-4154           Champion            Fall Out Boy        03:0707CX
+>05:44:26     JINVO_05     AUD Akademickie Radio CeSWEEP BEZ LINERA    00:03   X
+>05:44:29     BZ0114           Everything you wanteKele                03:4315FX
+>05:48:12     M-3952           Live in the dark    Jeff Beck           03:4704CX
+>05:51:59     JINROCK_10   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:06   X
+>05:52:05     1724P12          Zostawcie Titanica  Lady Pank           04:3530FX
+>05:56:40     JINROCK_13   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>05:56:50     M-4120           Come together       Godsmack            03:3922DX
+>05:60:29     JINROCK_11   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:06   X
+>05:60:35     NE_0374          Go right ahead      The Hives           03:0713CX
+~06:00:00                  LMS Noc                                     00:00   X
+~06:00:00                  LMS       Pn 28 sierpnia06:00:00            00:00   X
+>06:00:00     JINROCK_02   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>06:00:10     M-3720           Passenger           Trapt               03:4700CX
+>06:03:57     M-4159           Holding on          The War On Drugs    04:0628FX
+>06:08:03     JINVO_01     AUD Radio Centrum       SWEEP BEZ LINERA    00:02   X
+>06:08:05     M-2714           Ksiê¿yc nad Ochot¹  Les³aw i Administrat01:5904FX
+>06:10:04     JINROCK_01   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>06:10:14     M-3957           Still alive         3 Doors Down        02:4023CX
+>06:12:54     M-3635           Rock you like a hurrScorpions           04:1032CX
+>06:17:04     JINROCK_03   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>06:17:14     M-4172           Technology          Don Broco           03:3516CX
+>06:20:49     JINVO_06     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>06:20:52     M-3381           Maratoñczyk [cenzuraMama Selita         03:5011FX
+>06:24:42     M-4106           Nimble bastard      Incubus             03:3400CX
+>06:28:16     JINROCK_04   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>06:28:26     0846P02          To dla Ciebie BracieBig Cyc             03:2516CX
+>06:31:51     JINROCK_06   AUD Najwiêcej Rocka w MiJINGLE NAJWIÊCEJ ROC00:05   X
+>06:31:56     M-4203           Catch a fire        Zach Mathieu        03:0514DX
+>06:35:01     JINROCK_12   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>06:35:11     NE_0027          Hit the road Jack   Acid Drinkers       02:2617CX
+>06:37:37     JINROCK_05   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>06:37:47     M-4162           A wall              Downtown Boys       03:5942CX
+>06:41:46     JINVO_07     AUD 98,2 FM. Radio CentrSWEEP BEZ LINERA    00:03   X
+>06:41:49     M-3835           Lubiê               Renton              03:0617CX
+>06:44:55     M-3949           Invincible          Skillet             03:4507CX
+>06:48:40     JINVO_08     AUD 98,2 FM. Radio CentrSWEEP BEZ LINERA    00:03   X
+>06:48:43     1B03Y01          You get what you givNew Radicals        04:3221FX
+>06:53:15     JINROCK_07   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>06:53:25     M-4100           Paszporty           Modern Lies         03:4813DX
+>06:57:13     JINVO_15     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>06:57:16     M-2132           Warrior             Mark Foster + Kimbra04:0530DX
+~07:00:00                  LMS G³owa do góry! 07:00                    00:00   X
+~07:00:00                  LMS       Pn 28 sierpnia07:00:00            00:00   X
+>07:00:00     JINVO_03     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>07:00:03     M-2343           Put your hands up   Matchbox Twenty     02:5008CX
+>07:02:53     M-2378           Na celowniku        Saluminesia         03:1414DX
+~07:06:07                  LMS DJ: Dzieñ dobry (na miksie)             00:00   X
+>07:06:07     M-4187           Less than           Nine Inch Nails     03:3008CX
+>07:09:37     JINROCK_08   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>07:09:47     M-0866           Rockin' in the free Neil Young          04:3814FX
+~07:14:25                  LMS DJ                                      00:00   X
+>07:14:25     M-3997           Love or hate        The Shipyard        04:1217DX
+>07:18:37     JINVO_09     AUD Akademickie Radio CeSWEEP BEZ LINERA    00:03   X
+>07:18:40     M-4190           All in one night    Stereophonics       04:3419DX
+~07:23:14                  LMS DJ: Przegl¹d prasy > reklama            00:00   X
+~07:23:14                                                              02:00   X
+~07:25:1410:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>07:25:14     M-3140           Nie mam w¹tpliwoœci Radio Bagdad        03:4622CX
+>07:29:00     JINVO_16     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:04   X
+>07:29:04     M-2120           Kid Loco            The Passenger       04:5017DX
+~07:33:5430:00             SAT Drogi i pogoda                          00:00   X
+>07:35:28     JINVO_10     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>07:35:31     RCC0776          Doctor doctor       Just Jack           03:2020CX
+~07:38:51                  LMS DJ                                      00:00   X
+>07:38:51     M-4171           Halo                L.Stadt             02:2224CX
+>07:41:13     JINROCK_09   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:04   X
+>07:41:17     M-3744           Wash it all away    Five Finger Death Pu03:4230DX
+~07:44:59                  LMS DJ: Wejœcie przed reklam¹               00:00   X
+~07:44:5940:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>07:44:59     0235R10          Bal u Senatora '93  Pid¿ama Porno       03:4714CX
+>07:48:46     JINVO_12     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>07:48:49     M-4156           The Man [radio edit]The Killers         03:3912CX
+~07:52:28                  LMS DJ                                      00:00   X
+>07:52:28     M-2882           Leader of the brokenPapa Roach          04:0216DX
+>07:56:30     JINROCK_10   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:06   X
+>07:56:36     M-4138           To nieprawda        Cztery Kilo Obywatel03:4000CX
+~07:60:16                  LMS DJ                                      00:00   X
+>07:60:16     M-2140           Gold in the fire    Monarchy            04:3230DX
+~08:00:00                  LMS G³owa do góry! 08:00                    00:00   X
+~08:00:00                  LMS       Pn 28 sierpnia08:00:00            00:00   X
+~08:00:0000:00             SAT TOH Serwis                              00:00   X
+>08:03:02     JINROCK_13   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>08:03:12     NE_0042          Anomal              Neon Trees          03:0015DX
+~08:06:12                  LMS DJ: Dzieñ dobry                         00:00   X
+~08:06:1210:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>08:06:12     M-3127           Zadziwiaj¹ce        Czaqu               04:1217DX
+>08:10:24     JINROCK_11   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:06   X
+>08:10:30     M-4200           Runaway             Avenged Sevenfold / 02:3621DX
+~08:13:06                  LMS DJ DJ                                   00:00   X
+>08:13:06     0036T18          Paranoid            Black Sabbath       02:4436CX
+>08:15:50     JINVO_13     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>08:15:53     M-4189           Permanating         Steven Wilson       03:2407CX
+~08:19:17                  LMS DJ DJ                                   00:00   X
+>08:19:17     M-3166           Hipster             Czarne Kwiaty feat. 03:3823DX
+>08:22:55     JINROCK_02   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>08:23:05     RCC1018          You're gonna go far The Offspring       02:5500CX
+~08:26:0030:00             SAT Drogi i pogoda                          00:00   X
+>08:27:34     JINVO_11     AUD 98,2 FM. Tu Radio CeSWEEP BEZ LINERA    00:03   X
+>08:27:37     RCC0824          Je¿ozwierz          Lipali              03:24  DX
+~08:31:01                  LMS DJ DJ                                   00:00   X
+>08:31:01     M-3757           Reapers             Muse                05:5030DX
+>08:36:51     JINROCK_01   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>08:37:01     RCC0749          Wicked game         H.I.M.              04:04  DX
+~08:41:05                  LMS DJ DJ                                   00:00   X
+>08:41:05     M-4175           Don't stop          Nothing More        04:0721DX
+~08:45:12     1_IMPFM      AUD Poniedzia³ek 08:45, Impreza FM          01:00    
+~08:46:1240:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>08:46:12     2670P02          Nie ogarniam [cut]  Maria Peszek        03:1300CX
+>08:49:25     JINROCK_03   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>08:49:35     M-4117           All I want          Ride                03:3429CX
+~08:53:09                  LMS DJ DJ                                   00:00   X
+>08:53:09     BZ0096           Beautiful ones      Suede               03:4918FX
+>08:56:58     JINVO_02     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>08:57:01     M-2213           Schizophrenic playboThe Cranberries     03:3614DX
+~09:00:00                  LMS Najwiêcej Rocka! 09:00                  00:00   X
+~09:00:00                  LMS       Pn 28 sierpnia09:00:00            00:00   X
+~09:00:0000:00             SAT TOH Serwis                              01:00   X
+>09:05:38     JINVO_14     AUD Radio Centrum       SWEEP BEZ LINERA    00:01   X
+>09:05:39     RCC0769          Been Caught StealingJane's addiction    03:1820DX
+>09:08:57     M-4199           Desire              Everything Everythin03:2018CX
+~09:12:17                  LMS DJ: Dzieñ dobry!                        00:00   X
+~09:12:1710:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>09:12:17     M-3013           Your body is a weapoThe Wombats         03:5518DX
+>09:16:12     JINROCK_04   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>09:16:22     RCC0903          S³oñce które znasz  Pivo                04:3613FX
+~09:20:58                  LMS DJ                                      00:00   X
+>09:20:58     M-4160           Creature comfort    Arcade Fire         04:3346CX
+>09:25:31     JINVO_04     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>09:25:34     M-3734           Mess around         Cage The Elephant   02:5115CX
+~09:28:25                  LMS DJ                                      00:00   X
+>09:28:25     M-3211           Kate Moss           Organek             02:3906CX
+>09:31:04     JINROCK_06   AUD Najwiêcej Rocka w MiJINGLE NAJWIÊCEJ ROC00:05   X
+>09:31:09     M-3895           Nothing compares 2 UChris Cornell       04:0615DX
+~09:35:15                  LMS DJ                                      00:00   X
+>09:35:15     M-4192           Party in the dark   Mogwai              03:4716CX
+>09:39:02     JINROCK_12   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>09:39:12     RCA0143          Wherever you will goThe Calling         03:2008DX
+~09:42:32                  LMS DJ przed reklam¹!!!                     00:00   X
+~09:42:3240:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>09:42:32     RCB0429          Era retuszera       Nosowska            03:2322CX
+>09:45:55     JINVO_05     AUD Akademickie Radio CeSWEEP BEZ LINERA    00:03   X
+>09:45:58     M-4163           I just wanna live [GYankee [Chonabibe]  02:3309DX
+~09:48:31                  LMS DJ                                      00:00   X
+>09:48:31     M-4121           Cave                Future Island       03:4727CX
+>09:52:18     JINROCK_05   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>09:52:28     M-3825           Wy¿ymaczka          Redakcja            02:32NUCX
+>09:55:00     M-3149           Feel what I feel    Gotthard            03:2317DX
+~10:00:00                  LMS Najwiêcej Rocka! 10:00                  00:00   X
+~10:00:00                  LMS       Pn 28 sierpnia10:00:00            00:00   X
+~10:00:0000:00             SAT TOH Serwis                              00:00   X
+>10:01:23     JINROCK_07   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>10:01:33     NE_0006          Ambitious eyes      VerseCity           02:5313DX
+>10:04:26     JINVO_01     AUD Radio Centrum       SWEEP BEZ LINERA    00:02   X
+>10:04:28     M-4161           Different days [alteThe Charlatans      02:4810FX
+~10:07:1610:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>10:07:16     0132RB1          Za³oga G (cut)      Hurt                03:2219CX
+>10:10:38     M-0062           Iris                The Goo Goo Dolls   04:4011DX
+>10:15:18     JINROCK_08   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>10:15:28     M-4179           Sorry [radio edit]  Nothing But Thieves 03:2300CX
+>10:18:51     JINVO_06     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>10:18:54     M-4069           Doomsday            Ryan Adams          02:5617DX
+>10:21:50     JINVO_07     AUD 98,2 FM. Radio CentrSWEEP BEZ LINERA    00:03   X
+>10:21:53     M-3657           Pokój na jedn¹ noc  The Cuts            02:5107CX
+>10:24:44     JINROCK_09   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:04   X
+>10:24:48     M-4118           Bezustannie         Patrycja Markowska i04:4813DX
+>10:29:36     M-3477-PI        Congregation [power Foo Fighters        04:3900DX
+>10:34:15     NE_0355          Niecne przyzwyczajenKrafcy              03:4315CX
+>10:37:58     JINROCK_10   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:06   X
+>10:38:04     M-4130           Broken love         Imminence           03:5114DX
+>10:41:55     JINROCK_13   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>10:42:05     RCA0016          Your decision       Alice In Chains     03:5311DX
+~10:45:58     1_IMPROCK    AUD Poniedzia³ek 10:45, Impreza Rock        01:00    
+~10:46:5840:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>10:46:58     M-2639           Bezkrólewie         Damian Ukeje        04:0019DX
+>10:50:58     JINROCK_11   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:06   X
+>10:51:04     M-4181           No roots [radio editAlice Merton        03:2504CX
+>10:54:29     JINVO_08     AUD 98,2 FM. Radio CentrSWEEP BEZ LINERA    00:03   X
+>10:54:32     M-3931           Hysteria            The Underground Man 03:3209CX
+>10:58:04     JINVO_15     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>10:58:07     0039T03          The clockwise witnesDevotchka           04:1400CX
+~11:00:00                  LMS Najwiêcej rocka 11:00                   00:00   X
+~11:00:00                  LMS       Pn 28 sierpnia11:00:00            00:00   X
+>11:00:00     JINVO_03     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>11:00:03     M-2360           Kill your heroes    AWOLnation          02:5419DX
+>11:02:57     M-4140           I need somebody [radGlasspop            03:3700DX
+>11:06:34     JINVO_09     AUD Akademickie Radio CeSWEEP BEZ LINERA    00:03   X
+>11:06:37     NE_0367          Niemêskie granie    Afro Kolektyw       03:0011DX
+~11:09:3710:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>11:09:37     M-3906           Something to believeYoung The Giant     03:4521DX
+>11:13:22     0518S10          The Dolphin's Cry   Live                03:5200FX
+>11:17:14     JINROCK_02   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>11:17:24     M-4166           The rise of chaos   Accept              05:0919CX
+>11:22:33     JINVO_16     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:04   X
+>11:22:37     M-2166           Man of simple pleasuKasabian            03:3113CX
+>11:26:08     M-4144           Szerokie wody       Mrozu               03:4615CX
+>11:29:54     M-1047           Free fallin'        Tom Petty & The Hear04:0800FX
+>11:34:02     JINVO_10     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>11:34:05     M-4194           Live outside        Enter Shikari       03:1500CX
+>11:37:20     M-3184           Why d'you only call Arctic Monkeys      02:3610CX
+>11:39:56     JINVO_12     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>11:39:59     M-4153           Blada               T.Love              02:5919CX
+~11:42:58     1_IMPFM      AUD Poniedzia³ek 08:45, Impreza FM          01:00    
+~11:43:5840:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>11:43:58     M-3832           Oceany              The Shipyard        04:0112DX
+>11:47:59     JINVO_13     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>11:48:02     RCC0949          Lullaby             Shawn Mullins       05:1021FX
+>11:53:12     M-4132           Goodbye angels      Red Hot Chili Pepper04:0812CX
+~12:00:00                  LMS Najwiêcej rocka 12:00                   00:00   X
+~12:00:00                  LMS       Pn 28 sierpnia12:00:00            00:00   X
+>12:00:00     JINVO_11     AUD 98,2 FM. Tu Radio CeSWEEP BEZ LINERA    00:03   X
+>12:00:03     RCC0836          Your love alone is nManic Street Preache03:50   X
+>12:03:53     M-4157           Walking the wire    Imagine Dragons     03:4704DX
+>12:07:40     JINROCK_01   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>12:07:50     NE_0369          Interference        Breton              03:1300DX
+~12:11:0310:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>12:11:03     M-4099           A wiesz...          Golden Life         03:0725DX
+>12:14:10     RCA0073          Hey Joe             Jimi Hendrix        03:176 FX
+>12:17:27     JINROCK_03   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>12:17:37     M-4170           Love falls          Hellyeah            04:1728DX
+>12:21:54     JINVO_02     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>12:21:57     M-3320           Dziewczyna z ZachoduLes³aw i Administrat02:4105DX
+>12:24:38     M-4129           Be who you are      The Kooks           03:5223CX
+>12:28:30     9886Y05          Every little thing sThe Police          04:0312FX
+>12:32:33     JINROCK_04   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>12:32:43     M-4185           Talking to myself   Linkin Park         03:4623DX
+>12:36:29     0235R01          Ezoteryczny Poznañ  Pid¿ama Porno       04:1811CX
+~12:40:4740:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>12:40:47     M-4154           Champion            Fall Out Boy        03:0707CX
+>12:43:54     JINROCK_06   AUD Najwiêcej Rocka w MiJINGLE NAJWIÊCEJ ROC00:05   X
+>12:43:59     M-2355           Turning into you    The Offspring       03:3816FX
+>12:47:37     M-4104           Jak dobrze          Krzysztof Zalewski  03:3234FX
+>12:51:09     JINROCK_12   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>12:51:19     0B36T03          Layla               Derek & The Dominos 02:3724FX
+>12:53:56     M-4131           Wish I knew you     The Revivalists     04:2909DX
+~13:00:00                  LMS Najwiêcej rocka 13:00                   00:00   X
+~13:00:00                  LMS       Pn 28 sierpnia13:00:00            00:00   X
+>13:00:00     JINROCK_05   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>13:00:10     M-3722           The light           Disturbed           04:1429FX
+>13:04:24     M-4159           Holding on          The War On Drugs    04:0628FX
+>13:08:30     JINVO_14     AUD Radio Centrum       SWEEP BEZ LINERA    00:01   X
+>13:08:31     M-3122           Szczeniê            Król                03:3533DX
+~13:12:0610:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>13:12:06     M-3754           Revolt              Muse                03:5608DX
+>13:16:02     M-2475           Fools gold          The Stone Roses     04:1122FX
+>13:20:13     JINROCK_07   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>13:20:23     M-4182           Anastasis           Cotard              04:1415DX
+>13:24:37     JINVO_04     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>13:24:40     NE_0141          Art Brut            Myslovitz           04:0500 X
+>13:28:45     M-4119           Get right           Jimmy Eat World     02:4711CX
+>13:31:32     M-3856           Mam doœæ            Lombard             03:3931CX
+>13:35:11     JINROCK_08   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>13:35:21     M-4168           Alone               I Prevail           03:3316DX
+>13:38:54     NE_0278          Underground         Jane's addiction    03:0500 X
+>13:41:59     JINVO_05     AUD Akademickie Radio CeSWEEP BEZ LINERA    00:03   X
+>13:42:02     M-4141           Wilk                Gypsy and the Acid Q03:3824FX
+~13:45:40     1_IMPFM      AUD Poniedzia³ek 08:45, Impreza FM          01:00    
+~13:46:4040:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>13:46:40     M-3154           Waves               Sleeper Agent       03:3319CX
+>13:50:13     M-3950           Circadian rhythm (LaSilversun Pickups   03:3924DX
+>13:53:52     JINROCK_09   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:04   X
+>13:53:56     RCA0173          New Year's day      U2                  04:0837FX
+>13:58:04     M-4102           Jeœli               Hot Water           03:2032CX
+~14:00:00                  LMS Najwiêcej rocka 14:00                   00:00   X
+~14:00:00                  LMS       Pn 28 sierpnia14:00:00            00:00   X
+>14:00:00     JINROCK_10   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:06   X
+>14:00:06     RCB0287          Epic                Faith No More       04:449 DX
+>14:04:50     M-4161           Different days [alteThe Charlatans      02:4810FX
+>14:07:38     JINROCK_13   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>14:07:48     M-2206           Celebrate youth     H-Blockx            03:0608bX
+~14:10:5410:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>14:10:54     M-3947           Fake my own death   Sum 41              02:5416CX
+>14:13:48     9942T01          Kombinat            Republika           03:1718CX
+>14:17:05     JINROCK_11   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:06   X
+>14:17:11     M-4169           Whole wide world (unCage The Elephant   03:180 DX
+>14:20:29     JINVO_01     AUD Radio Centrum       SWEEP BEZ LINERA    00:02   X
+>14:20:31     M-3139           Jeœli Bóg istnieje..Negatyw             04:2418DX
+>14:24:55     M-4139           Johnny's band       Deep Purple         03:4435DX
+>14:28:39     9940TA6          Can't get you out ofMakowiecki Band     03:160 LX
+>14:31:55     JINROCK_02   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>14:32:05     M-4188           The come up         Shaman's Harvest    03:1516FX
+>14:35:20     0132R01          Za³oga G            Hurt                03:3027CX
+>14:38:50     JINROCK_01   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>14:39:00     M-4162           A wall              Downtown Boys       03:5942CX
+~14:42:59     1_IMPROCK    AUD Poniedzia³ek 10:45, Impreza Rock        01:00    
+~14:43:5940:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>14:43:59     M-3416           Biegnê              Trzynasta W Samo Po³02:5814CX
+>14:46:57     M-3960           Everybody           Don Broco           03:2007CX
+>14:50:17     JINVO_06     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>14:50:20     RCA0059          I think I'm paranoidGarbage             03:3309CX
+>14:53:53     M-4133           Lights out          Royal Blood         03:3304CX
+~15:00:00                  LMS Godziny Szczytu 15:00                   00:00   X
+~15:00:00                  LMS       Pn 28 sierpnia15:00:00            00:00   X
+>15:00:00     JINVO_07     AUD 98,2 FM. Radio CentrSWEEP BEZ LINERA    00:03   X
+>15:00:03     RCB0237          Rusted from the rainBilly Talent        04:0500DX
+>15:04:08     M-3633           Tom Sawyer          Rush                04:2805FX
+~15:08:36                  LMS DJ: Dzieñ dobry!                        00:00   X
+~15:08:3610:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>15:08:36     2650P03          Mistrzyni kamufla¿u Mama Selita         02:5210DX
+>15:11:28     JINROCK_03   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>15:11:38     M-4183           Freeze me           Death From Above    03:0829CX
+~15:14:46                  LMS DJ                                      01:00   X
+>15:15:46     M-0918           Another one bites thQueen               03:3019CX
+>15:19:16     JINROCK_04   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>15:19:26     M-4151           Run [radio edit]    Foo Fighters        04:5407CX
+~15:24:20                  LMS DJ                                      01:00   X
+>15:25:20     M-3702           I am the fire       Halestorm           03:3006CX
+>15:28:50     JINVO_08     AUD 98,2 FM. Radio CentrSWEEP BEZ LINERA    00:03   X
+>15:28:53     M-3442           Obietnice           Saluminesia         03:2416DX
+~15:32:1730:00SAT                                                      00:00   X
+>15:33:51     JINVO_15     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>15:33:54     M-3396           Surrender           UFly                03:3412CX
+>15:37:28     JINROCK_06   AUD Najwiêcej Rocka w MiJINGLE NAJWIÊCEJ ROC00:05   X
+>15:37:33     RCC0980          Wychowanie          T.Love              02:3127DX
+~15:40:04                  LMS DJ: przed reklam¹                       00:00   X
+~15:40:0440:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>15:40:04     M-4165           Supercharge         Enter Shikari feat. 03:3117CX
+>15:43:35     JINVO_03     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+~15:43:38                  LMS DJ                                      01:00   X
+>15:44:38     M-3739           State of my head    Shinedown           03:2309CX
+>15:48:01     JINVO_09     AUD Akademickie Radio CeSWEEP BEZ LINERA    00:03   X
+>15:48:04     M-4143           Call the police     LCD Soundsystem     06:4012DX
+~15:54:44                  LMS DJ                                      00:00   X
+>15:54:44     0001Y01          When it's over      Sugar Ray           03:2511FX
+>15:58:09     JINVO_16     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:04   X
+>15:58:13     M-2219           The Wave            Miike Snow          03:4018CX
+~16:00:00                  LMS Godziny Szczytu 16:00                   00:00   X
+~16:00:00                  LMS       Pn 28 sierpnia16:00:00            00:00   X
+~16:00:0000:00             SAT TOH Serwis                              00:00   X
+>16:03:02     JINROCK_12   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>16:03:12     0028T01          Take me out         Franz Ferdinand     03:515 DX
+>16:07:03     JINROCK_05   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>16:07:13     M-4146           Little one          Highly Suspect      03:3208DX
+~16:10:45                  LMS DJ: Dzieñ dobry!                        00:00   X
+~16:10:4510:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>16:10:45     RCC0926          Londyn dzwoni       Radio Bagdad        03:3534CX
+>16:14:20     JINROCK_07   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>16:14:30     RCB0565          Cats in the cradle  Ugly Kid Joe        03:5911DX
+~16:18:29                  LMS DJ                                      01:00   X
+>16:19:29     M-4180           Go to war           Nothing More        03:5900DX
+>16:23:28     JINROCK_08   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>16:23:38     M-3742           Venom               Bullet For My Valent03:4420CX
+~16:27:22                  LMS DJ                                      01:00   X
+>16:28:22     M-4149           Baby, I'm broken    Record Company      03:3100FX
+~16:31:5330:00             SAT Drogi i pogoda                          00:00   X
+>16:33:27     JINVO_10     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>16:33:30     M-2757           If so               Atlas Genius        02:5016DX
+>16:36:20     JINVO_12     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>16:36:23     M-4190           All in one night    Stereophonics       04:3419DX
+~16:40:57                  LMS DJ                                      00:00   X
+>16:40:57     RCC0638          Born in the U.S.A.  Bruce Springsteen   04:2416FX
+>16:45:21     JINVO_13     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>16:45:24     M-2404           Blok-brygada        Golden Life         02:2100DX
+~16:47:45     1_IMPFM      AUD Poniedzia³ek 08:45, Impreza FM          01:00    
+~16:48:4540:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>16:48:45     M-3408           Kathleen            Catfish And The Bott02:4007CX
+>16:51:25     JINROCK_09   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:04   X
+>16:51:29     M-4173           Gotta get a grip    Mick Jagger         03:419 FX
+~16:55:10                  LMS DJ                                      00:00   X
+>16:55:10     M-3743           Victory lap         All That Remains    03:5210CX
+>16:59:02     M-3541           Niekompletnie       Chico               03:5713CX
+~17:00:00                  LMS Godziny Szczytu 17:00                   00:00   X
+~17:00:00                  LMS       Pn 28 sierpnia17:00:00            00:00   X
+~17:00:0000:00             SAT TOH Serwis                              00:00   X
+>17:03:02     JINVO_11     AUD 98,2 FM. Tu Radio CeSWEEP BEZ LINERA    00:03   X
+>17:03:05     RCA0086          Numb                Linkin Park         03:0118CX
+>17:06:06     JINROCK_10   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:06   X
+>17:06:12     RCA0132          My ugly boy         Skunk Anansie       03:1925DX
+~17:09:31                  LMS DJ: Dzieñ dobry!                        00:00   X
+~17:09:3110:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>17:09:31     M-3349           Elektryczny         Mêskie Granie Orkies03:0513DX
+>17:12:36     JINVO_02     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>17:12:39     M-4201           Machine             Tender              02:4400CX
+~17:15:23                  LMS DJ                                      01:00   X
+>17:16:23     9884Y17          De Do Do Do, De Da DThe Police          03:5727FX
+>17:20:20     JINROCK_13   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>17:20:30     M-4200           Runaway             Avenged Sevenfold / 02:3621DX
+~17:23:06                  LMS DJ                                      01:00   X
+>17:24:06     RCB0291          Thnks fr th mmrs    Fall Out Boy        03:136 DX
+>17:27:19     JINVO_14     AUD Radio Centrum       SWEEP BEZ LINERA    00:01   X
+>17:27:20     M-3038           Mózg                Misia Ff            02:3511CX
+~17:29:55                  LMS DJ                                      00:00   X
+>17:29:55     M-3615           Living after MidnighJudas Priest        03:2621FX
+>17:33:21     JINVO_04     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>17:33:24     M-4184           Had it all          Hembree             03:1715CX
+~17:36:41                  LMS DJ                                      00:00   X
+>17:36:41     M-4010           Square hammer       Ghost               03:5329CX
+~17:40:34     1_IMPROCK    AUD Poniedzia³ek 10:45, Impreza Rock        01:00    
+~17:41:3440:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>17:41:34     0299R02          ¯ycie jest gdzie indStop Mi!            03:5015FX
+>17:45:24     JINVO_05     AUD Akademickie Radio CeSWEEP BEZ LINERA    00:03   X
+>17:45:27     M-4156           The Man [radio edit]The Killers         03:3912CX
+~17:49:06                  LMS DJ                                      00:00   X
+>17:49:06     RCB0394          You stole the sun frManic Street Preache04:1523DX
+>17:53:21     JINROCK_11   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:06   X
+>17:53:27     2649P02          Ibiza               Maki i Ch³opaki     02:5314CX
+~18:00:00                  LMS Najwiêcej rocka 18:00                   00:00   X
+~18:00:00                  LMS       Pn 28 sierpnia18:00:00            00:00   X
+>18:03:02     JINVO_01     AUD Radio Centrum       SWEEP BEZ LINERA    00:02   X
+>18:03:04     NE_0262          Monarchy of roses   Red Hot Chili Pepper04:1114CX
+>18:07:15     M-4157           Walking the wire    Imagine Dragons     03:4704DX
+>18:11:02     JINROCK_02   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>18:11:12     M-2366           Pami¹tki z masakry  Lipali              03:2514CX
+~18:14:3710:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>18:14:37     M-3888           So alive            The Goo Goo Dolls   03:1013CX
+>18:17:47     09B0B01          Supervixen          Garbage             03:5323CX
+>18:21:40     JINROCK_01   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>18:21:50     M-4202           Betray and degrade  Seether             04:0000CX
+>18:25:50     JINROCK_03   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>18:26:00     9940T01          Eutanazja           Totentanz           03:534 CX
+>18:29:53     M-4134           Loud                Motionless In White 03:3810CX
+>18:33:31     0A91B13          New sensation       INXS                03:388 CX
+>18:37:09     JINROCK_04   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>18:37:19     M-4186           Streambreather      Mastodon            04:3228CX
+>18:41:51     M-2808           Pamiêtam            The Cuts            02:4416CX
+~18:44:3540:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>18:44:35     M-4160           Creature comfort    Arcade Fire         04:3346CX
+>18:49:08     M-3207           Nic siê nie dzieje  Arcy M³yn           03:3925CX
+>18:52:47     M-3745           We are the Enemy    Aranda              03:3615CX
+>18:56:23     JINROCK_06   AUD Najwiêcej Rocka w MiJINGLE NAJWIÊCEJ ROC00:05   X
+>18:56:28     RCA0107          Come as you are     Nirvana             03:3017DX
+>18:59:58     M-4145           Amsterdam [radio ediNothing But Thieves 03:2506CX
+~19:00:00                  LMS PóŸne Rockokoko                         00:00   X
+~19:00:00                  LMS       Pn 28 sierpnia19:00:00            00:00   X
+>19:03:02     JINVO_06     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>19:03:05     M-3389           Suma ran            Power Of Trinity    02:3732CX
+~19:05:42     ROCKO-TOH1   AUD PóŸne Rockokoko TOH ROCKOKOKO TOH       00:30    
+~19:06:12                  LMS DJ: Dzieñ dobry!                        00:00   X
+>19:06:12     ROCKO-V03    AUD Szpila 3            ROCKOKOKO JINGLE    00:03   X
+>19:06:15     M-3591           More tha a feeling  Boston              03:1713FX
+>19:09:32     JINROCK_12   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>19:09:42     M-4177           Cali                Ride                03:2621DX
+~19:13:08                  LMS DJ                                      01:00   X
+>19:14:08     F710E12          The best things [albFilter              04:2530CX
+>19:18:33     JINVO_07     AUD 98,2 FM. Radio CentrSWEEP BEZ LINERA    00:03   X
+>19:18:36     M-4163           I just wanna live [GYankee [Chonabibe]  02:3309DX
+~19:21:09                  LMS DJ: przed reklam¹!!!                    00:00   X
+~19:21:0910:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>19:21:09     ROCKO-V01    AUD Szpila 1            ROCKOKOKO JINGLE    00:06   X
+>19:21:15     M-4002           Mississippi w ogniu Organek             04:0533DX
+~19:25:20                  LMS DJ                                      00:00   X
+>19:25:20     RCB0566          Jump                Van Halen           03:4628FX
+>19:29:06     JINROCK_05   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:10   X
+>19:29:16     M-4176           Living on the 110   Prophets Of Rage    03:3832DX
+~19:32:54                  LMS DJ: przed reklam¹!!!                    00:00   X
+~19:32:5440:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>19:32:54     2670P01          Ludzie psy          Maria Peszek        03:3500CX
+>19:36:29     ROCKO-V02    AUD Szpila 2            ROCKOKOKO JINGLE    00:04   X
+>19:36:33     M-4130           Broken love         Imminence           03:5114DX
+~19:40:24                  LMS DJ                                      00:00   X
+>19:40:24     RCC1075          Rough boy           ZZ Top              04:4242FX
+>19:45:06     JINVO_08     AUD 98,2 FM. Radio CentrSWEEP BEZ LINERA    00:03   X
+>19:45:09     2662P04          Tak jak zwykle      Irena               03:3920DX
+>19:48:48     JINROCK_07   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>19:48:58     PI-1101          King of the disco   Rotten Bark         02:4910CX
+>19:51:47     M-3431-PI        First Kiss [power inKid Rock            04:2500DX
+~20:00:00                  LMS PóŸne Rockokoko                         00:00   X
+~20:00:00                  LMS       Pn 28 sierpnia20:00:00            00:00   X
+~20:00:00     ROCKO-TOH2   AUD PóŸne Rockokoko TOH ROCKOKOKO TOH       00:30    
+~20:00:30                  LMS DJ Dzieñ dobry!                         00:00   X
+>20:00:30     ROCKO-V03    AUD Szpila 3            ROCKOKOKO JINGLE    00:03   X
+>20:00:33     M-2894           Endless Summer      The Jezabels        04:1119DX
+>20:04:44     JINVO_15     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>20:04:47     9939E07          Jolene (live under BWhite Stripes       03:1712FX
+~20:08:04                  LMS DJ przed reklam¹!!!                     01:00   X
+~20:09:0410:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>20:09:04     NE_0145          No matter what      Papa Roach          03:3008DX
+>20:12:34     ROCKO-V01    AUD Szpila 1            ROCKOKOKO JINGLE    00:06   X
+>20:12:40     M-4203           Catch a fire        Zach Mathieu        03:0514DX
+~20:15:45                  LMS DJ                                      01:00   X
+>20:16:45     RCB0256          Trouble             Coldplay            04:2328 X
+>20:21:08     JINROCK_08   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:10   X
+>20:21:18     M-4175           Don't stop          Nothing More        04:0721DX
+~20:25:25                  LMS DJ                                      01:00   X
+>20:26:25     RCC0951          Second chance       Shinedown           03:3714DX
+>20:30:02     ROCKO-V02    AUD Szpila 2            ROCKOKOKO JINGLE    00:04   X
+~20:30:06                  LMS DJ                                      00:00   X
+>20:30:06     RCA0175          With or without you U2                  04:4027FX
+>20:34:46     JINROCK_09   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:04   X
+>20:34:50     M-4187           Less than           Nine Inch Nails     03:3008CX
+~20:38:20                  LMS DJ przed reklam¹!!!                     01:00   X
+~20:39:2040:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>20:39:20     M-3422           What I like about yo5 Seconds Of Summer 02:3123DX
+>20:41:51     ROCKO-V03    AUD Szpila 3            ROCKOKOKO JINGLE    00:03   X
+>20:41:54     M-4140           I need somebody [radGlasspop            03:3700DX
+~20:45:31                  LMS DJ                                      00:00   X
+>20:45:31     RCC1072          Owner of a lonely heYes                 03:3623FX
+>20:49:07     JINVO_03     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>20:49:10     NE_0364          Always something    Cage The Elephant   03:1713FX
+>20:52:27     ROCKO-V01    AUD Szpila 1            ROCKOKOKO JINGLE    00:06   X
+>20:52:33     M-3987           Sure and Certain    Jimmy Eat World     03:2119DX
+~21:00:00                  LMS PóŸne Rockokoko                         00:00   X
+~21:00:00                  LMS       Pn 28 sierpnia21:00:00            00:00   X
+~21:00:00     ROCKO-TOH2   AUD PóŸne Rockokoko TOH ROCKOKOKO TOH       00:30    
+~21:00:30                  LMS DJ Dzieñ dobry!                         00:00   X
+>21:00:30     ROCKO-V02    AUD Szpila 2            ROCKOKOKO JINGLE    00:04   X
+>21:00:34     M-3439           War                 Kensington          02:5315CX
+>21:03:27     JINVO_09     AUD Akademickie Radio CeSWEEP BEZ LINERA    00:03   X
+>21:03:30     M-2722           Wrong number        The Cure            05:5542FX
+~21:09:25                  LMS DJ przed reklam¹!!!                     01:00   X
+~21:10:2510:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>21:10:25     M-2945           Show me the way     Billy Talent        03:0313DX
+>21:13:28     ROCKO-V03    AUD Szpila 3            ROCKOKOKO JINGLE    00:03   X
+>21:13:31     M-4167           In and out          Beth Ditto          03:377 DX
+~21:17:08                  LMS DJ                                      01:00   X
+>21:18:08     1716Z05          Du Hast             Rammstein           03:5430CX
+>21:22:02     JINVO_16     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:04   X
+>21:22:06     M-4153           Blada               T.Love              02:5919CX
+~21:25:05                  LMS DJ                                      01:00   X
+>21:26:05     M-3719           Halo                Starset             03:4500CX
+>21:29:50     ROCKO-V01    AUD Szpila 1            ROCKOKOKO JINGLE    00:06   X
+>21:29:56     M-3456           Leading Me On       The Never Ever      03:3621CX
+~21:33:32                  LMS DJ                                      00:00   X
+>21:33:32     RCB0482          Anarchy In The UK   Sex Pistols         03:3006CX
+>21:37:02     JINROCK_10   AUD RC - Najwiêcej RockaJINGLE NAJWIÊCEJ ROC00:06   X
+>21:37:08     M-4172           Technology          Don Broco           03:3516CX
+~21:40:43                  LMS DJ przed reklam¹!!!                     01:00   X
+~21:41:4340:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>21:41:43     M-3441           Ballad of the mightyNoel Gallagher's Hig04:0012FX
+>21:45:43     ROCKO-V02    AUD Szpila 2            ROCKOKOKO JINGLE    00:04   X
+>21:45:47     M-4154           Champion            Fall Out Boy        03:0707CX
+~21:48:54                  LMS DJ                                      00:00   X
+>21:48:54     RCC0585          Rag doll            Aerosmith           04:0721FX
+>21:53:01     JINVO_10     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>21:53:04     M-2253           Dead and gone       The Black Keys      03:4017CX
+>21:56:44     ROCKO-V03    AUD Szpila 3            ROCKOKOKO JINGLE    00:03   X
+>21:56:47     M-3744           Wash it all away    Five Finger Death Pu03:4230DX
+~22:00:00                  LMS PóŸne Rockokoko                         00:00   X
+~22:00:00                  LMS       Pn 28 sierpnia22:00:00            00:00   X
+~22:00:00     ROCKO-TOH2   AUD PóŸne Rockokoko TOH ROCKOKOKO TOH       00:30    
+~22:00:30                  LMS DJ Dzieñ dobry!                         00:00   X
+>22:00:30     ROCKO-V01    AUD Szpila 1            ROCKOKOKO JINGLE    00:06   X
+>22:00:36     M-3206           Dog on a leash      Adelitas Way        03:0808CX
+>22:03:44     JINVO_12     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>22:03:47     0A91B15          Original sin        INXS                03:4715FX
+~22:07:34                  LMS DJ przed reklam¹!!!                     01:00   X
+~22:08:3410:00             BRK Blok Reklamowy z 10:00                  00:00   X
+>22:08:34     M-3448           Hanging upside down Lime Cordiale       03:4700CX
+>22:12:21     ROCKO-V02    AUD Szpila 2            ROCKOKOKO JINGLE    00:04   X
+>22:12:25     M-4189           Permanating         Steven Wilson       03:2407CX
+~22:15:49                  LMS DJ                                      01:00   X
+>22:16:49     RCB0370          Piosenka m³odych wioKult                03:1231CX
+>22:20:01     JINVO_13     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>22:20:04     M-4159           Holding on          The War On Drugs    04:0628FX
+~22:24:10                  LMS DJ                                      01:00   X
+>22:25:10     M-3220           Until it's gone     Linkin Park         03:3722CX
+>22:28:47     ROCKO-V03    AUD Szpila 3            ROCKOKOKO JINGLE    00:03   X
+>22:28:50     M-2454           Inhaler             Foals               04:5031CX
+~22:33:40                  LMS DJ                                      00:00   X
+>22:33:40     RCA0147          Just my imagination The Cranberries     03:029 FX
+>22:36:42     JINROCK_13   AUD ARC - Najwiêcej RockJINGLE NAJWIÊCEJ ROC00:10   X
+>22:36:52     M-4192           Party in the dark   Mogwai              03:4716CX
+~22:40:39                  LMS DJ przed reklam¹!!!                     01:00   X
+~22:41:3940:00             BRK Blok Reklamowy z 40:00                  00:00   X
+>22:41:39     M-3472           Hollow moon (Bad WolAWOLnation          04:0114CX
+>22:45:40     ROCKO-V01    AUD Szpila 1            ROCKOKOKO JINGLE    00:06   X
+>22:45:46     M-4161           Different days [alteThe Charlatans      02:4810FX
+~22:48:34                  LMS DJ                                      00:00   X
+>22:48:34     RCB0419          Dla Ciebie          Myslovitz           03:3513DX
+>22:52:09     JINVO_11     AUD 98,2 FM. Tu Radio CeSWEEP BEZ LINERA    00:03   X
+>22:52:12     M-3162           Frozen Britain      James               03:0713DX
+>22:55:19     ROCKO-V02    AUD Szpila 2            ROCKOKOKO JINGLE    00:04   X
+>22:55:23     M-3990           RGB                 Spring Rolls        02:4329DX
+~23:00:00                  LMS PK                                      00:00   X
+~23:00:00                  LMS       Pn 28 sierpnia23:00:00            00:00   X
+>23:00:00     POZKLA_V03   AUD Jingiel 3           Pozycje Klasyczne   00:0500 X
+>23:00:05     M-3782           Somebody to love    Queen               04:5400CX
+>23:04:59     POZKLA_V04   AUD Jingiel 4           Pozycje Klasyczne   00:0400 X
+>23:05:03     9001R03          Ona                 PRL                 02:2106FX
+>23:07:24     POZKLA_V01   AUD Jingiel 1           Pozycje Klasyczne   00:0600 X
+>23:07:30     RCB0260          What's this life forCreed               03:2615DX
+>23:10:56     POZKLA_V05   AUD Jingiel 5           Pozycje Klasyczne   00:0400 X
+>23:11:00     RCB0549          Tonight, tonight    The Smashing Pumpkin04:1044DX
+>23:15:10     POZKLA_V06   AUD Jingiel 6           Pozycje Klasyczne   00:0300 X
+>23:15:13     0B36T15          Gimme all your lovinZZ Top              03:5023FX
+>23:19:03     POZKLA_V02   AUD Jingiel 2           Pozycje Klasyczne   00:0300 X
+>23:19:06     RCB0432          Drzwi               O.N.A.              04:3634DX
+>23:23:42     POZKLA_V03   AUD Jingiel 3           Pozycje Klasyczne   00:0500 X
+>23:23:47     0036T20          Black Magic Woman   Santana             04:4384FX
+>23:28:30     JINVO_02     AUD Radio Centrum       SWEEP BEZ LINERA    00:03   X
+>23:28:33     RCC0590          Black velvet        Alannah Myles       04:3022FX
+>23:33:03     POZKLA_V04   AUD Jingiel 4           Pozycje Klasyczne   00:0400 X
+>23:33:07     RCB0277          What I am           Eddie Brickell      04:3610FX
+>23:37:43     JINVO_14     AUD Radio Centrum       SWEEP BEZ LINERA    00:01   X
+>23:37:44     9821T08          Lipstick on the glasMaanam              02:5820FX
+>23:40:42     POZKLA_V01   AUD Jingiel 1           Pozycje Klasyczne   00:0600 X
+>23:40:48     A217A01          Beautiful           Marillion           04:5830FX
+>23:45:46     JINROCK_11   AUD Tu RC - Najwiêcej RoJINGLE NAJWIÊCEJ ROC00:06   X
+>23:45:52     M-0393           Motorcycle emptinessManic Street Preache06:0517DX
+>23:51:57     POZKLA_V05   AUD Jingiel 5           Pozycje Klasyczne   00:0400 X
+>23:52:01     RCC0953          Nothing compares 2 USinead O'Connor     04:4408FX
+>23:56:45     POZKLA_V06   AUD Jingiel 6           Pozycje Klasyczne   00:0300 X
+>23:56:48     M-3836           Stan pogody         Renton              03:5214CX
+>23:60:40     JINVO_04     AUD Tu Radio Centrum    SWEEP BEZ LINERA    00:03   X
+>23:60:43     0519S15          Secret smile        Semisonic           03:3410FX

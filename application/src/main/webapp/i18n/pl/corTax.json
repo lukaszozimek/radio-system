@@ -1,0 +1,27 @@
+{
+    "protoneApp": {
+        "corTax" : {
+            "home": {
+                "title": "Cor Taxes",
+                "createLabel": "Dodaj Cor Tax",
+                "createOrEditLabel": "Dodaj lub edytuj: Cor Tax",
+                "search": "Search for Cor Tax"
+            },
+            "created": "A new Cor Tax is created with identifier {{ param }}",
+            "updated": "A Cor Tax is updated with identifier {{ param }}",
+            "deleted": "A Cor Tax is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Cor Tax {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Tax"
+            },
+            "name": "Name",
+            "value": "Value",
+            "validFrom": "Valid From",
+            "validTo": "Valid To",
+            "active": "Active",
+            "network": "Network"
+        }
+    }
+}

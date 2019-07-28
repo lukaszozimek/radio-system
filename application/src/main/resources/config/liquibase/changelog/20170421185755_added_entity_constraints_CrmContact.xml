@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity CrmContact.
+    -->
+    <changeSet id="20170421185755-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="addres_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_addres_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_address"/>
+
+        <addForeignKeyConstraint baseColumnNames="country_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_country_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_country"/>
+
+        <addForeignKeyConstraint baseColumnNames="person_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_person"/>
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="range_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_range_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_dictionary"/>
+
+        <addForeignKeyConstraint baseColumnNames="size_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_size_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_dictionary"/>
+
+        <addForeignKeyConstraint baseColumnNames="industry_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_industry_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_dictionary"/>
+
+        <addForeignKeyConstraint baseColumnNames="area_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_area_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_dictionary"/>
+
+        <addForeignKeyConstraint baseColumnNames="keeper_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_keeper_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="status_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_dictionary"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_last_modified_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_created_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="crm_lead_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_crm_lead"
+                                 referencedColumnNames="id"
+                                 referencedTableName="crm_lead"/>
+
+    </changeSet>
+</databaseChangeLog>

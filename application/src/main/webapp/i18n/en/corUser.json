@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "corUser" : {
+            "home": {
+                "title": "Cor Users",
+                "createLabel": "Create a new Cor User",
+                "createOrEditLabel": "Create or edit a Cor User",
+                "search": "Search for Cor User"
+            },
+            "created": "A new Cor User is created with identifier {{ param }}",
+            "updated": "A Cor User is updated with identifier {{ param }}",
+            "deleted": "A Cor User is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Cor User {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor User"
+            },
+            "name": "Name",
+            "network": "Network",
+            "channel": "Channel"
+        }
+    }
+}

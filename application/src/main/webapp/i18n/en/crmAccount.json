@@ -1,0 +1,38 @@
+{
+    "protoneApp": {
+        "crmAccount" : {
+            "home": {
+                "title": "Crm Accounts",
+                "createLabel": "Create a new Crm Account",
+                "createOrEditLabel": "Create or edit a Crm Account",
+                "search": "Search for Crm Account"
+            },
+            "created": "A new Crm Account is created with identifier {{ param }}",
+            "updated": "A Crm Account is updated with identifier {{ param }}",
+            "deleted": "A Crm Account is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Crm Account {{ id }}?"
+            },
+            "detail": {
+                "title": "Crm Account"
+            },
+            "shortName": "Short Name",
+            "externalId1": "External Id 1",
+            "externalId2": "External Id 2",
+            "name": "Name",
+            "paymentDelay": "Payment Delay",
+            "vatNumber": "Vat Number",
+            "person": "Person",
+            "addres": "Addres",
+            "network": "Network",
+            "discount": "Discount",
+            "keeper": "Keeper",
+            "country": "Country",
+            "range": "Range",
+            "size": "Size",
+            "industry": "Industry",
+            "area": "Area",
+            "tasks": "Tasks"
+        }
+    }
+}

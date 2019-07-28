@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "corTag" : {
+            "home": {
+                "title": "Cor Tags",
+                "createLabel": "Create a new Cor Tag",
+                "createOrEditLabel": "Create or edit a Cor Tag",
+                "search": "Search for Cor Tag"
+            },
+            "created": "A new Cor Tag is created with identifier {{ param }}",
+            "updated": "A Cor Tag is updated with identifier {{ param }}",
+            "deleted": "A Cor Tag is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Cor Tag {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Tag"
+            },
+            "tag": "Tag",
+            "network": "Network",
+            "tags": "Tags"
+        }
+    }
+}

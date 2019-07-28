@@ -1,0 +1,26 @@
+{
+    "protoneApp": {
+        "libFileItem" : {
+            "home": {
+                "title": "Lib File Items",
+                "createLabel": "Dodaj Lib File Item",
+                "createOrEditLabel": "Dodaj lub edytuj: Lib File Item",
+                "search": "Search for Lib File Item"
+            },
+            "created": "A new Lib File Item is created with identifier {{ param }}",
+            "updated": "A Lib File Item is updated with identifier {{ param }}",
+            "deleted": "A Lib File Item is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Lib File Item {{ id }}?"
+            },
+            "detail": {
+                "title": "Lib File Item"
+            },
+            "idx": "Idx",
+            "name": "Name",
+            "type": "Type",
+            "library": "Library",
+            "parentFile": "Parent File"
+        }
+    }
+}
