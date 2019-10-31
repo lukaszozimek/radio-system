@@ -111,7 +111,7 @@
         <sortpom-maven-plugin.version>2.5.0</sortpom-maven-plugin.version>
         <!-- Spring properties -->
         <springfox.version>2.6.1</springfox.version>
-        <tika.version>1.14</tika.version>
+        <tika.version>1.22</tika.version>
         <antlr4.plugin.version>4.7</antlr4.plugin.version>
         <antlr4.version>4.7</antlr4.version>
     </properties>
