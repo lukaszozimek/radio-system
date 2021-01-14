@@ -59,7 +59,7 @@
         <node.version>v6.9.5</node.version>
         <npm.version>4.1.2</npm.version>
         <poi.commons.collection.version>4.1</poi.commons.collection.version>
-        <poi.version>3.16</poi.version>
+        <poi.version>4.1.2</poi.version>
         <postgresql.version>9.4.1212</postgresql.version>
         <!-- These remain empty unless the corresponding profile is active -->
         <profile.no-liquibase/>
